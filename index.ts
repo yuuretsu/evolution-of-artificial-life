@@ -16,13 +16,15 @@ function start() {
     const BOTS_AMOUNT = parseInt((document.querySelector('#input-bots') as HTMLInputElement).value);
 
     for (let i = 0; i < Math.min(world.width * world.height, BOTS_AMOUNT); i++) {
-        new Bot(
+        const a = new Bot(
             world,
             ...world.randEmpty(),
-            Rgba.randRgb(),
+            new Rgba(100, 100, 100, 255),
             100,
-            new Genome(64).fillPlant()
+            new Genome(64).fillPlant(),
+            Rgba.randRgb()
         );
+        a.narrow = 0;
     }
 
     world.init();
@@ -46,6 +48,13 @@ function drawEnergy(block: any) {
     return null;
 }
 
+function drawFamilies(bot: any) {
+    if (bot instanceof Bot) {
+        return bot.family;
+    }
+    return null;
+}
+
 let world: World;
 
 window.addEventListener('load', () => {
@@ -58,20 +67,25 @@ window.addEventListener('load', () => {
     let cycle = 0;
     let lastLoop = performance.now();
     let fps = 0;
+    let fpsList = new Array(5).fill(0);
     setInterval(() => {
         let thisLoop = performance.now();
         fps = 1000 / (thisLoop - lastLoop);
+        fpsList.pop();
+        fpsList.unshift(fps);
         lastLoop = thisLoop;
         world.step();
-        if (cycle % 2 === 0) {
+        if (cycle % 1 === 0) {
             switch ($viewMode.value) {
                 case 'normal': world.clearImage(); world.visualize(drawColors); break;
                 case 'energy': world.clearImage(); world.visualize(drawEnergy); break;
+                case 'families': world.clearImage(); world.visualize(drawFamilies); break;
                 default: break;
             }
         }
+        // world.clearImage(); world.visualize(drawLight);
         $amount.innerHTML = Bot.amount.toString();
-        $fps.innerHTML = fps.toFixed(1);
+        $fps.innerHTML = (fpsList.reduce((a, b) => a + b) / fpsList.length).toFixed(1);
         cycle++;
-    }, 1000 / 60);
+    });
 });

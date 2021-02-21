@@ -1,6 +1,7 @@
 import { interpolate, limNumber, randFloat, randInt } from "./math-functions";
 
 export class Rgba {
+    private static readonly MAX_DIF = 255 * 4;
     static randRgb(): Rgba {
         return new Rgba(randInt(0, 256), randInt(0, 256), randInt(0, 256), 255);
     }
@@ -33,6 +34,14 @@ export class Rgba {
             this.blue + randFloat(-value, value),
             this.alpha
         ).normalise();
+    }
+    difference(other: Rgba): number {
+        return ((
+            Math.abs(this.red - other.red) +
+            Math.abs(this.green - other.green) +
+            Math.abs(this.blue - other.blue) +
+            Math.abs(this.alpha - other.alpha)
+        ) / Rgba.MAX_DIF);
     }
 }
 

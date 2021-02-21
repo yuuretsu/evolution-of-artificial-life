@@ -12,7 +12,8 @@ export default class Bot extends DynamicBlock {
         y: number,
         color: Rgba,
         public energy: number,
-        public genome: Genome
+        public genome: Genome,
+        public family: Rgba
     ) {
         super(world, x, y, color);
         Bot.amount++;
@@ -57,7 +58,8 @@ export default class Bot extends DynamicBlock {
             y,
             this.color,
             this.energy / 3,
-            this.genome.replication()
+            this.genome.replication(),
+            this.family.mutateRgb(2)
         );
         this.energy /= 3;
     }
@@ -78,6 +80,16 @@ export default class Bot extends DynamicBlock {
     }
     onDie() {
         Bot.amount--;
+        new DeadBot(this);
+    }
+}
+
+class DeadBot extends DynamicBlock {
+    constructor(bot: Bot) {
+        super(bot.world, bot.x, bot.y, bot.color.interpolate(new Rgba(0, 0, 0, 255), 0.5));
+    }
+    onStep() {
+        this.color = this.color.interpolate(new Rgba(10, 10, 50, 255), 0.001);
     }
 }
 
@@ -108,10 +120,10 @@ export class Genome {
     }
     mutateGene(gene: Gene): Gene {
         return {
-            action: Math.random() > 0.99 ? randChoice(GENE_TEMPLATES) : gene.action,
+            action: Math.random() > 0.9 ? randChoice(GENE_TEMPLATES) : gene.action,
             property: limNumber(0, 1, gene.property + randFloat(-0.01, 0.01)),
             branches: gene.branches.map(
-                i => Math.random() > 0.99
+                i => Math.random() > 0.9
                     ? randInt(0, this.length)
                     : i
             ) as [number, number, number, number]
@@ -138,11 +150,20 @@ export class Genome {
         }
         return this;
     }
+    // replication2() {
+    //     const genome = new Genome(this.length);
+    //     for (let i = 0; i < this.length; i++) {
+    //         genome.genes[i] = this.mutateGene(this.genes[i]);
+    //     }
+    //     return genome;
+    // }
     replication() {
         const genome = new Genome(this.length);
         for (let i = 0; i < this.length; i++) {
-            genome.genes[i] = this.mutateGene(this.genes[i]);
+            genome.genes[i] = this.genes[i];
         }
+        const pointer = randInt(0, genome.length);
+        genome.genes[pointer] = this.mutateGene(this.genes[pointer]);
         return genome;
     }
     doAction(bot: Bot) {
@@ -199,12 +220,44 @@ const GENE_TEMPLATES: ActionFn[] = [
     },
     // Look forward
     (bot, property, branches) => {
-        bot.color = bot.color.interpolate(new Rgba(255, 255, 255, 255), 0.01);
+        // bot.color = bot.color.interpolate(new Rgba(255, 255, 255, 255), 0.01);
         const forward = bot.getForvard();
-        if (!forward.block) {
-            return { completed: false, goto: branches[0] }
+        if (forward.block instanceof Bot) {
+            if (forward.block.family.difference(bot.color) < property) {
+                return { completed: false, goto: branches[0] }
+            } else {
+                return { completed: false, goto: branches[1] }
+            }
+        } else if (forward.block instanceof DeadBot) {
+            return { completed: false, goto: branches[2] }
         } else {
-            return { completed: false, goto: branches[1] }
+            return { completed: false, goto: branches[3] }
         }
+    },
+    // DestroyDead
+    (bot, property, branches) => {
+        // bot.color = bot.color.interpolate(new Rgba(0, 0, 255, 255), 0.01);
+        const forward = bot.getForvard();
+        if (forward.block instanceof DeadBot) {
+            forward.block.alive = false;
+        }
+        return { completed: true }
+    },
+    // Move
+    (bot, property, branches) => {
+        // bot.color = bot.color.interpolate(new Rgba(255, 0, 0, 255), 0.01);
+        const forward = bot.getForvard();
+        if (!forward.block) bot.moveTo(...forward.coords);
+        return { completed: true }
+    },
+    // Kill
+    (bot, property, branches) => {
+        bot.color = bot.color.interpolate(new Rgba(255, 0, 0, 255), 0.01);
+        const forward = bot.getForvard();
+        if (forward.block instanceof Bot) {
+            forward.block.energy /= 3;
+            bot.energy += forward.block.energy;
+        }
+        return { completed: true }
     },
 ];

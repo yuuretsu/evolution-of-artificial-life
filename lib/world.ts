@@ -66,11 +66,11 @@ export class World extends Grid<Block | undefined> {
             this.img.node.height
         );
     }
-    visualize(func: (block: any | undefined) => Rgba | null) {
+    visualize(func: (block: any | undefined, x: number, y: number) => Rgba | null) {
         let img = new PixelsData(this.width, this.height);
         for (let x = 0; x < this.width; x++) {
             for (let y = 0; y < this.height; y++) {
-                const col = func(this.get(x, y));
+                const col = func(this.get(x, y), x, y);
                 if (col) {
                     img.setPixel(x, y, col);
                 }
