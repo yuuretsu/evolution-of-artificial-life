@@ -1,5 +1,5 @@
 import { Rgba } from "./drawing";
-import { fixNumber, randChoice, randInt } from "./math-functions";
+import { fixNumber, limNumber, randChoice, randFloat, randInt } from "./math-functions";
 import { Block, DynamicBlock, World } from "./world";
 
 export default class Bot extends DynamicBlock {
@@ -106,30 +106,55 @@ export class Genome {
             ]
         };
     }
+    mutateGene(gene: Gene): Gene {
+        return {
+            action: Math.random() > 0.99 ? randChoice(GENE_TEMPLATES) : gene.action,
+            property: limNumber(0, 1, gene.property + randFloat(-0.01, 0.01)),
+            branches: gene.branches.map(
+                i => Math.random() > 0.99
+                    ? randInt(0, this.length)
+                    : i
+            ) as [number, number, number, number]
+        }
+    }
     fillRandom() {
         for (let i = 0; i < this.length; i++) {
             this.genes[i] = this.randGene();
         }
         return this;
     }
+    fillPlant() {
+        for (let i = 0; i < this.length; i++) {
+            this.genes[i] = {
+                action: GENE_TEMPLATES[randInt(0, 3)],
+                property: Math.random(),
+                branches: [
+                    randInt(0, this.length),
+                    randInt(0, this.length),
+                    randInt(0, this.length),
+                    randInt(0, this.length)
+                ]
+            };
+        }
+        return this;
+    }
     replication() {
         const genome = new Genome(this.length);
         for (let i = 0; i < this.length; i++) {
-            if (Math.random() > 0.99) {
-                genome.genes[i] = this.randGene();
-            } else {
-                genome.genes[i] = this.genes[i];
-            }
+            genome.genes[i] = this.mutateGene(this.genes[i]);
         }
         return genome;
     }
     doAction(bot: Bot) {
-        const GENE: Gene = this.genes[this.pointer];
-        const RESULT = GENE.action(bot, GENE.property, GENE.branches);
-        if (RESULT.goto) {
-            this.pointer = RESULT.goto;
-        } else {
-            this.pointer++;
+        for (let i = 0; i < 20; i++) {
+            const GENE: Gene = this.genes[this.pointer];
+            const RESULT = GENE.action(bot, GENE.property, GENE.branches);
+            if (RESULT.goto) {
+                this.pointer = RESULT.goto;
+            } else {
+                this.pointer++;
+            }
+            if (RESULT.completed) break;
         }
     }
 }
@@ -174,7 +199,7 @@ const GENE_TEMPLATES: ActionFn[] = [
     },
     // Look forward
     (bot, property, branches) => {
-        bot.color = bot.color.interpolate(new Rgba(0, 0, 0, 255), 0.01);
+        bot.color = bot.color.interpolate(new Rgba(255, 255, 255, 255), 0.01);
         const forward = bot.getForvard();
         if (!forward.block) {
             return { completed: false, goto: branches[0] }

@@ -130,32 +130,56 @@ var Genome = /** @class */ (function () {
             ]
         };
     };
+    Genome.prototype.mutateGene = function (gene) {
+        var _this = this;
+        return {
+            action: Math.random() > 0.99 ? (0,_math_functions__WEBPACK_IMPORTED_MODULE_1__.randChoice)(GENE_TEMPLATES) : gene.action,
+            property: (0,_math_functions__WEBPACK_IMPORTED_MODULE_1__.limNumber)(0, 1, gene.property + (0,_math_functions__WEBPACK_IMPORTED_MODULE_1__.randFloat)(-0.01, 0.01)),
+            branches: gene.branches.map(function (i) { return Math.random() > 0.99
+                ? (0,_math_functions__WEBPACK_IMPORTED_MODULE_1__.randInt)(0, _this.length)
+                : i; })
+        };
+    };
     Genome.prototype.fillRandom = function () {
         for (var i = 0; i < this.length; i++) {
             this.genes[i] = this.randGene();
         }
         return this;
     };
+    Genome.prototype.fillPlant = function () {
+        for (var i = 0; i < this.length; i++) {
+            this.genes[i] = {
+                action: GENE_TEMPLATES[(0,_math_functions__WEBPACK_IMPORTED_MODULE_1__.randInt)(0, 3)],
+                property: Math.random(),
+                branches: [
+                    (0,_math_functions__WEBPACK_IMPORTED_MODULE_1__.randInt)(0, this.length),
+                    (0,_math_functions__WEBPACK_IMPORTED_MODULE_1__.randInt)(0, this.length),
+                    (0,_math_functions__WEBPACK_IMPORTED_MODULE_1__.randInt)(0, this.length),
+                    (0,_math_functions__WEBPACK_IMPORTED_MODULE_1__.randInt)(0, this.length)
+                ]
+            };
+        }
+        return this;
+    };
     Genome.prototype.replication = function () {
         var genome = new Genome(this.length);
         for (var i = 0; i < this.length; i++) {
-            if (Math.random() > 0.99) {
-                genome.genes[i] = this.randGene();
-            }
-            else {
-                genome.genes[i] = this.genes[i];
-            }
+            genome.genes[i] = this.mutateGene(this.genes[i]);
         }
         return genome;
     };
     Genome.prototype.doAction = function (bot) {
-        var GENE = this.genes[this.pointer];
-        var RESULT = GENE.action(bot, GENE.property, GENE.branches);
-        if (RESULT.goto) {
-            this.pointer = RESULT.goto;
-        }
-        else {
-            this.pointer++;
+        for (var i = 0; i < 20; i++) {
+            var GENE = this.genes[this.pointer];
+            var RESULT = GENE.action(bot, GENE.property, GENE.branches);
+            if (RESULT.goto) {
+                this.pointer = RESULT.goto;
+            }
+            else {
+                this.pointer++;
+            }
+            if (RESULT.completed)
+                break;
         }
     };
     return Genome;
@@ -188,7 +212,7 @@ var GENE_TEMPLATES = [
     },
     // Look forward
     function (bot, property, branches) {
-        bot.color = bot.color.interpolate(new _drawing__WEBPACK_IMPORTED_MODULE_0__.Rgba(0, 0, 0, 255), 0.01);
+        bot.color = bot.color.interpolate(new _drawing__WEBPACK_IMPORTED_MODULE_0__.Rgba(255, 255, 255, 255), 0.01);
         var forward = bot.getForvard();
         if (!forward.block) {
             return { completed: false, goto: branches[0] };
@@ -634,13 +658,10 @@ function start() {
     _lib_Bot__WEBPACK_IMPORTED_MODULE_0__.default.amount = 0;
     world = new _lib_world__WEBPACK_IMPORTED_MODULE_2__.World(parseInt(document.querySelector('#input-width').value), parseInt(document.querySelector('#input-height').value), parseInt(document.querySelector('#input-pixel').value), document.querySelector('#img'));
     var BOTS_AMOUNT = parseInt(document.querySelector('#input-bots').value);
-    // for (let x = 0; x < world.width; x++) {
-    //     new Block(world, x, world.height - 1, new Rgba(20, 20, 20, 255));
-    // }
     for (var i = 0; i < Math.min(world.width * world.height, BOTS_AMOUNT); i++) {
         new (_lib_Bot__WEBPACK_IMPORTED_MODULE_0__.default.bind.apply(_lib_Bot__WEBPACK_IMPORTED_MODULE_0__.default, __spreadArrays([void 0, world], world.randEmpty(), [_lib_drawing__WEBPACK_IMPORTED_MODULE_1__.Rgba.randRgb(),
             100,
-            new _lib_Bot__WEBPACK_IMPORTED_MODULE_0__.Genome(64).fillRandom()])))();
+            new _lib_Bot__WEBPACK_IMPORTED_MODULE_0__.Genome(64).fillPlant()])))();
     }
     world.init();
 }
@@ -689,7 +710,7 @@ window.addEventListener('load', function () {
         $amount.innerHTML = _lib_Bot__WEBPACK_IMPORTED_MODULE_0__.default.amount.toString();
         $fps.innerHTML = fps.toFixed(1);
         cycle++;
-    });
+    }, 1000 / 60);
 });
 
 })();

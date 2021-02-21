@@ -15,17 +15,13 @@ function start() {
 
     const BOTS_AMOUNT = parseInt((document.querySelector('#input-bots') as HTMLInputElement).value);
 
-    // for (let x = 0; x < world.width; x++) {
-    //     new Block(world, x, world.height - 1, new Rgba(20, 20, 20, 255));
-    // }
-
     for (let i = 0; i < Math.min(world.width * world.height, BOTS_AMOUNT); i++) {
         new Bot(
             world,
             ...world.randEmpty(),
             Rgba.randRgb(),
             100,
-            new Genome(64).fillRandom()
+            new Genome(64).fillPlant()
         );
     }
 
@@ -77,5 +73,5 @@ window.addEventListener('load', () => {
         $amount.innerHTML = Bot.amount.toString();
         $fps.innerHTML = fps.toFixed(1);
         cycle++;
-    });
+    }, 1000 / 60);
 });
