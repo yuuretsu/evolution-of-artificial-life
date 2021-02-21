@@ -1,0 +1,45 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+}
+
+.app-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.app {
+    display: flex;
+}
+
+.options-col {
+    width: 200px;
+}
+
+.options-block {
+    box-sizing: border-box;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.options-block__mid {
+    margin: 10px 0;
+}
+
+.app-image {
+    /* border: 1px solid lightgray; */
+    border-radius: 5px;
+    background-color: black;
+}
+
+.app-image__center {
+    margin-left: 20px;
+}
+
+/* * {
+    outline: 1px solid red;
+} */

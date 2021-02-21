@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="app-wrapper">
+            <div class="app">
+                <div class="options-col">
+                    <div class="options-block">
+                        <div>
+                            <span>Ботов: </span><span id="amount">0</span>
+                        </div>
+                        <div><span>fps: </span><span id="fps">0</span></div>
+                    </div>
+                    <div class="options-block options-block__mid">
+                        <div>
+                            <span>Размер мира</span>
+                            <input type="number" id="input-width" value="80" />
+                            <input type="number" id="input-height" value="80" />
+                        </div>
+                        <div>
+                            <span>Размер пикселя</span>
+                            <input type="number" id="input-pixel" value="5" />
+                        </div>
+                        <div>
+                            <span>Кол-во ботов</span>
+                            <input type="number" id="input-bots" value="1" />
+                        </div>
+                        <button id="btn-start">Рестарт</button>
+                    </div>
+                    <div class="options-block">
+                        <span>Режим просмотра</span>
+                        <select id="view-mode">
+                            <option value="disabled">Выключен</option>
+                            <option value="normal" selected>Обычный</option>
+                            <option value="energy">Энергия</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <canvas
+                        class="app-image app-image__center"
+                        id="img"
+                    ></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- <div>
+            <div>
+                <span>Размер мира</span>
+                <input type="number" id="input-width" value="100" />
+                <input type="number" id="input-height" value="100" />
+            </div>
+            <div>
+                <span>Кол-во ботов</span>
+                <input type="number" id="input-bots" value="2" />
+            </div>
+            <div><span>Ботов: </span><span id="amount">0</span></div>
+            <button id="btn-start">Рестарт</button>
+        </div>
+        <canvas id="img"></canvas> -->
+        <script src="bundle.js"></script>
+    </body>
+</html>
