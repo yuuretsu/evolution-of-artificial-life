@@ -1,6 +1,8 @@
 body {
     font-family: sans-serif;
     margin: 0;
+    background-color: black;
+    color: whitesmoke;
 }
 
 .app-wrapper {
@@ -21,12 +23,66 @@ body {
 
 .options-block {
     box-sizing: border-box;
-    background-color: whitesmoke;
+    background-color: rgb(20, 20, 20);
     border-radius: 5px;
     padding: 10px;
+    font-size: 0.9em;
 }
 
-.options-block__mid {
+.options-block input[type="number"],
+.options-block select {
+    background-color: rgb(80, 80, 80);
+    color: whitesmoke;
+    box-sizing: border-box;
+    width: 100%;
+    border: none;
+    margin: 2px 0;
+    padding: 2px 5px;
+    border-radius: 5px;
+    transition-duration: 0.2s;
+}
+
+.options-block input[type="number"]:focus,
+.options-block select:focus {
+    outline: none;
+    padding: 2px 10px;
+}
+
+.options-block option {
+    color: white;
+    background-color: rgb(80, 80, 80);
+}
+
+.options-block button {
+    box-sizing: border-box;
+    width: 100%;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    padding: 4px 10px;
+    color: whitesmoke;
+    background-color: rgb(58, 143, 58);
+}
+
+.options-block button:hover {
+    background-color: rgb(65, 160, 65);
+}
+
+.options-block button:focus {
+    outline: none;
+}
+
+.options-block__name {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.options-block__row {
+    margin-bottom: 10px;
+}
+
+.options-block--mid {
     margin: 10px 0;
 }
 
@@ -34,6 +90,7 @@ body {
     /* border: 1px solid lightgray; */
     border-radius: 5px;
     background-color: black;
+    border: 2px solid rgb(20, 20, 20);
 }
 
 .app-image__center {

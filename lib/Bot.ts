@@ -13,7 +13,11 @@ export default class Bot extends DynamicBlock {
         color: Rgba,
         public energy: number,
         public genome: Genome,
-        public family: Rgba
+        public family: Rgba,
+        public abilities: {
+            photo: number,
+            attack: number
+        }
     ) {
         super(world, x, y, color);
         Bot.amount++;
@@ -56,10 +60,11 @@ export default class Bot extends DynamicBlock {
             this.world,
             x,
             y,
-            this.color,
+            this.color.interpolate(new Rgba(255, 255, 255, 255), 0.25),
             this.energy / 3,
             this.genome.replication(),
-            this.family.mutateRgb(2)
+            this.family.mutateRgb(10),
+            { ...this.abilities }
         );
         this.energy /= 3;
     }
@@ -71,11 +76,12 @@ export default class Bot extends DynamicBlock {
         this.moveTo(...coords);
     }
     onStep() {
-        if (this.energy < 1 || this.age > 200) {
+        if (this.energy < 1 || this.energy > 100 || this.age > 2000) {
             this.alive = false;
             return;
         }
         this.genome.doAction(this);
+        this.energy -= 0.1;
         this.age += 1;
     }
     onDie() {
@@ -157,13 +163,22 @@ export class Genome {
     //     }
     //     return genome;
     // }
+    // replication() {
+    //     const genome = new Genome(this.length);
+    //     for (let i = 0; i < this.length; i++) {
+    //         genome.genes[i] = this.genes[i];
+    //     }
+    //     const pointer = randInt(0, genome.length);
+    //     genome.genes[pointer] = this.mutateGene(this.genes[pointer]);
+    //     return genome;
+    // }
     replication() {
         const genome = new Genome(this.length);
         for (let i = 0; i < this.length; i++) {
-            genome.genes[i] = this.genes[i];
+            genome.genes[i] = Math.random() > 0.995
+                ? this.mutateGene(this.genes[i])
+                : this.genes[i];
         }
-        const pointer = randInt(0, genome.length);
-        genome.genes[pointer] = this.mutateGene(this.genes[pointer]);
         return genome;
     }
     doAction(bot: Bot) {
@@ -175,8 +190,9 @@ export class Genome {
             } else {
                 this.pointer++;
             }
-            if (RESULT.completed) break;
+            if (RESULT.completed) return;
         }
+        bot.color = bot.color.interpolate(new Rgba(100, 100, 100, 255), 0.1);
     }
 }
 
@@ -197,7 +213,9 @@ type Gene = {
 const GENE_TEMPLATES: ActionFn[] = [
     // Photosynthesis
     (bot, property, branches) => {
-        bot.energy += 1;
+        bot.energy += 0.5 * bot.abilities.photo ** 2;
+        bot.abilities.photo = Math.min(1, bot.abilities.photo + 0.01);
+        bot.abilities.attack = Math.max(0, bot.abilities.attack - 0.01);
         bot.color = bot.color.interpolate(new Rgba(0, 255, 0, 255), 0.01);
         return { completed: true }
     },
@@ -213,8 +231,19 @@ const GENE_TEMPLATES: ActionFn[] = [
     // Multiply
     (bot, property, branches) => {
         const forward = bot.getForvard();
-        if (!forward.block) {
+        if (!forward.block && bot.age > 2) {
             bot.multiplyTo(...forward.coords);
+        }
+        return { completed: true }
+    },
+    // Share energy
+    (bot, property, branches) => {
+        bot.color = bot.color.interpolate(new Rgba(0, 0, 255, 255), 0.005);
+        const forward = bot.getForvard();
+        if (forward.block instanceof Bot && forward.block.energy < bot.energy) {
+            const E = (forward.block.energy + bot.energy) / 2;
+            bot.energy = E;
+            forward.block.energy = E;
         }
         return { completed: true }
     },
@@ -234,6 +263,13 @@ const GENE_TEMPLATES: ActionFn[] = [
             return { completed: false, goto: branches[3] }
         }
     },
+    (bot, property, branches) => {
+        if (bot.energy / 100 < property) {
+            return { completed: false, goto: branches[0] }
+        } else {
+            return { completed: false, goto: branches[1] }
+        }
+    },
     // DestroyDead
     (bot, property, branches) => {
         // bot.color = bot.color.interpolate(new Rgba(0, 0, 255, 255), 0.01);
@@ -250,13 +286,25 @@ const GENE_TEMPLATES: ActionFn[] = [
         if (!forward.block) bot.moveTo(...forward.coords);
         return { completed: true }
     },
+    // // Move 2
+    // (bot, property, branches) => {
+    //     // bot.color = bot.color.interpolate(new Rgba(255, 255, 255, 255), 0.01);
+    //     const forward = bot.getForvard();
+    //     bot.moveTo(...forward.coords);
+    //     bot.energy -= 0.1;
+    //     return { completed: true }
+    // },
     // Kill
     (bot, property, branches) => {
+        bot.energy -= 0.1;
         bot.color = bot.color.interpolate(new Rgba(255, 0, 0, 255), 0.01);
+        bot.abilities.attack = Math.min(1, bot.abilities.attack + 0.01);
+        bot.abilities.photo = Math.max(0, bot.abilities.photo - 0.01);
         const forward = bot.getForvard();
         if (forward.block instanceof Bot) {
-            forward.block.energy /= 3;
-            bot.energy += forward.block.energy;
+            const E = (forward.block.energy / 3) * bot.abilities.attack ** 2;
+            forward.block.energy -= E;
+            bot.energy += E;
         }
         return { completed: true }
     },

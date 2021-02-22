@@ -29,16 +29,28 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (undefined && undefined.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 
 
 
 var Bot = /** @class */ (function (_super) {
     __extends(Bot, _super);
-    function Bot(world, x, y, color, energy, genome, family) {
+    function Bot(world, x, y, color, energy, genome, family, abilities) {
         var _this = _super.call(this, world, x, y, color) || this;
         _this.energy = energy;
         _this.genome = genome;
         _this.family = family;
+        _this.abilities = abilities;
         Bot.amount++;
         _this._narrow = (0,_math_functions__WEBPACK_IMPORTED_MODULE_1__.randInt)(0, 8);
         _this.age = 0;
@@ -81,7 +93,7 @@ var Bot = /** @class */ (function (_super) {
         this.world.swap(this.x, this.y, x, y);
     };
     Bot.prototype.multiplyTo = function (x, y) {
-        new Bot(this.world, x, y, this.color, this.energy / 3, this.genome.replication(), this.family.mutateRgb(2));
+        new Bot(this.world, x, y, this.color.interpolate(new _drawing__WEBPACK_IMPORTED_MODULE_0__.Rgba(255, 255, 255, 255), 0.25), this.energy / 3, this.genome.replication(), this.family.mutateRgb(10), __assign({}, this.abilities));
         this.energy /= 3;
     };
     Bot.prototype.randMove = function () {
@@ -89,11 +101,12 @@ var Bot = /** @class */ (function (_super) {
         this.moveTo.apply(this, coords);
     };
     Bot.prototype.onStep = function () {
-        if (this.energy < 1 || this.age > 200) {
+        if (this.energy < 1 || this.energy > 100 || this.age > 2000) {
             this.alive = false;
             return;
         }
         this.genome.doAction(this);
+        this.energy -= 0.1;
         this.age += 1;
     };
     Bot.prototype.onDie = function () {
@@ -180,13 +193,22 @@ var Genome = /** @class */ (function () {
     //     }
     //     return genome;
     // }
+    // replication() {
+    //     const genome = new Genome(this.length);
+    //     for (let i = 0; i < this.length; i++) {
+    //         genome.genes[i] = this.genes[i];
+    //     }
+    //     const pointer = randInt(0, genome.length);
+    //     genome.genes[pointer] = this.mutateGene(this.genes[pointer]);
+    //     return genome;
+    // }
     Genome.prototype.replication = function () {
         var genome = new Genome(this.length);
         for (var i = 0; i < this.length; i++) {
-            genome.genes[i] = this.genes[i];
+            genome.genes[i] = Math.random() > 0.995
+                ? this.mutateGene(this.genes[i])
+                : this.genes[i];
         }
-        var pointer = (0,_math_functions__WEBPACK_IMPORTED_MODULE_1__.randInt)(0, genome.length);
-        genome.genes[pointer] = this.mutateGene(this.genes[pointer]);
         return genome;
     };
     Genome.prototype.doAction = function (bot) {
@@ -200,8 +222,9 @@ var Genome = /** @class */ (function () {
                 this.pointer++;
             }
             if (RESULT.completed)
-                break;
+                return;
         }
+        bot.color = bot.color.interpolate(new _drawing__WEBPACK_IMPORTED_MODULE_0__.Rgba(100, 100, 100, 255), 0.1);
     };
     return Genome;
 }());
@@ -209,7 +232,9 @@ var Genome = /** @class */ (function () {
 var GENE_TEMPLATES = [
     // Photosynthesis
     function (bot, property, branches) {
-        bot.energy += 1;
+        bot.energy += 0.5 * Math.pow(bot.abilities.photo, 2);
+        bot.abilities.photo = Math.min(1, bot.abilities.photo + 0.01);
+        bot.abilities.attack = Math.max(0, bot.abilities.attack - 0.01);
         bot.color = bot.color.interpolate(new _drawing__WEBPACK_IMPORTED_MODULE_0__.Rgba(0, 255, 0, 255), 0.01);
         return { completed: true };
     },
@@ -226,8 +251,19 @@ var GENE_TEMPLATES = [
     // Multiply
     function (bot, property, branches) {
         var forward = bot.getForvard();
-        if (!forward.block) {
+        if (!forward.block && bot.age > 2) {
             bot.multiplyTo.apply(bot, forward.coords);
+        }
+        return { completed: true };
+    },
+    // Share energy
+    function (bot, property, branches) {
+        bot.color = bot.color.interpolate(new _drawing__WEBPACK_IMPORTED_MODULE_0__.Rgba(0, 0, 255, 255), 0.005);
+        var forward = bot.getForvard();
+        if (forward.block instanceof Bot && forward.block.energy < bot.energy) {
+            var E = (forward.block.energy + bot.energy) / 2;
+            bot.energy = E;
+            forward.block.energy = E;
         }
         return { completed: true };
     },
@@ -250,6 +286,14 @@ var GENE_TEMPLATES = [
             return { completed: false, goto: branches[3] };
         }
     },
+    function (bot, property, branches) {
+        if (bot.energy / 100 < property) {
+            return { completed: false, goto: branches[0] };
+        }
+        else {
+            return { completed: false, goto: branches[1] };
+        }
+    },
     // DestroyDead
     function (bot, property, branches) {
         // bot.color = bot.color.interpolate(new Rgba(0, 0, 255, 255), 0.01);
@@ -267,13 +311,25 @@ var GENE_TEMPLATES = [
             bot.moveTo.apply(bot, forward.coords);
         return { completed: true };
     },
+    // // Move 2
+    // (bot, property, branches) => {
+    //     // bot.color = bot.color.interpolate(new Rgba(255, 255, 255, 255), 0.01);
+    //     const forward = bot.getForvard();
+    //     bot.moveTo(...forward.coords);
+    //     bot.energy -= 0.1;
+    //     return { completed: true }
+    // },
     // Kill
     function (bot, property, branches) {
+        bot.energy -= 0.1;
         bot.color = bot.color.interpolate(new _drawing__WEBPACK_IMPORTED_MODULE_0__.Rgba(255, 0, 0, 255), 0.01);
+        bot.abilities.attack = Math.min(1, bot.abilities.attack + 0.01);
+        bot.abilities.photo = Math.max(0, bot.abilities.photo - 0.01);
         var forward = bot.getForvard();
         if (forward.block instanceof Bot) {
-            forward.block.energy /= 3;
-            bot.energy += forward.block.energy;
+            var E = (forward.block.energy / 3) * Math.pow(bot.abilities.attack, 2);
+            forward.block.energy -= E;
+            bot.energy += E;
         }
         return { completed: true };
     },
@@ -706,7 +762,8 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_Bot__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/Bot */ "./lib/Bot.ts");
 /* harmony import */ var _lib_drawing__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lib/drawing */ "./lib/drawing.ts");
-/* harmony import */ var _lib_world__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lib/world */ "./lib/world.ts");
+/* harmony import */ var _lib_math_functions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lib/math-functions */ "./lib/math-functions.ts");
+/* harmony import */ var _lib_world__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lib/world */ "./lib/world.ts");
 var __spreadArrays = (undefined && undefined.__spreadArrays) || function () {
     for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
     for (var r = Array(s), k = 0, i = 0; i < il; i++)
@@ -717,29 +774,37 @@ var __spreadArrays = (undefined && undefined.__spreadArrays) || function () {
 
 
 
+
 function start() {
     _lib_Bot__WEBPACK_IMPORTED_MODULE_0__.default.amount = 0;
-    world = new _lib_world__WEBPACK_IMPORTED_MODULE_2__.World(parseInt(document.querySelector('#input-width').value), parseInt(document.querySelector('#input-height').value), parseInt(document.querySelector('#input-pixel').value), document.querySelector('#img'));
+    world = new _lib_world__WEBPACK_IMPORTED_MODULE_3__.World(parseInt(document.querySelector('#input-width').value), parseInt(document.querySelector('#input-height').value), parseInt(document.querySelector('#input-pixel').value), document.querySelector('#img'));
     var BOTS_AMOUNT = parseInt(document.querySelector('#input-bots').value);
     for (var i = 0; i < Math.min(world.width * world.height, BOTS_AMOUNT); i++) {
         var a = new (_lib_Bot__WEBPACK_IMPORTED_MODULE_0__.default.bind.apply(_lib_Bot__WEBPACK_IMPORTED_MODULE_0__.default, __spreadArrays([void 0, world], world.randEmpty(), [new _lib_drawing__WEBPACK_IMPORTED_MODULE_1__.Rgba(100, 100, 100, 255),
             100,
-            new _lib_Bot__WEBPACK_IMPORTED_MODULE_0__.Genome(64).fillPlant(),
-            _lib_drawing__WEBPACK_IMPORTED_MODULE_1__.Rgba.randRgb()])))();
+            new _lib_Bot__WEBPACK_IMPORTED_MODULE_0__.Genome(64).fillRandom(),
+            _lib_drawing__WEBPACK_IMPORTED_MODULE_1__.Rgba.randRgb(),
+            { photo: 0.5, attack: 0.5 }])))();
         a.narrow = 0;
     }
     world.init();
 }
 function drawColors(block) {
-    if (block instanceof _lib_world__WEBPACK_IMPORTED_MODULE_2__.Block) {
+    if (block instanceof _lib_world__WEBPACK_IMPORTED_MODULE_3__.Block) {
         return block.color;
     }
     return null;
 }
 function drawEnergy(block) {
     if (block instanceof _lib_Bot__WEBPACK_IMPORTED_MODULE_0__.default) {
-        return new _lib_drawing__WEBPACK_IMPORTED_MODULE_1__.Rgba(0, 0, 50, 255)
-            .interpolate(new _lib_drawing__WEBPACK_IMPORTED_MODULE_1__.Rgba(255, 255, 0, 255), block.energy / 50);
+        return new _lib_drawing__WEBPACK_IMPORTED_MODULE_1__.Rgba(0, 0, 255, 255)
+            .interpolate(new _lib_drawing__WEBPACK_IMPORTED_MODULE_1__.Rgba(255, 255, 0, 255), block.energy / 100);
+    }
+    return null;
+}
+function drawAbilities(block) {
+    if (block instanceof _lib_Bot__WEBPACK_IMPORTED_MODULE_0__.default) {
+        return new _lib_drawing__WEBPACK_IMPORTED_MODULE_1__.Rgba((0,_lib_math_functions__WEBPACK_IMPORTED_MODULE_2__.normalizeNumber)(0.5, 1, block.abilities.attack) * 255, (0,_lib_math_functions__WEBPACK_IMPORTED_MODULE_2__.normalizeNumber)(0.5, 1, block.abilities.photo) * 255, 50, 255);
     }
     return null;
 }
@@ -782,6 +847,10 @@ window.addEventListener('load', function () {
                     world.clearImage();
                     world.visualize(drawFamilies);
                     break;
+                case 'abilities':
+                    world.clearImage();
+                    world.visualize(drawAbilities);
+                    break;
                 default: break;
             }
         }
@@ -790,6 +859,28 @@ window.addEventListener('load', function () {
         $fps.innerHTML = (fpsList.reduce(function (a, b) { return a + b; }) / fpsList.length).toFixed(1);
         cycle++;
     });
+    // (function loop() {
+    //     let thisLoop = performance.now();
+    //     fps = 1000 / (thisLoop - lastLoop);
+    //     fpsList.pop();
+    //     fpsList.unshift(fps);
+    //     lastLoop = thisLoop;
+    //     world.step();
+    //     if (cycle % 1 === 0) {
+    //         switch ($viewMode.value) {
+    //             case 'normal': world.clearImage(); world.visualize(drawColors); break;
+    //             case 'energy': world.clearImage(); world.visualize(drawEnergy); break;
+    //             case 'families': world.clearImage(); world.visualize(drawFamilies); break;
+    //             case 'abilities': world.clearImage(); world.visualize(drawAbilities); break;
+    //             default: break;
+    //         }
+    //     }
+    //     // world.clearImage(); world.visualize(drawLight);
+    //     $amount.innerHTML = Bot.amount.toString();
+    //     $fps.innerHTML = (fpsList.reduce((a, b) => a + b) / fpsList.length).toFixed(1);
+    //     cycle++;
+    //     requestAnimationFrame(loop);
+    // })();
 });
 
 })();
