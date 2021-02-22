@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "evolution simulator",
   "scripts": {
-    "start": "webpack --watch --mode development"
+    "start": "webpack --watch --mode development",
+    "build": "webpack --mode production"
   },
   "keywords": [],
   "author": "YuraFrozen",
