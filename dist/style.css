@@ -40,6 +40,10 @@ body {
     text-align: right;
 }
 
+.options-block input[type="checkbox"] {
+    margin-left: 0;
+}
+
 .options-block input[type="number"],
 .options-block select {
     font-family: monospace;

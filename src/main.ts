@@ -101,6 +101,7 @@ window.addEventListener('load', () => {
     const $amount = document.querySelector('#amount') as HTMLElement;
     const $fps = document.querySelector('#fps') as HTMLElement;
     const $viewMode = document.querySelector('#view-mode') as HTMLSelectElement;
+    const $narrows = document.querySelector('#chbx-narrows') as HTMLInputElement;
     document.querySelector('#btn-start')?.addEventListener('click', start);
     const $btnPause = document.querySelector('#btn-pause') as HTMLButtonElement;
     $btnPause.addEventListener('click', (e) => {
@@ -134,7 +135,9 @@ window.addEventListener('load', () => {
             case 'last-action': world.clearImage(); world.visualize(drawLastAction); break;
             default: break;
         }
-        world.drawLayer(getNarrowImg(world));
+        if (!($viewMode.value === 'disabled') && $narrows.checked) {
+            world.drawLayer(getNarrowImg(world));
+        }
         $amount.innerHTML = Bot.amount.toString();
         // $fps.innerHTML = fps.toFixed(0);
     });

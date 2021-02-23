@@ -794,6 +794,7 @@ window.addEventListener('load', function () {
     var $amount = document.querySelector('#amount');
     var $fps = document.querySelector('#fps');
     var $viewMode = document.querySelector('#view-mode');
+    var $narrows = document.querySelector('#chbx-narrows');
     (_a = document.querySelector('#btn-start')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', start);
     var $btnPause = document.querySelector('#btn-pause');
     $btnPause.addEventListener('click', function (e) {
@@ -842,7 +843,9 @@ window.addEventListener('load', function () {
                 break;
             default: break;
         }
-        world.drawLayer(getNarrowImg(world));
+        if (!($viewMode.value === 'disabled') && $narrows.checked) {
+            world.drawLayer(getNarrowImg(world));
+        }
         $amount.innerHTML = Bot_1.default.amount.toString();
         // $fps.innerHTML = fps.toFixed(0);
     });
