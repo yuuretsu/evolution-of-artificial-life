@@ -1,9 +1,8 @@
-import { MOORE_NEIGHBOURHOOD } from "./lib/world";
 import Bot, { Genome } from "./lib/Bot";
-import { Rgba } from "./lib/drawing";
+import { PixelsData, Rgba } from "./lib/drawing";
 import Grid from "./lib/Grid";
 import { normalizeNumber } from "./lib/math-functions";
-import { Block, World } from "./lib/world";
+import { Block, MOORE_NEIGHBOURHOOD, World } from "./lib/world";
 
 function start() {
 
@@ -77,22 +76,23 @@ function drawLastAction(block: any) {
     return null;
 }
 
-function aroundMap(world: World): Grid<number> {
-    const grid = new Grid<number>(world.width, world.height);
+function getNarrowImg(world: World): HTMLCanvasElement {
+    const img = new PixelsData(world.width * 3, world.height * 3);
     for (let x = 0; x < world.width; x++) {
         for (let y = 0; y < world.height; y++) {
-            let sum = 0;
-            for (const coords of MOORE_NEIGHBOURHOOD) {
-                const global: [number, number] = [coords[0] + x, coords[1] + y];
-                const fixed = world.fixCoords(...global);
-                if (world.get(...fixed)) {
-                    sum++;
-                }
+            const block = world.get(x, y);
+            if (block instanceof Bot) {
+                // let xy: [number, number];
+                let xy: [number, number] = [
+                    block.x * 3 + 1 + MOORE_NEIGHBOURHOOD[block.narrow][0],
+                    block.y * 3 + 1 + MOORE_NEIGHBOURHOOD[block.narrow][1],
+                ];
+                img.setPixel(...xy, new Rgba(0, 0, 0, 255));
             }
-            grid.set(x, y, sum);
         }
     }
-    return grid;
+    img.update();
+    return img.node;
 }
 
 let world: World;
@@ -102,24 +102,29 @@ window.addEventListener('load', () => {
     const $fps = document.querySelector('#fps') as HTMLElement;
     const $viewMode = document.querySelector('#view-mode') as HTMLSelectElement;
     document.querySelector('#btn-start')?.addEventListener('click', start);
-    document.querySelector('#btn-pause')?.addEventListener('click', () => {
+    const $btnPause = document.querySelector('#btn-pause') as HTMLButtonElement;
+    $btnPause.addEventListener('click', (e) => {
         switch (paused) {
-            case true: paused = false; break;
-            case false: paused = true; break;
+            case true:
+                paused = false;
+                break;
+            case false:
+                paused = true;
+                break;
         }
     });
     start();
 
-    let lastLoop = performance.now();
+    let lastLoop = Date.now();
     let fps = 0;
-    let fpsList = new Array(5).fill(0);
     let paused = false;
     setInterval(() => {
-        let thisLoop = performance.now();
-        fps = 1000 / (thisLoop - lastLoop);
-        fpsList.pop();
-        fpsList.unshift(fps);
-        lastLoop = thisLoop;
+        if (Date.now() - lastLoop > 1000) {
+            $fps.innerHTML = fps.toFixed(0);
+            fps = 0;
+            lastLoop = Date.now();
+        }
+        fps++;
         if (!paused) world.step();
         switch ($viewMode.value) {
             case 'normal': world.clearImage(); world.visualize(drawColors); break;
@@ -129,7 +134,8 @@ window.addEventListener('load', () => {
             case 'last-action': world.clearImage(); world.visualize(drawLastAction); break;
             default: break;
         }
+        world.drawLayer(getNarrowImg(world));
         $amount.innerHTML = Bot.amount.toString();
-        $fps.innerHTML = (fpsList.reduce((a, b) => a + b) / fpsList.length).toFixed(1);
+        // $fps.innerHTML = fps.toFixed(0);
     });
 });

@@ -29,24 +29,38 @@ body {
     font-size: 0.9em;
 }
 
+.options-block table {
+    font-family: monospace;
+    box-sizing: border-box;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.options-block td:last-child {
+    text-align: right;
+}
+
 .options-block input[type="number"],
 .options-block select {
+    font-family: monospace;
     display: block;
-    background-color: rgb(80, 80, 80);
+    background-color: rgb(40, 40, 40);
     color: whitesmoke;
     box-sizing: border-box;
     width: 100%;
     border: none;
-    margin: 2px 0;
-    padding: 2px 5px;
+    margin: 5px 0;
+    padding: 3px 5px;
     border-radius: 5px;
+    /* border-bottom: 1px solid rgba(255, 255, 255, 0.25); */
     transition-duration: 0.2s;
 }
 
 .options-block input[type="number"]:focus,
 .options-block select:focus {
     outline: none;
-    padding: 2px 10px;
+    padding: 3px 10px;
+    background-color: rgb(80, 80, 80);
 }
 
 .options-block option {

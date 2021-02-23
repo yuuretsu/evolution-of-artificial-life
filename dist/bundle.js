@@ -722,15 +722,13 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
     return r;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-var world_1 = __webpack_require__(/*! ./lib/world */ "./src/lib/world.ts");
 var Bot_1 = __webpack_require__(/*! ./lib/Bot */ "./src/lib/Bot.ts");
 var drawing_1 = __webpack_require__(/*! ./lib/drawing */ "./src/lib/drawing.ts");
-var Grid_1 = __webpack_require__(/*! ./lib/Grid */ "./src/lib/Grid.ts");
 var math_functions_1 = __webpack_require__(/*! ./lib/math-functions */ "./src/lib/math-functions.ts");
-var world_2 = __webpack_require__(/*! ./lib/world */ "./src/lib/world.ts");
+var world_1 = __webpack_require__(/*! ./lib/world */ "./src/lib/world.ts");
 function start() {
     Bot_1.default.amount = 0;
-    world = new world_2.World(parseInt(document.querySelector('#input-width').value), parseInt(document.querySelector('#input-height').value), parseInt(document.querySelector('#input-pixel').value), document.querySelector('#img'));
+    world = new world_1.World(parseInt(document.querySelector('#input-width').value), parseInt(document.querySelector('#input-height').value), parseInt(document.querySelector('#input-pixel').value), document.querySelector('#img'));
     var BOTS_AMOUNT = parseInt(document.querySelector('#input-bots').value);
     for (var i = 0; i < Math.min(world.width * world.height, BOTS_AMOUNT); i++) {
         var a = new (Bot_1.default.bind.apply(Bot_1.default, __spreadArrays([void 0, world], world.randEmpty(), [new drawing_1.Rgba(100, 100, 100, 255),
@@ -742,7 +740,7 @@ function start() {
     world.init();
 }
 function drawColors(block) {
-    if (block instanceof world_2.Block) {
+    if (block instanceof world_1.Block) {
         return block.color;
     }
     return null;
@@ -772,32 +770,33 @@ function drawLastAction(block) {
     }
     return null;
 }
-function aroundMap(world) {
-    var grid = new Grid_1.default(world.width, world.height);
+function getNarrowImg(world) {
+    var img = new drawing_1.PixelsData(world.width * 3, world.height * 3);
     for (var x = 0; x < world.width; x++) {
         for (var y = 0; y < world.height; y++) {
-            var sum = 0;
-            for (var _i = 0, MOORE_NEIGHBOURHOOD_1 = world_1.MOORE_NEIGHBOURHOOD; _i < MOORE_NEIGHBOURHOOD_1.length; _i++) {
-                var coords = MOORE_NEIGHBOURHOOD_1[_i];
-                var global_1 = [coords[0] + x, coords[1] + y];
-                var fixed = world.fixCoords.apply(world, global_1);
-                if (world.get.apply(world, fixed)) {
-                    sum++;
-                }
+            var block = world.get(x, y);
+            if (block instanceof Bot_1.default) {
+                // let xy: [number, number];
+                var xy = [
+                    block.x * 3 + 1 + world_1.MOORE_NEIGHBOURHOOD[block.narrow][0],
+                    block.y * 3 + 1 + world_1.MOORE_NEIGHBOURHOOD[block.narrow][1],
+                ];
+                img.setPixel.apply(img, __spreadArrays(xy, [new drawing_1.Rgba(0, 0, 0, 255)]));
             }
-            grid.set(x, y, sum);
         }
     }
-    return grid;
+    img.update();
+    return img.node;
 }
 var world;
 window.addEventListener('load', function () {
-    var _a, _b;
+    var _a;
     var $amount = document.querySelector('#amount');
     var $fps = document.querySelector('#fps');
     var $viewMode = document.querySelector('#view-mode');
     (_a = document.querySelector('#btn-start')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', start);
-    (_b = document.querySelector('#btn-pause')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', function () {
+    var $btnPause = document.querySelector('#btn-pause');
+    $btnPause.addEventListener('click', function (e) {
         switch (paused) {
             case true:
                 paused = false;
@@ -808,16 +807,16 @@ window.addEventListener('load', function () {
         }
     });
     start();
-    var lastLoop = performance.now();
+    var lastLoop = Date.now();
     var fps = 0;
-    var fpsList = new Array(5).fill(0);
     var paused = false;
     setInterval(function () {
-        var thisLoop = performance.now();
-        fps = 1000 / (thisLoop - lastLoop);
-        fpsList.pop();
-        fpsList.unshift(fps);
-        lastLoop = thisLoop;
+        if (Date.now() - lastLoop > 1000) {
+            $fps.innerHTML = fps.toFixed(0);
+            fps = 0;
+            lastLoop = Date.now();
+        }
+        fps++;
         if (!paused)
             world.step();
         switch ($viewMode.value) {
@@ -843,8 +842,9 @@ window.addEventListener('load', function () {
                 break;
             default: break;
         }
+        world.drawLayer(getNarrowImg(world));
         $amount.innerHTML = Bot_1.default.amount.toString();
-        $fps.innerHTML = (fpsList.reduce(function (a, b) { return a + b; }) / fpsList.length).toFixed(1);
+        // $fps.innerHTML = fps.toFixed(0);
     });
 });
 
