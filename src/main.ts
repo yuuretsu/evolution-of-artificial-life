@@ -1,5 +1,7 @@
+import { MOORE_NEIGHBOURHOOD } from "./lib/world";
 import Bot, { Genome } from "./lib/Bot";
 import { Rgba } from "./lib/drawing";
+import Grid from "./lib/Grid";
 import { normalizeNumber } from "./lib/math-functions";
 import { Block, World } from "./lib/world";
 
@@ -26,7 +28,6 @@ function start() {
             Rgba.randRgb(),
             { photo: 0.5, attack: 0.5 }
         );
-        a.narrow = 0;
     }
 
     world.init();
@@ -41,7 +42,7 @@ function drawColors(block: any) {
 
 function drawEnergy(block: any) {
     if (block instanceof Bot) {
-        return new Rgba(0, 0, 255, 255)
+        return new Rgba(20, 20, 180, 255)
             .interpolate(
                 new Rgba(255, 255, 0, 255),
                 block.energy / 100
@@ -62,11 +63,36 @@ function drawAbilities(block: any) {
     return null;
 }
 
-function drawFamilies(bot: any) {
-    if (bot instanceof Bot) {
-        return bot.family;
+function drawFamilies(block: any) {
+    if (block instanceof Bot) {
+        return block.family;
     }
     return null;
+}
+
+function drawLastAction(block: any) {
+    if (block instanceof Bot) {
+        return block.lastAction;
+    }
+    return null;
+}
+
+function aroundMap(world: World): Grid<number> {
+    const grid = new Grid<number>(world.width, world.height);
+    for (let x = 0; x < world.width; x++) {
+        for (let y = 0; y < world.height; y++) {
+            let sum = 0;
+            for (const coords of MOORE_NEIGHBOURHOOD) {
+                const global: [number, number] = [coords[0] + x, coords[1] + y];
+                const fixed = world.fixCoords(...global);
+                if (world.get(...fixed)) {
+                    sum++;
+                }
+            }
+            grid.set(x, y, sum);
+        }
+    }
+    return grid;
 }
 
 let world: World;
@@ -76,54 +102,34 @@ window.addEventListener('load', () => {
     const $fps = document.querySelector('#fps') as HTMLElement;
     const $viewMode = document.querySelector('#view-mode') as HTMLSelectElement;
     document.querySelector('#btn-start')?.addEventListener('click', start);
+    document.querySelector('#btn-pause')?.addEventListener('click', () => {
+        switch (paused) {
+            case true: paused = false; break;
+            case false: paused = true; break;
+        }
+    });
     start();
 
-    let cycle = 0;
     let lastLoop = performance.now();
     let fps = 0;
     let fpsList = new Array(5).fill(0);
+    let paused = false;
     setInterval(() => {
         let thisLoop = performance.now();
         fps = 1000 / (thisLoop - lastLoop);
         fpsList.pop();
         fpsList.unshift(fps);
         lastLoop = thisLoop;
-        world.step();
-        if (cycle % 1 === 0) {
-            switch ($viewMode.value) {
-                case 'normal': world.clearImage(); world.visualize(drawColors); break;
-                case 'energy': world.clearImage(); world.visualize(drawEnergy); break;
-                case 'families': world.clearImage(); world.visualize(drawFamilies); break;
-                case 'abilities': world.clearImage(); world.visualize(drawAbilities); break;
-                default: break;
-            }
+        if (!paused) world.step();
+        switch ($viewMode.value) {
+            case 'normal': world.clearImage(); world.visualize(drawColors); break;
+            case 'energy': world.clearImage(); world.visualize(drawEnergy); break;
+            case 'families': world.clearImage(); world.visualize(drawFamilies); break;
+            case 'abilities': world.clearImage(); world.visualize(drawAbilities); break;
+            case 'last-action': world.clearImage(); world.visualize(drawLastAction); break;
+            default: break;
         }
-        // world.clearImage(); world.visualize(drawLight);
         $amount.innerHTML = Bot.amount.toString();
         $fps.innerHTML = (fpsList.reduce((a, b) => a + b) / fpsList.length).toFixed(1);
-        cycle++;
     });
-
-    // (function loop() {
-    //     let thisLoop = performance.now();
-    //     fps = 1000 / (thisLoop - lastLoop);
-    //     fpsList.pop();
-    //     fpsList.unshift(fps);
-    //     lastLoop = thisLoop;
-    //     world.step();
-    //     if (cycle % 1 === 0) {
-    //         switch ($viewMode.value) {
-    //             case 'normal': world.clearImage(); world.visualize(drawColors); break;
-    //             case 'energy': world.clearImage(); world.visualize(drawEnergy); break;
-    //             case 'families': world.clearImage(); world.visualize(drawFamilies); break;
-    //             case 'abilities': world.clearImage(); world.visualize(drawAbilities); break;
-    //             default: break;
-    //         }
-    //     }
-    //     // world.clearImage(); world.visualize(drawLight);
-    //     $amount.innerHTML = Bot.amount.toString();
-    //     $fps.innerHTML = (fpsList.reduce((a, b) => a + b) / fpsList.length).toFixed(1);
-    //     cycle++;
-    //     requestAnimationFrame(loop);
-    // })();
 });

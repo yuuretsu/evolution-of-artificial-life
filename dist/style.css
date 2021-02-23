@@ -31,6 +31,7 @@ body {
 
 .options-block input[type="number"],
 .options-block select {
+    display: block;
     background-color: rgb(80, 80, 80);
     color: whitesmoke;
     box-sizing: border-box;

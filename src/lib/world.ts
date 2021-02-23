@@ -2,6 +2,17 @@ import { Canvas, PixelsData, Rgba } from "./drawing";
 import Grid from "./Grid";
 import { fixNumber, randInt, range } from "./math-functions";
 
+export const MOORE_NEIGHBOURHOOD: [number, number][] = [
+    [-1, -1],
+    [0, -1],
+    [1, -1],
+    [1, 0],
+    [1, 1],
+    [0, 1],
+    [-1, 1],
+    [-1, 0],
+];
+
 export class Block {
     constructor(
         readonly world: World,

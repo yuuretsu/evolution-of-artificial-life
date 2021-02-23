@@ -22,37 +22,35 @@
                         <span class="options-block__name">Создание мира</span>
                         <div class="options-block__row">
                             <span>Размер мира</span>
-                            <input type="number" id="input-width" value="150" />
-                            <input
-                                type="number"
-                                id="input-height"
-                                value="150"
-                            />
+                            <input type="number" id="input-width" value="160" />
+                            <input type="number" id="input-height" value="80" />
                         </div>
                         <div class="options-block__row">
                             <span>Размер пикселя</span>
-                            <input type="number" id="input-pixel" value="3" />
+                            <input type="number" id="input-pixel" value="6" />
                         </div>
                         <div class="options-block__row">
                             <span>Кол-во ботов</span>
-                            <input
-                                type="number"
-                                id="input-bots"
-                                value="10000"
-                            />
+                            <input type="number" id="input-bots" value="1000" />
                         </div>
                         <button id="btn-start">Рестарт</button>
                     </div>
                     <div class="options-block">
                         <span class="options-block__name">Настройки</span>
-                        <span>Режим просмотра</span>
-                        <select id="view-mode">
-                            <option value="disabled">Выключен</option>
-                            <option value="normal" selected>Обычный</option>
-                            <option value="energy">Энергия</option>
-                            <option value="families">Семейства</option>
-                            <option value="abilities">Специализации</option>
-                        </select>
+                        <div class="options-block__row">
+                            <span>Режим просмотра</span>
+                            <select id="view-mode">
+                                <option value="disabled">Выключен</option>
+                                <option value="normal" selected>Обычный</option>
+                                <option value="energy">Энергия</option>
+                                <option value="families">Семейства</option>
+                                <option value="abilities">Специализации</option>
+                                <option value="last-action">
+                                    Последнее действие
+                                </option>
+                            </select>
+                        </div>
+                        <button id="btn-pause">Пауза / Продолжить</button>
                     </div>
                 </div>
                 <div>
