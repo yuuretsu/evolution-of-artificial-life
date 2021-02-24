@@ -5,6 +5,7 @@ body {
     font-size: 14px;
     background-color: black;
     color: whitesmoke;
+    overflow: hidden;
 }
 
 .wrapper {
@@ -42,6 +43,7 @@ body {
     background-color: rgb(50, 50, 50);
     border-radius: 5px;
     user-select: none;
+    cursor: pointer;
     transition-duration: 0.2s;
 }
 
@@ -92,6 +94,7 @@ body {
 
 .inputs-group > input[type="number"],
 .inputs-group > select {
+    -webkit-appearance: none;
     display: block;
     box-sizing: border-box;
     font-family: monospace;

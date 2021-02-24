@@ -42,6 +42,7 @@ export class DynamicBlock extends Block {
 export class World extends Grid<Block | undefined> {
     private readonly img: Canvas;
     private dynamic: { a: any; b: any; };
+    age: number;
     constructor(
         readonly width: number,
         readonly height: number,
@@ -52,6 +53,7 @@ export class World extends Grid<Block | undefined> {
         this.img = new Canvas(width * pixelSize, height * pixelSize, node);
         this.img.ctx.imageSmoothingEnabled = false;
         this.dynamic = { a: {}, b: {} };
+        this.age = 0;
     }
     set(x: number, y: number, block: Block | undefined) {
         super.set(x, y, block);
@@ -112,5 +114,6 @@ export class World extends Grid<Block | undefined> {
             }
         }
         this.dynamic.b = this.dynamic.a;
+        this.age++;
     }
 }

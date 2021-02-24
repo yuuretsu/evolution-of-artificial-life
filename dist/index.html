@@ -3,32 +3,52 @@
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"
+        />
         <title>Document</title>
         <link rel="stylesheet" href="style.css" />
     </head>
 
     <body>
         <div class="wrapper">
-            <div class="img-wrapper" id="img-container">
+            <div
+                class="img-wrapper img-wrapper--menu-opened"
+                id="img-container"
+            >
                 <canvas id="img"></canvas>
                 <div class="img-wrapper__btn-menu">
-                    <input type="checkbox" name="" id="btn-menu" />
+                    <input type="checkbox" name="" id="btn-menu" checked />
                     <label for="btn-menu">Опции</label>
                 </div>
             </div>
-            <div class="menu wrapper__menu" id="menu">
+            <div
+                class="menu wrapper__menu wrapper__menu--menu-opened"
+                id="menu"
+            >
                 <div class="menu__row">
                     <span class="menu__row-name">Инфо</span>
                     <div>Ботов: <span id="amount">0</span></div>
+                    <div>Возраст мира: <span id="frame-number">0</span></div>
                     <div>fps: <span id="fps">0</span></div>
                 </div>
                 <div class="menu__row">
                     <span class="menu__row-name">Настройки мира</span>
                     <div class="inputs-group">
                         <span>Размер мира</span>
-                        <input type="number" id="input-width" value="160" />
-                        <input type="number" id="input-height" value="80" />
+                        <input
+                            type="number"
+                            id="input-width"
+                            value="160"
+                            placeholder="Ширина"
+                        />
+                        <input
+                            type="number"
+                            id="input-height"
+                            value="80"
+                            placeholder="Высота"
+                        />
                     </div>
                     <div class="inputs-group">
                         <span>Размер пикселя</span>
@@ -42,6 +62,10 @@
                 </div>
                 <div class="menu__row">
                     <span class="menu__row-name">Настройки просмотра</span>
+                    <!-- <div class="inputs-group">
+                        <span>Ограничение кадров в секунду</span>
+                        <input type="number" id="fps-limit" value="60" />
+                    </div> -->
                     <div class="inputs-group">
                         <span>Режим отображения</span>
                         <select id="view-mode">

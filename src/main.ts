@@ -1,9 +1,12 @@
-import { lookup } from "dns";
 import Bot, { Genome } from "./lib/Bot";
 import { PixelsData, Rgba } from "./lib/drawing";
 import Grid from "./lib/Grid";
-import { normalizeNumber } from "./lib/math-functions";
+import { limNumber, normalizeNumber } from "./lib/math-functions";
 import { Block, MOORE_NEIGHBOURHOOD, World } from "./lib/world";
+
+function onResizeWindow() {
+    (document.querySelector('.wrapper') as HTMLElement).style.maxHeight = `${window.innerHeight}px`;
+}
 
 function start() {
 
@@ -42,7 +45,7 @@ function drawColors(block: any) {
 
 function drawEnergy(block: any) {
     if (block instanceof Bot) {
-        return new Rgba(20, 20, 180, 255)
+        return new Rgba(20, 20, 100, 255)
             .interpolate(
                 new Rgba(255, 255, 0, 255),
                 block.energy / 100
@@ -83,8 +86,7 @@ function getNarrowImg(world: World): HTMLCanvasElement {
         for (let y = 0; y < world.height; y++) {
             const block = world.get(x, y);
             if (block instanceof Bot) {
-                // let xy: [number, number];
-                let xy: [number, number] = [
+                const xy: [number, number] = [
                     block.x * 3 + 1 + MOORE_NEIGHBOURHOOD[block.narrow][0],
                     block.y * 3 + 1 + MOORE_NEIGHBOURHOOD[block.narrow][1],
                 ];
@@ -98,23 +100,43 @@ function getNarrowImg(world: World): HTMLCanvasElement {
 
 let world: World;
 
+window.addEventListener('resize', onResizeWindow);
+
+onResizeWindow();
+
 window.addEventListener('load', () => {
+
+    document.querySelector('#input-width')?.addEventListener('change', e => {
+        const target = e.target as HTMLInputElement;
+        target.value = limNumber(5, 1000, parseInt(target.value)).toString();
+    });
+
+    document.querySelector('#input-height')?.addEventListener('change', e => {
+        const target = e.target as HTMLInputElement;
+        target.value = limNumber(5, 1000, parseInt(target.value)).toString();
+    });
+
+    document.querySelector('#input-pixel')?.addEventListener('change', e => {
+        const target = e.target as HTMLInputElement;
+        target.value = limNumber(1, 50, parseInt(target.value)).toString();
+    });
 
     const $btnMenu = document.querySelector('#btn-menu') as HTMLInputElement;
     const $imgContainer = document.querySelector('#img-container') as HTMLElement;
     const $img = document.querySelector('#img') as HTMLElement;
 
+    // const $fpsLimit = document.querySelector('#fps-limit') as HTMLInputElement;
+    // $fpsLimit.addEventListener('input', () => {
+    //     $fpsLimit.value = limNumber(1, 250, parseInt($fpsLimit.value) || 60).toString();
+    // });
+
     $btnMenu.addEventListener('change', () => {
         if ($btnMenu.checked) {
             $imgContainer.classList.add('img-wrapper--menu-opened');
             document.querySelector('#menu')?.classList.add('wrapper__menu--menu-opened');
-            document.querySelector('.img-wrapper__btn-menu')
-                ?.classList.add('img-wrapper__btn-menu--menu-opened');
         } else {
             $imgContainer.classList.remove('img-wrapper--menu-opened');
             document.querySelector('#menu')?.classList.remove('wrapper__menu--menu-opened');
-            document.querySelector('.img-wrapper__btn-menu')
-                ?.classList.remove('img-wrapper__btn-menu--menu-opened');
         }
     })
 
@@ -147,7 +169,7 @@ window.addEventListener('load', () => {
 
     function drag(e: TouchEvent | MouseEvent) {
         if (active) {
-            // e.preventDefault();
+            e.preventDefault();
             if (e instanceof TouchEvent) {
                 currentX = e.touches[0].clientX - initialX;
                 currentY = e.touches[0].clientY - initialY;
@@ -171,6 +193,7 @@ window.addEventListener('load', () => {
 
     const $amount = document.querySelector('#amount') as HTMLElement;
     const $fps = document.querySelector('#fps') as HTMLElement;
+    const $frameNumber = document.querySelector('#frame-number') as HTMLElement;
     const $viewMode = document.querySelector('#view-mode') as HTMLSelectElement;
     const $narrows = document.querySelector('#chbx-narrows') as HTMLInputElement;
     document.querySelector('#btn-start')?.addEventListener('click', start);
@@ -190,7 +213,30 @@ window.addEventListener('load', () => {
     let lastLoop = Date.now();
     let fps = 0;
     let paused = false;
-    setInterval(() => {
+    // setInterval(() => {
+    //     if (Date.now() - lastLoop > 1000) {
+    //         $fps.innerHTML = fps.toFixed(0);
+    //         fps = 0;
+    //         lastLoop = Date.now();
+    //     }
+    //     fps++;
+    //     if (!paused) world.step();
+    //     switch ($viewMode.value) {
+    //         case 'normal': world.clearImage(); world.visualize(drawColors); break;
+    //         case 'energy': world.clearImage(); world.visualize(drawEnergy); break;
+    //         case 'families': world.clearImage(); world.visualize(drawFamilies); break;
+    //         case 'abilities': world.clearImage(); world.visualize(drawAbilities); break;
+    //         case 'last-action': world.clearImage(); world.visualize(drawLastAction); break;
+    //         default: break;
+    //     }
+    //     if (!($viewMode.value === 'disabled') && $narrows.checked) {
+    //         world.drawLayer(getNarrowImg(world));
+    //     }
+    //     $amount.innerHTML = Bot.amount.toString();
+    //     // $fps.innerHTML = fps.toFixed(0);
+    // });
+
+    (function step() {
         if (Date.now() - lastLoop > 1000) {
             $fps.innerHTML = fps.toFixed(0);
             fps = 0;
@@ -210,6 +256,7 @@ window.addEventListener('load', () => {
             world.drawLayer(getNarrowImg(world));
         }
         $amount.innerHTML = Bot.amount.toString();
-        // $fps.innerHTML = fps.toFixed(0);
-    });
+        $frameNumber.innerHTML = `${(world.age / 1000).toFixed(1)} тыс. кадров`;
+        setTimeout(step);
+    })();
 });

@@ -335,4 +335,15 @@ const GENE_TEMPLATES: ActionFn[] = [
         // bot.lastAction = new Rgba(255, 0, 0, 255);
         return { completed: true }
     },
+
+    // // Virus
+    // (bot, property, branches) => {
+    //     bot.color = bot.color.interpolate(new Rgba(255, 0, 255, 255), 0.01);
+    //     const forward = bot.getForvard();
+    //     if (forward.block instanceof Bot) {
+    //         forward.block.genome = bot.genome.replication();
+    //         bot.lastAction = new Rgba(255, 0, 255, 255);
+    //     }
+    //     return { completed: true }
+    // }
 ];
