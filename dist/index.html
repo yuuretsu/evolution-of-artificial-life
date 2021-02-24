@@ -9,87 +9,60 @@
     </head>
 
     <body>
-        <div class="app-wrapper">
-            <div class="app">
-                <div class="options-col">
-                    <div class="options-block">
-                        <span class="options-block__name">Инфо</span>
-                        <!-- <div>
-                            <span>Ботов: </span><span id="amount">0</span>
-                        </div>
-                        <div><span>fps: </span><span id="fps">0</span></div> -->
-                        <table>
-                            <tr>
-                                <td>Ботов:</td>
-                                <td id="amount">0</td>
-                            </tr>
-                            <tr>
-                                <td>fps:</td>
-                                <td id="fps">0</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="options-block options-block--mid">
-                        <span class="options-block__name">Создание мира</span>
-                        <div class="options-block__row">
-                            <span>Размер мира</span>
-                            <input type="number" id="input-width" value="160" />
-                            <input type="number" id="input-height" value="80" />
-                        </div>
-                        <div class="options-block__row">
-                            <span>Размер пикселя</span>
-                            <input type="number" id="input-pixel" value="6" />
-                        </div>
-                        <div class="options-block__row">
-                            <span>Кол-во ботов</span>
-                            <input type="number" id="input-bots" value="1000" />
-                        </div>
-                        <button id="btn-start">Рестарт</button>
-                    </div>
-                    <div class="options-block">
-                        <span class="options-block__name">Настройки</span>
-                        <div class="options-block__row">
-                            <span>Режим просмотра</span>
-                            <select id="view-mode">
-                                <option value="disabled">Выключен</option>
-                                <option value="normal" selected>Обычный</option>
-                                <option value="energy">Энергия</option>
-                                <option value="families">Семейства</option>
-                                <option value="abilities">Специализации</option>
-                                <option value="last-action">
-                                    Последнее действие
-                                </option>
-                            </select>
-                        </div>
-                        <div class="options-block__row">
-                            <input type="checkbox" id="chbx-narrows" />
-                            <label for="chbx-narrows">Направления ботов</label>
-                        </div>
-                        <button id="btn-pause">Пауза / Продолжить</button>
-                    </div>
+        <div class="wrapper">
+            <div class="img-wrapper" id="img-container">
+                <canvas id="img"></canvas>
+                <div class="img-wrapper__btn-menu">
+                    <input type="checkbox" name="" id="btn-menu" />
+                    <label for="btn-menu">Опции</label>
                 </div>
-                <div>
-                    <canvas
-                        class="app-image app-image__center"
-                        id="img"
-                    ></canvas>
+            </div>
+            <div class="menu wrapper__menu" id="menu">
+                <div class="menu__row">
+                    <span class="menu__row-name">Инфо</span>
+                    <div>Ботов: <span id="amount">0</span></div>
+                    <div>fps: <span id="fps">0</span></div>
+                </div>
+                <div class="menu__row">
+                    <span class="menu__row-name">Настройки мира</span>
+                    <div class="inputs-group">
+                        <span>Размер мира</span>
+                        <input type="number" id="input-width" value="160" />
+                        <input type="number" id="input-height" value="80" />
+                    </div>
+                    <div class="inputs-group">
+                        <span>Размер пикселя</span>
+                        <input type="number" id="input-pixel" value="6" />
+                    </div>
+                    <div class="inputs-group">
+                        <span>Кол-во ботов</span>
+                        <input type="number" id="input-bots" value="1000" />
+                    </div>
+                    <button id="btn-start">Рестарт</button>
+                </div>
+                <div class="menu__row">
+                    <span class="menu__row-name">Настройки просмотра</span>
+                    <div class="inputs-group">
+                        <span>Режим отображения</span>
+                        <select id="view-mode">
+                            <option value="disabled">Выключен</option>
+                            <option value="normal" selected>Обычный</option>
+                            <option value="energy">Энергия</option>
+                            <option value="families">Семейства</option>
+                            <option value="abilities">Специализации</option>
+                            <option value="last-action">
+                                Последнее действие
+                            </option>
+                        </select>
+                    </div>
+                    <div class="inputs-group">
+                        <input type="checkbox" id="chbx-narrows" />
+                        <label for="chbx-narrows">Направления ботов</label>
+                    </div>
+                    <button id="btn-pause">Пауза / Продолжить</button>
                 </div>
             </div>
         </div>
-        <!-- <div>
-            <div>
-                <span>Размер мира</span>
-                <input type="number" id="input-width" value="100" />
-                <input type="number" id="input-height" value="100" />
-            </div>
-            <div>
-                <span>Кол-во ботов</span>
-                <input type="number" id="input-bots" value="2" />
-            </div>
-            <div><span>Ботов: </span><span id="amount">0</span></div>
-            <button id="btn-start">Рестарт</button>
-        </div>
-        <canvas id="img"></canvas> -->
         <script src="bundle.js"></script>
     </body>
 </html>

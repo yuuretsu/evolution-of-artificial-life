@@ -1,3 +1,4 @@
+import { lookup } from "dns";
 import Bot, { Genome } from "./lib/Bot";
 import { PixelsData, Rgba } from "./lib/drawing";
 import Grid from "./lib/Grid";
@@ -98,6 +99,76 @@ function getNarrowImg(world: World): HTMLCanvasElement {
 let world: World;
 
 window.addEventListener('load', () => {
+
+    const $btnMenu = document.querySelector('#btn-menu') as HTMLInputElement;
+    const $imgContainer = document.querySelector('#img-container') as HTMLElement;
+    const $img = document.querySelector('#img') as HTMLElement;
+
+    $btnMenu.addEventListener('change', () => {
+        if ($btnMenu.checked) {
+            $imgContainer.classList.add('img-wrapper--menu-opened');
+            document.querySelector('#menu')?.classList.add('wrapper__menu--menu-opened');
+            document.querySelector('.img-wrapper__btn-menu')
+                ?.classList.add('img-wrapper__btn-menu--menu-opened');
+        } else {
+            $imgContainer.classList.remove('img-wrapper--menu-opened');
+            document.querySelector('#menu')?.classList.remove('wrapper__menu--menu-opened');
+            document.querySelector('.img-wrapper__btn-menu')
+                ?.classList.remove('img-wrapper__btn-menu--menu-opened');
+        }
+    })
+
+    let currentX: number;
+    let currentY: number;
+    let initialX: number;
+    let initialY: number;
+    let xOffset = 0;
+    let yOffset = 0;
+    let active = false;
+
+    function dragStart(e: TouchEvent | MouseEvent) {
+        if (e instanceof TouchEvent) {
+            initialX = e.touches[0].clientX - xOffset;
+            initialY = e.touches[0].clientY - yOffset;
+        } else {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+        }
+        if (e.target === $img) {
+            active = true;
+        }
+    }
+
+    function dragEnd() {
+        initialX = currentX;
+        initialY = currentY;
+        active = false;
+    }
+
+    function drag(e: TouchEvent | MouseEvent) {
+        if (active) {
+            // e.preventDefault();
+            if (e instanceof TouchEvent) {
+                currentX = e.touches[0].clientX - initialX;
+                currentY = e.touches[0].clientY - initialY;
+            } else {
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+            }
+            xOffset = currentX;
+            yOffset = currentY;
+            $img.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+        }
+    }
+
+    $imgContainer.addEventListener("touchstart", dragStart, false);
+    $imgContainer.addEventListener("touchend", dragEnd, false);
+    $imgContainer.addEventListener("touchmove", drag, false);
+
+    $imgContainer.addEventListener("mousedown", dragStart, false);
+    $imgContainer.addEventListener("mouseup", dragEnd, false);
+    $imgContainer.addEventListener("mousemove", drag, false);
+
     const $amount = document.querySelector('#amount') as HTMLElement;
     const $fps = document.querySelector('#fps') as HTMLElement;
     const $viewMode = document.querySelector('#view-mode') as HTMLSelectElement;
