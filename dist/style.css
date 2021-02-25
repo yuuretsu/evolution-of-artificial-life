@@ -121,6 +121,13 @@ body {
     margin-left: 0;
 }
 
+.menu input[type="range"] {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+}
+
 .inputs-group > *:last-child {
     margin-bottom: 0;
 }

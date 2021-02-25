@@ -1,14 +1,23 @@
 import Bot, { Genome } from "./lib/Bot";
-import { PixelsData, Rgba } from "./lib/drawing";
-import Grid from "./lib/Grid";
-import { limNumber, normalizeNumber } from "./lib/math-functions";
-import { Block, MOORE_NEIGHBOURHOOD, World } from "./lib/world";
+import { Rgba } from "./lib/drawing";
+import { limNumber } from "./lib/math-functions";
+import {
+    drawColors,
+    drawEnergy,
+    drawFamilies,
+    drawAbilities,
+    drawLastAction,
+    getNarrowImg
+} from "./lib/view-modes";
+import { Block, World } from "./lib/world";
 
 function onResizeWindow() {
     (document.querySelector('.wrapper') as HTMLElement).style.maxHeight = `${window.innerHeight}px`;
 }
 
 function start() {
+
+    (document.querySelector('#img') as HTMLElement).style.transform = `none`;
 
     Bot.amount = 0;
 
@@ -18,6 +27,24 @@ function start() {
         parseInt((document.querySelector('#input-pixel') as HTMLInputElement).value),
         document.querySelector('#img') as HTMLCanvasElement
     );
+
+    // for (let x = 0; x < world.width; x++) {
+    //     new Block(
+    //         world,
+    //         x,
+    //         0,
+    //         new Rgba(127, 127, 127, 255)
+    //     );
+    // }
+
+    // for (let y = 1; y < world.height; y++) {
+    //     new Block(
+    //         world,
+    //         0,
+    //         y,
+    //         new Rgba(127, 127, 127, 255)
+    //     );
+    // }
 
     const BOTS_AMOUNT = parseInt((document.querySelector('#input-bots') as HTMLInputElement).value);
 
@@ -34,68 +61,6 @@ function start() {
     }
 
     world.init();
-}
-
-function drawColors(block: any) {
-    if (block instanceof Block) {
-        return block.color;
-    }
-    return null;
-}
-
-function drawEnergy(block: any) {
-    if (block instanceof Bot) {
-        return new Rgba(20, 20, 100, 255)
-            .interpolate(
-                new Rgba(255, 255, 0, 255),
-                block.energy / 100
-            );
-    }
-    return null;
-}
-
-function drawAbilities(block: any) {
-    if (block instanceof Bot) {
-        return new Rgba(
-            normalizeNumber(0.5, 1, block.abilities.attack) * 255,
-            normalizeNumber(0.5, 1, block.abilities.photo) * 255,
-            50,
-            255
-        );
-    }
-    return null;
-}
-
-function drawFamilies(block: any) {
-    if (block instanceof Bot) {
-        return block.family;
-    }
-    return null;
-}
-
-function drawLastAction(block: any) {
-    if (block instanceof Bot) {
-        return block.lastAction;
-    }
-    return null;
-}
-
-function getNarrowImg(world: World): HTMLCanvasElement {
-    const img = new PixelsData(world.width * 3, world.height * 3);
-    for (let x = 0; x < world.width; x++) {
-        for (let y = 0; y < world.height; y++) {
-            const block = world.get(x, y);
-            if (block instanceof Bot) {
-                const xy: [number, number] = [
-                    block.x * 3 + 1 + MOORE_NEIGHBOURHOOD[block.narrow][0],
-                    block.y * 3 + 1 + MOORE_NEIGHBOURHOOD[block.narrow][1],
-                ];
-                img.setPixel(...xy, new Rgba(0, 0, 0, 255));
-            }
-        }
-    }
-    img.update();
-    return img.node;
 }
 
 function updateImage(world: World, mode: string, drawBotsNarrow: boolean) {
@@ -138,11 +103,6 @@ window.addEventListener('load', () => {
     const $btnMenu = document.querySelector('#btn-menu') as HTMLInputElement;
     const $imgContainer = document.querySelector('#img-container') as HTMLElement;
     const $img = document.querySelector('#img') as HTMLElement;
-
-    // const $fpsLimit = document.querySelector('#fps-limit') as HTMLInputElement;
-    // $fpsLimit.addEventListener('input', () => {
-    //     $fpsLimit.value = limNumber(1, 250, parseInt($fpsLimit.value) || 60).toString();
-    // });
 
     $btnMenu.addEventListener('change', () => {
         if ($btnMenu.checked) {
@@ -213,6 +173,7 @@ window.addEventListener('load', () => {
     const $chbxUpdImg = document.querySelector('#chbx-upd-img') as HTMLInputElement;
     document.querySelector('#btn-start')?.addEventListener('click', start);
     document.querySelector('#btn-step')?.addEventListener('click', () => {
+        pauseSimulation();
         world.step();
         updateImage(world, $viewMode.value, $narrows.checked);
     });
@@ -220,14 +181,24 @@ window.addEventListener('load', () => {
     $btnPause.addEventListener('click', (e) => {
         switch (paused) {
             case true:
-                paused = false;
+                continueSimulation();
                 break;
             case false:
-                paused = true;
+                pauseSimulation();
                 break;
         }
     });
     start();
+
+    function continueSimulation() {
+        paused = false;
+        $chbxUpdImg.checked = true;
+    }
+
+    function pauseSimulation() {
+        paused = true;
+        $chbxUpdImg.checked = false;
+    }
 
     let lastLoop = Date.now();
     let fps = 0;
@@ -242,43 +213,8 @@ window.addEventListener('load', () => {
         if (!paused) world.step();
         if ($chbxUpdImg.checked) {
             updateImage(world, $viewMode.value, $narrows.checked);
-            // switch ($viewMode.value) {
-            //     case 'normal': world.clearImage(); world.visualize(drawColors); break;
-            //     case 'energy': world.clearImage(); world.visualize(drawEnergy); break;
-            //     case 'families': world.clearImage(); world.visualize(drawFamilies); break;
-            //     case 'abilities': world.clearImage(); world.visualize(drawAbilities); break;
-            //     case 'last-action': world.clearImage(); world.visualize(drawLastAction); break;
-            //     default: break;
-            // }
-            // if (!($viewMode.value === 'disabled') && $narrows.checked) {
-            //     world.drawLayer(getNarrowImg(world));
-            // }
         }
         $amount.innerHTML = Bot.amount.toString();
         $frameNumber.innerHTML = `${(world.age / 1000).toFixed(1)} тыс. кадров`;
     });
-
-    // (function step() {
-    //     if (Date.now() - lastLoop > 1000) {
-    //         $fps.innerHTML = fps.toFixed(0);
-    //         fps = 0;
-    //         lastLoop = Date.now();
-    //     }
-    //     fps++;
-    //     if (!paused) world.step();
-    //     switch ($viewMode.value) {
-    //         case 'normal': world.clearImage(); world.visualize(drawColors); break;
-    //         case 'energy': world.clearImage(); world.visualize(drawEnergy); break;
-    //         case 'families': world.clearImage(); world.visualize(drawFamilies); break;
-    //         case 'abilities': world.clearImage(); world.visualize(drawAbilities); break;
-    //         case 'last-action': world.clearImage(); world.visualize(drawLastAction); break;
-    //         default: break;
-    //     }
-    //     if (!($viewMode.value === 'disabled') && $narrows.checked) {
-    //         world.drawLayer(getNarrowImg(world));
-    //     }
-    //     $amount.innerHTML = Bot.amount.toString();
-    //     $frameNumber.innerHTML = `${(world.age / 1000).toFixed(1)} тыс. кадров`;
-    //     setTimeout(step);
-    // })();
 });
