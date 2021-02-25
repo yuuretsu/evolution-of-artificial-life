@@ -20,51 +20,67 @@
                 <canvas id="img"></canvas>
                 <div class="img-wrapper__btn-menu">
                     <input type="checkbox" name="" id="btn-menu" checked />
-                    <label for="btn-menu">Опции</label>
+                    <label class="btn" for="btn-menu">Опции</label>
                 </div>
             </div>
             <div
                 class="menu wrapper__menu wrapper__menu--menu-opened"
                 id="menu"
             >
-                <div class="menu__row">
-                    <span class="menu__row-name">Инфо</span>
+                <div class="row menu__row">
+                    <div class="row__name-1">Инфо</div>
                     <div>Ботов: <span id="amount">0</span></div>
                     <div>Возраст мира: <span id="frame-number">0</span></div>
                     <div>fps: <span id="fps">0</span></div>
                 </div>
-                <div class="menu__row">
-                    <span class="menu__row-name">Настройки мира</span>
-                    <div class="inputs-group">
-                        <span>Размер мира</span>
+                <div class="row menu__row">
+                    <div class="row__name-1">Настройки мира</div>
+                    <div class="row menu__row--sm">
+                        <span class="row__name-2">Размер мира</span>
                         <input
+                            class="one-line-input menu__input"
                             type="number"
                             id="input-width"
                             value="160"
                             placeholder="Ширина"
                         />
                         <input
+                            class="one-line-input menu__input"
                             type="number"
                             id="input-height"
                             value="80"
                             placeholder="Высота"
                         />
                     </div>
-                    <div class="inputs-group">
-                        <span>Размер пикселя</span>
-                        <input type="number" id="input-pixel" value="6" />
+                    <div class="row menu__row--sm">
+                        <span class="row__name-2">Размер пикселя</span>
+                        <input
+                            class="one-line-input menu__input"
+                            type="number"
+                            id="input-pixel"
+                            value="6"
+                        />
                     </div>
-                    <div class="inputs-group">
-                        <span>Кол-во ботов</span>
-                        <input type="number" id="input-bots" value="1000" />
+                    <div class="row menu__row--sm">
+                        <span class="row__name-2">Кол-во ботов</span>
+                        <input
+                            class="one-line-input menu__input"
+                            type="number"
+                            id="input-bots"
+                            value="1000"
+                        />
                     </div>
-                    <button id="btn-start">Рестарт</button>
+                    <button class="btn" id="btn-start">Рестарт</button>
                 </div>
-                <div class="menu__row">
-                    <span class="menu__row-name">Настройки просмотра</span>
-                    <div class="inputs-group">
-                        <span>Режим отображения</span>
-                        <select id="view-mode">
+
+                <div class="row menu__row">
+                    <div class="row__name-1">Настройки просмотра</div>
+                    <div class="row menu__row--sm">
+                        <span class="row__name-2">Режим отображения</span>
+                        <select
+                            class="one-line-input menu__input"
+                            id="view-mode"
+                        >
                             <option value="normal" selected>Обычный</option>
                             <option value="energy">Энергия</option>
                             <option value="families">Семейства</option>
@@ -74,19 +90,30 @@
                             </option>
                         </select>
                     </div>
-                    <div class="inputs-group">
-                        <span>Доп. парамерты</span>
-                        <div>
-                            <input type="checkbox" id="chbx-upd-img" checked />
+                    <div class="row menu__row--sm">
+                        <span class="row__name-2">Доп. параметры</span>
+                        <div class="one-line-chbx menu__input">
+                            <input
+                                class="chbx"
+                                type="checkbox"
+                                id="chbx-upd-img"
+                                checked
+                            />
                             <label for="chbx-upd-img">Обновлять картинку</label>
                         </div>
-                        <div>
-                            <input type="checkbox" id="chbx-narrows" />
+                        <div class="one-line-chbx menu__input">
+                            <input
+                                class="chbx"
+                                type="checkbox"
+                                id="chbx-narrows"
+                            />
                             <label for="chbx-narrows">Направления ботов</label>
                         </div>
                     </div>
-                    <button id="btn-pause">Пауза / Продолжить</button>
-                    <button id="btn-step">Шаг</button>
+                    <button class="btn menu__input" id="btn-pause">
+                        Пауза / Продолжить
+                    </button>
+                    <button class="btn menu__input" id="btn-step">Шаг</button>
                 </div>
             </div>
         </div>
