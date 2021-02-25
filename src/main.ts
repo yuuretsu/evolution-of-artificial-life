@@ -108,12 +108,12 @@ window.addEventListener('load', () => {
 
     document.querySelector('#input-width')?.addEventListener('change', e => {
         const target = e.target as HTMLInputElement;
-        target.value = limNumber(5, 1000, parseInt(target.value)).toString();
+        target.value = limNumber(1, 2048, parseInt(target.value)).toString();
     });
 
     document.querySelector('#input-height')?.addEventListener('change', e => {
         const target = e.target as HTMLInputElement;
-        target.value = limNumber(5, 1000, parseInt(target.value)).toString();
+        target.value = limNumber(1, 2024, parseInt(target.value)).toString();
     });
 
     document.querySelector('#input-pixel')?.addEventListener('change', e => {
