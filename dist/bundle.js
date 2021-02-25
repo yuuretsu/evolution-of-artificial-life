@@ -1,2 +1,1019 @@
-(()=>{"use strict";var t={184:function(t,e,n){var r,o=this&&this.__extends||(r=function(t,e){return(r=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(t,e){t.__proto__=e}||function(t,e){for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&(t[n]=e[n])})(t,e)},function(t,e){function n(){this.constructor=t}r(t,e),t.prototype=null===e?Object.create(e):(n.prototype=e.prototype,new n)}),i=this&&this.__assign||function(){return(i=Object.assign||function(t){for(var e,n=1,r=arguments.length;n<r;n++)for(var o in e=arguments[n])Object.prototype.hasOwnProperty.call(e,o)&&(t[o]=e[o]);return t}).apply(this,arguments)};Object.defineProperty(e,"__esModule",{value:!0}),e.Genome=void 0;var a=n(571),c=n(439),s=n(812),u=function(t){function e(n,r,o,i,s,u,l,h){var d=t.call(this,n,r,o,i)||this;return d.energy=s,d.genome=u,d.family=l,d.abilities=h,e.amount++,d._narrow=c.randInt(0,8),d.age=0,d.lastAction=new a.Rgba(20,20,20,255),d}return o(e,t),Object.defineProperty(e.prototype,"narrow",{get:function(){return this._narrow},set:function(t){this._narrow=c.fixNumber(0,8,t)},enumerable:!1,configurable:!0}),e.prototype.narrowToCoords=function(){var t=this.x+s.MOORE_NEIGHBOURHOOD[this.narrow][0],e=this.y+s.MOORE_NEIGHBOURHOOD[this.narrow][1];return this.world.fixCoords(t,e)},e.prototype.getForvard=function(){var t,e=this.narrowToCoords();return{block:(t=this.world).get.apply(t,e),coords:e}},e.prototype.moveTo=function(t,e){this.world.swap(this.x,this.y,t,e)},e.prototype.multiplyTo=function(t,n){new e(this.world,t,n,this.color.interpolate(new a.Rgba(255,255,255,255),.25),this.energy/3,this.genome.replication(),this.family.mutateRgb(10),i({},this.abilities)),this.energy/=3},e.prototype.randMove=function(){var t=this.world.fixCoords(this.x+c.randInt(-1,2),this.y+c.randInt(-1,2));this.moveTo.apply(this,t)},e.prototype.onStep=function(){this.energy<1||this.energy>100||this.age>2e3?this.alive=!1:(this.genome.doAction(this),this.energy-=.1,this.age+=1)},e.prototype.onDie=function(){e.amount--},e.amount=0,e}(s.DynamicBlock);e.default=u;var l=function(t){function e(e){var n=t.call(this,e.world,e.x,e.y,e.color.interpolate(new a.Rgba(0,0,0,255),.5))||this;return n.age=0,n}return o(e,t),e.prototype.onStep=function(){this.age>500&&(this.alive=!1),this.color=this.color.interpolate(new a.Rgba(10,10,50,255),.005),this.age++},e}(s.DynamicBlock),h=function(){function t(t){this.length=t,this.genes=[],this._pointer=0}return Object.defineProperty(t.prototype,"pointer",{get:function(){return this._pointer},set:function(t){this._pointer=c.fixNumber(0,this.length,t)},enumerable:!1,configurable:!0}),t.prototype.randGene=function(){return{action:c.randChoice(d),property:Math.random(),branches:[c.randInt(0,this.length),c.randInt(0,this.length),c.randInt(0,this.length),c.randInt(0,this.length)]}},t.prototype.mutateGene=function(t){var e=this;return{action:Math.random()>.9?c.randChoice(d):t.action,property:c.limNumber(0,1,t.property+c.randFloat(-.01,.01)),branches:t.branches.map((function(t){return Math.random()>.9?c.randInt(0,e.length):t}))}},t.prototype.fillRandom=function(t){void 0===t&&(t=0);for(var e=t;e<this.length;e++)this.genes[e]=this.randGene();return this},t.prototype.create=function(t){for(var e=0;e<t.length;e++)this.genes[e]=t[e];return this.fillRandom(t.length),this},t.prototype.fillPlant=function(){for(var t=0;t<this.length;t++)this.genes[t]={action:d[c.randInt(0,3)],property:Math.random(),branches:[c.randInt(0,this.length),c.randInt(0,this.length),c.randInt(0,this.length),c.randInt(0,this.length)]};return this},t.prototype.replication=function(){for(var e=new t(this.length),n=0;n<this.length;n++)e.genes[n]=Math.random()>.995?this.mutateGene(this.genes[n]):this.genes[n];return e},t.prototype.doAction=function(t){t.lastAction=new a.Rgba(20,20,20,255);for(var e=0;e<20;e++){var n=this.genes[this.pointer],r=n.action(t,n.property,n.branches);if(r.goto?this.pointer=r.goto:this.pointer++,r.completed)return}t.color=t.color.interpolate(new a.Rgba(100,100,100,255),.1)},t}();e.Genome=h;var d=[function(t,e,n){return{completed:!1,goto:0}},function(t,e,n){return t.energy+=.5*Math.pow(t.abilities.photo,2),t.abilities.photo=Math.min(1,t.abilities.photo+.01),t.abilities.attack=Math.max(0,t.abilities.attack-.01),t.color=t.color.interpolate(new a.Rgba(0,255,0,255),.01),t.lastAction=new a.Rgba(0,255,0,255),{completed:!0}},function(t,e,n){return e>.5?t.narrow++:t.narrow--,{completed:!1}},function(t,e,n){var r=t.getForvard();return!r.block&&t.age>2&&(t.multiplyTo.apply(t,r.coords),t.lastAction=new a.Rgba(0,0,255,255)),{completed:!0}},function(t,e,n){t.color=t.color.interpolate(new a.Rgba(0,0,255,255),.005);var r=t.getForvard();if(r.block instanceof u&&r.block.energy<t.energy){var o=(r.block.energy+t.energy)/2;t.energy=o,r.block.energy=o,t.lastAction=new a.Rgba(0,100,255,255)}return{completed:!0}},function(t,e,n){var r=t.getForvard();return r.block instanceof u?r.block.family.difference(t.color)<e?{completed:!1,goto:n[0]}:{completed:!1,goto:n[1]}:r.block instanceof l?{completed:!1,goto:n[2]}:{completed:!1,goto:n[3]}},function(t,e,n){return t.energy/100<e?{completed:!1,goto:n[0]}:{completed:!1,goto:n[1]}},function(t,e,n){var r=t.getForvard();return r.block instanceof l&&r.block.age>2&&(r.block.alive=!1,t.lastAction=new a.Rgba(255,255,0,255)),{completed:!0}},function(t,e,n){var r=t.getForvard();return r.block||t.moveTo.apply(t,r.coords),t.lastAction=new a.Rgba(255,255,255,255),{completed:!0}},function(t,e,n){t.energy-=.1,t.color=t.color.interpolate(new a.Rgba(255,0,0,255),.01),t.abilities.attack=Math.min(1,t.abilities.attack+.01),t.abilities.photo=Math.max(0,t.abilities.photo-.01);var r=t.getForvard();if(r.block instanceof u){var o=r.block.energy/2*Math.pow(t.abilities.attack,2);r.block.energy-=r.block.energy/2,t.energy+=o,t.lastAction=new a.Rgba(255,0,0,255)}return{completed:!0}}]},140:(t,e,n)=>{Object.defineProperty(e,"__esModule",{value:!0});var r=n(439),o=function(){function t(t,e){this.width=t,this.height=e,this.cells=[];for(var n=0;n<t;n++)this.cells[n]=[]}return t.prototype.get=function(t,e){return this.cells[t][e]},t.prototype.set=function(t,e,n){this.cells[t][e]=n},t.prototype.remove=function(t,e){delete this.cells[t][e]},t.prototype.swap=function(t,e,n,r){var o=this.get(t,e),i=this.get(n,r);this.set(t,e,i),this.set(n,r,o)},t.prototype.fixCoords=function(t,e){return[r.fixNumber(0,this.width,t),r.fixNumber(0,this.height,e)]},t.prototype.randCoords=function(){return[r.randInt(0,this.width),r.randInt(0,this.height)]},t.prototype.randEmpty=function(){var t;do{t=this.randCoords()}while(this.get.apply(this,t));return t},t}();e.default=o},571:function(t,e,n){var r,o=this&&this.__extends||(r=function(t,e){return(r=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(t,e){t.__proto__=e}||function(t,e){for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&(t[n]=e[n])})(t,e)},function(t,e){function n(){this.constructor=t}r(t,e),t.prototype=null===e?Object.create(e):(n.prototype=e.prototype,new n)});Object.defineProperty(e,"__esModule",{value:!0}),e.PixelsData=e.Canvas=e.Rgba=void 0;var i=n(439),a=function(){function t(t,e,n,r){this.red=t,this.green=e,this.blue=n,this.alpha=r}return t.randRgb=function(){return new t(i.randInt(0,256),i.randInt(0,256),i.randInt(0,256),255)},t.prototype.interpolate=function(e,n){return new t(i.interpolate(this.red,e.red,n),i.interpolate(this.green,e.green,n),i.interpolate(this.blue,e.blue,n),i.interpolate(this.alpha,e.alpha,n))},t.prototype.normalise=function(){return new t(i.limNumber(0,255,this.red),i.limNumber(0,255,this.green),i.limNumber(0,255,this.blue),i.limNumber(0,255,this.alpha))},t.prototype.mutateRgb=function(e){return new t(this.red+i.randFloat(-e,e),this.green+i.randFloat(-e,e),this.blue+i.randFloat(-e,e),this.alpha).normalise()},t.prototype.difference=function(e){return(Math.abs(this.red-e.red)+Math.abs(this.green-e.green)+Math.abs(this.blue-e.blue)+Math.abs(this.alpha-e.alpha))/t.MAX_DIF},t.MAX_DIF=1020,t}();e.Rgba=a;var c=function(t,e,n){this.node=n||document.createElement("canvas"),this.node.width=t,this.node.height=e,this.ctx=this.node.getContext("2d")};e.Canvas=c;var s=function(t){function e(e,n,r){var o=t.call(this,e,n,r)||this;return o.data=o.ctx.getImageData(0,0,o.node.width,o.node.height),o}return o(e,t),e.prototype.setPixel=function(t,e,n){var r=4*(e*this.data.width+t);this.data.data[r]=n.red,this.data.data[r+1]=n.green,this.data.data[r+2]=n.blue,this.data.data[r+3]=n.alpha},e.prototype.update=function(){return this.ctx.putImageData(this.data,0,0),this},e}(c);e.PixelsData=s},439:function(t,e){var n=this&&this.__generator||function(t,e){var n,r,o,i,a={label:0,sent:function(){if(1&o[0])throw o[1];return o[1]},trys:[],ops:[]};return i={next:c(0),throw:c(1),return:c(2)},"function"==typeof Symbol&&(i[Symbol.iterator]=function(){return this}),i;function c(i){return function(c){return function(i){if(n)throw new TypeError("Generator is already executing.");for(;a;)try{if(n=1,r&&(o=2&i[0]?r.return:i[0]?r.throw||((o=r.return)&&o.call(r),0):r.next)&&!(o=o.call(r,i[1])).done)return o;switch(r=0,o&&(i=[2&i[0],o.value]),i[0]){case 0:case 1:o=i;break;case 4:return a.label++,{value:i[1],done:!1};case 5:a.label++,r=i[1],i=[0];continue;case 7:i=a.ops.pop(),a.trys.pop();continue;default:if(!((o=(o=a.trys).length>0&&o[o.length-1])||6!==i[0]&&2!==i[0])){a=0;continue}if(3===i[0]&&(!o||i[1]>o[0]&&i[1]<o[3])){a.label=i[1];break}if(6===i[0]&&a.label<o[1]){a.label=o[1],o=i;break}if(o&&a.label<o[2]){a.label=o[2],a.ops.push(i);break}o[2]&&a.ops.pop(),a.trys.pop();continue}i=e.call(t,a)}catch(t){i=[6,t],r=0}finally{n=o=0}if(5&i[0])throw i[1];return{value:i[0]?i[1]:void 0,done:!0}}([i,c])}}};function r(t,e){return Math.random()*(e-t)+t}function o(t,e){return Math.floor(r(t,e))}Object.defineProperty(e,"__esModule",{value:!0}),e.interpolate=e.limNumber=e.normalizeNumber=e.fixNumber=e.randChoice=e.randInt=e.randFloat=e.range=void 0,e.range=function(t,e){return n(this,(function(n){switch(n.label){case 0:return t<e?[4,t++]:[3,2];case 1:return n.sent(),[3,0];case 2:return[2]}}))},e.randFloat=r,e.randInt=o,e.randChoice=function(t){return t[o(0,t.length)]},e.fixNumber=function(t,e,n){return n>=t?n%e:e- -n%e},e.normalizeNumber=function(t,e,n){return(n-t)/(e-t)},e.limNumber=function(t,e,n){return Math.max(Math.min(n,e),t)},e.interpolate=function(t,e,n){return t+(e-t)*n}},812:function(t,e,n){var r,o=this&&this.__extends||(r=function(t,e){return(r=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(t,e){t.__proto__=e}||function(t,e){for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&(t[n]=e[n])})(t,e)},function(t,e){function n(){this.constructor=t}r(t,e),t.prototype=null===e?Object.create(e):(n.prototype=e.prototype,new n)});Object.defineProperty(e,"__esModule",{value:!0}),e.World=e.DynamicBlock=e.Block=e.MOORE_NEIGHBOURHOOD=void 0;var i=n(571),a=n(140),c=n(439);e.MOORE_NEIGHBOURHOOD=[[-1,-1],[0,-1],[1,-1],[1,0],[1,1],[0,1],[-1,1],[-1,0]];var s=function(t,e,n,r){this.world=t,this.x=e,this.y=n,this.color=r,t.set(e,n,this)};e.Block=s;var u=function(t){function e(e,n,r,o){var i=t.call(this,e,n,r,o)||this;return e.assign(i),i.alive=!0,i}return o(e,t),e.prototype.onStep=function(){},e.prototype.onDie=function(){},e}(s);e.DynamicBlock=u;var l=function(t){function e(e,n,r,o){var a=t.call(this,e,n)||this;return a.width=e,a.height=n,a.img=new i.Canvas(e*r,n*r,o),a.img.ctx.imageSmoothingEnabled=!1,a.dynamic={a:{},b:{}},a.age=0,a}return o(e,t),e.prototype.set=function(e,n,r){t.prototype.set.call(this,e,n,r),r&&(r.x=e,r.y=n)},e.prototype.drawLayer=function(t){this.img.ctx.drawImage(t,0,0,this.img.node.width,this.img.node.height)},e.prototype.clearImage=function(){this.img.ctx.clearRect(0,0,this.img.node.width,this.img.node.height)},e.prototype.visualize=function(t){for(var e=new i.PixelsData(this.width,this.height),n=0;n<this.width;n++)for(var r=0;r<this.height;r++){var o=t(this.get(n,r),n,r);o&&e.setPixel(n,r,o)}this.drawLayer(e.update().node)},e.prototype.assign=function(t){var e;do{e=c.randInt(0,this.width*this.height*1e3)}while(this.dynamic.a[e]);this.dynamic.a[e]=t},e.prototype.init=function(){this.dynamic.b=this.dynamic.a},e.prototype.step=function(){for(var t in this.dynamic.a={},this.dynamic.b){var e=this.dynamic.b[t];e.alive?(e.onStep(),this.assign(e)):(this.set(e.x,e.y,void 0),e.onDie())}this.dynamic.b=this.dynamic.a,this.age++},e}(a.default);e.World=l},519:function(t,e,n){var r=this&&this.__spreadArrays||function(){for(var t=0,e=0,n=arguments.length;e<n;e++)t+=arguments[e].length;var r=Array(t),o=0;for(e=0;e<n;e++)for(var i=arguments[e],a=0,c=i.length;a<c;a++,o++)r[o]=i[a];return r};Object.defineProperty(e,"__esModule",{value:!0});var o,i=n(184),a=n(571),c=n(439),s=n(812);function u(){document.querySelector(".wrapper").style.maxHeight=window.innerHeight+"px"}function l(){i.default.amount=0,o=new s.World(parseInt(document.querySelector("#input-width").value),parseInt(document.querySelector("#input-height").value),parseInt(document.querySelector("#input-pixel").value),document.querySelector("#img"));for(var t=parseInt(document.querySelector("#input-bots").value),e=0;e<Math.min(o.width*o.height,t);e++)new(i.default.bind.apply(i.default,r([void 0,o],o.randEmpty(),[new a.Rgba(100,100,100,255),100,new i.Genome(64).fillRandom(),a.Rgba.randRgb(),{photo:.5,attack:.5}])));o.init()}function h(t){return t instanceof s.Block?t.color:null}function d(t){return t instanceof i.default?new a.Rgba(20,20,100,255).interpolate(new a.Rgba(255,255,0,255),t.energy/100):null}function p(t){return t instanceof i.default?new a.Rgba(255*c.normalizeNumber(.5,1,t.abilities.attack),255*c.normalizeNumber(.5,1,t.abilities.photo),50,255):null}function f(t){return t instanceof i.default?t.family:null}function g(t){return t instanceof i.default?t.lastAction:null}window.addEventListener("resize",u),u(),window.addEventListener("load",(function(){var t,e,n,u;null===(t=document.querySelector("#input-width"))||void 0===t||t.addEventListener("change",(function(t){var e=t.target;e.value=c.limNumber(1,2048,parseInt(e.value)).toString()})),null===(e=document.querySelector("#input-height"))||void 0===e||e.addEventListener("change",(function(t){var e=t.target;e.value=c.limNumber(1,2048,parseInt(e.value)).toString()})),null===(n=document.querySelector("#input-pixel"))||void 0===n||n.addEventListener("change",(function(t){var e=t.target;e.value=c.limNumber(1,50,parseInt(e.value)).toString()}));var m,y,v,b,w=document.querySelector("#btn-menu"),_=document.querySelector("#img-container"),O=document.querySelector("#img");w.addEventListener("change",(function(){var t,e;w.checked?(_.classList.add("img-wrapper--menu-opened"),null===(t=document.querySelector("#menu"))||void 0===t||t.classList.add("wrapper__menu--menu-opened")):(_.classList.remove("img-wrapper--menu-opened"),null===(e=document.querySelector("#menu"))||void 0===e||e.classList.remove("wrapper__menu--menu-opened"))}));var x=0,I=0,k=!1;function R(t){t instanceof TouchEvent?(v=t.touches[0].clientX-x,b=t.touches[0].clientY-I):(v=t.clientX-x,b=t.clientY-I),t.target===O&&(k=!0)}function M(){v=m,b=y,k=!1}function E(t){k&&(t.preventDefault(),t instanceof TouchEvent?(m=t.touches[0].clientX-v,y=t.touches[0].clientY-b):(m=t.clientX-v,y=t.clientY-b),x=m,I=y,O.style.transform="translate3d("+m+"px, "+y+"px, 0)")}_.addEventListener("touchstart",R,!1),_.addEventListener("touchend",M,!1),_.addEventListener("touchmove",E,!1),_.addEventListener("mousedown",R,!1),_.addEventListener("mouseup",M,!1),_.addEventListener("mousemove",E,!1);var S=document.querySelector("#amount"),N=document.querySelector("#fps"),D=document.querySelector("#frame-number"),L=document.querySelector("#view-mode"),P=document.querySelector("#chbx-narrows");null===(u=document.querySelector("#btn-start"))||void 0===u||u.addEventListener("click",l),document.querySelector("#btn-pause").addEventListener("click",(function(t){switch(A){case!0:A=!1;break;case!1:A=!0}})),l();var q=Date.now(),j=0,A=!1;!function t(){switch(Date.now()-q>1e3&&(N.innerHTML=j.toFixed(0),j=0,q=Date.now()),j++,A||o.step(),L.value){case"normal":o.clearImage(),o.visualize(h);break;case"energy":o.clearImage(),o.visualize(d);break;case"families":o.clearImage(),o.visualize(f);break;case"abilities":o.clearImage(),o.visualize(p);break;case"last-action":o.clearImage(),o.visualize(g)}"disabled"!==L.value&&P.checked&&o.drawLayer(function(t){for(var e=new a.PixelsData(3*t.width,3*t.height),n=0;n<t.width;n++)for(var o=0;o<t.height;o++){var c=t.get(n,o);if(c instanceof i.default){var u=[3*c.x+1+s.MOORE_NEIGHBOURHOOD[c.narrow][0],3*c.y+1+s.MOORE_NEIGHBOURHOOD[c.narrow][1]];e.setPixel.apply(e,r(u,[new a.Rgba(0,0,0,255)]))}}return e.update(),e.node}(o)),S.innerHTML=i.default.amount.toString(),D.innerHTML=(o.age/1e3).toFixed(1)+" тыс. кадров",setTimeout(t)}()}))}},e={};!function n(r){if(e[r])return e[r].exports;var o=e[r]={exports:{}};return t[r].call(o.exports,o,o.exports,n),o.exports}(519)})();
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/lib/Bot.ts":
+/*!************************!*\
+  !*** ./src/lib/Bot.ts ***!
+  \************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Genome = void 0;
+var drawing_1 = __webpack_require__(/*! ./drawing */ "./src/lib/drawing.ts");
+var math_functions_1 = __webpack_require__(/*! ./math-functions */ "./src/lib/math-functions.ts");
+var world_1 = __webpack_require__(/*! ./world */ "./src/lib/world.ts");
+var Bot = /** @class */ (function (_super) {
+    __extends(Bot, _super);
+    function Bot(world, x, y, color, energy, genome, family, abilities) {
+        var _this = _super.call(this, world, x, y, color) || this;
+        _this.energy = energy;
+        _this.genome = genome;
+        _this.family = family;
+        _this.abilities = abilities;
+        Bot.amount++;
+        _this._narrow = math_functions_1.randInt(0, 8);
+        _this.age = 0;
+        _this.lastAction = new drawing_1.Rgba(20, 20, 20, 255);
+        return _this;
+    }
+    Object.defineProperty(Bot.prototype, "narrow", {
+        get: function () {
+            return this._narrow;
+        },
+        set: function (n) {
+            this._narrow = math_functions_1.fixNumber(0, 8, n);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Bot.prototype.narrowToCoords = function () {
+        var x = this.x + world_1.MOORE_NEIGHBOURHOOD[this.narrow][0];
+        var y = this.y + world_1.MOORE_NEIGHBOURHOOD[this.narrow][1];
+        return this.world.fixCoords(x, y);
+    };
+    Bot.prototype.getForvard = function () {
+        var _a;
+        var coords = this.narrowToCoords();
+        return { block: (_a = this.world).get.apply(_a, coords), coords: coords };
+    };
+    Bot.prototype.moveTo = function (x, y) {
+        this.world.swap(this.x, this.y, x, y);
+    };
+    Bot.prototype.multiplyTo = function (x, y) {
+        new Bot(this.world, x, y, this.color.interpolate(new drawing_1.Rgba(255, 255, 255, 255), 0.25), this.energy / 3, this.genome.replication(), this.family.mutateRgb(10), __assign({}, this.abilities));
+        this.energy /= 3;
+    };
+    Bot.prototype.randMove = function () {
+        var coords = this.world.fixCoords(this.x + math_functions_1.randInt(-1, 2), this.y + math_functions_1.randInt(-1, 2));
+        this.moveTo.apply(this, coords);
+    };
+    Bot.prototype.onStep = function () {
+        if (this.energy < 1 || this.energy > 100 || this.age > 2000) {
+            this.alive = false;
+            return;
+        }
+        this.genome.doAction(this);
+        this.energy -= 0.1;
+        this.age += 1;
+    };
+    Bot.prototype.onDie = function () {
+        Bot.amount--;
+        // new DeadBot(this);
+    };
+    Bot.amount = 0;
+    return Bot;
+}(world_1.DynamicBlock));
+exports.default = Bot;
+var DeadBot = /** @class */ (function (_super) {
+    __extends(DeadBot, _super);
+    function DeadBot(bot) {
+        var _this = _super.call(this, bot.world, bot.x, bot.y, bot.color.interpolate(new drawing_1.Rgba(0, 0, 0, 255), 0.5)) || this;
+        _this.age = 0;
+        return _this;
+    }
+    DeadBot.prototype.onStep = function () {
+        if (this.age > 500) {
+            this.alive = false;
+        }
+        this.color = this.color.interpolate(new drawing_1.Rgba(10, 10, 50, 255), 0.005);
+        this.age++;
+    };
+    return DeadBot;
+}(world_1.DynamicBlock));
+var Genome = /** @class */ (function () {
+    function Genome(length) {
+        this.length = length;
+        this.genes = [];
+        this._pointer = 0;
+    }
+    Object.defineProperty(Genome.prototype, "pointer", {
+        get: function () {
+            return this._pointer;
+        },
+        set: function (n) {
+            this._pointer = math_functions_1.fixNumber(0, this.length, n);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Genome.prototype.randGene = function () {
+        return {
+            action: math_functions_1.randChoice(GENE_TEMPLATES),
+            property: Math.random(),
+            branches: [
+                math_functions_1.randInt(0, this.length),
+                math_functions_1.randInt(0, this.length),
+                math_functions_1.randInt(0, this.length),
+                math_functions_1.randInt(0, this.length)
+            ]
+        };
+    };
+    Genome.prototype.mutateGene = function (gene) {
+        var _this = this;
+        return {
+            action: Math.random() > 0.9 ? math_functions_1.randChoice(GENE_TEMPLATES) : gene.action,
+            property: math_functions_1.limNumber(0, 1, gene.property + math_functions_1.randFloat(-0.01, 0.01)),
+            branches: gene.branches.map(function (i) { return Math.random() > 0.9
+                ? math_functions_1.randInt(0, _this.length)
+                : i; })
+        };
+    };
+    Genome.prototype.fillRandom = function (start) {
+        if (start === void 0) { start = 0; }
+        for (var i = start; i < this.length; i++) {
+            this.genes[i] = this.randGene();
+        }
+        return this;
+    };
+    Genome.prototype.create = function (genes) {
+        for (var i = 0; i < genes.length; i++) {
+            this.genes[i] = genes[i];
+        }
+        this.fillRandom(genes.length);
+        return this;
+    };
+    Genome.prototype.fillPlant = function () {
+        for (var i = 0; i < this.length; i++) {
+            this.genes[i] = {
+                action: GENE_TEMPLATES[math_functions_1.randInt(0, 3)],
+                property: Math.random(),
+                branches: [
+                    math_functions_1.randInt(0, this.length),
+                    math_functions_1.randInt(0, this.length),
+                    math_functions_1.randInt(0, this.length),
+                    math_functions_1.randInt(0, this.length)
+                ]
+            };
+        }
+        return this;
+    };
+    // replication2() {
+    //     const genome = new Genome(this.length);
+    //     for (let i = 0; i < this.length; i++) {
+    //         genome.genes[i] = this.mutateGene(this.genes[i]);
+    //     }
+    //     return genome;
+    // }
+    // replication() {
+    //     const genome = new Genome(this.length);
+    //     for (let i = 0; i < this.length; i++) {
+    //         genome.genes[i] = this.genes[i];
+    //     }
+    //     const pointer = randInt(0, genome.length);
+    //     genome.genes[pointer] = this.mutateGene(this.genes[pointer]);
+    //     return genome;
+    // }
+    Genome.prototype.replication = function () {
+        var genome = new Genome(this.length);
+        for (var i = 0; i < this.length; i++) {
+            genome.genes[i] = Math.random() > 0.995
+                ? this.mutateGene(this.genes[i])
+                : this.genes[i];
+        }
+        return genome;
+    };
+    Genome.prototype.doAction = function (bot) {
+        bot.lastAction = new drawing_1.Rgba(20, 20, 20, 255);
+        for (var i = 0; i < 20; i++) {
+            var GENE = this.genes[this.pointer];
+            var RESULT = GENE.action(bot, GENE.property, GENE.branches);
+            if (RESULT.goto) {
+                this.pointer = RESULT.goto;
+            }
+            else {
+                this.pointer++;
+            }
+            if (RESULT.completed)
+                return;
+        }
+        bot.color = bot.color.interpolate(new drawing_1.Rgba(100, 100, 100, 255), 0.1);
+    };
+    return Genome;
+}());
+exports.Genome = Genome;
+var GENE_TEMPLATES = [
+    // Restart
+    function (bot, property, branches) {
+        return { completed: false, goto: 0 };
+    },
+    // Photosynthesis
+    function (bot, property, branches) {
+        bot.energy += 0.5 * Math.pow(bot.abilities.photo, 2);
+        bot.abilities.photo = Math.min(1, bot.abilities.photo + 0.01);
+        bot.abilities.attack = Math.max(0, bot.abilities.attack - 0.01);
+        bot.color = bot.color.interpolate(new drawing_1.Rgba(0, 255, 0, 255), 0.01);
+        bot.lastAction = new drawing_1.Rgba(0, 255, 0, 255);
+        return { completed: true };
+    },
+    // Rotate
+    function (bot, property, branches) {
+        if (property > 0.5) {
+            bot.narrow++;
+        }
+        else {
+            bot.narrow--;
+        }
+        return { completed: false };
+    },
+    // Multiply
+    function (bot, property, branches) {
+        var forward = bot.getForvard();
+        if (!forward.block && bot.age > 2) {
+            bot.multiplyTo.apply(bot, forward.coords);
+            bot.lastAction = new drawing_1.Rgba(0, 0, 255, 255);
+        }
+        // bot.lastAction = new Rgba(0, 0, 255, 255);
+        return { completed: true };
+    },
+    // Share energy
+    function (bot, property, branches) {
+        bot.color = bot.color.interpolate(new drawing_1.Rgba(0, 0, 255, 255), 0.005);
+        var forward = bot.getForvard();
+        if (forward.block instanceof Bot && forward.block.energy < bot.energy) {
+            var E = (forward.block.energy + bot.energy) / 2;
+            bot.energy = E;
+            forward.block.energy = E;
+            bot.lastAction = new drawing_1.Rgba(0, 100, 255, 255);
+        }
+        // bot.lastAction = new Rgba(0, 100, 255, 255);
+        return { completed: true };
+    },
+    // Look forward
+    function (bot, property, branches) {
+        // bot.color = bot.color.interpolate(new Rgba(255, 255, 255, 255), 0.01);
+        var forward = bot.getForvard();
+        if (forward.block instanceof Bot) {
+            if (forward.block.family.difference(bot.color) < property) {
+                return { completed: false, goto: branches[0] };
+            }
+            else {
+                return { completed: false, goto: branches[1] };
+            }
+        }
+        else if (forward.block instanceof DeadBot) {
+            return { completed: false, goto: branches[2] };
+        }
+        else {
+            return { completed: false, goto: branches[3] };
+        }
+    },
+    function (bot, property, branches) {
+        if (bot.energy / 100 < property) {
+            return { completed: false, goto: branches[0] };
+        }
+        else {
+            return { completed: false, goto: branches[1] };
+        }
+    },
+    // DestroyDead
+    function (bot, property, branches) {
+        // bot.color = bot.color.interpolate(new Rgba(0, 0, 255, 255), 0.01);
+        var forward = bot.getForvard();
+        if (forward.block instanceof DeadBot && forward.block.age > 2) {
+            forward.block.alive = false;
+            bot.lastAction = new drawing_1.Rgba(255, 255, 0, 255);
+        }
+        // bot.lastAction = new Rgba(255, 255, 0, 255);
+        return { completed: true };
+    },
+    // Move
+    function (bot, property, branches) {
+        // bot.color = bot.color.interpolate(new Rgba(255, 0, 0, 255), 0.01);
+        var forward = bot.getForvard();
+        if (!forward.block)
+            bot.moveTo.apply(bot, forward.coords);
+        bot.lastAction = new drawing_1.Rgba(255, 255, 255, 255);
+        return { completed: true };
+    },
+    // // Move 2
+    // (bot, property, branches) => {
+    //     // bot.color = bot.color.interpolate(new Rgba(255, 255, 255, 255), 0.01);
+    //     const forward = bot.getForvard();
+    //     bot.moveTo(...forward.coords);
+    //     bot.energy -= 0.1;
+    //     return { completed: true }
+    // },
+    // Kill
+    function (bot, property, branches) {
+        bot.energy -= 0.1;
+        bot.color = bot.color.interpolate(new drawing_1.Rgba(255, 0, 0, 255), 0.01);
+        bot.abilities.attack = Math.min(1, bot.abilities.attack + 0.01);
+        bot.abilities.photo = Math.max(0, bot.abilities.photo - 0.01);
+        var forward = bot.getForvard();
+        if (forward.block instanceof Bot) {
+            var E = (forward.block.energy / 2) * Math.pow(bot.abilities.attack, 2);
+            forward.block.energy -= forward.block.energy / 2;
+            bot.energy += E;
+            bot.lastAction = new drawing_1.Rgba(255, 0, 0, 255);
+        }
+        // bot.lastAction = new Rgba(255, 0, 0, 255);
+        return { completed: true };
+    },
+];
+
+
+/***/ }),
+
+/***/ "./src/lib/Grid.ts":
+/*!*************************!*\
+  !*** ./src/lib/Grid.ts ***!
+  \*************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var math_functions_1 = __webpack_require__(/*! ./math-functions */ "./src/lib/math-functions.ts");
+var Grid = /** @class */ (function () {
+    function Grid(width, height) {
+        this.width = width;
+        this.height = height;
+        this.cells = [];
+        for (var x = 0; x < width; x++) {
+            this.cells[x] = [];
+        }
+    }
+    Grid.prototype.get = function (x, y) {
+        return this.cells[x][y];
+    };
+    Grid.prototype.set = function (x, y, value) {
+        this.cells[x][y] = value;
+    };
+    Grid.prototype.remove = function (x, y) {
+        delete this.cells[x][y];
+    };
+    Grid.prototype.swap = function (x, y, x2, y2) {
+        var bufferA = this.get(x, y);
+        var bufferB = this.get(x2, y2);
+        this.set(x, y, bufferB);
+        this.set(x2, y2, bufferA);
+    };
+    Grid.prototype.fixCoords = function (x, y) {
+        return [
+            math_functions_1.fixNumber(0, this.width, x),
+            math_functions_1.fixNumber(0, this.height, y),
+        ];
+    };
+    Grid.prototype.randCoords = function () {
+        return [
+            math_functions_1.randInt(0, this.width),
+            math_functions_1.randInt(0, this.height)
+        ];
+    };
+    Grid.prototype.randEmpty = function () {
+        var coords;
+        do {
+            coords = this.randCoords();
+        } while (this.get.apply(this, coords));
+        return coords;
+    };
+    return Grid;
+}());
+exports.default = Grid;
+
+
+/***/ }),
+
+/***/ "./src/lib/drawing.ts":
+/*!****************************!*\
+  !*** ./src/lib/drawing.ts ***!
+  \****************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.PixelsData = exports.Canvas = exports.Rgba = void 0;
+var math_functions_1 = __webpack_require__(/*! ./math-functions */ "./src/lib/math-functions.ts");
+var Rgba = /** @class */ (function () {
+    function Rgba(red, green, blue, alpha) {
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+        this.alpha = alpha;
+    }
+    Rgba.randRgb = function () {
+        return new Rgba(math_functions_1.randInt(0, 256), math_functions_1.randInt(0, 256), math_functions_1.randInt(0, 256), 255);
+    };
+    Rgba.prototype.interpolate = function (other, t) {
+        return new Rgba(math_functions_1.interpolate(this.red, other.red, t), math_functions_1.interpolate(this.green, other.green, t), math_functions_1.interpolate(this.blue, other.blue, t), math_functions_1.interpolate(this.alpha, other.alpha, t));
+    };
+    Rgba.prototype.normalise = function () {
+        return new Rgba(math_functions_1.limNumber(0, 255, this.red), math_functions_1.limNumber(0, 255, this.green), math_functions_1.limNumber(0, 255, this.blue), math_functions_1.limNumber(0, 255, this.alpha));
+    };
+    Rgba.prototype.mutateRgb = function (value) {
+        return new Rgba(this.red + math_functions_1.randFloat(-value, value), this.green + math_functions_1.randFloat(-value, value), this.blue + math_functions_1.randFloat(-value, value), this.alpha).normalise();
+    };
+    Rgba.prototype.difference = function (other) {
+        return ((Math.abs(this.red - other.red) +
+            Math.abs(this.green - other.green) +
+            Math.abs(this.blue - other.blue) +
+            Math.abs(this.alpha - other.alpha)) / Rgba.MAX_DIF);
+    };
+    Rgba.MAX_DIF = 255 * 4;
+    return Rgba;
+}());
+exports.Rgba = Rgba;
+var Canvas = /** @class */ (function () {
+    function Canvas(width, height, node) {
+        this.node = node || document.createElement("canvas");
+        this.node.width = width;
+        this.node.height = height;
+        this.ctx = this.node.getContext("2d");
+    }
+    return Canvas;
+}());
+exports.Canvas = Canvas;
+var PixelsData = /** @class */ (function (_super) {
+    __extends(PixelsData, _super);
+    function PixelsData(width, height, node) {
+        var _this = _super.call(this, width, height, node) || this;
+        _this.data = _this.ctx.getImageData(0, 0, _this.node.width, _this.node.height);
+        return _this;
+    }
+    PixelsData.prototype.setPixel = function (x, y, color) {
+        var POINTER = (y * this.data.width + x) * 4;
+        this.data.data[POINTER] = color.red;
+        this.data.data[POINTER + 1] = color.green;
+        this.data.data[POINTER + 2] = color.blue;
+        this.data.data[POINTER + 3] = color.alpha;
+    };
+    PixelsData.prototype.update = function () {
+        this.ctx.putImageData(this.data, 0, 0);
+        return this;
+    };
+    return PixelsData;
+}(Canvas));
+exports.PixelsData = PixelsData;
+
+
+/***/ }),
+
+/***/ "./src/lib/math-functions.ts":
+/*!***********************************!*\
+  !*** ./src/lib/math-functions.ts ***!
+  \***********************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.interpolate = exports.limNumber = exports.normalizeNumber = exports.fixNumber = exports.randChoice = exports.randInt = exports.randFloat = exports.range = void 0;
+function range(from, to) {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!(from < to)) return [3 /*break*/, 2];
+                return [4 /*yield*/, from++];
+            case 1:
+                _a.sent();
+                return [3 /*break*/, 0];
+            case 2: return [2 /*return*/];
+        }
+    });
+}
+exports.range = range;
+function randFloat(bottom, top) {
+    return Math.random() * (top - bottom) + bottom;
+}
+exports.randFloat = randFloat;
+function randInt(bottom, top) {
+    return Math.floor(randFloat(bottom, top));
+}
+exports.randInt = randInt;
+function randChoice(arr) {
+    return arr[randInt(0, arr.length)];
+}
+exports.randChoice = randChoice;
+function fixNumber(min, max, number) {
+    return number >= min ? number % max : max - (-number % max);
+}
+exports.fixNumber = fixNumber;
+function normalizeNumber(min, max, number) {
+    return (number - min) / (max - min);
+}
+exports.normalizeNumber = normalizeNumber;
+function limNumber(min, max, number) {
+    return Math.max(Math.min(number, max), min);
+}
+exports.limNumber = limNumber;
+function interpolate(a, b, t) {
+    return a + (b - a) * t;
+}
+exports.interpolate = interpolate;
+
+
+/***/ }),
+
+/***/ "./src/lib/world.ts":
+/*!**************************!*\
+  !*** ./src/lib/world.ts ***!
+  \**************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.World = exports.DynamicBlock = exports.Block = exports.MOORE_NEIGHBOURHOOD = void 0;
+var drawing_1 = __webpack_require__(/*! ./drawing */ "./src/lib/drawing.ts");
+var Grid_1 = __webpack_require__(/*! ./Grid */ "./src/lib/Grid.ts");
+var math_functions_1 = __webpack_require__(/*! ./math-functions */ "./src/lib/math-functions.ts");
+exports.MOORE_NEIGHBOURHOOD = [
+    [-1, -1],
+    [0, -1],
+    [1, -1],
+    [1, 0],
+    [1, 1],
+    [0, 1],
+    [-1, 1],
+    [-1, 0],
+];
+var Block = /** @class */ (function () {
+    function Block(world, x, y, color) {
+        this.world = world;
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        world.set(x, y, this);
+    }
+    return Block;
+}());
+exports.Block = Block;
+var DynamicBlock = /** @class */ (function (_super) {
+    __extends(DynamicBlock, _super);
+    function DynamicBlock(world, x, y, color) {
+        var _this = _super.call(this, world, x, y, color) || this;
+        world.assign(_this);
+        _this.alive = true;
+        return _this;
+    }
+    DynamicBlock.prototype.onStep = function () {
+    };
+    DynamicBlock.prototype.onDie = function () {
+    };
+    return DynamicBlock;
+}(Block));
+exports.DynamicBlock = DynamicBlock;
+var World = /** @class */ (function (_super) {
+    __extends(World, _super);
+    function World(width, height, pixelSize, node) {
+        var _this = _super.call(this, width, height) || this;
+        _this.width = width;
+        _this.height = height;
+        _this.img = new drawing_1.Canvas(width * pixelSize, height * pixelSize, node);
+        _this.img.ctx.imageSmoothingEnabled = false;
+        _this.dynamic = { a: {}, b: {} };
+        _this.age = 0;
+        return _this;
+    }
+    World.prototype.set = function (x, y, block) {
+        _super.prototype.set.call(this, x, y, block);
+        if (block) {
+            block.x = x;
+            block.y = y;
+        }
+    };
+    World.prototype.drawLayer = function (layer) {
+        this.img.ctx.drawImage(layer, 0, 0, this.img.node.width, this.img.node.height);
+    };
+    World.prototype.clearImage = function () {
+        this.img.ctx.clearRect(0, 0, this.img.node.width, this.img.node.height);
+    };
+    World.prototype.visualize = function (func) {
+        var img = new drawing_1.PixelsData(this.width, this.height);
+        for (var x = 0; x < this.width; x++) {
+            for (var y = 0; y < this.height; y++) {
+                var col = func(this.get(x, y), x, y);
+                if (col) {
+                    img.setPixel(x, y, col);
+                }
+            }
+        }
+        this.drawLayer(img.update().node);
+    };
+    World.prototype.assign = function (block) {
+        var i;
+        do {
+            i = math_functions_1.randInt(0, this.width * this.height * 1000);
+        } while (this.dynamic.a[i]);
+        this.dynamic.a[i] = block;
+    };
+    World.prototype.init = function () {
+        this.dynamic.b = this.dynamic.a;
+    };
+    World.prototype.step = function () {
+        this.dynamic.a = {};
+        for (var key in this.dynamic.b) {
+            var block = this.dynamic.b[key];
+            if (!block.alive) {
+                this.set(block.x, block.y, undefined);
+                block.onDie();
+            }
+            else {
+                block.onStep();
+                this.assign(block);
+            }
+        }
+        this.dynamic.b = this.dynamic.a;
+        this.age++;
+    };
+    return World;
+}(Grid_1.default));
+exports.World = World;
+
+
+/***/ }),
+
+/***/ "./src/main.ts":
+/*!*********************!*\
+  !*** ./src/main.ts ***!
+  \*********************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var Bot_1 = __webpack_require__(/*! ./lib/Bot */ "./src/lib/Bot.ts");
+var drawing_1 = __webpack_require__(/*! ./lib/drawing */ "./src/lib/drawing.ts");
+var math_functions_1 = __webpack_require__(/*! ./lib/math-functions */ "./src/lib/math-functions.ts");
+var world_1 = __webpack_require__(/*! ./lib/world */ "./src/lib/world.ts");
+function onResizeWindow() {
+    document.querySelector('.wrapper').style.maxHeight = window.innerHeight + "px";
+}
+function start() {
+    Bot_1.default.amount = 0;
+    world = new world_1.World(parseInt(document.querySelector('#input-width').value), parseInt(document.querySelector('#input-height').value), parseInt(document.querySelector('#input-pixel').value), document.querySelector('#img'));
+    var BOTS_AMOUNT = parseInt(document.querySelector('#input-bots').value);
+    for (var i = 0; i < Math.min(world.width * world.height, BOTS_AMOUNT); i++) {
+        var a = new (Bot_1.default.bind.apply(Bot_1.default, __spreadArrays([void 0, world], world.randEmpty(), [new drawing_1.Rgba(100, 100, 100, 255),
+            100,
+            new Bot_1.Genome(64).fillRandom(),
+            drawing_1.Rgba.randRgb(),
+            { photo: 0.5, attack: 0.5 }])))();
+    }
+    world.init();
+}
+function drawColors(block) {
+    if (block instanceof world_1.Block) {
+        return block.color;
+    }
+    return null;
+}
+function drawEnergy(block) {
+    if (block instanceof Bot_1.default) {
+        return new drawing_1.Rgba(20, 20, 100, 255)
+            .interpolate(new drawing_1.Rgba(255, 255, 0, 255), block.energy / 100);
+    }
+    return null;
+}
+function drawAbilities(block) {
+    if (block instanceof Bot_1.default) {
+        return new drawing_1.Rgba(math_functions_1.normalizeNumber(0.5, 1, block.abilities.attack) * 255, math_functions_1.normalizeNumber(0.5, 1, block.abilities.photo) * 255, 50, 255);
+    }
+    return null;
+}
+function drawFamilies(block) {
+    if (block instanceof Bot_1.default) {
+        return block.family;
+    }
+    return null;
+}
+function drawLastAction(block) {
+    if (block instanceof Bot_1.default) {
+        return block.lastAction;
+    }
+    return null;
+}
+function getNarrowImg(world) {
+    var img = new drawing_1.PixelsData(world.width * 3, world.height * 3);
+    for (var x = 0; x < world.width; x++) {
+        for (var y = 0; y < world.height; y++) {
+            var block = world.get(x, y);
+            if (block instanceof Bot_1.default) {
+                var xy = [
+                    block.x * 3 + 1 + world_1.MOORE_NEIGHBOURHOOD[block.narrow][0],
+                    block.y * 3 + 1 + world_1.MOORE_NEIGHBOURHOOD[block.narrow][1],
+                ];
+                img.setPixel.apply(img, __spreadArrays(xy, [new drawing_1.Rgba(0, 0, 0, 255)]));
+            }
+        }
+    }
+    img.update();
+    return img.node;
+}
+function updateImage(world, mode, drawBotsNarrow) {
+    switch (mode) {
+        case 'normal':
+            world.clearImage();
+            world.visualize(drawColors);
+            break;
+        case 'energy':
+            world.clearImage();
+            world.visualize(drawEnergy);
+            break;
+        case 'families':
+            world.clearImage();
+            world.visualize(drawFamilies);
+            break;
+        case 'abilities':
+            world.clearImage();
+            world.visualize(drawAbilities);
+            break;
+        case 'last-action':
+            world.clearImage();
+            world.visualize(drawLastAction);
+            break;
+        default: break;
+    }
+    if (drawBotsNarrow) {
+        world.drawLayer(getNarrowImg(world));
+    }
+}
+var world;
+window.addEventListener('resize', onResizeWindow);
+onResizeWindow();
+window.addEventListener('load', function () {
+    var _a, _b, _c, _d, _e;
+    (_a = document.querySelector('#input-width')) === null || _a === void 0 ? void 0 : _a.addEventListener('change', function (e) {
+        var target = e.target;
+        target.value = math_functions_1.limNumber(1, 2048, parseInt(target.value)).toString();
+    });
+    (_b = document.querySelector('#input-height')) === null || _b === void 0 ? void 0 : _b.addEventListener('change', function (e) {
+        var target = e.target;
+        target.value = math_functions_1.limNumber(1, 2048, parseInt(target.value)).toString();
+    });
+    (_c = document.querySelector('#input-pixel')) === null || _c === void 0 ? void 0 : _c.addEventListener('change', function (e) {
+        var target = e.target;
+        target.value = math_functions_1.limNumber(1, 50, parseInt(target.value)).toString();
+    });
+    var $btnMenu = document.querySelector('#btn-menu');
+    var $imgContainer = document.querySelector('#img-container');
+    var $img = document.querySelector('#img');
+    // const $fpsLimit = document.querySelector('#fps-limit') as HTMLInputElement;
+    // $fpsLimit.addEventListener('input', () => {
+    //     $fpsLimit.value = limNumber(1, 250, parseInt($fpsLimit.value) || 60).toString();
+    // });
+    $btnMenu.addEventListener('change', function () {
+        var _a, _b;
+        if ($btnMenu.checked) {
+            $imgContainer.classList.add('img-wrapper--menu-opened');
+            (_a = document.querySelector('#menu')) === null || _a === void 0 ? void 0 : _a.classList.add('wrapper__menu--menu-opened');
+        }
+        else {
+            $imgContainer.classList.remove('img-wrapper--menu-opened');
+            (_b = document.querySelector('#menu')) === null || _b === void 0 ? void 0 : _b.classList.remove('wrapper__menu--menu-opened');
+        }
+    });
+    var currentX;
+    var currentY;
+    var initialX;
+    var initialY;
+    var xOffset = 0;
+    var yOffset = 0;
+    var active = false;
+    function dragStart(e) {
+        if (e instanceof TouchEvent) {
+            initialX = e.touches[0].clientX - xOffset;
+            initialY = e.touches[0].clientY - yOffset;
+        }
+        else {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+        }
+        if (e.target === $img) {
+            active = true;
+        }
+    }
+    function dragEnd() {
+        initialX = currentX;
+        initialY = currentY;
+        active = false;
+    }
+    function drag(e) {
+        if (active) {
+            e.preventDefault();
+            if (e instanceof TouchEvent) {
+                currentX = e.touches[0].clientX - initialX;
+                currentY = e.touches[0].clientY - initialY;
+            }
+            else {
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+            }
+            xOffset = currentX;
+            yOffset = currentY;
+            $img.style.transform = "translate3d(" + currentX + "px, " + currentY + "px, 0)";
+        }
+    }
+    $imgContainer.addEventListener("touchstart", dragStart, false);
+    $imgContainer.addEventListener("touchend", dragEnd, false);
+    $imgContainer.addEventListener("touchmove", drag, false);
+    $imgContainer.addEventListener("mousedown", dragStart, false);
+    $imgContainer.addEventListener("mouseup", dragEnd, false);
+    $imgContainer.addEventListener("mousemove", drag, false);
+    var $amount = document.querySelector('#amount');
+    var $fps = document.querySelector('#fps');
+    var $frameNumber = document.querySelector('#frame-number');
+    var $viewMode = document.querySelector('#view-mode');
+    var $narrows = document.querySelector('#chbx-narrows');
+    var $chbxUpdImg = document.querySelector('#chbx-upd-img');
+    (_d = document.querySelector('#btn-start')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', start);
+    (_e = document.querySelector('#btn-step')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', function () {
+        world.step();
+        updateImage(world, $viewMode.value, $narrows.checked);
+    });
+    var $btnPause = document.querySelector('#btn-pause');
+    $btnPause.addEventListener('click', function (e) {
+        switch (paused) {
+            case true:
+                paused = false;
+                break;
+            case false:
+                paused = true;
+                break;
+        }
+    });
+    start();
+    var lastLoop = Date.now();
+    var fps = 0;
+    var paused = false;
+    setInterval(function () {
+        if (Date.now() - lastLoop > 1000) {
+            $fps.innerHTML = fps.toFixed(0);
+            fps = 0;
+            lastLoop = Date.now();
+        }
+        fps++;
+        if (!paused)
+            world.step();
+        if ($chbxUpdImg.checked) {
+            updateImage(world, $viewMode.value, $narrows.checked);
+            // switch ($viewMode.value) {
+            //     case 'normal': world.clearImage(); world.visualize(drawColors); break;
+            //     case 'energy': world.clearImage(); world.visualize(drawEnergy); break;
+            //     case 'families': world.clearImage(); world.visualize(drawFamilies); break;
+            //     case 'abilities': world.clearImage(); world.visualize(drawAbilities); break;
+            //     case 'last-action': world.clearImage(); world.visualize(drawLastAction); break;
+            //     default: break;
+            // }
+            // if (!($viewMode.value === 'disabled') && $narrows.checked) {
+            //     world.drawLayer(getNarrowImg(world));
+            // }
+        }
+        $amount.innerHTML = Bot_1.default.amount.toString();
+        $frameNumber.innerHTML = (world.age / 1000).toFixed(1) + " \u0442\u044B\u0441. \u043A\u0430\u0434\u0440\u043E\u0432";
+    });
+    // (function step() {
+    //     if (Date.now() - lastLoop > 1000) {
+    //         $fps.innerHTML = fps.toFixed(0);
+    //         fps = 0;
+    //         lastLoop = Date.now();
+    //     }
+    //     fps++;
+    //     if (!paused) world.step();
+    //     switch ($viewMode.value) {
+    //         case 'normal': world.clearImage(); world.visualize(drawColors); break;
+    //         case 'energy': world.clearImage(); world.visualize(drawEnergy); break;
+    //         case 'families': world.clearImage(); world.visualize(drawFamilies); break;
+    //         case 'abilities': world.clearImage(); world.visualize(drawAbilities); break;
+    //         case 'last-action': world.clearImage(); world.visualize(drawLastAction); break;
+    //         default: break;
+    //     }
+    //     if (!($viewMode.value === 'disabled') && $narrows.checked) {
+    //         world.drawLayer(getNarrowImg(world));
+    //     }
+    //     $amount.innerHTML = Bot.amount.toString();
+    //     $frameNumber.innerHTML = `${(world.age / 1000).toFixed(1)} тыс. кадров`;
+    //     setTimeout(step);
+    // })();
+});
+
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		if(__webpack_module_cache__[moduleId]) {
+/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/main.ts");
+/******/ 	
+/******/ })()
+;
 //# sourceMappingURL=bundle.js.map

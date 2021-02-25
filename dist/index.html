@@ -69,7 +69,6 @@
                     <div class="inputs-group">
                         <span>Режим отображения</span>
                         <select id="view-mode">
-                            <option value="disabled">Выключен</option>
                             <option value="normal" selected>Обычный</option>
                             <option value="energy">Энергия</option>
                             <option value="families">Семейства</option>
@@ -80,10 +79,18 @@
                         </select>
                     </div>
                     <div class="inputs-group">
-                        <input type="checkbox" id="chbx-narrows" />
-                        <label for="chbx-narrows">Направления ботов</label>
+                        <span>Доп. парамерты</span>
+                        <div>
+                            <input type="checkbox" id="chbx-upd-img" checked />
+                            <label for="chbx-upd-img">Обновлять картинку</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="chbx-narrows" />
+                            <label for="chbx-narrows">Направления ботов</label>
+                        </div>
                     </div>
                     <button id="btn-pause">Пауза / Продолжить</button>
+                    <button id="btn-step">Шаг</button>
                 </div>
             </div>
         </div>

@@ -66,6 +66,7 @@ body {
     color: whitesmoke;
     /* background-color: rgb(58, 143, 58); */
     background-color: rgb(80, 80, 80);
+    margin-bottom: 5px;
     transition-duration: 0.2s;
 }
 
@@ -116,7 +117,7 @@ body {
     box-shadow: 0 0 0 2px rgba(50, 50, 50);
 }
 
-.inputs-group > input[type="checkbox"] {
+.inputs-group input[type="checkbox"] {
     margin-left: 0;
 }
 

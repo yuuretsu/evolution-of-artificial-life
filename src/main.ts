@@ -98,6 +98,20 @@ function getNarrowImg(world: World): HTMLCanvasElement {
     return img.node;
 }
 
+function updateImage(world: World, mode: string, drawBotsNarrow: boolean) {
+    switch (mode) {
+        case 'normal': world.clearImage(); world.visualize(drawColors); break;
+        case 'energy': world.clearImage(); world.visualize(drawEnergy); break;
+        case 'families': world.clearImage(); world.visualize(drawFamilies); break;
+        case 'abilities': world.clearImage(); world.visualize(drawAbilities); break;
+        case 'last-action': world.clearImage(); world.visualize(drawLastAction); break;
+        default: break;
+    }
+    if (drawBotsNarrow) {
+        world.drawLayer(getNarrowImg(world));
+    }
+}
+
 let world: World;
 
 window.addEventListener('resize', onResizeWindow);
@@ -196,7 +210,12 @@ window.addEventListener('load', () => {
     const $frameNumber = document.querySelector('#frame-number') as HTMLElement;
     const $viewMode = document.querySelector('#view-mode') as HTMLSelectElement;
     const $narrows = document.querySelector('#chbx-narrows') as HTMLInputElement;
+    const $chbxUpdImg = document.querySelector('#chbx-upd-img') as HTMLInputElement;
     document.querySelector('#btn-start')?.addEventListener('click', start);
+    document.querySelector('#btn-step')?.addEventListener('click', () => {
+        world.step();
+        updateImage(world, $viewMode.value, $narrows.checked);
+    });
     const $btnPause = document.querySelector('#btn-pause') as HTMLButtonElement;
     $btnPause.addEventListener('click', (e) => {
         switch (paused) {
@@ -213,7 +232,33 @@ window.addEventListener('load', () => {
     let lastLoop = Date.now();
     let fps = 0;
     let paused = false;
-    // setInterval(() => {
+    setInterval(() => {
+        if (Date.now() - lastLoop > 1000) {
+            $fps.innerHTML = fps.toFixed(0);
+            fps = 0;
+            lastLoop = Date.now();
+        }
+        fps++;
+        if (!paused) world.step();
+        if ($chbxUpdImg.checked) {
+            updateImage(world, $viewMode.value, $narrows.checked);
+            // switch ($viewMode.value) {
+            //     case 'normal': world.clearImage(); world.visualize(drawColors); break;
+            //     case 'energy': world.clearImage(); world.visualize(drawEnergy); break;
+            //     case 'families': world.clearImage(); world.visualize(drawFamilies); break;
+            //     case 'abilities': world.clearImage(); world.visualize(drawAbilities); break;
+            //     case 'last-action': world.clearImage(); world.visualize(drawLastAction); break;
+            //     default: break;
+            // }
+            // if (!($viewMode.value === 'disabled') && $narrows.checked) {
+            //     world.drawLayer(getNarrowImg(world));
+            // }
+        }
+        $amount.innerHTML = Bot.amount.toString();
+        $frameNumber.innerHTML = `${(world.age / 1000).toFixed(1)} тыс. кадров`;
+    });
+
+    // (function step() {
     //     if (Date.now() - lastLoop > 1000) {
     //         $fps.innerHTML = fps.toFixed(0);
     //         fps = 0;
@@ -233,30 +278,7 @@ window.addEventListener('load', () => {
     //         world.drawLayer(getNarrowImg(world));
     //     }
     //     $amount.innerHTML = Bot.amount.toString();
-    //     // $fps.innerHTML = fps.toFixed(0);
-    // });
-
-    (function step() {
-        if (Date.now() - lastLoop > 1000) {
-            $fps.innerHTML = fps.toFixed(0);
-            fps = 0;
-            lastLoop = Date.now();
-        }
-        fps++;
-        if (!paused) world.step();
-        switch ($viewMode.value) {
-            case 'normal': world.clearImage(); world.visualize(drawColors); break;
-            case 'energy': world.clearImage(); world.visualize(drawEnergy); break;
-            case 'families': world.clearImage(); world.visualize(drawFamilies); break;
-            case 'abilities': world.clearImage(); world.visualize(drawAbilities); break;
-            case 'last-action': world.clearImage(); world.visualize(drawLastAction); break;
-            default: break;
-        }
-        if (!($viewMode.value === 'disabled') && $narrows.checked) {
-            world.drawLayer(getNarrowImg(world));
-        }
-        $amount.innerHTML = Bot.amount.toString();
-        $frameNumber.innerHTML = `${(world.age / 1000).toFixed(1)} тыс. кадров`;
-        setTimeout(step);
-    })();
+    //     $frameNumber.innerHTML = `${(world.age / 1000).toFixed(1)} тыс. кадров`;
+    //     setTimeout(step);
+    // })();
 });
