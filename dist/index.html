@@ -33,45 +33,6 @@
                     <div>Возраст мира: <span id="frame-number">0</span></div>
                     <div>fps: <span id="fps">0</span></div>
                 </div>
-                <div class="row menu__row">
-                    <div class="row__name-1">Настройки мира</div>
-                    <div class="row menu__row--sm">
-                        <span class="row__name-2">Размер мира</span>
-                        <input
-                            class="one-line-input menu__input"
-                            type="number"
-                            id="input-width"
-                            value="160"
-                            placeholder="Ширина"
-                        />
-                        <input
-                            class="one-line-input menu__input"
-                            type="number"
-                            id="input-height"
-                            value="80"
-                            placeholder="Высота"
-                        />
-                    </div>
-                    <div class="row menu__row--sm">
-                        <span class="row__name-2">Размер пикселя</span>
-                        <input
-                            class="one-line-input menu__input"
-                            type="number"
-                            id="input-pixel"
-                            value="6"
-                        />
-                    </div>
-                    <div class="row menu__row--sm">
-                        <span class="row__name-2">Кол-во ботов</span>
-                        <input
-                            class="one-line-input menu__input"
-                            type="number"
-                            id="input-bots"
-                            value="1000"
-                        />
-                    </div>
-                    <button class="btn" id="btn-start">Рестарт</button>
-                </div>
 
                 <div class="row menu__row">
                     <div class="row__name-1">Настройки просмотра</div>
@@ -90,6 +51,29 @@
                             </option>
                         </select>
                     </div>
+                    <!-- <div class="row menu__row--sm">
+                        <span class="row__name-2"
+                            >Параметры отображения действий</span
+                        >
+                        <div class="one-line-chbx menu__input">
+                            <input
+                                class="chbx"
+                                type="checkbox"
+                                id="a"
+                                checked
+                            />
+                            <label for="a">Фотосинтез</label>
+                        </div>
+                        <div class="one-line-chbx menu__input">
+                            <input
+                                class="chbx"
+                                type="checkbox"
+                                id="b"
+                                checked
+                            />
+                            <label for="b">Атака</label>
+                        </div>
+                    </div> -->
                     <div class="row menu__row--sm">
                         <span class="row__name-2">Доп. параметры</span>
                         <div class="one-line-chbx menu__input">
@@ -110,10 +94,67 @@
                             <label for="chbx-narrows">Направления ботов</label>
                         </div>
                     </div>
+                    <div class="row menu__row--sm">
+                        <span class="row__name-2">Ограничение fps</span>
+                        <input
+                            class="one-line-input menu__input"
+                            type="number"
+                            id="input-fps"
+                            min="1"
+                            max="250"
+                            value="60"
+                        />
+                    </div>
                     <button class="btn menu__input" id="btn-pause">
                         Пауза / Продолжить
                     </button>
                     <button class="btn menu__input" id="btn-step">Шаг</button>
+                </div>
+
+                <div class="row menu__row">
+                    <div class="row__name-1">Перезапуск мира</div>
+                    <div class="row menu__row--sm">
+                        <span class="row__name-2">Размер мира</span>
+                        <input
+                            class="one-line-input menu__input"
+                            type="number"
+                            id="input-width"
+                            min="1"
+                            max="2048"
+                            value="160"
+                            placeholder="Ширина"
+                        />
+                        <input
+                            class="one-line-input menu__input"
+                            type="number"
+                            id="input-height"
+                            min="1"
+                            max="2048"
+                            value="80"
+                            placeholder="Высота"
+                        />
+                    </div>
+                    <div class="row menu__row--sm">
+                        <span class="row__name-2">Размер пикселя</span>
+                        <input
+                            class="one-line-input menu__input"
+                            type="number"
+                            id="input-pixel"
+                            min="1"
+                            max="50"
+                            value="6"
+                        />
+                    </div>
+                    <div class="row menu__row--sm">
+                        <span class="row__name-2">Кол-во ботов</span>
+                        <input
+                            class="one-line-input menu__input"
+                            type="number"
+                            id="input-bots"
+                            value="1000"
+                        />
+                    </div>
+                    <button class="btn" id="btn-start">Рестарт</button>
                 </div>
             </div>
         </div>

@@ -81,38 +81,37 @@ let world: World;
 
 window.addEventListener('resize', onResizeWindow);
 
-onResizeWindow();
-
 window.addEventListener('load', () => {
 
-    document.querySelector('#input-width')?.addEventListener('change', e => {
-        const target = e.target as HTMLInputElement;
-        target.value = limNumber(1, 2048, parseInt(target.value)).toString();
+    onResizeWindow();
+
+    const $inputFps = document.querySelector('#input-fps') as HTMLInputElement;
+
+    document.querySelectorAll(
+        '#input-width, #input-height, #input-pixel, #input-fps'
+    ).forEach(elem => {
+        elem.addEventListener('change', event => {
+            const target = event.target as HTMLInputElement;
+            target.value = limNumber(
+                parseInt(target.min),
+                parseInt(target.max),
+                parseInt(target.value)
+            ).toString();
+        })
     });
 
-    document.querySelector('#input-height')?.addEventListener('change', e => {
-        const target = e.target as HTMLInputElement;
-        target.value = limNumber(1, 2048, parseInt(target.value)).toString();
-    });
-
-    document.querySelector('#input-pixel')?.addEventListener('change', e => {
-        const target = e.target as HTMLInputElement;
-        target.value = limNumber(1, 50, parseInt(target.value)).toString();
-    });
-
-    const $btnMenu = document.querySelector('#btn-menu') as HTMLInputElement;
     const $imgContainer = document.querySelector('#img-container') as HTMLElement;
     const $img = document.querySelector('#img') as HTMLElement;
 
-    $btnMenu.addEventListener('change', () => {
-        if ($btnMenu.checked) {
+    document.querySelector('#btn-menu')?.addEventListener('change', event => {
+        if ((event.target as HTMLInputElement).checked) {
             $imgContainer.classList.add('img-wrapper--menu-opened');
             document.querySelector('#menu')?.classList.add('wrapper__menu--menu-opened');
         } else {
             $imgContainer.classList.remove('img-wrapper--menu-opened');
             document.querySelector('#menu')?.classList.remove('wrapper__menu--menu-opened');
         }
-    })
+    });
 
     let currentX: number;
     let currentY: number;
@@ -203,7 +202,22 @@ window.addEventListener('load', () => {
     let lastLoop = Date.now();
     let fps = 0;
     let paused = false;
-    setInterval(() => {
+    // setInterval(() => {
+    //     if (Date.now() - lastLoop > 1000) {
+    //         $fps.innerHTML = fps.toFixed(0);
+    //         fps = 0;
+    //         lastLoop = Date.now();
+    //     }
+    //     fps++;
+    //     if (!paused) world.step();
+    //     if ($chbxUpdImg.checked) {
+    //         updateImage(world, $viewMode.value, $narrows.checked);
+    //     }
+    //     $amount.innerHTML = Bot.amount.toString();
+    //     $frameNumber.innerHTML = `${(world.age / 1000).toFixed(1)} тыс. кадров`;
+    // });
+
+    (function step() {
         if (Date.now() - lastLoop > 1000) {
             $fps.innerHTML = fps.toFixed(0);
             fps = 0;
@@ -216,5 +230,6 @@ window.addEventListener('load', () => {
         }
         $amount.innerHTML = Bot.amount.toString();
         $frameNumber.innerHTML = `${(world.age / 1000).toFixed(1)} тыс. кадров`;
-    });
+        setTimeout(step, 1000 / parseInt($inputFps.value));
+    })();
 });

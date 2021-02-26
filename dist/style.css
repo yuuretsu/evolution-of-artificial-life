@@ -1,7 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap");
+
 body {
     margin: 0;
     padding: 0;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    /* font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
+    font-family: "IBM Plex Sans", sans-serif;
     font-size: 14px;
     background-color: black;
     color: whitesmoke;
@@ -69,6 +73,7 @@ body {
 
 .btn {
     display: block;
+    font-family: "IBM Plex Sans", sans-serif;
     box-sizing: border-box;
     width: 100%;
     font-weight: bold;
@@ -126,6 +131,7 @@ body {
 
 .row__name-1 {
     /* white-space: nowrap; */
+    font-size: 1.25em;
     font-weight: bold;
     text-transform: uppercase;
     margin-bottom: 10px;
@@ -148,7 +154,7 @@ body {
     display: block;
     box-sizing: border-box;
     width: 100%;
-    font-family: monospace;
+    font-family: "IBM Plex Mono", monospace;
     border: none;
     outline: none;
     border-radius: 5px;
@@ -163,6 +169,10 @@ body {
     box-shadow: 0 0 0 2px rgba(50, 50, 50);
 }
 
+.one-line-input:not(:valid) {
+    box-shadow: 0 0 0 2px rgba(150, 50, 50);
+}
+
 .one-line-chbx {
 }
 
@@ -174,18 +184,21 @@ body {
     position: relative;
     appearance: none;
     -webkit-appearance: none;
+    -moz-appearance: none;
     outline: none;
     border: none;
+    margin: 0;
 }
 
 .chbx::before {
     content: "";
-    transform: translate(0px, 5px);
+    transform: translate(0px, 2px);
     display: block;
     width: 15px;
     height: 15px;
     border-radius: 2px;
     background-color: rgb(80, 80, 80);
+    transition-duration: 0.2s;
 }
 
 .chbx:checked::before {
@@ -197,7 +210,7 @@ body {
     position: absolute;
     display: block;
     left: 1px;
-    top: 5px;
+    top: 3px;
     width: 10px;
     height: 5px;
     transform: translateY(-2px) rotateZ(-45deg);
@@ -222,4 +235,5 @@ body {
 
 /* * {
     outline: 1px solid rgba(255, 127, 127, 0.1);
+    background-color: rgba(255, 127, 127, 0.1);
 } */
