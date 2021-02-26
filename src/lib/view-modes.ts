@@ -10,15 +10,27 @@ export function drawColors(block: any) {
     return null;
 }
 
-export function drawEnergy(block: any) {
-    if (block instanceof Bot) {
-        return new Rgba(20, 20, 100, 255)
-            .interpolate(
-                new Rgba(255, 255, 0, 255),
-                block.energy / 100
-            );
+// export function drawEnergy(block: any) {
+//     if (block instanceof Bot) {
+//         return new Rgba(20, 20, 100, 255)
+//             .interpolate(
+//                 new Rgba(255, 255, 0, 255),
+//                 block.energy / 100
+//             );
+//     }
+//     return null;
+// }
+
+export function drawEnergy(divider: number): (block: any) => Rgba | null {
+    return block => {
+        return block instanceof Bot
+            ? new Rgba(20, 20, 100, 255)
+                .interpolate(
+                    new Rgba(255, 255, 0, 255),
+                    block.energy / divider
+                )
+            : null;
     }
-    return null;
 }
 
 export function drawAbilities(block: any) {
@@ -41,11 +53,12 @@ export function drawFamilies(block: any) {
 }
 
 export function drawLastAction(options: any): (block: any) => Rgba | null {
-    return function (block) {
-        if (block instanceof Bot) {
-            return options[block.lastAction.name] ? block.lastAction.color : new Rgba(20, 20, 20, 255);
-        }
-        return null;
+    return block => {
+        return block instanceof Bot
+            ? options[block.lastAction.name]
+                ? block.lastAction.color
+                : new Rgba(20, 20, 20, 255)
+            : null
     }
 }
 

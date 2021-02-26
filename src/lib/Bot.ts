@@ -184,7 +184,7 @@ export class Genome {
         return genome;
     }
     doAction(bot: Bot) {
-        bot.lastAction = { name: 'none', color: new Rgba(20, 20, 20, 255) };
+        // bot.lastAction = { name: 'none', color: new Rgba(20, 20, 20, 255) };
         for (let i = 0; i < 20; i++) {
             const GENE: Gene = this.genes[this.pointer];
             const RESULT = GENE.action(bot, GENE.property, GENE.branches);
@@ -195,6 +195,7 @@ export class Genome {
             }
             if (RESULT.completed) return;
         }
+        bot.lastAction = { name: 'view-do-nothing', color: new Rgba(50, 50, 50, 255) };
         bot.color = bot.color.interpolate(new Rgba(100, 100, 100, 255), 0.1);
     }
 }
@@ -258,7 +259,7 @@ const GENE_TEMPLATES: ActionFn[] = [
             const E = (forward.block.energy + bot.energy) / 2;
             bot.energy = E;
             forward.block.energy = E;
-            bot.lastAction = { name: 'view-share-energy', color: new Rgba(0, 200, 200, 255) };
+            bot.lastAction = { name: 'view-share-energy', color: new Rgba(0, 150, 150, 255) };
         }
         // bot.lastAction = new Rgba(0, 100, 255, 255);
         return { completed: true }
@@ -306,7 +307,7 @@ const GENE_TEMPLATES: ActionFn[] = [
         // bot.color = bot.color.interpolate(new Rgba(255, 0, 0, 255), 0.01);
         const forward = bot.getForvard();
         if (!forward.block) bot.moveTo(...forward.coords);
-        bot.lastAction = { name: 'view-move', color: new Rgba(200, 200, 200, 255) };
+        bot.lastAction = { name: 'view-move', color: new Rgba(150, 150, 150, 255) };
         return { completed: true }
     },
 
