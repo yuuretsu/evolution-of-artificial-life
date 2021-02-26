@@ -40,11 +40,13 @@ export function drawFamilies(block: any) {
     return null;
 }
 
-export function drawLastAction(block: any) {
-    if (block instanceof Bot) {
-        return block.lastAction;
+export function drawLastAction(options: any): (block: any) => Rgba | null {
+    return function (block) {
+        if (block instanceof Bot) {
+            return options[block.lastAction.name] ? block.lastAction.color : new Rgba(20, 20, 20, 255);
+        }
+        return null;
     }
-    return null;
 }
 
 export function getNarrowImg(world: World): HTMLCanvasElement {

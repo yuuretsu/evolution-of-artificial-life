@@ -63,13 +63,15 @@ function start() {
     world.init();
 }
 
-function updateImage(world: World, mode: string, drawBotsNarrow: boolean) {
+
+// TODO типизировать options
+function updateImage(world: World, mode: string, options: any, drawBotsNarrow: boolean) {
     switch (mode) {
         case 'normal': world.clearImage(); world.visualize(drawColors); break;
         case 'energy': world.clearImage(); world.visualize(drawEnergy); break;
         case 'families': world.clearImage(); world.visualize(drawFamilies); break;
         case 'abilities': world.clearImage(); world.visualize(drawAbilities); break;
-        case 'last-action': world.clearImage(); world.visualize(drawLastAction); break;
+        case 'last-action': world.clearImage(); world.visualize(drawLastAction(options)); break;
         default: break;
     }
     if (drawBotsNarrow) {
@@ -164,17 +166,55 @@ window.addEventListener('load', () => {
     $imgContainer.addEventListener("mouseup", dragEnd, false);
     $imgContainer.addEventListener("mousemove", drag, false);
 
+    type viewActionsMode
+        = 'view-photosynthesis'
+        | 'view-attack'
+        | 'view-multiply'
+        | 'view-share-energy'
+        | 'view-move'
+
+    const viewActionsOptions = {
+        'view-photosynthesis': true,
+        'view-attack': true,
+        'view-multiply': true,
+        'view-share-energy': true,
+        'view-move': true
+    }
+
+    const viewActionsOptionsList: string[] = [];
+    for (const actionName in viewActionsOptions) {
+        viewActionsOptionsList.push(`#${actionName}`);
+    }
+
+    document.querySelectorAll(viewActionsOptionsList.join(','))
+        .forEach(checkbox => {
+            const chbx = checkbox as HTMLInputElement;
+            chbx.addEventListener('change', () => {
+                viewActionsOptions[chbx.id as viewActionsMode] = chbx.checked;
+                updateImage(world, $viewMode.value, viewActionsOptions, $narrows.checked);
+            });
+        });
+
     const $amount = document.querySelector('#amount') as HTMLElement;
     const $fps = document.querySelector('#fps') as HTMLElement;
     const $frameNumber = document.querySelector('#frame-number') as HTMLElement;
     const $viewMode = document.querySelector('#view-mode') as HTMLSelectElement;
+    $viewMode.addEventListener('change', event => {
+        const $viewActions = document.querySelector('#view-actions-options') as HTMLInputElement;
+        if ($viewMode.value === 'last-action') {
+            $viewActions.classList.remove('hidden');
+        } else {
+            $viewActions.classList.add('hidden');
+        }
+        updateImage(world, $viewMode.value, viewActionsOptions, $narrows.checked);
+    });
     const $narrows = document.querySelector('#chbx-narrows') as HTMLInputElement;
     const $chbxUpdImg = document.querySelector('#chbx-upd-img') as HTMLInputElement;
     document.querySelector('#btn-start')?.addEventListener('click', start);
     document.querySelector('#btn-step')?.addEventListener('click', () => {
         pauseSimulation();
         world.step();
-        updateImage(world, $viewMode.value, $narrows.checked);
+        updateImage(world, $viewMode.value, viewActionsOptions, $narrows.checked);
     });
     const $btnPause = document.querySelector('#btn-pause') as HTMLButtonElement;
     $btnPause.addEventListener('click', (e) => {
@@ -226,7 +266,7 @@ window.addEventListener('load', () => {
         fps++;
         if (!paused) world.step();
         if ($chbxUpdImg.checked) {
-            updateImage(world, $viewMode.value, $narrows.checked);
+            updateImage(world, $viewMode.value, viewActionsOptions, $narrows.checked);
         }
         $amount.innerHTML = Bot.amount.toString();
         $frameNumber.innerHTML = `${(world.age / 1000).toFixed(1)} тыс. кадров`;

@@ -6,7 +6,7 @@ export default class Bot extends DynamicBlock {
     static amount = 0;
     private _narrow: number;
     age: number;
-    lastAction: Rgba;
+    lastAction: { name: string, color: Rgba };
     constructor(
         world: World,
         x: number,
@@ -24,7 +24,7 @@ export default class Bot extends DynamicBlock {
         Bot.amount++;
         this._narrow = randInt(0, 8);
         this.age = 0;
-        this.lastAction = new Rgba(20, 20, 20, 255);
+        this.lastAction = { name: 'none', color: new Rgba(20, 20, 20, 255) };
     }
     set narrow(n: number) {
         this._narrow = fixNumber(0, 8, n);
@@ -184,7 +184,7 @@ export class Genome {
         return genome;
     }
     doAction(bot: Bot) {
-        bot.lastAction = new Rgba(20, 20, 20, 255);
+        bot.lastAction = { name: 'none', color: new Rgba(20, 20, 20, 255) };
         for (let i = 0; i < 20; i++) {
             const GENE: Gene = this.genes[this.pointer];
             const RESULT = GENE.action(bot, GENE.property, GENE.branches);
@@ -225,7 +225,7 @@ const GENE_TEMPLATES: ActionFn[] = [
         bot.abilities.photo = Math.min(1, bot.abilities.photo + 0.01);
         bot.abilities.attack = Math.max(0, bot.abilities.attack - 0.01);
         bot.color = bot.color.interpolate(new Rgba(0, 255, 0, 255), 0.01);
-        bot.lastAction = new Rgba(0, 255, 0, 255);
+        bot.lastAction = { name: 'view-photosynthesis', color: new Rgba(0, 200, 0, 255) }
         return { completed: true }
     },
 
@@ -244,7 +244,7 @@ const GENE_TEMPLATES: ActionFn[] = [
         const forward = bot.getForvard();
         if (!forward.block && bot.age > 2) {
             bot.multiplyTo(...forward.coords);
-            bot.lastAction = new Rgba(0, 0, 255, 255);
+            bot.lastAction = { name: 'view-multiply', color: new Rgba(0, 0, 200, 255) };
         }
         // bot.lastAction = new Rgba(0, 0, 255, 255);
         return { completed: true }
@@ -258,7 +258,7 @@ const GENE_TEMPLATES: ActionFn[] = [
             const E = (forward.block.energy + bot.energy) / 2;
             bot.energy = E;
             forward.block.energy = E;
-            bot.lastAction = new Rgba(0, 100, 255, 255);
+            bot.lastAction = { name: 'view-share-energy', color: new Rgba(0, 200, 200, 255) };
         }
         // bot.lastAction = new Rgba(0, 100, 255, 255);
         return { completed: true }
@@ -295,7 +295,7 @@ const GENE_TEMPLATES: ActionFn[] = [
         const forward = bot.getForvard();
         if (forward.block instanceof DeadBot && forward.block.age > 2) {
             forward.block.alive = false;
-            bot.lastAction = new Rgba(255, 255, 0, 255);
+            // bot.lastAction = new Rgba(255, 255, 0, 255);
         }
         // bot.lastAction = new Rgba(255, 255, 0, 255);
         return { completed: true }
@@ -306,7 +306,7 @@ const GENE_TEMPLATES: ActionFn[] = [
         // bot.color = bot.color.interpolate(new Rgba(255, 0, 0, 255), 0.01);
         const forward = bot.getForvard();
         if (!forward.block) bot.moveTo(...forward.coords);
-        bot.lastAction = new Rgba(255, 255, 255, 255);
+        bot.lastAction = { name: 'view-move', color: new Rgba(200, 200, 200, 255) };
         return { completed: true }
     },
 
@@ -330,7 +330,7 @@ const GENE_TEMPLATES: ActionFn[] = [
             const E = (forward.block.energy / 2) * bot.abilities.attack ** 2;
             forward.block.energy -= forward.block.energy / 2;
             bot.energy += E;
-            bot.lastAction = new Rgba(255, 0, 0, 255);
+            bot.lastAction = { name: 'view-attack', color: new Rgba(200, 0, 0, 255) };
         }
         // bot.lastAction = new Rgba(255, 0, 0, 255);
         return { completed: true }

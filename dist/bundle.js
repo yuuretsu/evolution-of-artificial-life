@@ -49,7 +49,7 @@ var Bot = /** @class */ (function (_super) {
         Bot.amount++;
         _this._narrow = math_functions_1.randInt(0, 8);
         _this.age = 0;
-        _this.lastAction = new drawing_1.Rgba(20, 20, 20, 255);
+        _this.lastAction = { name: 'none', color: new drawing_1.Rgba(20, 20, 20, 255) };
         return _this;
     }
     Object.defineProperty(Bot.prototype, "narrow", {
@@ -209,7 +209,7 @@ var Genome = /** @class */ (function () {
         return genome;
     };
     Genome.prototype.doAction = function (bot) {
-        bot.lastAction = new drawing_1.Rgba(20, 20, 20, 255);
+        bot.lastAction = { name: 'none', color: new drawing_1.Rgba(20, 20, 20, 255) };
         for (var i = 0; i < 20; i++) {
             var GENE = this.genes[this.pointer];
             var RESULT = GENE.action(bot, GENE.property, GENE.branches);
@@ -238,7 +238,7 @@ var GENE_TEMPLATES = [
         bot.abilities.photo = Math.min(1, bot.abilities.photo + 0.01);
         bot.abilities.attack = Math.max(0, bot.abilities.attack - 0.01);
         bot.color = bot.color.interpolate(new drawing_1.Rgba(0, 255, 0, 255), 0.01);
-        bot.lastAction = new drawing_1.Rgba(0, 255, 0, 255);
+        bot.lastAction = { name: 'view-photosynthesis', color: new drawing_1.Rgba(0, 200, 0, 255) };
         return { completed: true };
     },
     // Rotate
@@ -256,7 +256,7 @@ var GENE_TEMPLATES = [
         var forward = bot.getForvard();
         if (!forward.block && bot.age > 2) {
             bot.multiplyTo.apply(bot, forward.coords);
-            bot.lastAction = new drawing_1.Rgba(0, 0, 255, 255);
+            bot.lastAction = { name: 'view-multiply', color: new drawing_1.Rgba(0, 0, 200, 255) };
         }
         // bot.lastAction = new Rgba(0, 0, 255, 255);
         return { completed: true };
@@ -269,7 +269,7 @@ var GENE_TEMPLATES = [
             var E = (forward.block.energy + bot.energy) / 2;
             bot.energy = E;
             forward.block.energy = E;
-            bot.lastAction = new drawing_1.Rgba(0, 100, 255, 255);
+            bot.lastAction = { name: 'view-share-energy', color: new drawing_1.Rgba(0, 200, 200, 255) };
         }
         // bot.lastAction = new Rgba(0, 100, 255, 255);
         return { completed: true };
@@ -307,7 +307,7 @@ var GENE_TEMPLATES = [
         var forward = bot.getForvard();
         if (forward.block instanceof DeadBot && forward.block.age > 2) {
             forward.block.alive = false;
-            bot.lastAction = new drawing_1.Rgba(255, 255, 0, 255);
+            // bot.lastAction = new Rgba(255, 255, 0, 255);
         }
         // bot.lastAction = new Rgba(255, 255, 0, 255);
         return { completed: true };
@@ -318,7 +318,7 @@ var GENE_TEMPLATES = [
         var forward = bot.getForvard();
         if (!forward.block)
             bot.moveTo.apply(bot, forward.coords);
-        bot.lastAction = new drawing_1.Rgba(255, 255, 255, 255);
+        bot.lastAction = { name: 'view-move', color: new drawing_1.Rgba(200, 200, 200, 255) };
         return { completed: true };
     },
     // // Move 2
@@ -340,7 +340,7 @@ var GENE_TEMPLATES = [
             var E = (forward.block.energy / 2) * Math.pow(bot.abilities.attack, 2);
             forward.block.energy -= forward.block.energy / 2;
             bot.energy += E;
-            bot.lastAction = new drawing_1.Rgba(255, 0, 0, 255);
+            bot.lastAction = { name: 'view-attack', color: new drawing_1.Rgba(200, 0, 0, 255) };
         }
         // bot.lastAction = new Rgba(255, 0, 0, 255);
         return { completed: true };
@@ -627,11 +627,13 @@ function drawFamilies(block) {
     return null;
 }
 exports.drawFamilies = drawFamilies;
-function drawLastAction(block) {
-    if (block instanceof Bot_1.default) {
-        return block.lastAction;
-    }
-    return null;
+function drawLastAction(options) {
+    return function (block) {
+        if (block instanceof Bot_1.default) {
+            return options[block.lastAction.name] ? block.lastAction.color : new drawing_1.Rgba(20, 20, 20, 255);
+        }
+        return null;
+    };
 }
 exports.drawLastAction = drawLastAction;
 function getNarrowImg(world) {
@@ -840,7 +842,8 @@ function start() {
     }
     world.init();
 }
-function updateImage(world, mode, drawBotsNarrow) {
+// TODO типизировать options
+function updateImage(world, mode, options, drawBotsNarrow) {
     switch (mode) {
         case 'normal':
             world.clearImage();
@@ -860,7 +863,7 @@ function updateImage(world, mode, drawBotsNarrow) {
             break;
         case 'last-action':
             world.clearImage();
-            world.visualize(view_modes_1.drawLastAction);
+            world.visualize(view_modes_1.drawLastAction(options));
             break;
         default: break;
     }
@@ -940,17 +943,46 @@ window.addEventListener('load', function () {
     $imgContainer.addEventListener("mousedown", dragStart, false);
     $imgContainer.addEventListener("mouseup", dragEnd, false);
     $imgContainer.addEventListener("mousemove", drag, false);
+    var viewActionsOptions = {
+        'view-photosynthesis': true,
+        'view-attack': true,
+        'view-multiply': true,
+        'view-share-energy': true,
+        'view-move': true
+    };
+    var viewActionsOptionsList = [];
+    for (var actionName in viewActionsOptions) {
+        viewActionsOptionsList.push("#" + actionName);
+    }
+    document.querySelectorAll(viewActionsOptionsList.join(','))
+        .forEach(function (checkbox) {
+        var chbx = checkbox;
+        chbx.addEventListener('change', function () {
+            viewActionsOptions[chbx.id] = chbx.checked;
+            updateImage(world, $viewMode.value, viewActionsOptions, $narrows.checked);
+        });
+    });
     var $amount = document.querySelector('#amount');
     var $fps = document.querySelector('#fps');
     var $frameNumber = document.querySelector('#frame-number');
     var $viewMode = document.querySelector('#view-mode');
+    $viewMode.addEventListener('change', function (event) {
+        var $viewActions = document.querySelector('#view-actions-options');
+        if ($viewMode.value === 'last-action') {
+            $viewActions.classList.remove('hidden');
+        }
+        else {
+            $viewActions.classList.add('hidden');
+        }
+        updateImage(world, $viewMode.value, viewActionsOptions, $narrows.checked);
+    });
     var $narrows = document.querySelector('#chbx-narrows');
     var $chbxUpdImg = document.querySelector('#chbx-upd-img');
     (_b = document.querySelector('#btn-start')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', start);
     (_c = document.querySelector('#btn-step')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', function () {
         pauseSimulation();
         world.step();
-        updateImage(world, $viewMode.value, $narrows.checked);
+        updateImage(world, $viewMode.value, viewActionsOptions, $narrows.checked);
     });
     var $btnPause = document.querySelector('#btn-pause');
     $btnPause.addEventListener('click', function (e) {
@@ -999,7 +1031,7 @@ window.addEventListener('load', function () {
         if (!paused)
             world.step();
         if ($chbxUpdImg.checked) {
-            updateImage(world, $viewMode.value, $narrows.checked);
+            updateImage(world, $viewMode.value, viewActionsOptions, $narrows.checked);
         }
         $amount.innerHTML = Bot_1.default.amount.toString();
         $frameNumber.innerHTML = (world.age / 1000).toFixed(1) + " \u0442\u044B\u0441. \u043A\u0430\u0434\u0440\u043E\u0432";

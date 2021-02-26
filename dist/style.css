@@ -1,6 +1,20 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap");
 
+.hidden {
+    display: none;
+    animation: lol 2s linear infinite;
+}
+
+@keyframes lol {
+    from {
+        background-color: red;
+    }
+    to {
+        background-color: green;
+    }
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -76,7 +90,7 @@ body {
     font-family: "IBM Plex Sans", sans-serif;
     box-sizing: border-box;
     width: 100%;
-    font-weight: bold;
+    /* font-weight: bold; */
     border-radius: 5px;
     border: none;
     padding: 4px 10px;
@@ -129,6 +143,13 @@ body {
     /* background-color: rgba(255, 0, 0, 0.1); */
 }
 
+.row--border-left {
+    background-color: rgb(40, 40, 40);
+    border-left: 5px dashed rgb(80, 80, 80);
+    padding: 5px 5px 5px 10px;
+    border-radius: 0 5px 5px 0;
+}
+
 .row__name-1 {
     /* white-space: nowrap; */
     font-size: 1.25em;
@@ -174,6 +195,7 @@ body {
 }
 
 .one-line-chbx {
+    user-select: none;
 }
 
 .one-line-chbx > input {
@@ -188,10 +210,12 @@ body {
     outline: none;
     border: none;
     margin: 0;
+    margin-right: 5px;
 }
 
 .chbx::before {
     content: "";
+    box-sizing: border-box;
     transform: translate(0px, 2px);
     display: block;
     width: 15px;
@@ -202,7 +226,7 @@ body {
 }
 
 .chbx:checked::before {
-    background-color: rgb(50, 50, 50);
+    background-color: rgb(80, 80, 80);
 }
 
 .chbx::after {
