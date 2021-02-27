@@ -148,6 +148,8 @@ window.addEventListener('load', () => {
         }
     }
 
+    window.addEventListener('resize', onResizeWindow);
+
     let currentX: number;
     let currentY: number;
     let initialX: number;

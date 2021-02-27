@@ -3,22 +3,11 @@
 
 .hidden {
     display: none;
-    animation: lol 2s linear infinite;
-}
-
-@keyframes lol {
-    from {
-        background-color: red;
-    }
-    to {
-        background-color: green;
-    }
 }
 
 body {
     margin: 0;
     padding: 0;
-    /* font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
     font-family: "IBM Plex Sans", sans-serif;
     font-size: 14px;
     background-color: black;
@@ -66,48 +55,6 @@ body {
     background-color: rgb(80, 80, 80);
 }
 
-.menu {
-    box-sizing: border-box;
-    width: 250px;
-    background-color: rgb(20, 20, 20);
-    padding: 0 20px;
-}
-
-.menu__row {
-    margin: 20px 0;
-}
-
-.menu__row--sm {
-    margin: 10px 0;
-}
-
-.menu__input {
-    margin: 5px 0;
-}
-
-.btn {
-    display: block;
-    font-family: "IBM Plex Sans", sans-serif;
-    font-size: 100%;
-    text-align: center;
-    box-sizing: border-box;
-    width: 100%;
-    /* font-weight: bold; */
-    border-radius: 5px;
-    border: none;
-    padding: 4px 10px;
-    color: whitesmoke;
-    background-color: rgb(80, 80, 80);
-    border: none;
-    outline: none;
-    line-height: 20px;
-    transition-duration: 0.2s;
-}
-
-.btn:hover {
-    background-color: rgb(100, 100, 100);
-}
-
 .img-wrapper {
     display: flex;
     justify-content: center;
@@ -127,19 +74,49 @@ body {
     top: 20px;
 }
 
+.menu {
+    box-sizing: border-box;
+    width: 250px;
+    background-color: rgb(20, 20, 20);
+    padding: 20px;
+}
+
+.menu__row {
+    margin-bottom: 20px;
+}
+
+.menu__row:last-child {
+    margin-bottom: 0;
+}
+
+.menu__row--sm {
+    margin-bottom: 10px;
+}
+
+.menu__row--sm:last-child {
+    margin-bottom: 0;
+}
+
+.menu__input {
+    margin-bottom: 5px;
+}
+
+.menu__input:last-child {
+    margin-bottom: 0;
+}
+
 .row {
-    /* background-color: rgba(255, 0, 0, 0.1); */
 }
 
 .row--border-left {
     background-color: rgb(40, 40, 40);
     border-left: 5px solid rgb(80, 80, 80);
-    padding: 5px 10px 5px 10px;
+    padding: 10px;
     border-radius: 0 5px 5px 0;
 }
 
 .row__name-1 {
-    /* white-space: nowrap; */
+    display: block;
     font-size: 1.25em;
     font-weight: bold;
     text-transform: uppercase;
@@ -147,15 +124,8 @@ body {
 }
 
 .row__name-2 {
-    margin-bottom: 5px;
-}
-
-.row-name {
     display: block;
-}
-
-.row-name--bold {
-    font-weight: bold;
+    margin-bottom: 5px;
 }
 
 .one-line-input {
@@ -164,6 +134,7 @@ body {
     box-sizing: border-box;
     width: 100%;
     font-family: "IBM Plex Mono", monospace;
+    font-size: 100%;
     border: none;
     outline: none;
     border-radius: 5px;
@@ -182,48 +153,12 @@ body {
     box-shadow: 0 0 0 2px rgba(150, 50, 50);
 }
 
-.range {
-    -webkit-appearance: none;
-    width: 100%;
-    background: transparent;
+.one-line-chbx {
+    user-select: none;
 }
 
-.range:focus {
-    outline: none;
-}
-
-.range::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 15px;
-    cursor: pointer;
-    background-color: rgb(80, 80, 80);
-    border-radius: 10px;
-}
-
-.range::-moz-range-track {
-    width: 100%;
-    height: 15px;
-    cursor: pointer;
-    background-color: rgb(80, 80, 80);
-    border-radius: 10px;
-}
-
-.range::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 15px;
-    width: 15px;
-    border-radius: 7.5px;
-    background: whitesmoke;
-    cursor: pointer;
-}
-
-.range::-moz-range-thumb {
-    height: 15px;
-    width: 15px;
-    border-radius: 7.5px;
-    border: none;
-    background: whitesmoke;
-    cursor: pointer;
+.one-line-chbx > input {
+    margin-left: 0;
 }
 
 .chbx-button {
@@ -232,14 +167,6 @@ body {
 
 .chbx-button > input {
     display: none;
-}
-
-.one-line-chbx {
-    user-select: none;
-}
-
-.one-line-chbx > input {
-    margin-left: 0;
 }
 
 .chbx {
@@ -297,15 +224,35 @@ body {
     border-color: rgb(100, 100, 100);
 }
 
+.btn {
+    display: block;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 5px;
+    border: none;
+    padding: 4px 10px;
+    color: whitesmoke;
+    background-color: rgb(80, 80, 80);
+    border: none;
+    outline: none;
+    line-height: 20px;
+    transition-duration: 0.2s;
+}
+
+.btn:hover {
+    background-color: rgb(100, 100, 100);
+}
+
 #img {
     display: block;
-    box-sizing: border-box;
-    background-color: black;
-    border: 2px solid rgb(20, 20, 20);
     border-radius: 5px;
+    border: 1px solid rgb(20, 20, 20);
 }
 
 /* * {
-    outline: 1px solid rgba(255, 127, 127, 0.1);
-    background-color: rgba(255, 127, 127, 0.1);
+    outline: 1px solid rgba(255, 0, 0, 0.1);
+    background-color: rgba(255, 0, 0, 0.05);
 } */
