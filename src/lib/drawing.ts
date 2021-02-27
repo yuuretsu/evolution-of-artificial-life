@@ -60,9 +60,7 @@ export class PixelsData extends Canvas {
     readonly data: ImageData;
     constructor(width: number, height: number, node?: HTMLCanvasElement) {
         super(width, height, node);
-        this.data = this.ctx.getImageData(
-            0,
-            0,
+        this.data = this.ctx.createImageData(
             this.node.width,
             this.node.height
         );

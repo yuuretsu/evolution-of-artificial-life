@@ -14,13 +14,19 @@ import { World } from "./lib/world";
 
 window.addEventListener('load', () => {
 
+    type AppState = {
+        world: World,
+        botsAmount: number,
+        imgOffset: { x: number, y: number }
+    };
+
     function onResizeWindow() {
         (document.querySelector('.wrapper') as HTMLElement)
             .style
             .maxHeight = `${window.innerHeight}px`;
     }
 
-    function start() {
+    function startNewWorld() {
 
         Bot.amount = 0;
 
@@ -47,6 +53,13 @@ window.addEventListener('load', () => {
 
         world.init();
         updateImage();
+
+        $img.style.transform = 'none';
+        appState = {
+            world: world,
+            botsAmount: Bot.amount,
+            imgOffset: { x: 0, y: 0 }
+        }
     }
 
     function step() {
@@ -115,11 +128,11 @@ window.addEventListener('load', () => {
 
     function dragStart(e: TouchEvent | MouseEvent) {
         if (e instanceof TouchEvent) {
-            initialX = e.touches[0].clientX - xOffset;
-            initialY = e.touches[0].clientY - yOffset;
+            initialX = e.touches[0].clientX - appState.imgOffset.x;
+            initialY = e.touches[0].clientY - appState.imgOffset.y;
         } else {
-            initialX = e.clientX - xOffset;
-            initialY = e.clientY - yOffset;
+            initialX = e.clientX - appState.imgOffset.x;
+            initialY = e.clientY - appState.imgOffset.y;
         }
         if (e.target === $img) {
             active = true;
@@ -142,20 +155,24 @@ window.addEventListener('load', () => {
                 currentX = e.clientX - initialX;
                 currentY = e.clientY - initialY;
             }
-            xOffset = currentX;
-            yOffset = currentY;
+            appState.imgOffset.x = currentX;
+            appState.imgOffset.y = currentY;
             $img.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
         }
     }
 
     window.addEventListener('resize', onResizeWindow);
 
+    onResizeWindow();
+
+    let world: World;
+
+    let appState: AppState;
+
     let currentX: number;
     let currentY: number;
     let initialX: number;
     let initialY: number;
-    let xOffset = 0;
-    let yOffset = 0;
     let active = false;
 
     const $imgContainer = document.querySelector('#img-container') as HTMLElement;
@@ -269,13 +286,9 @@ window.addEventListener('load', () => {
 
     const $inputBots = document.querySelector('#input-bots') as HTMLInputElement;
 
-    document.querySelector('#btn-start')?.addEventListener('click', start);
+    document.querySelector('#btn-start')?.addEventListener('click', startNewWorld);
 
-    onResizeWindow();
-
-    let world: World;
-
-    start();
+    startNewWorld();
 
     let lastLoop = Date.now();
     let fps = 0;
