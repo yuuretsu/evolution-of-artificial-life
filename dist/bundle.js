@@ -849,6 +849,7 @@ window.addEventListener('load', function () {
         }
         world.init();
         updateImage();
+        updateHTMLInfo();
         $img.style.transform = 'none';
         appState = {
             world: world,
@@ -866,6 +867,9 @@ window.addEventListener('load', function () {
         world.step();
         if ($chbxUpdImg.checked)
             updateImage();
+        updateHTMLInfo();
+    }
+    function updateHTMLInfo() {
         $amount.innerHTML = Bot_1.default.amount.toString();
         $frameNumber.innerHTML = "" + (world.age / 1000).toFixed(1);
     }

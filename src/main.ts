@@ -54,6 +54,7 @@ window.addEventListener('load', () => {
         world.init();
         updateImage();
 
+        updateHTMLInfo();
         $img.style.transform = 'none';
         appState = {
             world: world,
@@ -71,6 +72,10 @@ window.addEventListener('load', () => {
         fps++;
         world.step();
         if ($chbxUpdImg.checked) updateImage();
+        updateHTMLInfo();
+    }
+
+    function updateHTMLInfo() {
         $amount.innerHTML = Bot.amount.toString();
         $frameNumber.innerHTML = `${(world.age / 1000).toFixed(1)}`;
     }
