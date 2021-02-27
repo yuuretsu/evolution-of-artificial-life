@@ -2,64 +2,39 @@ import Bot, { Genome } from "./lib/Bot";
 import { Rgba } from "./lib/drawing";
 import { limNumber } from "./lib/math-functions";
 import {
+    drawAbilities,
+    drawAges,
     drawColors,
     drawEnergy,
     drawFamilies,
-    drawAbilities,
     drawLastAction,
     getNarrowImg
 } from "./lib/view-modes";
-import { Block, World } from "./lib/world";
-
-function onResizeWindow() {
-    (document.querySelector('.wrapper') as HTMLElement).style.maxHeight = `${window.innerHeight}px`;
-}
-
-type viewState = {
-    current: { x: number, y: number },
-    initial: { x: number, y: number },
-    offset: { x: number, y: number },
-    active: boolean
-}
-
-const DEFAULT_VIEW_STATE = {
-    current: { x: 0, y: 0 },
-    initial: { x: 0, y: 0 },
-    offset: { x: 0, y: 0 },
-    active: false,
-};
-
-let viewState: viewState;
-
-type AppState = {
-    view: viewState;
-};
-
-let world: World;
-
-window.addEventListener('resize', onResizeWindow);
+import { World } from "./lib/world";
 
 window.addEventListener('load', () => {
 
+    function onResizeWindow() {
+        (document.querySelector('.wrapper') as HTMLElement)
+            .style
+            .maxHeight = `${window.innerHeight}px`;
+    }
+
     function start() {
-
-        viewState = DEFAULT_VIEW_STATE;
-
-        (document.querySelector('#img') as HTMLElement).style.transform = `none`;
 
         Bot.amount = 0;
 
         world = new World(
-            parseInt((document.querySelector('#input-width') as HTMLInputElement).value),
-            parseInt((document.querySelector('#input-height') as HTMLInputElement).value),
-            parseInt((document.querySelector('#input-pixel') as HTMLInputElement).value),
-            document.querySelector('#img') as HTMLCanvasElement
+            parseInt($inputWidth.value),
+            parseInt($inputHeight.value),
+            parseInt($inputPixel.value),
+            $img
         );
 
-        const BOTS_AMOUNT = parseInt((document.querySelector('#input-bots') as HTMLInputElement).value);
+        const BOTS_AMOUNT = parseInt($inputBots.value);
 
         for (let i = 0; i < Math.min(world.width * world.height, BOTS_AMOUNT); i++) {
-            const a = new Bot(
+            new Bot(
                 world,
                 ...world.randEmpty(),
                 new Rgba(100, 100, 100, 255),
@@ -71,18 +46,33 @@ window.addEventListener('load', () => {
         }
 
         world.init();
-        updateImage(world, $viewMode.value, viewActionsOptions, $chbxNarrows.checked);
+        updateImage();
     }
 
-    // TODO типизировать options
-    function updateImage(world: World, mode: string, options: any, drawBotsNarrow: boolean) {
+    function step() {
+        if (Date.now() - lastLoop > 1000) {
+            $fps.innerText = fps.toFixed(0);
+            fps = 0;
+            lastLoop = Date.now();
+        }
+        fps++;
+        world.step();
+        if ($chbxUpdImg.checked) updateImage();
+        $amount.innerHTML = Bot.amount.toString();
+        $frameNumber.innerHTML = `${(world.age / 1000).toFixed(1)}`;
+    }
+
+    function updateImage() {
         world.clearImage();
-        switch (mode) {
+        switch ($viewMode.value) {
             case 'normal':
                 world.visualize(drawColors);
                 break;
             case 'energy':
                 world.visualize(drawEnergy(parseInt($rangeViewEnergy.value)));
+                break;
+            case 'ages':
+                world.visualize(drawAges);
                 break;
             case 'families':
                 world.visualize(drawFamilies);
@@ -91,64 +81,37 @@ window.addEventListener('load', () => {
                 world.visualize(drawAbilities);
                 break;
             case 'action':
-                world.visualize(drawLastAction(options));
+                world.visualize(drawLastAction(viewActionsOptions));
                 break;
             default: break;
         }
-        if (drawBotsNarrow) {
+        if ($chbxNarrows.checked) {
             world.drawLayer(getNarrowImg(world));
         }
     }
 
-    function continueSimulation() {
-        paused = false;
-        $chbxUpdImg.disabled = false;
-        $chbxUpdImg.checked = true;
-    }
-
     function pauseSimulation() {
-        paused = true;
-        $chbxUpdImg.disabled = true;
+        clearInterval(intervalId);
         $chbxUpdImg.checked = false;
+        $chbxUpdImg.disabled = true;
+        $fps.innerText = '0 (пауза)';
     }
 
-    onResizeWindow();
+    function continueSimulation() {
+        intervalId = setInterval(step);
+        $chbxUpdImg.checked = true;
+        $chbxUpdImg.disabled = false;
+    }
 
-    // const $inputFps = document.querySelector('#input-fps') as HTMLInputElement;
-
-    document.querySelectorAll(
-        '#input-width, #input-height, #input-pixel'
-    ).forEach(elem => {
-        elem.addEventListener('change', event => {
-            const target = event.target as HTMLInputElement;
-            target.value = (limNumber(
-                parseInt(target.min),
-                parseInt(target.max),
-                parseInt(target.value)
-            ) || parseInt(target.min)).toString();
-        })
-    });
-
-    const $imgContainer = document.querySelector('#img-container') as HTMLElement;
-    const $img = document.querySelector('#img') as HTMLElement;
-
-    document.querySelector('#btn-menu')?.addEventListener('change', event => {
-        if ((event.target as HTMLInputElement).checked) {
-            $imgContainer.classList.add('img-wrapper--menu-opened');
-            document.querySelector('#menu')?.classList.add('wrapper__menu--menu-opened');
+    function onChangePause() {
+        if ($chbxPause.checked) {
+            pauseSimulation();
+            ($chbxPause.nextElementSibling as HTMLElement).innerText = 'Продолжить';
         } else {
-            $imgContainer.classList.remove('img-wrapper--menu-opened');
-            document.querySelector('#menu')?.classList.remove('wrapper__menu--menu-opened');
+            continueSimulation();
+            ($chbxPause.nextElementSibling as HTMLElement).innerText = 'Пауза';
         }
-    });
-
-    let currentX: number;
-    let currentY: number;
-    let initialX: number;
-    let initialY: number;
-    let xOffset = 0;
-    let yOffset = 0;
-    let active = false;
+    };
 
     function dragStart(e: TouchEvent | MouseEvent) {
         if (e instanceof TouchEvent) {
@@ -185,6 +148,16 @@ window.addEventListener('load', () => {
         }
     }
 
+    let currentX: number;
+    let currentY: number;
+    let initialX: number;
+    let initialY: number;
+    let xOffset = 0;
+    let yOffset = 0;
+    let active = false;
+
+    const $imgContainer = document.querySelector('#img-container') as HTMLElement;
+
     $imgContainer.addEventListener("touchstart", dragStart, false);
     $imgContainer.addEventListener("touchend", dragEnd, false);
     $imgContainer.addEventListener("touchmove", drag, false);
@@ -193,7 +166,37 @@ window.addEventListener('load', () => {
     $imgContainer.addEventListener("mouseup", dragEnd, false);
     $imgContainer.addEventListener("mousemove", drag, false);
 
-    // Чекбоксы отображения действий ботами
+    const $img = document.querySelector('#img') as HTMLCanvasElement;
+
+    document.querySelector('#btn-menu')?.addEventListener('change', event => {
+        if ((event.target as HTMLInputElement).checked) {
+            $imgContainer.classList.add('img-wrapper--menu-opened');
+            document.querySelector('#menu')?.classList.add('wrapper__menu--menu-opened');
+        } else {
+            $imgContainer.classList.remove('img-wrapper--menu-opened');
+            document.querySelector('#menu')?.classList.remove('wrapper__menu--menu-opened');
+        }
+    });
+
+    const $amount = document.querySelector('#amount') as HTMLElement;
+    const $frameNumber = document.querySelector('#frame-number') as HTMLElement;
+    const $fps = document.querySelector('#fps') as HTMLElement;
+
+    const $viewMode = document.querySelector('#view-mode') as HTMLSelectElement;
+    $viewMode.addEventListener('change', () => {
+        const $viewModeOptionsBlock = document
+            .querySelector('#view-modes-options') as HTMLElement;
+        Array
+            .from($viewModeOptionsBlock.children)
+            .forEach(element => {
+                if (element.id === `view-${$viewMode.value}-options`) {
+                    element.classList.remove('hidden');
+                } else {
+                    element.classList.add('hidden');
+                }
+            });
+        updateImage();
+    });
 
     type viewActionsMode
         = 'view-photosynthesis'
@@ -222,89 +225,57 @@ window.addEventListener('load', () => {
             const chbx = checkbox as HTMLInputElement;
             chbx.addEventListener('change', () => {
                 viewActionsOptions[chbx.id as viewActionsMode] = chbx.checked;
-                updateImage(world, $viewMode.value, viewActionsOptions, $chbxNarrows.checked);
+                updateImage();
             });
         });
 
-    const $amount = document.querySelector('#amount') as HTMLElement;
-    const $fps = document.querySelector('#fps') as HTMLElement;
-    const $frameNumber = document.querySelector('#frame-number') as HTMLElement;
-    const $viewMode = document.querySelector('#view-mode') as HTMLSelectElement;
     const $rangeViewEnergy = document.querySelector('#view-energy-divider') as HTMLInputElement;
-    $rangeViewEnergy.addEventListener('input', () => {
-        updateImage(world, $viewMode.value, viewActionsOptions, $chbxNarrows.checked);
+    $rangeViewEnergy.addEventListener('input', updateImage);
+
+    const $chbxUpdImg = document.querySelector('#chbx-upd-img') as HTMLInputElement;
+
+    const $chbxNarrows = document.querySelector('#chbx-narrows') as HTMLInputElement;
+    $chbxNarrows.addEventListener('change', updateImage);
+
+    const $chbxPause = document.querySelector('#chbx-pause') as HTMLInputElement;
+    $chbxPause.addEventListener('input', onChangePause);
+
+    document.querySelector('#btn-step')?.addEventListener('click', () => {
+        $chbxPause.checked = true;
+        onChangePause();
+        world.step();
+        updateImage();
     });
 
-    // Переключение видимости блоков настроек режимов просмотра
-    $viewMode.addEventListener('change', () => {
-        const $viewModeOptionsBlock = document
-            .querySelector('#view-modes-options') as HTMLElement;
-        Array
-            .from($viewModeOptionsBlock.children)
-            .forEach(element => {
-                if (element.id === `view-${$viewMode.value}-options`) {
-                    element.classList.remove('hidden');
-                } else {
-                    element.classList.add('hidden');
-                }
-            });
-        updateImage(world, $viewMode.value, viewActionsOptions, $chbxNarrows.checked);
+    const $inputWidth = document.querySelector('#input-width') as HTMLInputElement;
+    const $inputHeight = document.querySelector('#input-height') as HTMLInputElement;
+    const $inputPixel = document.querySelector('#input-pixel') as HTMLInputElement;
+
+    // Normalize input values
+    document.querySelectorAll(
+        '#input-width, #input-height, #input-pixel'
+    ).forEach(elem => {
+        elem.addEventListener('change', event => {
+            const target = event.target as HTMLInputElement;
+            target.value = (limNumber(
+                parseInt(target.min),
+                parseInt(target.max),
+                parseInt(target.value)
+            ) || parseInt(target.min)).toString();
+        })
     });
-    const $chbxNarrows = document.querySelector('#chbx-narrows') as HTMLInputElement;
-    $chbxNarrows.addEventListener('change', () => {
-        updateImage(world, $viewMode.value, viewActionsOptions, $chbxNarrows.checked);
-    });
-    const $chbxUpdImg = document.querySelector('#chbx-upd-img') as HTMLInputElement;
+
+    const $inputBots = document.querySelector('#input-bots') as HTMLInputElement;
+
     document.querySelector('#btn-start')?.addEventListener('click', start);
-    document.querySelector('#btn-step')?.addEventListener('click', () => {
-        pauseSimulation();
-        world.step();
-        updateImage(world, $viewMode.value, viewActionsOptions, $chbxNarrows.checked);
-    });
-    const $btnPause = document.querySelector('#btn-pause') as HTMLButtonElement;
-    $btnPause.addEventListener('click', () => {
-        switch (paused) {
-            case true:
-                continueSimulation();
-                break;
-            case false:
-                pauseSimulation();
-                break;
-        }
-    });
+
+    onResizeWindow();
+
+    let world: World;
+
     start();
 
     let lastLoop = Date.now();
     let fps = 0;
-    let paused = false;
-    setInterval(() => {
-        if (Date.now() - lastLoop > 1000) {
-            $fps.innerHTML = fps.toFixed(0);
-            fps = 0;
-            lastLoop = Date.now();
-        }
-        fps++;
-        if (!paused) world.step();
-        if ($chbxUpdImg.checked) {
-            updateImage(world, $viewMode.value, viewActionsOptions, $chbxNarrows.checked);
-        }
-        $amount.innerHTML = Bot.amount.toString();
-        $frameNumber.innerHTML = `${(world.age / 1000).toFixed(1)}`;
-    });
-
-    // (function step() {
-    //     if (Date.now() - lastLoop > 1000) {
-    //         $fps.innerHTML = fps.toFixed(0);
-    //         fps = 0;
-    //         lastLoop = Date.now();
-    //     }
-    //     fps++;
-    //     if (!paused) world.step();
-    //     if ($chbxUpdImg.checked) {
-    //         updateImage(world, $viewMode.value, viewActionsOptions, $narrows.checked);
-    //     }
-    //     $amount.innerHTML = Bot.amount.toString();
-    //     $frameNumber.innerHTML = `${(world.age / 1000).toFixed(1)} тыс. кадров`;
-    //     setTimeout(step, 1000 / parseInt($inputFps.value));
-    // })();
+    let intervalId = setInterval(step);
 });

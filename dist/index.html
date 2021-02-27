@@ -13,8 +13,8 @@
   <div class="wrapper">
     <div class="img-wrapper img-wrapper--menu-opened" id="img-container">
       <canvas id="img"></canvas>
-      <div class="img-wrapper__btn-menu">
-        <input type="checkbox" name="" id="btn-menu" checked />
+      <div class="chbx-button img-wrapper__btn-menu">
+        <input type="checkbox" id="btn-menu" checked />
         <label class="btn" for="btn-menu">Опции</label>
       </div>
     </div>
@@ -36,6 +36,7 @@
           <select class="one-line-input menu__input" id="view-mode">
             <option value="normal" selected>Обычный</option>
             <option value="energy">Энергия</option>
+            <option value="ages">Возраст</option>
             <option value="families">Семейства</option>
             <option value="abilities">Специализации</option>
             <option value="action">Действия</option>
@@ -84,20 +85,10 @@
             <label for="chbx-narrows">Направления ботов</label>
           </div>
         </div>
-        <!-- <div class="row menu__row--sm">
-                        <span class="row__name-2">Ограничение fps</span>
-                        <input
-                            class="one-line-input menu__input"
-                            type="number"
-                            id="input-fps"
-                            min="1"
-                            max="250"
-                            value="60"
-                        />
-                    </div> -->
-        <button class="btn menu__input" id="btn-pause">
-          Пауза / Продолжить
-        </button>
+        <div class="chbx-button menu__input">
+          <input type="checkbox" name="" id="chbx-pause" />
+          <label class="btn" for="chbx-pause">Пауза</label>
+        </div>
         <button class="btn menu__input" id="btn-step">Шаг</button>
       </div>
 

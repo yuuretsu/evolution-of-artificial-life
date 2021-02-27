@@ -24,7 +24,7 @@ export function drawColors(block: any) {
 export function drawEnergy(divider: number): (block: any) => Rgba | null {
     return block => {
         return block instanceof Bot
-            ? new Rgba(20, 20, 100, 255)
+            ? new Rgba(0, 0, 50, 255)
                 .interpolate(
                     new Rgba(255, 255, 0, 255),
                     block.energy / divider
@@ -50,6 +50,13 @@ export function drawFamilies(block: any) {
         return block.family;
     }
     return null;
+}
+
+export function drawAges(block: any) {
+    return block instanceof Bot
+        ? new Rgba(150, 150, 150, 255)
+            .interpolate(new Rgba(0, 0, 100, 255), block.age / 2000)
+        : null;
 }
 
 export function drawLastAction(options: any): (block: any) => Rgba | null {

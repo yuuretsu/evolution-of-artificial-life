@@ -88,6 +88,8 @@ body {
 .btn {
     display: block;
     font-family: "IBM Plex Sans", sans-serif;
+    font-size: 100%;
+    text-align: center;
     box-sizing: border-box;
     width: 100%;
     /* font-weight: bold; */
@@ -123,20 +125,6 @@ body {
     position: absolute;
     left: 20px;
     top: 20px;
-}
-
-.img-wrapper__btn-menu > input {
-    display: none;
-}
-
-.img-wrapper__btn-menu > label {
-    /* display: block;
-    padding: 5px 10px;
-    background-color: rgb(50, 50, 50);
-    border-radius: 5px; */
-    user-select: none;
-    cursor: pointer;
-    /* transition-duration: 0.2s; */
 }
 
 .row {
@@ -236,6 +224,14 @@ body {
     border: none;
     background: whitesmoke;
     cursor: pointer;
+}
+
+.chbx-button {
+    user-select: none;
+}
+
+.chbx-button > input {
+    display: none;
 }
 
 .one-line-chbx {
