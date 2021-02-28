@@ -32,7 +32,7 @@
       <div class="row menu__row">
         <div class="row__name-1">Настройки просмотра</div>
         <div class="row menu__row--sm">
-          <span class="row__name-2">Режим отображения</span>
+          <span class="row__name-3">Режим отображения</span>
           <select class="one-line-input menu__input" id="view-mode">
             <option value="normal" selected>Обычный</option>
             <option value="energy">Энергия</option>
@@ -44,7 +44,7 @@
         </div>
         <div class="row menu__row--sm" id="view-modes-options">
           <div class="row row--border-left hidden" id="view-energy-options">
-            <span class="row__name-2">Делитель энергии</span>
+            <span class="row__name-3">Делитель энергии</span>
             <input class="range menu__input" type="range" min="10" max="200" value="200" id="view-energy-divider" />
           </div>
           <div class="row row--border-left hidden" id="view-action-options">
@@ -69,13 +69,17 @@
               <label for="view-move">Передвижение</label>
             </div>
             <div class="one-line-chbx menu__input">
+              <input class="chbx" type="checkbox" id="view-virus" />
+              <label for="view-virus">Заражение (вирус)</label>
+            </div>
+            <div class="one-line-chbx menu__input">
               <input class="chbx" type="checkbox" id="view-do-nothing" />
               <label for="view-do-nothing">Не определился</label>
             </div>
           </div>
         </div>
         <div class="row menu__row--sm">
-          <span class="row__name-2">Доп. параметры</span>
+          <span class="row__name-3">Доп. параметры</span>
           <div class="one-line-chbx menu__input">
             <input class="chbx" type="checkbox" id="chbx-upd-img" checked />
             <label for="chbx-upd-img">Обновлять картинку</label>
@@ -92,21 +96,75 @@
         <button class="btn menu__input" id="btn-step">Шаг</button>
       </div>
 
+
+      <div class="row menu__row">
+        <div class="row__name-1">Настройки мира</div>
+        <div class="row menu__row--sm">
+          <span class="row__name-2">Генофонд</span>
+          <div class="row menu__row--sm">
+            <span class="row__name-3">Действия</span>
+            <div class="one-line-chbx menu__input">
+              <input class="chbx" type="checkbox" id="chbx-gene-restart" checked />
+              <label for="chbx-gene-restart">Начать с начала</label>
+            </div>
+            <div class="one-line-chbx menu__input">
+              <input class="chbx" type="checkbox" id="chbx-gene-photosynthesis" checked />
+              <label for="chbx-gene-photosynthesis">Фотосинтез</label>
+            </div>
+            <div class="one-line-chbx menu__input">
+              <input class="chbx" type="checkbox" id="chbx-gene-attack" checked />
+              <label for="chbx-gene-attack">Атака</label>
+            </div>
+            <div class="one-line-chbx menu__input">
+              <input class="chbx" type="checkbox" id="chbx-gene-multiply" checked />
+              <label for="chbx-gene-multiply">Размножение</label>
+            </div>
+            <div class="one-line-chbx menu__input">
+              <input class="chbx" type="checkbox" id="chbx-gene-move" checked />
+              <label for="chbx-gene-move">Перемещение</label>
+            </div>
+            <div class="one-line-chbx menu__input">
+              <input class="chbx" type="checkbox" id="chbx-gene-rotate" checked />
+              <label for="chbx-gene-rotate">Поворот</label>
+            </div>
+            <div class="one-line-chbx menu__input">
+              <input class="chbx" type="checkbox" id="chbx-gene-share-energy" checked />
+              <label for="chbx-gene-share-energy">Делиться энергией</label>
+            </div>
+            <div class="one-line-chbx menu__input">
+              <input class="chbx" type="checkbox" id="chbx-gene-virus" />
+              <label for="chbx-gene-virus">Заражение (вирус)</label>
+            </div>
+          </div>
+          <div class="row menu__row--sm">
+            <span class="row__name-3">Условия и проверки</span>
+            <div class="one-line-chbx menu__input">
+              <input class="chbx" type="checkbox" id="chbx-gene-look-forward" checked />
+              <label for="chbx-gene-look-forward">Что спереди?</label>
+            </div>
+            <div class="one-line-chbx menu__input">
+              <input class="chbx" type="checkbox" id="chbx-gene-check-energy" checked />
+              <label for="chbx-gene-check-energy">Сколько у меня энергии?</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="row menu__row">
         <div class="row__name-1">Перезапуск мира</div>
         <div class="row menu__row--sm">
-          <span class="row__name-2">Размер мира</span>
+          <span class="row__name-3">Размер мира</span>
           <input class="one-line-input menu__input" type="number" id="input-width" min="1" max="2048" value="160"
             placeholder="Ширина" />
           <input class="one-line-input menu__input" type="number" id="input-height" min="1" max="2048" value="80"
             placeholder="Высота" />
         </div>
         <div class="row menu__row--sm">
-          <span class="row__name-2">Размер пикселя</span>
+          <span class="row__name-3">Размер пикселя</span>
           <input class="one-line-input menu__input" type="number" id="input-pixel" min="1" max="50" value="6" />
         </div>
         <div class="row menu__row--sm">
-          <span class="row__name-2">Кол-во ботов</span>
+          <span class="row__name-3">Кол-во ботов</span>
           <input class="one-line-input menu__input" type="number" id="input-bots" value="1000" />
         </div>
         <div class="row menu__row--sm">

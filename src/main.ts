@@ -1,5 +1,6 @@
 import Bot, { Genome } from "./lib/Bot";
 import { Rgba } from "./lib/drawing";
+import { ActionFn, createGenePool, GeneName, getAllGenesNames } from "./lib/Gene-templates";
 import { limNumber } from "./lib/math-functions";
 import {
     drawAbilities,
@@ -17,7 +18,8 @@ window.addEventListener('load', () => {
     type AppState = {
         world: World,
         botsAmount: number,
-        imgOffset: { x: number, y: number }
+        imgOffset: { x: number, y: number },
+        genePool: ActionFn[],
     };
 
     function onResizeWindow() {
@@ -29,6 +31,7 @@ window.addEventListener('load', () => {
     function startNewWorld() {
 
         Bot.amount = 0;
+        Genome.genePool = getGenePool();
 
         world = new World(
             parseInt($inputWidth.value),
@@ -59,8 +62,10 @@ window.addEventListener('load', () => {
         appState = {
             world: world,
             botsAmount: Bot.amount,
-            imgOffset: { x: 0, y: 0 }
+            imgOffset: { x: 0, y: 0 },
+            genePool: [...Genome.genePool]
         }
+        console.log(appState);
     }
 
     function step() {
@@ -228,7 +233,8 @@ window.addEventListener('load', () => {
         | 'view-multiply'
         | 'view-share-energy'
         | 'view-move'
-        | 'view-do-nothing';
+        | 'view-do-nothing'
+        | 'view-virus';
 
     const viewActionsOptions = {
         'view-photosynthesis': false,
@@ -236,7 +242,8 @@ window.addEventListener('load', () => {
         'view-multiply': false,
         'view-share-energy': false,
         'view-move': false,
-        'view-do-nothing': false
+        'view-do-nothing': false,
+        'view-virus': false,
     };
 
     const viewActionsOptionsList: string[] = [];
@@ -269,6 +276,30 @@ window.addEventListener('load', () => {
         onChangePause();
         world.step();
         updateImage();
+    });
+
+
+    function getGenePool() {
+        const geneNames: GeneName[] = [];
+        for (const geneName of getAllGenesNames()) {
+            const $chbx = document.querySelector(`#chbx-gene-${geneName}`) as HTMLInputElement;
+            // console.log(document.querySelector(`#chbx-gene-${geneName}`), geneName);
+            if ($chbx.checked) geneNames.push(geneName);
+        }
+        console.log(geneNames);
+        return createGenePool(geneNames);
+    }
+
+    const geneCheckboxesId = getAllGenesNames()
+        .map(n => `#chbx-gene-${n}`)
+        .join(', ');
+
+    document.querySelectorAll(geneCheckboxesId).forEach(elem => {
+        const $chbx = elem as HTMLInputElement;
+        $chbx.addEventListener('change', () => {
+            appState.genePool = getGenePool();
+            Genome.genePool = getGenePool();
+        });
     });
 
     const $inputWidth = document.querySelector('#input-width') as HTMLInputElement;

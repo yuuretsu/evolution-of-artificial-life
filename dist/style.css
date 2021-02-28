@@ -125,6 +125,14 @@ body {
 
 .row__name-2 {
     display: block;
+    /* font-weight: bold; */
+    /* text-transform: uppercase; */
+    font-size: 1.25em;
+    margin-bottom: 5px;
+}
+
+.row__name-3 {
+    display: block;
     margin-bottom: 5px;
 }
 
