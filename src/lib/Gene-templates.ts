@@ -49,7 +49,7 @@ export const GENES = {
     }) as ActionFn,
 
     'multiply': ((bot, property, branches) => {
-        const forward = bot.getForvard();
+        const forward = bot.getForward();
         if (!forward.block && bot.age > 2) {
             bot.multiplyTo(...forward.coords);
             bot.lastAction = { name: 'view-multiply', color: new Rgba(0, 0, 200, 255) };
@@ -60,7 +60,7 @@ export const GENES = {
 
     'share-energy': ((bot, property, branches) => {
         bot.color = bot.color.interpolate(new Rgba(0, 0, 255, 255), 0.005);
-        const forward = bot.getForvard();
+        const forward = bot.getForward();
         if (forward.block instanceof Bot && forward.block.energy < bot.energy) {
             const E = (forward.block.energy + bot.energy) / 2;
             bot.energy = E;
@@ -73,7 +73,7 @@ export const GENES = {
 
     'move': ((bot, property, branches) => {
         // bot.color = bot.color.interpolate(new Rgba(255, 0, 0, 255), 0.01);
-        const forward = bot.getForvard();
+        const forward = bot.getForward();
         if (!forward.block) bot.moveTo(...forward.coords);
         bot.lastAction = { name: 'view-move', color: new Rgba(150, 150, 150, 255) };
         return { completed: true }
@@ -84,7 +84,7 @@ export const GENES = {
         bot.color = bot.color.interpolate(new Rgba(255, 0, 0, 255), 0.01);
         bot.abilities.attack = Math.min(1, bot.abilities.attack + 0.01);
         bot.abilities.photo = Math.max(0, bot.abilities.photo - 0.01);
-        const forward = bot.getForvard();
+        const forward = bot.getForward();
         if (forward.block instanceof Bot) {
             const E = (forward.block.energy / 2) * bot.abilities.attack ** 2;
             forward.block.energy -= forward.block.energy / 2;
@@ -97,7 +97,7 @@ export const GENES = {
 
     'look-forward': ((bot, property, branches) => {
         // bot.color = bot.color.interpolate(new Rgba(255, 255, 255, 255), 0.01);
-        const forward = bot.getForvard();
+        const forward = bot.getForward();
         if (forward.block instanceof Bot) {
             if (forward.block.family.difference(bot.color) < property) {
                 return { completed: false, goto: branches[0] }
@@ -121,7 +121,7 @@ export const GENES = {
 
     'virus': ((bot, property, branches) => {
         bot.color = bot.color.interpolate(new Rgba(255, 0, 255, 255), 0.01);
-        const forward = bot.getForvard();
+        const forward = bot.getForward();
         if (forward.block instanceof Bot) {
             forward.block.genome = bot.genome.replication();
             bot.lastAction = { name: 'view-virus', color: new Rgba(200, 0, 200, 255) };
@@ -136,7 +136,7 @@ const GENE_TEMPLATES: ActionFn[] = [
     // Look forward
     (bot, property, branches) => {
         // bot.color = bot.color.interpolate(new Rgba(255, 255, 255, 255), 0.01);
-        const forward = bot.getForvard();
+        const forward = bot.getForward();
         if (forward.block instanceof Bot) {
             if (forward.block.family.difference(bot.color) < property) {
                 return { completed: false, goto: branches[0] }

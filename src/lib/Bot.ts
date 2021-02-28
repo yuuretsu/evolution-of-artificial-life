@@ -38,7 +38,7 @@ export default class Bot extends DynamicBlock {
         const y = this.y + MOORE_NEIGHBOURHOOD[this.narrow][1];
         return this.world.fixCoords(x, y);
     }
-    getForvard() {
+    getForward() {
         const coords = this.narrowToCoords();
         return { block: this.world.get(...coords), coords: coords };
     }
@@ -66,7 +66,7 @@ export default class Bot extends DynamicBlock {
         this.moveTo(...coords);
     }
     onStep() {
-        if (this.energy < 1 || this.energy > 100 || this.age > 2000) {
+        if (this.energy < 1 || this.energy > 200 || this.age > 2000) {
             this.alive = false;
             return;
         }
