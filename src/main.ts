@@ -1,3 +1,5 @@
+import './style.css';
+
 import Bot, { Genome } from "./lib/Bot";
 import { Rgba } from "./lib/drawing";
 import { ActionFn, createGenePool, GeneName, getAllGenesNames } from "./lib/Gene-templates";
