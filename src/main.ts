@@ -136,39 +136,10 @@ window.addEventListener('load', () => {
         }
     };
 
-    function dragStart(e: TouchEvent | MouseEvent) {
-        if (e instanceof TouchEvent) {
-            initialX = e.touches[0].clientX - appState.imgOffset.x;
-            initialY = e.touches[0].clientY - appState.imgOffset.y;
-        } else {
-            initialX = e.clientX - appState.imgOffset.x;
-            initialY = e.clientY - appState.imgOffset.y;
-        }
-        if (e.target === $img) {
-            active = true;
-        }
-    }
-
     function dragEnd() {
         initialX = currentX;
         initialY = currentY;
         active = false;
-    }
-
-    function drag(e: TouchEvent | MouseEvent) {
-        if (active) {
-            e.preventDefault();
-            if (e instanceof TouchEvent) {
-                currentX = e.touches[0].clientX - initialX;
-                currentY = e.touches[0].clientY - initialY;
-            } else {
-                currentX = e.clientX - initialX;
-                currentY = e.clientY - initialY;
-            }
-            appState.imgOffset.x = currentX;
-            appState.imgOffset.y = currentY;
-            $img.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
-        }
     }
 
     window.addEventListener('resize', onResizeWindow);
@@ -187,13 +158,45 @@ window.addEventListener('load', () => {
 
     const $imgContainer = document.querySelector('#img-container') as HTMLElement;
 
-    $imgContainer.addEventListener("touchstart", dragStart, false);
-    $imgContainer.addEventListener("touchend", dragEnd, false);
-    $imgContainer.addEventListener("touchmove", drag, false);
+    // Touch drag
+    $imgContainer.addEventListener("touchstart", e => {
+        initialX = e.touches[0].clientX - appState.imgOffset.x;
+        initialY = e.touches[0].clientY - appState.imgOffset.y;
+        if (e.target === $img) {
+            active = true;
+        }
+    });
+    $imgContainer.addEventListener("touchmove", e => {
+        if (active) {
+            e.preventDefault();
+            currentX = e.touches[0].clientX - initialX;
+            currentY = e.touches[0].clientY - initialY;
+            appState.imgOffset.x = currentX;
+            appState.imgOffset.y = currentY;
+            $img.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+        }
+    });
+    $imgContainer.addEventListener("touchend", dragEnd);
 
-    $imgContainer.addEventListener("mousedown", dragStart, false);
-    $imgContainer.addEventListener("mouseup", dragEnd, false);
-    $imgContainer.addEventListener("mousemove", drag, false);
+    // Mouse drag
+    $imgContainer.addEventListener("mousedown", e => {
+        initialX = e.clientX - appState.imgOffset.x;
+        initialY = e.clientY - appState.imgOffset.y;
+        if (e.target === $img) {
+            active = true;
+        }
+    });
+    $imgContainer.addEventListener("mousemove", e => {
+        if (active) {
+            e.preventDefault();
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+            appState.imgOffset.x = currentX;
+            appState.imgOffset.y = currentY;
+            $img.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+        }
+    });
+    $imgContainer.addEventListener("mouseup", dragEnd);
 
     const $img = document.querySelector('#img') as HTMLCanvasElement;
 
