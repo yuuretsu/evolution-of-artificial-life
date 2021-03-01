@@ -32,14 +32,32 @@
         <div class="row__name-1">Настройки просмотра</div>
         <div class="row menu__row--sm">
           <span class="row__name-3">Режим отображения</span>
-          <select class="one-line-input menu__input" id="view-mode">
-            <option value="normal" selected>Обычный</option>
-            <option value="energy">Энергия</option>
-            <option value="ages">Возраст</option>
-            <option value="families">Семейства</option>
-            <option value="abilities">Специализации</option>
-            <option value="action">Действия</option>
-          </select>
+          <form class="labels-group" name="view-mode">
+            <div class="labels-group__elem">
+              <input id="view-mode-normal" type="radio" value="normal" name="view-mode" checked>
+              <label for="view-mode-normal">Обычный</label>
+            </div>
+            <div class="labels-group__elem">
+              <input id="view-mode-energy" type="radio" value="energy" name="view-mode">
+              <label for="view-mode-energy">Энергия</label>
+            </div>
+            <div class="labels-group__elem">
+              <input id="view-mode-ages" type="radio" value="ages" name="view-mode">
+              <label for="view-mode-ages">Возраст</label>
+            </div>
+            <div class="labels-group__elem">
+              <input id="view-mode-actions" type="radio" value="action" name="view-mode">
+              <label for="view-mode-actions">Действия</label>
+            </div>
+            <div class="labels-group__elem">
+              <input id="view-mode-abilities" type="radio" value="abilities" name="view-mode">
+              <label for="view-mode-abilities">Специализации</label>
+            </div>
+            <div class="labels-group__elem">
+              <input id="view-mode-families" type="radio" value="families" name="view-mode">
+              <label for="view-mode-families">Семейства</label>
+            </div>
+          </form>
         </div>
         <div class="row menu__row--sm" id="view-modes-options">
           <div class="row row--border-left hidden" id="view-energy-options">

@@ -54,7 +54,6 @@ export const GENES = {
             bot.multiplyTo(...forward.coords);
             bot.lastAction = { name: 'view-multiply', color: new Rgba(0, 0, 200, 255) };
         }
-        // bot.lastAction = new Rgba(0, 0, 255, 255);
         return { completed: true }
     }) as ActionFn,
 

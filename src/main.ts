@@ -89,7 +89,7 @@ window.addEventListener('load', () => {
 
     function updateImage() {
         world.clearImage();
-        switch ($viewMode.value) {
+        switch (viewMode) {
             case 'normal':
                 world.visualize(drawColors);
                 break;
@@ -151,6 +151,8 @@ window.addEventListener('load', () => {
     let world: World;
 
     let appState: AppState;
+
+    let viewMode = 'normal';
 
     let currentX: number;
     let currentY: number;
@@ -216,20 +218,42 @@ window.addEventListener('load', () => {
     const $frameNumber = document.querySelector('#frame-number') as HTMLElement;
     const $fps = document.querySelector('#fps') as HTMLElement;
 
-    const $viewMode = document.querySelector('#view-mode') as HTMLSelectElement;
-    $viewMode.addEventListener('change', () => {
-        const $viewModeOptionsBlock = document
-            .querySelector('#view-modes-options') as HTMLElement;
-        Array
-            .from($viewModeOptionsBlock.children)
-            .forEach(element => {
-                if (element.id === `view-${$viewMode.value}-options`) {
-                    element.classList.remove('hidden');
-                } else {
-                    element.classList.add('hidden');
-                }
+
+
+    // const $viewMode = document.querySelector('#view-mode') as HTMLSelectElement;
+    // $viewMode.addEventListener('change', () => {
+    //     const $viewModeOptionsBlock = document
+    //         .querySelector('#view-modes-options') as HTMLElement;
+    //     Array
+    //         .from($viewModeOptionsBlock.children)
+    //         .forEach(element => {
+    //             if (element.id === `view-${$viewMode.value}-options`) {
+    //                 element.classList.remove('hidden');
+    //             } else {
+    //                 element.classList.add('hidden');
+    //             }
+    //         });
+    //     updateImage();
+    // });
+
+    const $viewModesCheckboxes = Array.from(document.forms['view-mode' as any].elements);
+    console.log($viewModesCheckboxes);
+    $viewModesCheckboxes.forEach(elem => {
+        if (elem instanceof HTMLInputElement) {
+            elem.addEventListener('change', () => {
+                viewMode = elem.value;
+                console.log(viewMode);
+                Array.from((document.querySelector('#view-modes-options') as HTMLElement).children)
+                    .forEach(elem => {
+                        if (elem.id === `view-${viewMode}-options`) {
+                            elem.classList.remove('hidden');
+                        } else {
+                            elem.classList.add('hidden');
+                        }
+                    });
+                updateImage();
             });
-        updateImage();
+        }
     });
 
     type viewActionsMode
