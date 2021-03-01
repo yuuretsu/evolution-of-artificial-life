@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "evolution simulator",
   "scripts": {
-    "start": "webpack --watch --mode development",
+    "watch": "webpack --watch --mode development",
+    "serve": "webpack serve --mode=development --progress",
     "build": "webpack --mode production"
   },
   "keywords": [],

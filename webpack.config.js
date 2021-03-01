@@ -32,8 +32,9 @@ module.exports = {
         path: path.resolve(__dirname, "dist"),
     },
     devServer: {
-        open: false,
-        overlay: true,
+        contentBase: 'dist',
+        compress: true,
+        port: 3000,
     },
     devtool: "source-map",
     plugins: [
