@@ -128,6 +128,21 @@ export const GENES = {
         return { completed: true }
     }) as ActionFn,
 
+    // 'virus': ((bot, property, branches) => {
+    //     bot.color = bot.color.interpolate(new Rgba(255, 0, 255, 255), 0.01);
+    //     const forward = bot.getForward();
+    //     if (forward.block instanceof Bot) {
+    //         const genes = bot.genome.genes
+    //             .slice(0, 32)
+    //             .concat(forward.block.genome.genes.slice(33));
+    //         forward.block.genome.genes = genes;
+    //         bot.genome.genes = genes;
+    //         console.log(genes.length);
+    //         bot.lastAction = { name: 'view-virus', color: new Rgba(200, 0, 200, 255) };
+    //     }
+    //     return { completed: true }
+    // }) as ActionFn,
+
 };
 
 const GENE_TEMPLATES: ActionFn[] = [

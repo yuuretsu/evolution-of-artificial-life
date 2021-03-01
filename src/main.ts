@@ -44,13 +44,15 @@ window.addEventListener('load', () => {
 
         const BOTS_AMOUNT = parseInt($inputBots.value);
 
+        const $genomesLenghtInput = document.querySelector('#input-genome-lenght') as HTMLInputElement;
+
         for (let i = 0; i < Math.min(world.width * world.height, BOTS_AMOUNT); i++) {
             new Bot(
                 world,
                 ...world.randEmpty(),
                 new Rgba(100, 100, 100, 255),
                 100,
-                new Genome(64).fillRandom(),
+                new Genome(parseInt($genomesLenghtInput.value)).fillRandom(),
                 Rgba.randRgb(),
                 { photo: 0.5, attack: 0.5 }
             );
