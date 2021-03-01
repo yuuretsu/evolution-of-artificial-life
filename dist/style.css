@@ -78,7 +78,7 @@ body {
     box-sizing: border-box;
     width: 250px;
     background-color: rgb(20, 20, 20);
-    padding: 20px;
+    padding: 20px 20px 0;
 }
 
 .menu__row {
@@ -106,6 +106,10 @@ body {
 }
 
 .row {
+}
+
+.row:last-child {
+    margin-bottom: 20px;
 }
 
 .row--border-left {
