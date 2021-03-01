@@ -171,6 +171,7 @@ body {
 }
 
 .one-line-chbx {
+    display: block;
     user-select: none;
 }
 
@@ -314,7 +315,43 @@ body {
     cursor: pointer;
 }
 
+.labels-group {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px 0 0 5px;
+    border-radius: 10px;
+    margin: -5px;
+}
+
+.labels-group__elem {
+    margin: 0 5px 5px 0;
+    text-align: center;
+}
+
+.labels-group__elem > input {
+    display: none;
+}
+
+.labels-group__elem > label {
+    display: block;
+    background-color: rgb(80, 80, 80);
+    padding: 4px 10px;
+    border-radius: 5px;
+    /* font-size: 0.8em; */
+    transition-duration: 0.2s;
+}
+
+.labels-group__elem > label:hover {
+    background-color: rgb(100, 100, 100);
+}
+
+.labels-group__elem > input:checked + label {
+    background-color: rgb(120, 120, 120);
+}
+
 /* * {
     outline: 1px solid rgba(255, 0, 0, 0.1);
     background-color: rgba(255, 0, 0, 0.05);
 } */
+
+/*# sourceMappingURL=style-720bf3fd473b86da3838.css.map*/
