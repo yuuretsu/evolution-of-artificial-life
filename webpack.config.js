@@ -1,10 +1,9 @@
 const path = require("path");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin').CleanWebpackPlugin;
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: "./src/main.ts",
+    entry: "./src/index.tsx",
     module: {
         rules: [
             {
@@ -14,37 +13,33 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {},
-                    },
-                    'css-loader',
-                ],
+                use: ["style-loader", "css-loader"]
             }
         ],
     },
-    resolve: {
-        extensions: [".tsx", ".ts", ".js"],
-    },
     output: {
+        path: path.join(__dirname, "./dist"),
         filename: "bundle-[hash].js",
-        path: path.resolve(__dirname, "dist"),
     },
     devServer: {
-        contentBase: 'dist',
+        contentBase: './dist',
         compress: true,
         port: 3000,
     },
     devtool: "source-map",
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'src/index.html',
+            template: './src/index.html',
             filename: 'index.html'
         }),
-        new MiniCssExtractPlugin({
-            filename: 'style-[hash].css',
-        }),
         new CleanWebpackPlugin(),
-    ]
+    ],
+    resolve: {
+        extensions: [".tsx", ".ts", ".js"],
+    },
+    resolveLoader: {
+        modules: [
+            path.join(__dirname, 'node_modules')
+        ]
+    },
 };

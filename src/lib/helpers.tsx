@@ -13,11 +13,17 @@ export function randInt(bottom: number, top: number) {
 }
 
 export function randChoice<T>(arr: T[]): T {
-    return arr[randInt(0, arr.length)];
+    return arr[randInt(0, arr.length)]!;
 }
 
-export function fixNumber(min: number, max: number, number: number): number {
-    return number >= min ? number % max : max - (-number % max);
+export function fixNumber(
+    min: number,
+    max: number,
+    number: number
+): number {
+    return number >= min
+        ? number % max
+        : max - (-number % max);
 }
 
 export function normalizeNumber(
@@ -28,10 +34,20 @@ export function normalizeNumber(
     return (number - min) / (max - min);
 }
 
-export function limNumber(min: number, max: number, number: number): number {
+console.log(normalizeNumber(0, 100, 50));
+
+export function limit(
+    min: number,
+    max: number,
+    number: number
+): number {
     return Math.max(Math.min(number, max), min);
 }
 
-export function interpolate(a: number, b: number, t: number): number {
+export function interpolate(
+    a: number,
+    b: number,
+    t: number
+): number {
     return a + (b - a) * t;
 }

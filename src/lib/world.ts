@@ -1,119 +1,112 @@
-import { Canvas, PixelsData, Rgba } from "./drawing";
-import Grid from "./Grid";
-import { fixNumber, randInt, range } from "./math-functions";
+import Rgba from "./color";
+import Grid, { Coords } from "./grid";
+import { fixNumber, limit, randInt } from "./helpers";
+import { BlockVisualiser, VisualiserParams } from "./view-modes";
+import { WorldBlock, DynamicBlock } from "./block";
+import { Bot } from "./bot";
+import { GenePool, Genome } from "./genome";
 
-export const MOORE_NEIGHBOURHOOD: [number, number][] = [
-    [-1, -1],
-    [0, -1],
-    [1, -1],
-    [1, 0],
-    [1, 1],
-    [0, 1],
-    [-1, 1],
-    [-1, 0],
-];
+export type NewWorldProps = {
+    width: number,
+    height: number,
+    botsAmount: number,
+    genePool: GenePool
+};
 
-export class Block {
-    constructor(
-        readonly world: World,
-        public x: number,
-        public y: number,
-        public color: Rgba
-    ) {
-        world.set(x, y, this);
+export type WorldInfo = {
+    cycle: number,
+    dynamicBlocks: number,
+};
+
+export abstract class World extends Grid<WorldBlock> {
+    protected info: WorldInfo = {
+        cycle: 0,
+        dynamicBlocks: 0,
+    };
+    genePool: GenePool;
+    constructor(props: NewWorldProps) {
+        super(props.width, props.height);
+        this.genePool = props.genePool;
+        console.log('world created', props.width, props.height);
     }
+    abstract toImage(visualizer: BlockVisualiser, params: VisualiserParams): HTMLCanvasElement;
+    abstract step(): void;
+    abstract getInfo(): WorldInfo;
+    abstract narrowToCoords(x: number, y: number, narrow: number, length: number): Coords;
 }
 
-export class DynamicBlock extends Block {
-    alive: boolean;
-    constructor(world: World, x: number, y: number, color: Rgba) {
-        super(world, x, y, color);
-        world.assign(this);
-        this.alive = true;
-    }
-    onStep() {
-
-    }
-    onDie() {
-
-    }
-}
-
-export class World extends Grid<Block | undefined> {
-    private readonly img: Canvas;
-    private dynamic: { a: any; b: any; };
-    age: number;
-    constructor(
-        readonly width: number,
-        readonly height: number,
-        pixelSize: number,
-        node: HTMLCanvasElement
-    ) {
-        super(width, height);
-        this.img = new Canvas(width * pixelSize, height * pixelSize, node);
-        this.img.ctx.imageSmoothingEnabled = false;
-        this.dynamic = { a: {}, b: {} };
-        this.age = 0;
-    }
-    set(x: number, y: number, block: Block | undefined) {
-        super.set(x, y, block);
-        if (block) {
-            block.x = x;
-            block.y = y;
+export class SquareWorld extends World {
+    static readonly moore_neighbourhood: Coords[] = [
+        [-1, -1],
+        [0, -1],
+        [1, -1],
+        [1, 0],
+        [1, 1],
+        [0, 1],
+        [-1, 1],
+        [-1, 0],
+    ];
+    constructor(props: NewWorldProps) {
+        super(props);
+        const amount = limit(0, this.width * this.height, props.botsAmount);
+        for (let i = 0; i < amount; i++) {
+            this.set(
+                ...this.randEmpty(),
+                new Bot(
+                    new Rgba(0, 255, 50, 255),
+                    100,
+                    { photosynthesis: 0.5, attack: 0.5 },
+                    new Genome(64).fillRandom(props.genePool))
+            );
         }
     }
-    drawLayer(layer: CanvasImageSource) {
-        this.img.ctx.drawImage(
-            layer,
-            0,
-            0,
-            this.img.node.width,
-            this.img.node.height
-        );
+    narrowToCoords(x: number, y: number, narrow: number, length: number) {
+        narrow = fixNumber(0, 8, narrow);
+        const x2 = x + SquareWorld.moore_neighbourhood[narrow]![0] * length;
+        const y2 = y + SquareWorld.moore_neighbourhood[narrow]![1] * length;
+        return this.fixCoords(x2, y2);
     }
-    clearImage() {
-        this.img.ctx.clearRect(
-            0,
-            0,
-            this.img.node.width,
-            this.img.node.height
-        );
-    }
-    visualize(func: (block: any | undefined, x: number, y: number) => Rgba | null) {
-        let img = new PixelsData(this.width, this.height);
-        for (let x = 0; x < this.width; x++) {
-            for (let y = 0; y < this.height; y++) {
-                const col = func(this.get(x, y), x, y);
-                if (col) {
-                    img.setPixel(x, y, col);
-                }
-            }
-        }
-        this.drawLayer(img.update().node);
-    }
-    assign(block: DynamicBlock) {
-        let i: number;
-        do {
-            i = randInt(0, this.width * this.height * 1000);
-        } while (this.dynamic.a[i]);
-        this.dynamic.a[i] = block;
-    }
-    init() {
-        this.dynamic.b = this.dynamic.a;
+    getInfo() {
+        return this.info;
     }
     step() {
-        this.dynamic.a = {};
-        for (const key in this.dynamic.b) {
-            const block: DynamicBlock = this.dynamic.b[key];
-            if (!block.alive) {
-                this.set(block.x, block.y, undefined);
-                block.onDie();
-            } else {
-                block.onStep();
-                this.assign(block);
+        const filtered: { pos: Coords, obj: DynamicBlock }[] = [];
+        for (let x = 0; x < this.width; x++) {
+            for (let y = 0; y < this.width; y++) {
+                const obj = this.get(x, y);
+                if (obj instanceof DynamicBlock) filtered.push({ pos: [x, y], obj });
             }
         }
-        this.dynamic.b = this.dynamic.a;
-        this.age++;
+        const shuffled = filtered.sort(() => Math.random() - 0.5);
+        for (const object of shuffled) {
+            object.obj.live(...object.pos, this);
+        }
+        this.info.cycle++;
+    }
+    toImage(visualizer: BlockVisualiser, params: VisualiserParams) {
+        const canvas = document.createElement('canvas');
+        canvas.width = this.width;
+        canvas.height = this.height;
+        const ctx = canvas.getContext('2d');
+        if (ctx instanceof CanvasRenderingContext2D) {
+            const data = ctx.createImageData(this.width, this.height);
+            for (let x = 0; x < this.width; x++) {
+                for (let y = 0; y < this.height; y++) {
+                    const obj = this.get(x, y);
+                    const color = obj ? visualizer(obj, params) : null;
+                    if (color) {
+                        const POINTER = (y * this.width + x) * 4;
+                        data.data[POINTER] = color.red;
+                        data.data[POINTER + 1] = color.green;
+                        data.data[POINTER + 2] = color.blue;
+                        data.data[POINTER + 3] = color.alpha;
+                    }
+                }
+            }
+            ctx.putImageData(data, 0, 0);
+            return canvas;
+        } else {
+            throw "Не удалось получить контекст из канваса";
+        }
     }
 }

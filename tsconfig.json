@@ -1,13 +1,13 @@
 {
-    "compilerOptions": {
-        "outDir": "./dist2/",
-        "noImplicitAny": true,
-        "module": "commonjs",
-        "target": "es5",
-        "jsx": "react",
-        "allowJs": true,
-        "strict": true,
-        "sourceMap": true,
-        "lib": ["ESNext", "DOM"]
-    }
+  "compilerOptions": {
+    "jsx": "react",
+    "target": "es5",
+    "module": "commonjs",
+    "sourceMap": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
 }
