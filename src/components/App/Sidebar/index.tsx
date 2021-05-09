@@ -90,7 +90,7 @@ const Sidebar = (props: SidebarProps) => {
           <SubBlock name="Делитель возраста">
             <InputRange
               min={1}
-              max={150}
+              max={1000}
               value={props.visualizerParams.ageDivider}
               onChange={e => props.setVisualizerParams({
                 ...props.visualizerParams,
@@ -103,7 +103,7 @@ const Sidebar = (props: SidebarProps) => {
           <SubBlock name="Делитель энергии">
             <InputRange
               min={1}
-              max={150}
+              max={500}
               value={props.visualizerParams.energyDivider}
               onChange={e => props.setVisualizerParams({
                 ...props.visualizerParams,
