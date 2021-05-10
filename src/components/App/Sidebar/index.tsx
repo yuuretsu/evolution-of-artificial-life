@@ -74,9 +74,9 @@ const Sidebar = (props: SidebarProps) => {
       <Block name="Инфо о мире">
         <div>Возраст: {(props.worldInfo.cycle / 1000).toFixed(1)} тыс. кадров</div>
       </Block>
-      <Block name="Инфо о блоке">
-        {props.selectedBlock && props.selectedBlock.getInfo()}
-      </Block>
+      {props.selectedBlock && <Block name="Инфо о блоке">
+        {props.selectedBlock.getInfo()}
+      </Block>}
       <Block name={"Настройки просмотра"}>
         <SubBlock name="Режим отображения">
           <RadioGroup

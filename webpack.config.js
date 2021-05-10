@@ -29,6 +29,7 @@ module.exports = {
     devtool: "source-map",
     plugins: [
         new HtmlWebpackPlugin({
+            favicon: "./src/favicon.png",
             template: './src/index.html',
             filename: 'index.html'
         }),
