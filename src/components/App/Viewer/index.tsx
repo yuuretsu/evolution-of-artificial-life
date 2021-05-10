@@ -11,7 +11,10 @@ interface IViewerProps {
 }
 
 const Wrapper = styled.div<IViewerProps>`
+    touch-action: none;
     display: flex;
+    top: 0;
+    border: 2px solid red;
     justify-content: center;
     align-items: center;
     height: 100%;
