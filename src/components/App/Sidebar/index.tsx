@@ -5,6 +5,7 @@ import { GENES } from "../../../lib/genome";
 import { limit } from "../../../lib/helpers";
 import VIEW_MODES, { VisualiserParams } from "../../../lib/view-modes";
 import { SquareWorld, World, WorldInfo, NewWorldProps } from "../../../lib/world";
+import Accordion from "./Accordion";
 import Block from "./Block";
 import Checkbox from "./Checkbox";
 import InputNumber from "./InputNumber";
@@ -54,13 +55,13 @@ type SidebarProps = {
   opened: boolean,
   style: { padding: string, width: string },
   viewModesList: { value: string, title: string }[],
-  viewMode: keyof typeof VIEW_MODES,
+  viewMode: string,
   visualizerParams: VisualiserParams,
   setVisualizerParams: (value: VisualiserParams) => any;
   newWorldProps: NewWorldProps,
   setNewWorldProps: (value: NewWorldProps) => any
   setWorld: (world: World) => any,
-  setViewMode: (value: keyof typeof VIEW_MODES) => any,
+  setViewMode: (value: string) => any,
   world: World,
   worldInfo: WorldInfo,
   enabledGenes: { [name: string]: boolean }
@@ -71,14 +72,80 @@ type SidebarProps = {
 const Sidebar = (props: SidebarProps) => {
   return (
     <Wrapper opened={props.opened} padding={props.style.padding} width={props.style.width}>
-      <Block name="Инфо о мире">
+      <Accordion name='Инфо о мире' defaultOpened>
         <div>Возраст: {(props.worldInfo.cycle / 1000).toFixed(1)} тыс. кадров</div>
         <div>Ботов: {props.worldInfo.dynamicBlocks}</div>
-      </Block>
+      </Accordion>
+      {/* <Block name="Инфо о мире">
+        <div>Возраст: {(props.worldInfo.cycle / 1000).toFixed(1)} тыс. кадров</div>
+        <div>Ботов: {props.worldInfo.dynamicBlocks}</div>
+      </Block> */}
       {props.selectedBlock && <Block name="Инфо о блоке">
         {props.selectedBlock.getInfo()}
       </Block>}
-      <Block name={"Настройки просмотра"}>
+      <Accordion name='Настройки просмотра' defaultOpened>
+        <SubBlock name="Режим отображения">
+          <RadioGroup
+            name='view-mode'
+            list={props.viewModesList}
+            defaultChecked={props.viewMode}
+            onChange={props.setViewMode as (value: string) => any}
+          />
+        </SubBlock>
+        {props.viewMode === 'age' && <OptionalBlock>
+          <SubBlock name="Делитель возраста">
+            <InputRange
+              min={10}
+              max={1000}
+              value={props.visualizerParams.ageDivider}
+              onChange={e => props.setVisualizerParams({
+                ...props.visualizerParams,
+                ...{ ageDivider: parseInt(e.target.value) }
+              })}
+            />
+          </SubBlock>
+        </OptionalBlock>}
+        {props.viewMode === 'energy' && <OptionalBlock>
+          <SubBlock name="Делитель энергии">
+            <InputRange
+              min={1}
+              max={500}
+              value={props.visualizerParams.energyDivider}
+              onChange={e => props.setVisualizerParams({
+                ...props.visualizerParams,
+                ...{ energyDivider: parseInt(e.target.value) }
+              })}
+            />
+          </SubBlock>
+        </OptionalBlock>}
+        {props.viewMode === 'lastAction' && <OptionalBlock>
+          <SubBlock name="Отображение отдельных действий">
+            {
+              Object
+                .keys(props.visualizerParams.action)
+                .map(actionName => {
+                  return (
+                    <Checkbox
+                      title={actionName}
+                      value={actionName}
+                      key={actionName}
+                      defaultChecked={props.visualizerParams.action[actionName]}
+                      onChange={(value, checked) => {
+                        const newParams = {
+                          ...props.visualizerParams,
+                        };
+                        newParams.action[value] = checked;
+                        console.log('chbx click');
+                        props.setVisualizerParams(newParams);
+                      }}
+                    />
+                  );
+                })
+            }
+          </SubBlock>
+        </OptionalBlock>}
+      </Accordion>
+      {/* <Block name={"Настройки просмотра"}>
         <SubBlock name="Режим отображения">
           <RadioGroup
             name='view-mode'
@@ -139,8 +206,8 @@ const Sidebar = (props: SidebarProps) => {
             }
           </SubBlock>
         </OptionalBlock>}
-      </Block>
-      <Block name={"Настройки мира"}>
+      </Block> */}
+      <Accordion name='Настройки мира' defaultOpened>
         <SubBlock name="Генофонд">
           {Object.keys(props.enabledGenes).map(key => {
             return (<Checkbox
@@ -156,8 +223,25 @@ const Sidebar = (props: SidebarProps) => {
             />)
           })}
         </SubBlock>
-      </Block>
-      <Block name={"Перезапуск мира"}>
+      </Accordion>
+      {/* <Block name={"Настройки мира"}>
+        <SubBlock name="Генофонд">
+          {Object.keys(props.enabledGenes).map(key => {
+            return (<Checkbox
+              title={GENES[key]!.name}
+              value={key}
+              key={key}
+              defaultChecked={props.enabledGenes[key]}
+              onChange={(value, checked) => {
+                const newEnabledGenes = { ...props.enabledGenes };
+                newEnabledGenes[value] = checked;
+                props.setEnabledGenes(newEnabledGenes)
+              }}
+            />)
+          })}
+        </SubBlock>
+      </Block> */}
+      <Accordion name='Перезапуск' defaultOpened>
         <SubBlock name="Размер мира">
           <InputNumber
             placeholder="Ширина"
@@ -218,7 +302,69 @@ const Sidebar = (props: SidebarProps) => {
             Рестарт
                     </WideButton>
         </SubBlock>
-      </Block>
+      </Accordion>
+      {/* <Block name={"Перезапуск"}>
+        <SubBlock name="Размер мира">
+          <InputNumber
+            placeholder="Ширина"
+            min={1}
+            max={2048}
+            value={props.newWorldProps.width}
+            onChange={e => props.setNewWorldProps({
+              ...props.newWorldProps,
+              ...{
+                width: limit(
+                  parseInt(e.target.min),
+                  parseInt(e.target.max),
+                  parseInt(e.target.value)
+                )
+              }
+            })}
+          />
+          <InputNumber
+            placeholder="Высота"
+            min={1}
+            max={2048}
+            value={props.newWorldProps.height}
+            onChange={e => props.setNewWorldProps({
+              ...props.newWorldProps,
+              ...{
+                height: limit(
+                  parseInt(e.target.min),
+                  parseInt(e.target.max),
+                  parseInt(e.target.value)
+                )
+              }
+            })}
+          />
+        </SubBlock>
+        <SubBlock name="Кол-во ботов">
+          <InputNumber
+            placeholder="Кол-во ботов"
+            min={1}
+            max={props.world.width * props.world.height}
+            value={props.newWorldProps.botsAmount}
+            onChange={e => props.setNewWorldProps({
+              ...props.newWorldProps,
+              ...{
+                botsAmount: limit(
+                  parseInt(e.target.min),
+                  parseInt(e.target.max),
+                  parseInt(e.target.value))
+              }
+            })}
+          />
+        </SubBlock>
+        <SubBlock>
+          <WideButton
+            onClick={() => {
+              props.setWorld(new SquareWorld(props.newWorldProps))
+            }}
+          >
+            Рестарт
+                    </WideButton>
+        </SubBlock>
+      </Block> */}
     </Wrapper>
   );
 };

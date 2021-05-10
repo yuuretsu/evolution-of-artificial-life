@@ -81,7 +81,7 @@ const App = (props: AppProps) => {
   const [appHeight, setAppHeight] = useState(window.innerHeight);
   const [sidebarOpened, setSidebarOpened] = useState(true);
   const [paused, setPaused] = useState(false);
-  const [viewMode, setViewMode] = useState<keyof typeof VIEW_MODES>('normal');
+  const [viewMode, setViewMode] = useState<string>('normal');
   const [visualizerParams, setVisualizerParams] = useState<VisualiserParams>(initVisualizerParams);
   const [newWorldProps, setNewWorldProps] = useState<NewWorldProps>(INIT_WORLD_PROPS);
   const [world, setWorld] = useState<World>(initWorld);
