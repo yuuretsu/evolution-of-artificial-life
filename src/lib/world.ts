@@ -58,6 +58,7 @@ export class SquareWorld extends World {
                     { photosynthesis: 0.5, attack: 0.5 },
                     new Genome(64).fillRandom(props.genePool))
             );
+            this.info.dynamicBlocks++;
         }
     }
     narrowToCoords(x: number, y: number, narrow: number, length: number) {
@@ -70,9 +71,10 @@ export class SquareWorld extends World {
         return this.info;
     }
     step() {
+        // this.info.dynamicBlocks = 0;
         const filtered: { pos: Coords, obj: DynamicBlock }[] = [];
         for (let x = 0; x < this.width; x++) {
-            for (let y = 0; y < this.width; y++) {
+            for (let y = 0; y < this.height; y++) {
                 const obj = this.get(x, y);
                 if (obj instanceof DynamicBlock) filtered.push({ pos: [x, y], obj });
             }
@@ -81,6 +83,10 @@ export class SquareWorld extends World {
         for (const object of shuffled) {
             object.obj.live(...object.pos, this);
         }
+        // this.info.dynamicBlocks = shuffled.length;
+        // console.time('flat');
+        this.info.dynamicBlocks = this.flat().filter(value => value instanceof DynamicBlock).length;
+        // console.timeEnd('flat');
         this.info.cycle++;
     }
     toImage(visualizer: BlockVisualiser, params: VisualiserParams) {

@@ -1,5 +1,5 @@
 import React from "react";
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Block from "../components/App/Sidebar/Block";
 import SubBlock from "../components/App/Sidebar/SubBlock";
 import { Bot } from "./bot";
@@ -24,12 +24,22 @@ interface IGeneCell {
     readonly border?: boolean;
 };
 
+const anim = keyframes`
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+`;
+
 const GeneCell = styled.div<IGeneCell>`
     width: 21px;
     height: 21px;
     background-color: ${props => props.bg};
     box-shadow:  ${props => props.border ? 'inset 0 0 0 2px white, inset 0 0 0 4px black' : 'none'};
     transition: background-color 0.2s;
+    animation: ${anim} 1s;
 `;
 
 export class Genome {
@@ -95,6 +105,7 @@ export class Genome {
                 : this.pointer = this.pointer + 1;
             if (RESULT.completed) return;
         }
+        bot.energy -= 1;
     }
     getInfo() {
         return (
@@ -169,6 +180,7 @@ export type ActionFn = (
 
 export type GeneTemplate = {
     name: string,
+    defaultEnabled: boolean,
     color: Rgba | null,
     colorInfluence: number | null,
     action: ActionFn
@@ -182,6 +194,7 @@ export type Gene = {
 export const GENES: { [index: string]: GeneTemplate } = {
     doNothing: {
         name: 'Бездействие',
+        defaultEnabled: true,
         color: new Rgba(127, 127, 127, 127),
         colorInfluence: 0.01,
         action: (bot, x, y, world, property) => {
@@ -189,8 +202,24 @@ export const GENES: { [index: string]: GeneTemplate } = {
             return { completed: false, goto: null };
         }
     },
+    multiply: {
+        name: 'Размножение',
+        defaultEnabled: true,
+        color: new Rgba(255, 255, 200, 255),
+        colorInfluence: 0.01,
+        action: (bot, x, y, world, property) => {
+            const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
+            const F_BLOCK = world.get(...F_COORDS);
+            bot.energy *= 0.99;
+            if (!F_BLOCK && bot.energy > 5 && bot.age > 10) {
+                world.set(...F_COORDS, bot.multiply(world.genePool));
+            }
+            return { completed: false, goto: null };
+        }
+    },
     rotate: {
         name: 'Поворот',
+        defaultEnabled: true,
         color: null,
         colorInfluence: null,
         action: (bot, x, y, world, property) => {
@@ -200,22 +229,9 @@ export const GENES: { [index: string]: GeneTemplate } = {
             return { completed: false, goto: null };
         }
     },
-    moveForward: {
-        name: 'Двигаться вперед',
-        color: new Rgba(200, 200, 200, 255),
-        colorInfluence: null,
-        action: (bot, x, y, world, property) => {
-            const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
-            const F_BLOCK = world.get(...F_COORDS);
-            if (!F_BLOCK) {
-                world.swap(x, y, ...F_COORDS);
-                bot.energy -= 1;
-            }
-            return { completed: true, goto: null };
-        }
-    },
     photosynthesis: {
         name: 'Фотосинтез',
+        defaultEnabled: true,
         color: new Rgba(0, 255, 0, 255),
         colorInfluence: 0.01,
         action: (bot, x, y, world, property) => {
@@ -226,6 +242,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
     },
     attack: {
         name: 'Атака',
+        defaultEnabled: true,
         color: new Rgba(255, 0, 0, 255),
         colorInfluence: 0.01,
         action: (bot, x, y, world, property) => {
@@ -239,8 +256,24 @@ export const GENES: { [index: string]: GeneTemplate } = {
             return { completed: true, goto: null };
         }
     },
+    moveForward: {
+        name: 'Двигаться вперед',
+        defaultEnabled: true,
+        color: new Rgba(200, 200, 200, 255),
+        colorInfluence: null,
+        action: (bot, x, y, world, property) => {
+            const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
+            const F_BLOCK = world.get(...F_COORDS);
+            if (!F_BLOCK) {
+                world.swap(x, y, ...F_COORDS);
+                bot.energy -= 1;
+            }
+            return { completed: true, goto: null };
+        }
+    },
     push: {
         name: 'Толкнуть',
+        defaultEnabled: true,
         color: new Rgba(0, 0, 255, 255),
         colorInfluence: 0.01,
         action: (bot, x, y, world, property) => {
@@ -256,6 +289,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
     },
     swap: {
         name: 'Меняться местами',
+        defaultEnabled: false,
         color: new Rgba(255, 255, 255, 255),
         colorInfluence: null,
         action: (bot, x, y, world, property) => {
@@ -265,22 +299,9 @@ export const GENES: { [index: string]: GeneTemplate } = {
             return { completed: true, goto: null };
         }
     },
-    multiply: {
-        name: 'Размножение',
-        color: new Rgba(255, 255, 200, 255),
-        colorInfluence: 0.01,
-        action: (bot, x, y, world, property) => {
-            const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
-            const F_BLOCK = world.get(...F_COORDS);
-            bot.energy *= 0.99;
-            if (!F_BLOCK && bot.energy > 5 && bot.age > 10) {
-                world.set(...F_COORDS, bot.multiply(world.genePool));
-            }
-            return { completed: false, goto: null };
-        }
-    },
     movePointer: {
         name: 'Переместить указатель',
+        defaultEnabled: true,
         color: null,
         colorInfluence: null,
         action: (bot, x, y, world, property) => {
@@ -289,6 +310,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
     },
     forward: {
         name: 'Спереди блок?',
+        defaultEnabled: true,
         color: null,
         colorInfluence: null,
         action: (bot, x, y, world, property) => {

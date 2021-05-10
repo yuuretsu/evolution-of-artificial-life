@@ -49,7 +49,7 @@ export class Bot extends DynamicBlock {
     getAgeColor(params: VisualiserParams): Rgba {
         return new Rgba(150, 255, 255, 255)
             .interpolate(
-                new Rgba(30, 30, 50, 255),
+                new Rgba(80, 80, 100, 255),
                 this.age / params.ageDivider
             );
     }

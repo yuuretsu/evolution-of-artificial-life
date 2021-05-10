@@ -66,8 +66,8 @@ export default class Grid<T> {
             }
         }
     }
-    map(func: CallbackFn<T, T>): Grid<T> {
-        const next = new Grid<T>(this.width, this.height);
+    map<U>(func: CallbackFn<T, U>): Grid<U> {
+        const next = new Grid<U>(this.width, this.height);
         this.forEach((value, x, y) => {
             next.set(x, y, func(value, x, y))
         });

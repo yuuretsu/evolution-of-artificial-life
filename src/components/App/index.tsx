@@ -23,7 +23,7 @@ import { Bot } from "../../lib/bot";
 
 const initialEnabledGenes: { [geneName: string]: boolean } = {};
 for (const name in GENES) {
-  initialEnabledGenes[name] = true;
+  initialEnabledGenes[name] = GENES[name]!.defaultEnabled;
 }
 
 const initialGenePool = enabledGenesToPool(initialEnabledGenes);

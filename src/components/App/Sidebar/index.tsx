@@ -73,6 +73,7 @@ const Sidebar = (props: SidebarProps) => {
     <Wrapper opened={props.opened} padding={props.style.padding} width={props.style.width}>
       <Block name="Инфо о мире">
         <div>Возраст: {(props.worldInfo.cycle / 1000).toFixed(1)} тыс. кадров</div>
+        <div>Ботов: {props.worldInfo.dynamicBlocks}</div>
       </Block>
       {props.selectedBlock && <Block name="Инфо о блоке">
         {props.selectedBlock.getInfo()}
@@ -89,7 +90,7 @@ const Sidebar = (props: SidebarProps) => {
         {props.viewMode === 'age' && <OptionalBlock>
           <SubBlock name="Делитель возраста">
             <InputRange
-              min={1}
+              min={10}
               max={1000}
               value={props.visualizerParams.ageDivider}
               onChange={e => props.setVisualizerParams({
