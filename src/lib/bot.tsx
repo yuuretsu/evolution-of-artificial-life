@@ -134,15 +134,15 @@ export class Bot extends DynamicBlock {
                     </div>
                 </SubBlock>
                 <SubBlock>
-                    {this.genome.getInfo()}
-                </SubBlock>
-                <SubBlock>
                     {this.alive ? <div>
                         <div>Возраст: {this.age}</div>
                         <div>Энергия: {this.energy.toFixed(2)}</div>
                         <div>Здоровье: {this.health.toFixed(2)}</div>
                         <div>Направление: {narrowToName(this.narrow)}</div>
                     </div> : <div style={{ color: 'red', fontWeight: 'bold', textAlign: 'center' }}>Этот бот мёртв</div>}
+                </SubBlock>
+                <SubBlock>
+                    {this.genome.getInfo()}
                 </SubBlock>
             </>
         );

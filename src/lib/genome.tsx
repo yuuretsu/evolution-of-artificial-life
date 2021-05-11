@@ -11,7 +11,7 @@ import { World } from "./world";
 
 export type GenePool = GeneTemplate[];
 
-const CELL_SIZE = 25;
+const CELL_SIZE = 26;
 
 const GenomeWrapper = styled.div`
     display: flex;
@@ -28,14 +28,14 @@ interface IGeneCell {
     readonly state: null | 'activeLast' | 'active';
 };
 
-const anim = keyframes`
-    from {
-        transform: translateY(-10px);
-    }
-    to {
-        transform: scale(0.75);
-    }
-`;
+// const anim = keyframes`
+//     from {
+//         transform: translateY(-10px);
+//     }
+//     to {
+//         transform: scale(0.75);
+//     }
+// `;
 
 const transitionVariants: IGeneCell['state'][] = ['active', 'activeLast'];
 
@@ -44,23 +44,19 @@ const GeneCell = styled.div<IGeneCell>`
     width: ${CELL_SIZE}px;
     height: ${CELL_SIZE}px;
     background-color: ${props => props.bg};
-    /* box-shadow:  ${props => props.active
-        ? 'inset 0 0 0 2px white'
-        : 'none'
-    }; */
     border: ${props => props.state
         ? props.state === 'active'
             ? '3px solid white'
-            : '3px dotted white'
+            : '3px dashed white'
         : 'none'
     };
+    filter: blur(0);
     transform: scale(${props => props.state === 'active' ? 1 : 0.75});
     border-radius: 100%;
     transition: ${props => transitionVariants.includes(props.state)
         ? 'none'
         : 'background-color 0.2s, transform 0.5s'
     };
-    animation: ${anim} 0.5s;
 `;
 
 const LiAction = styled.li`
@@ -139,7 +135,7 @@ export class Genome {
     getInfo() {
         return (
             <>
-                <SubBlock name="Геном">
+                <Accordion name="Геном" small defaultOpened>
                     <GenomeWrapper>
                         {this.genes.map((gene, i) => {
                             const state = this.activeGene === gene
@@ -171,7 +167,7 @@ export class Genome {
                             );
                         })}
                     </GenomeWrapper>
-                </SubBlock>
+                </Accordion>
                 <Accordion name="Последние действия" small defaultOpened>
                     <SubBlock>
                         <ul style={{ paddingLeft: '18px', margin: 0 }}>
