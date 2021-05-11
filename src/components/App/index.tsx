@@ -185,6 +185,7 @@ const App = (props: AppProps) => {
         enabledGenes={enabledGenes}
         setEnabledGenes={setEnabledGenes}
         selectedBlock={selectedBlock}
+        setSelectedBlock={setSelectedBlock}
       />
     </Wrapper>
   );

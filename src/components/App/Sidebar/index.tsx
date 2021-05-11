@@ -67,6 +67,7 @@ type SidebarProps = {
   enabledGenes: { [name: string]: boolean }
   setEnabledGenes: (value: { [name: string]: boolean }) => any;
   selectedBlock: WorldBlock | null;
+  setSelectedBlock: (block: WorldBlock | null) => void;
 };
 
 const Sidebar = (props: SidebarProps) => {
@@ -78,7 +79,12 @@ const Sidebar = (props: SidebarProps) => {
       </Accordion>
       <Accordion name='Инфо о блоке' defaultOpened>
         {props.selectedBlock
-          ? props.selectedBlock.getInfo()
+          ? <>
+            <SubBlock>
+              <WideButton onClick={() => props.setSelectedBlock(null)}>Снять выделение</WideButton>
+            </SubBlock>
+            {props.selectedBlock.getInfo()}
+          </>
           : <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>
         }
       </Accordion>

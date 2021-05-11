@@ -1,6 +1,8 @@
 import React from "react";
 import styled, { keyframes } from 'styled-components';
+import Accordion from "../components/App/Sidebar/Accordion";
 import Block from "../components/App/Sidebar/Block";
+import OptionalBlock from "../components/App/Sidebar/OptionalBlock";
 import SubBlock from "../components/App/Sidebar/SubBlock";
 import { Bot } from "./bot";
 import Rgba from "./color";
@@ -24,11 +26,12 @@ const GenomeWrapper = styled.div`
 interface IGeneCell {
     readonly bg: string;
     readonly active?: boolean;
+    readonly state: null | 'activeLast' | 'active';
 };
 
 const anim = keyframes`
     from {
-        transform: scale(0);
+        transform: translateY(-10px);
     }
     to {
         transform: scale(0.75);
@@ -44,18 +47,26 @@ const GeneCell = styled.div<IGeneCell>`
         ? 'inset 0 0 0 2px white'
         : 'none'
     }; */
-    border: ${props => props.active ? 2 : 0}px dotted white;
-    transform: scale(${props => props.active ? 1 : 0.75});
+    border: ${props => props.state
+        ? props.state === 'active'
+            ? '3px solid white'
+            : '3px dotted white'
+        : 'none'
+    };
+    transform: scale(${props => props.state === 'active' ? 1 : 0.75});
     border-radius: 100%;
     transition: background-color 0.2s;
     animation: ${anim} 0.5s;
 `;
 
+const LiAction = styled.li`
+`;
+
 export class Genome {
     private _pointer: number = 0;
     private recentlyUsedGenes: Gene[] = [];
+    activeGene: Gene | null = null;
     genes: Gene[];
-    lastAction: number = 0;
     constructor(length: number) {
         this.genes = new Array<Gene>(length).fill({
             template: GENES.doNothing!,
@@ -101,44 +112,70 @@ export class Genome {
     }
     doAction(bot: Bot, x: number, y: number, world: World) {
         this.recentlyUsedGenes = [];
-        for (let i = 0; i < 20; i++) {
-            const GENE = this.genes[this.pointer]!;
-            const RESULT = GENE
+        for (let i = 0; i < 8; i++) {
+            const gene = this.genes[this.pointer]!;
+            const result = gene
                 .template
-                .action(bot, x, y, world, GENE.property);
-            bot.lastAction = GENE.template;
-            this.lastAction = this.pointer;
-            this.recentlyUsedGenes.push(GENE);
-            if (GENE.template.colorInfluence !== null && GENE.template.color) {
-                bot.color = bot.color.interpolate(GENE.template.color, GENE.template.colorInfluence);
+                .action(bot, x, y, world, gene.property);
+            this.recentlyUsedGenes.push(gene);
+            if (gene.template.colorInfluence !== null && gene.template.color) {
+                bot.color = bot.color.interpolate(gene.template.color, gene.template.colorInfluence);
             }
-            this.pointer = RESULT.goto !== null
-                ? this.pointer = RESULT.goto
+            this.pointer = result.goto !== null
+                ? this.pointer = result.goto
                 : this.pointer = this.pointer + 1;
-            if (RESULT.completed) return;
+            if (result.completed) {
+                this.activeGene = this.recentlyUsedGenes.pop() || null;
+                return;
+            };
         }
+        this.activeGene = this.recentlyUsedGenes.pop() || null;
         bot.energy -= 1;
     }
     getInfo() {
         return (
-            <SubBlock name="Геном">
-                <GenomeWrapper>
-                    {this.genes.map((gene, i) => {
-                        const color = gene.template.color
-                            ? gene
-                                .template
-                                .color
-                                .interpolate(new Rgba(0, 0, 0, 255), 0.25)
-                                .toString()
-                            : 'rgba(127, 127, 127, 0.25)';
-                        const border = this.lastAction === i;
-                        return (
-                            <GeneCell key={i} title={gene.template.name} bg={color} active={border}>
-                            </GeneCell>
-                        );
-                    })}
-                </GenomeWrapper>
-            </SubBlock>
+            <>
+                <SubBlock name="Геном">
+                    <GenomeWrapper>
+                        {this.genes.map((gene, i) => {
+                            const color = gene.template.color
+                                ? gene
+                                    .template
+                                    .color
+                                    .interpolate(new Rgba(0, 0, 0, 255), 0.25)
+                                    .toString()
+                                : 'rgba(127, 127, 127, 0.1)';
+                            const state = this.activeGene === gene
+                                ? 'active'
+                                : this.recentlyUsedGenes.includes(gene)
+                                    ? 'activeLast'
+                                    : null;
+                            return (
+                                <GeneCell
+                                    key={i}
+                                    title={gene.template.name}
+                                    bg={color}
+                                    state={state}
+                                >
+                                </GeneCell>
+                            );
+                        })}
+                    </GenomeWrapper>
+                </SubBlock>
+                <Accordion name="Последние действия" small defaultOpened>
+                    <SubBlock>
+                        <ul style={{ paddingLeft: '18px', margin: 0 }}>
+                            {this.recentlyUsedGenes.map(gene => {
+                                return <LiAction>{gene.template.name}</LiAction>
+                            })}
+                            {<LiAction>{this.activeGene?.template.name}</LiAction>}
+                            {new Array(8 - this.recentlyUsedGenes.length - 1).fill(0).map(() => {
+                                return <LiAction />
+                            })}
+                        </ul>
+                    </SubBlock>
+                </Accordion>
+            </>
         );
     }
 }
@@ -231,7 +268,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
             if (!F_BLOCK && bot.energy > 5 && bot.age > 10) {
                 world.set(...F_COORDS, bot.multiply(world.genePool));
             }
-            return { completed: false, goto: null };
+            return { completed: true, goto: null };
         }
     },
     rotate: {

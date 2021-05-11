@@ -19,7 +19,6 @@ export class Bot extends DynamicBlock {
     age = 0;
     health = 0.5;
     childrenAmount = 0;
-    lastAction: GeneTemplate = GENES.doNothing!;
     constructor(
         color: Rgba,
         public energy: number,
@@ -55,13 +54,13 @@ export class Bot extends DynamicBlock {
             );
     }
     getLastActionColor(params: VisualiserParams): Rgba | null {
-        if (!params.action[this.lastAction.name]) {
-            // console.log(params.action[this.lastAction.name]);
+        if (this.genome.activeGene === null) return new Rgba(20, 20, 20, 255);
+        if (!params.action[this.genome.activeGene.template.name]) {
             return new Rgba(20, 20, 20, 255)
         }
-        const MAYBE_COLOR = this.lastAction.color;
-        return MAYBE_COLOR
-            ? MAYBE_COLOR
+        const maybeColor = this.genome.activeGene.template.color;
+        return maybeColor
+            ? maybeColor
             : new Rgba(20, 20, 20, 255);
     }
     getChildrenAmountColor(params: VisualiserParams): Rgba | null {
@@ -143,7 +142,7 @@ export class Bot extends DynamicBlock {
                         <div>Энергия: {this.energy.toFixed(2)}</div>
                         <div>Здоровье: {this.health.toFixed(2)}</div>
                         <div>Направление: {narrowToName(this.narrow)}</div>
-                    </div> : 'Мёртв'}
+                    </div> : <div style={{ color: 'red', fontWeight: 'bold', textAlign: 'center' }}>Этот бот мёртв</div>}
                 </SubBlock>
             </>
         );
