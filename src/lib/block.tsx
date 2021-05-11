@@ -29,6 +29,9 @@ export class WorldBlock {
     getAbilityColor(): Rgba | null {
         return null;
     }
+    getHealthColor(): Rgba | null {
+        return null;
+    }
     getAttacked(bot: Bot, value: number) { }
     getInfo() {
         return (

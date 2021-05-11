@@ -17,6 +17,7 @@ export class Bot extends DynamicBlock {
     alive = true;
     private _narrow: number = randInt(0, 8);
     age = 0;
+    health = 0.5;
     childrenAmount = 0;
     lastAction: GeneTemplate = GENES.doNothing!;
     constructor(
@@ -71,8 +72,12 @@ export class Bot extends DynamicBlock {
             );
     }
     getAbilityColor(): Rgba | null {
-        return new Rgba(255, 0, 0, 255)
-            .interpolate(new Rgba(0, 255, 0, 255), this.abilities.photosynthesis);
+        return new Rgba(240, 20, 20, 255)
+            .interpolate(new Rgba(20, 240, 20, 255), this.abilities.photosynthesis);
+    }
+    getHealthColor(): Rgba {
+        return new Rgba(100, 50, 50, 255)
+            .interpolate(new Rgba(150, 200, 255, 255), this.health);
     }
     increaseAbility(ability: BotAbilityName) {
         for (const name in this.abilities) {
@@ -92,6 +97,7 @@ export class Bot extends DynamicBlock {
         const REAL_VALUE = Math.min(this.energy, value);
         this.energy -= REAL_VALUE;
         bot.energy += REAL_VALUE * bot.abilities.attack ** 2;
+        this.health -= 0.1;
         bot.increaseAbility('attack');
     }
     multiply(pool: GenePool) {
@@ -107,7 +113,7 @@ export class Bot extends DynamicBlock {
         );
     }
     live(x: number, y: number, world: World) {
-        if (this.age > 2000 || this.energy < 1 || this.energy > 300) {
+        if (this.age > 2000 || this.energy < 1 || this.energy > 300 || this.health <= 0) {
             this.alive = false;
             world.remove(x, y);
             // world.set(x, y, new Block(this.color.interpolate(new Rgba(0, 0, 0, 255), 0.5)));
@@ -115,23 +121,31 @@ export class Bot extends DynamicBlock {
         }
         this.genome.doAction(this, x, y, world);
         this.age++;
+        this.health = Math.min(1, this.health + 0.01);
     }
     getInfo() {
         return (
-            <OptionalBlock>
-                <div style={{ display: 'flex' }} >
-                    <div style={{ transform: 'translateY(3px)' }}>
-                        <WorldBlockIcon block={this} />
+            <>
+                <SubBlock>
+                    <div style={{ display: 'flex' }} >
+                        <div style={{ transform: 'translateY(3px)' }}>
+                            <WorldBlockIcon block={this} />
+                        </div>
+                        <span style={{ marginLeft: '5px' }}>Бот</span>
                     </div>
-                    <span style={{ marginLeft: '5px' }}>Бот</span>
-                </div>
-                {this.alive ? <div>
-                    <div>Возраст: {this.age}</div>
-                    <div>Энергия: {this.energy.toFixed(2)}</div>
-                    <div>Направление: {narrowToName(this.narrow)}</div>
-                </div> : 'Мёртв'}
-                {this.genome.getInfo()}
-            </OptionalBlock>
+                </SubBlock>
+                <SubBlock>
+                    {this.genome.getInfo()}
+                </SubBlock>
+                <SubBlock>
+                    {this.alive ? <div>
+                        <div>Возраст: {this.age}</div>
+                        <div>Энергия: {this.energy.toFixed(2)}</div>
+                        <div>Здоровье: {this.health.toFixed(2)}</div>
+                        <div>Направление: {narrowToName(this.narrow)}</div>
+                    </div> : 'Мёртв'}
+                </SubBlock>
+            </>
         );
     }
 }

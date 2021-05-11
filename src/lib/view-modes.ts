@@ -59,7 +59,13 @@ const VIEW_MODES: { [key: string]: ViewMode } = {
         blockToColor: (block, params) => {
             return block.getAbilityColor();
         },
-    }
+    },
+    health: {
+        name: 'Здоровье',
+        blockToColor: (block, params) => {
+            return block.getHealthColor();
+        },
+    },
 };
 
 export default VIEW_MODES;

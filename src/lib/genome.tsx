@@ -9,19 +9,21 @@ import { World } from "./world";
 
 export type GenePool = GeneTemplate[];
 
+const CELL_SIZE = 25;
+
 const GenomeWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
-    width: ${8 * 21}px;
-    height: ${8 * 21}px;
-    border: 2px solid whitesmoke;
-    border-radius: 5px;
+    width: ${8 * CELL_SIZE}px;
+    /* height: ${8 * 21}px; */
+    border: 2px solid #505050;
+    border-radius: ${CELL_SIZE / 2}px;
     overflow: hidden;
 `;
 
 interface IGeneCell {
     readonly bg: string;
-    readonly border?: boolean;
+    readonly active?: boolean;
 };
 
 const anim = keyframes`
@@ -29,21 +31,29 @@ const anim = keyframes`
         transform: scale(0);
     }
     to {
-        transform: scale(1);
+        transform: scale(0.75);
     }
 `;
 
 const GeneCell = styled.div<IGeneCell>`
-    width: 21px;
-    height: 21px;
+    box-sizing: border-box;
+    width: ${CELL_SIZE}px;
+    height: ${CELL_SIZE}px;
     background-color: ${props => props.bg};
-    box-shadow:  ${props => props.border ? 'inset 0 0 0 2px white, inset 0 0 0 4px black' : 'none'};
+    /* box-shadow:  ${props => props.active
+        ? 'inset 0 0 0 2px white'
+        : 'none'
+    }; */
+    border: ${props => props.active ? 2 : 0}px dotted white;
+    transform: scale(${props => props.active ? 1 : 0.75});
+    border-radius: 100%;
     transition: background-color 0.2s;
-    animation: ${anim} 1s;
+    animation: ${anim} 0.5s;
 `;
 
 export class Genome {
     private _pointer: number = 0;
+    private recentlyUsedGenes: Gene[] = [];
     genes: Gene[];
     lastAction: number = 0;
     constructor(length: number) {
@@ -90,6 +100,7 @@ export class Genome {
         return genome;
     }
     doAction(bot: Bot, x: number, y: number, world: World) {
+        this.recentlyUsedGenes = [];
         for (let i = 0; i < 20; i++) {
             const GENE = this.genes[this.pointer]!;
             const RESULT = GENE
@@ -97,6 +108,7 @@ export class Genome {
                 .action(bot, x, y, world, GENE.property);
             bot.lastAction = GENE.template;
             this.lastAction = this.pointer;
+            this.recentlyUsedGenes.push(GENE);
             if (GENE.template.colorInfluence !== null && GENE.template.color) {
                 bot.color = bot.color.interpolate(GENE.template.color, GENE.template.colorInfluence);
             }
@@ -113,11 +125,15 @@ export class Genome {
                 <GenomeWrapper>
                     {this.genes.map((gene, i) => {
                         const color = gene.template.color
-                            ? gene.template.color.toString()
-                            : 'transparent';
+                            ? gene
+                                .template
+                                .color
+                                .interpolate(new Rgba(0, 0, 0, 255), 0.25)
+                                .toString()
+                            : 'rgba(127, 127, 127, 0.25)';
                         const border = this.lastAction === i;
                         return (
-                            <GeneCell key={i} title={gene.template.name} bg={color} border={border}>
+                            <GeneCell key={i} title={gene.template.name} bg={color} active={border}>
                             </GeneCell>
                         );
                     })}
@@ -193,13 +209,14 @@ export type Gene = {
 
 export const GENES: { [index: string]: GeneTemplate } = {
     doNothing: {
-        name: 'Бездействие',
+        name: 'Самолечение',
         defaultEnabled: true,
-        color: new Rgba(127, 127, 127, 127),
+        color: new Rgba(127, 127, 0, 255),
         colorInfluence: 0.01,
         action: (bot, x, y, world, property) => {
             bot.age += 1;
-            return { completed: false, goto: null };
+            bot.health = Math.min(1, bot.health + 0.1);
+            return { completed: true, goto: null };
         }
     },
     multiply: {
@@ -237,6 +254,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
         action: (bot, x, y, world, property) => {
             bot.energy += 1 * bot.abilities.photosynthesis ** 2;
             bot.increaseAbility('photosynthesis');
+            bot.health = Math.min(1, bot.health + 0.01);
             return { completed: true, goto: null };
         }
     },
@@ -251,6 +269,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
             );
             if (F_BLOCK) {
                 F_BLOCK.getAttacked(bot, interpolate(0, 5, property.option));
+                bot.health = Math.min(1, bot.health + 0.01);
             }
             bot.energy -= 0.05;
             return { completed: true, goto: null };
@@ -305,6 +324,18 @@ export const GENES: { [index: string]: GeneTemplate } = {
         color: null,
         colorInfluence: null,
         action: (bot, x, y, world, property) => {
+            return { completed: false, goto: property.branches[0] };
+        }
+    },
+    checkHealth: {
+        name: 'Проверить здоровье',
+        defaultEnabled: true,
+        color: null,
+        colorInfluence: null,
+        action: (bot, x, y, world, property) => {
+            if (bot.health < property.option) {
+                return { completed: false, goto: property.branches[0] };
+            }
             return { completed: false, goto: property.branches[0] };
         }
     },
