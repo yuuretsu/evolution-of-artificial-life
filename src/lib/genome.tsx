@@ -20,7 +20,6 @@ const GenomeWrapper = styled.div`
     /* height: ${8 * 21}px; */
     border: 2px solid #505050;
     border-radius: ${CELL_SIZE / 2}px;
-    overflow: hidden;
 `;
 
 interface IGeneCell {
@@ -37,6 +36,8 @@ const anim = keyframes`
         transform: scale(0.75);
     }
 `;
+
+const transitionVariants: IGeneCell['state'][] = ['active', 'activeLast'];
 
 const GeneCell = styled.div<IGeneCell>`
     box-sizing: border-box;
@@ -55,7 +56,10 @@ const GeneCell = styled.div<IGeneCell>`
     };
     transform: scale(${props => props.state === 'active' ? 1 : 0.75});
     border-radius: 100%;
-    transition: background-color 0.2s;
+    transition: ${props => transitionVariants.includes(props.state)
+        ? 'none'
+        : 'background-color 0.2s, transform 0.5s'
+    };
     animation: ${anim} 0.5s;
 `;
 
@@ -138,22 +142,28 @@ export class Genome {
                 <SubBlock name="Геном">
                     <GenomeWrapper>
                         {this.genes.map((gene, i) => {
-                            const color = gene.template.color
-                                ? gene
-                                    .template
-                                    .color
-                                    .interpolate(new Rgba(0, 0, 0, 255), 0.25)
-                                    .toString()
-                                : 'rgba(127, 127, 127, 0.1)';
                             const state = this.activeGene === gene
                                 ? 'active'
                                 : this.recentlyUsedGenes.includes(gene)
                                     ? 'activeLast'
                                     : null;
+                            const color = gene.template.color
+                                ? gene
+                                    .template
+                                    .color
+                                    .interpolate(
+                                        state === 'active'
+                                            ? gene.template.color
+                                            : new Rgba(0, 0, 0, 255),
+                                        0.75
+                                    )
+                                    .toString()
+                                : 'rgba(127, 127, 127, 0.1)';
+                            const title = `${gene.template.name}`;
                             return (
                                 <GeneCell
                                     key={i}
-                                    title={gene.template.name}
+                                    title={title}
                                     bg={color}
                                     state={state}
                                 >
