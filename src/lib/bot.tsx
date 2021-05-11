@@ -151,13 +151,13 @@ export class Bot extends DynamicBlock {
 
 function narrowToName(narrow: number) {
     switch (narrow) {
-        case 0: return 'лево-верх';
-        case 1: return 'верх';
-        case 2: return 'право-верх';
-        case 3: return 'право';
-        case 4: return 'право-низ';
-        case 5: return 'низ';
-        case 6: return 'лево-низ';
-        case 7: return 'лево';
+        case 0: return '↖';
+        case 1: return '↑';
+        case 2: return '↗';
+        case 3: return '→';
+        case 4: return '↘';
+        case 5: return '↓';
+        case 6: return '↙';
+        case 7: return '←';
     }
 }
