@@ -170,14 +170,23 @@ export class Genome {
                 </Accordion>
                 <Accordion name="Последние действия" small defaultOpened>
                     <SubBlock>
-                        <ul style={{ paddingLeft: '18px', margin: 0 }}>
-                            {this.recentlyUsedGenes.map(gene => {
-                                return <LiAction key={gene.template.name}>{gene.template.name}</LiAction>
-                            })}
-                            {<LiAction>{this.activeGene?.template.name}</LiAction>}
-                            {new Array(8 - this.recentlyUsedGenes.length - 1).fill(0).map(() => {
-                                return <LiAction />
-                            })}
+                        <ul style={{
+                            paddingLeft: '18px',
+                            margin: 0,
+                            height: `${8 * 19}px`,
+                        }}>
+                            {this
+                                .recentlyUsedGenes
+                                .map((gene, i) => {
+                                    return <LiAction
+                                        key={i}
+                                    >
+                                        {gene.template.name}
+                                    </LiAction>
+                                })}
+                            {<LiAction>
+                                {this.activeGene?.template.name}
+                            </LiAction>}
                         </ul>
                     </SubBlock>
                 </Accordion>
