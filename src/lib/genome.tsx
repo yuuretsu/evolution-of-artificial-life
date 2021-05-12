@@ -47,7 +47,7 @@ const GeneCell2 = (props: GeneCell2Props) => {
             .interpolate(
                 props.state === 'active'
                     ? props.gene.template.color
-                    : new Rgba(0, 0, 0, 255),
+                    : new Rgba(50, 50, 50, 127),
                 0.75
             )
             .toString()
@@ -321,9 +321,9 @@ export type Gene = {
 
 export const GENES: { [index: string]: GeneTemplate } = {
     doNothing: {
-        name: 'Самолечение',
+        name: 'Лечение',
         defaultEnabled: true,
-        color: new Rgba(127, 127, 0, 255),
+        color: new Rgba(200, 200, 0, 255),
         colorInfluence: 0.01,
         action: (bot, x, y, world, property) => {
             bot.age += 1;
