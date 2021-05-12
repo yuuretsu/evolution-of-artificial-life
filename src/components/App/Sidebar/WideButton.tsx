@@ -13,9 +13,11 @@ const WideButton = styled.button`
     border: none;
     outline: none;
     line-height: 20px;
-    margin-bottom: 5px;
     cursor: pointer;
     transition-duration: 0.2s;
+    &:not(:last-child) {
+        margin-bottom: 5px;
+    }
 `;
 
 export default WideButton;

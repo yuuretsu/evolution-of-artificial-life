@@ -62,6 +62,8 @@ const GeneCell = styled.div<IGeneCell>`
 const LiAction = styled.li`
 `;
 
+const MAX_ACTIONS = 8;
+
 export class Genome {
     private _pointer: number = 0;
     private recentlyUsedGenes: Gene[] = [];
@@ -112,7 +114,7 @@ export class Genome {
     }
     doAction(bot: Bot, x: number, y: number, world: World) {
         this.recentlyUsedGenes = [];
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < MAX_ACTIONS; i++) {
             const gene = this.genes[this.pointer]!;
             const result = gene
                 .template
@@ -173,7 +175,7 @@ export class Genome {
                         <ul style={{
                             paddingLeft: '18px',
                             margin: 0,
-                            height: `${8 * 19}px`,
+                            height: `${MAX_ACTIONS * 25}px`,
                         }}>
                             {this
                                 .recentlyUsedGenes
@@ -188,6 +190,26 @@ export class Genome {
                                 {this.activeGene?.template.name}
                             </LiAction>}
                         </ul>
+                        {/* {this
+                            .recentlyUsedGenes
+                            .map((gene, i) => {
+                                return <LiAction
+                                    key={i}
+                                >
+                                    {gene.template.name}
+                                </LiAction>
+                            })}
+                        {this.activeGene && <LiAction>
+                            {this.activeGene.template.name}
+                        </LiAction>}
+                        {new Array(MAX_ACTIONS - this.recentlyUsedGenes.length - 1)
+                            .fill(0)
+                            .map((_, i) => {
+                                return <LiAction
+                                    key={i}
+                                >
+                                </LiAction>
+                            })} */}
                     </SubBlock>
                 </Accordion>
             </>
@@ -320,10 +342,27 @@ export const GENES: { [index: string]: GeneTemplate } = {
                 ...world.narrowToCoords(x, y, bot.narrow, 1)
             );
             if (F_BLOCK) {
-                F_BLOCK.getAttacked(bot, interpolate(0, 5, property.option));
+                F_BLOCK.onAttack(bot, interpolate(0, 5, property.option));
                 bot.health = Math.min(1, bot.health + 0.01);
             }
             bot.energy -= 0.05;
+            return { completed: true, goto: null };
+        }
+    },
+    virus: {
+        name: 'Заразить геном',
+        defaultEnabled: false,
+        color: new Rgba(255, 50, 255, 255),
+        colorInfluence: 0.01,
+        action: (bot, x, y, world, property) => {
+            const F_BLOCK = world.get(
+                ...world.narrowToCoords(x, y, bot.narrow, 1)
+            );
+            if (F_BLOCK) {
+                F_BLOCK.onVirus(bot, world.genePool);
+            }
+            bot.health -= 0.1;
+            bot.energy -= 0.1;
             return { completed: true, goto: null };
         }
     },
@@ -388,7 +427,19 @@ export const GENES: { [index: string]: GeneTemplate } = {
             if (bot.health < property.option) {
                 return { completed: false, goto: property.branches[0] };
             }
-            return { completed: false, goto: property.branches[0] };
+            return { completed: false, goto: property.branches[1] };
+        }
+    },
+    checkEnergy: {
+        name: 'Проверить энергию',
+        defaultEnabled: true,
+        color: null,
+        colorInfluence: null,
+        action: (bot, x, y, world, property) => {
+            if (bot.energy / 500 < property.option) {
+                return { completed: false, goto: property.branches[0] };
+            }
+            return { completed: false, goto: property.branches[1] };
         }
     },
     forward: {

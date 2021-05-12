@@ -92,12 +92,15 @@ export class Bot extends DynamicBlock {
             }
         }
     }
-    getAttacked(bot: Bot, value: number) {
+    onAttack(bot: Bot, value: number) {
         const REAL_VALUE = Math.min(this.energy, value);
         this.energy -= REAL_VALUE;
         bot.energy += REAL_VALUE * bot.abilities.attack ** 2;
         this.health -= 0.1;
         bot.increaseAbility('attack');
+    }
+    onVirus(bot: Bot, pool: GenePool) {
+        this.genome = bot.genome.replication(pool);
     }
     multiply(pool: GenePool) {
         const colorCopy = Object

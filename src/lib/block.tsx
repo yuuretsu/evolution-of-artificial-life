@@ -5,6 +5,7 @@ import { VisualiserParams } from "./view-modes";
 import SubBlock from "../components/App/Sidebar/SubBlock";
 import React from "react";
 import Block from "../components/App/Sidebar/Block";
+import { GenePool } from "./genome";
 
 export class WorldBlock {
     public age: number | null = null;
@@ -32,7 +33,8 @@ export class WorldBlock {
     getHealthColor(): Rgba | null {
         return null;
     }
-    getAttacked(bot: Bot, value: number) { }
+    onAttack(bot: Bot, value: number) { }
+    onVirus(bot: Bot, pool: GenePool) { }
     getInfo() {
         return (
             <Block name={'Блок'}>Нет информации. Попробуйте выбрать другой блок.</Block>

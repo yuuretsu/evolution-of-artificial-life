@@ -53,7 +53,7 @@ type CheckboxProps = {
     title: string,
     value: string,
     onChange: (value: string, checked: boolean) => any,
-    defaultChecked?: boolean
+    checked?: boolean
 };
 
 const Checkbox = (props: CheckboxProps) => {
@@ -61,7 +61,7 @@ const Checkbox = (props: CheckboxProps) => {
         <Wrapper>
             <Input
                 value={props.value}
-                defaultChecked={props.defaultChecked}
+                checked={props.checked}
                 onChange={(e) => {
                     props.onChange(e.target.value, e.target.checked);
                 }}

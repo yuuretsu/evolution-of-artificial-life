@@ -134,7 +134,7 @@ const Sidebar = (props: SidebarProps) => {
                       title={actionName}
                       value={actionName}
                       key={actionName}
-                      defaultChecked={props.visualizerParams.action[actionName]}
+                      checked={props.visualizerParams.action[actionName]}
                       onChange={(value, checked) => {
                         const newParams = {
                           ...props.visualizerParams,
@@ -148,6 +148,36 @@ const Sidebar = (props: SidebarProps) => {
                 })
             }
           </SubBlock>
+          <WideButton
+            onClick={() => {
+              const newParams = {
+                ...props.visualizerParams,
+              };
+              Object
+                .keys(newParams.action)
+                .forEach(name => {
+                  newParams.action[name] = true;
+                });
+              props.setVisualizerParams(newParams);
+            }}
+          >
+            Включить все
+            </WideButton>
+          <WideButton
+            onClick={() => {
+              const newParams = {
+                ...props.visualizerParams,
+              };
+              Object
+                .keys(newParams.action)
+                .forEach(name => {
+                  newParams.action[name] = false;
+                });
+              props.setVisualizerParams(newParams);
+            }}
+          >
+            Выключить все
+          </WideButton>
         </OptionalBlock>}
       </Accordion>
       <Accordion name='Настройки мира' defaultOpened>
@@ -157,7 +187,7 @@ const Sidebar = (props: SidebarProps) => {
               title={GENES[key]!.name}
               value={key}
               key={key}
-              defaultChecked={props.enabledGenes[key]}
+              checked={props.enabledGenes[key]}
               onChange={(value, checked) => {
                 const newEnabledGenes = { ...props.enabledGenes };
                 newEnabledGenes[value] = checked;
