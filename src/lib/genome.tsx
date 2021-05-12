@@ -19,47 +19,76 @@ const GenomeWrapper = styled.div`
     width: ${8 * CELL_SIZE}px;
     /* height: ${8 * 21}px; */
     border: 2px solid #505050;
-    border-radius: ${CELL_SIZE / 2}px;
+    border-radius: ${CELL_SIZE / 2 + 3}px;
 `;
 
-interface IGeneCell {
-    readonly bg: string;
-    readonly active?: boolean;
-    readonly state: null | 'activeLast' | 'active';
-};
-
-// const anim = keyframes`
-//     from {
-//         transform: translateY(-10px);
-//     }
-//     to {
-//         transform: scale(0.75);
-//     }
-// `;
-
-const transitionVariants: IGeneCell['state'][] = ['active', 'activeLast'];
-
-const GeneCell = styled.div<IGeneCell>`
-    box-sizing: border-box;
+const GeneCell2Wrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: ${CELL_SIZE}px;
     height: ${CELL_SIZE}px;
-    background-color: ${props => props.bg};
-    border: ${props => props.state
-        ? props.state === 'active'
-            ? '3px solid white'
-            : '3px dashed white'
-        : 'none'
-    };
-    filter: blur(0);
-    transform: scale(${props => props.state === 'active' ? 1 : 0.75});
-    border-radius: 100%;
-    transition: ${props => transitionVariants.includes(props.state)
-        ? 'none'
-        : 'background-color 0.2s, transform 0.5s'
-    };
 `;
 
-const LiAction = styled.li`
+
+type GeneCell2Props = {
+    gene: Gene;
+    state: null | 'activeLast' | 'active';
+}
+
+const transitionVariants: GeneCell2Props['state'][] = ['active', 'activeLast'];
+
+const GeneCell2 = (props: GeneCell2Props) => {
+    const backgroundColor = props.gene.template.color
+        ? props
+            .gene
+            .template
+            .color
+            .interpolate(
+                props.state === 'active'
+                    ? props.gene.template.color
+                    : new Rgba(0, 0, 0, 255),
+                0.75
+            )
+            .toString()
+        : 'rgba(127, 127, 127, 0.1)';
+    const border = props.state
+        ? props.state === 'active'
+            ? '3px solid white'
+            : '2px solid rgba(255, 255, 255, 0.5)'
+        : 'none';
+    const size = props.state === 'active'
+        ? `${CELL_SIZE * 0.9}px`
+        : `${CELL_SIZE * 0.6}px`;
+    const transition = transitionVariants.includes(props.state)
+        ? 'none'
+        : 'background-color 0.2s, transform 0.5s, min-width 0.2s, min-height 0.2s';
+    const boxShadow = props.state === 'active'
+        ? `0 0 5px 0 ${props.gene.template.color?.interpolate(new Rgba(255, 255, 255, 255), 0.5).toString()}`
+        : 'none';
+    const zIndex = props.state === 'active'
+        ? 1
+        : 0;
+    return (
+        <GeneCell2Wrapper>
+            <div
+                style={{
+                    boxSizing: 'border-box',
+                    backgroundColor,
+                    border,
+                    transition,
+                    boxShadow,
+                    zIndex,
+                    borderRadius: '100%',
+                    minWidth: size,
+                    minHeight: size,
+                }}
+            />
+        </GeneCell2Wrapper>
+    );
+};
+
+const LiAction = styled.div`
 `;
 
 const MAX_ACTIONS = 8;
@@ -159,37 +188,46 @@ export class Genome {
                                 : 'rgba(127, 127, 127, 0.1)';
                             const title = `${gene.template.name}`;
                             return (
-                                <GeneCell
+                                <GeneCell2
                                     key={i}
-                                    title={title}
-                                    bg={color}
+                                    gene={gene}
                                     state={state}
-                                >
-                                </GeneCell>
+                                />
                             );
                         })}
                     </GenomeWrapper>
                 </Accordion>
                 <Accordion name="Последние действия" small defaultOpened>
                     <SubBlock>
-                        <ul style={{
-                            paddingLeft: '18px',
-                            margin: 0,
-                            height: `${MAX_ACTIONS * 25}px`,
+                        {this
+                            .recentlyUsedGenes
+                            .map((gene, i) => {
+                                return <LiAction
+                                    key={i}
+                                    style={{
+                                        color: gene.template.color
+                                            ? gene
+                                                .template
+                                                .color
+                                                .interpolate(new Rgba(255, 255, 255, 255), 0.5)
+                                                .toString()
+                                            : 'white'
+                                    }}
+                                >
+                                    {gene.template.name}
+                                </LiAction>
+                            })}
+                        {this.activeGene && <LiAction style={{
+                            color: this.activeGene.template.color
+                                ? this.activeGene
+                                    .template
+                                    .color
+                                    .interpolate(new Rgba(255, 255, 255, 255), 0.5)
+                                    .toString()
+                                : 'white'
                         }}>
-                            {this
-                                .recentlyUsedGenes
-                                .map((gene, i) => {
-                                    return <LiAction
-                                        key={i}
-                                    >
-                                        {gene.template.name}
-                                    </LiAction>
-                                })}
-                            {<LiAction>
-                                {this.activeGene?.template.name}
-                            </LiAction>}
-                        </ul>
+                            {this.activeGene.template.name}
+                        </LiAction>}
                         {/* {this
                             .recentlyUsedGenes
                             .map((gene, i) => {
