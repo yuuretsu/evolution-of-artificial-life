@@ -17,6 +17,7 @@ const InputNumber = styled.input.attrs({
     color: whitesmoke;
     margin-bottom: 5px;
     transition-duration: 0.2s;
+    -moz-appearance: textfield;
     &::-webkit-inner-spin-button {
       appearance: none;
     }
