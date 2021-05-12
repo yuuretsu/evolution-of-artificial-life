@@ -141,6 +141,7 @@ export class Bot extends DynamicBlock {
                         <div>Возраст: {this.age}</div>
                         <div>Энергия: {this.energy.toFixed(2)}</div>
                         <div>Здоровье: {this.health.toFixed(2)}</div>
+                        <div>Потомков: {this.childrenAmount}</div>
                         <div>Направление: {narrowToName(this.narrow)}</div>
                     </div> : <div style={{ color: 'red', fontWeight: 'bold', textAlign: 'center' }}>Этот бот мёртв</div>}
                 </SubBlock>
