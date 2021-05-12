@@ -42,8 +42,6 @@ export class WorldBlock {
     }
 }
 
-// export class NullBlock
-
 export abstract class DynamicBlock extends WorldBlock {
     abstract live(x: number, y: number, world: World): void;
 }

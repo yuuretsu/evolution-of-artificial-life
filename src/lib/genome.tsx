@@ -326,7 +326,6 @@ export const GENES: { [index: string]: GeneTemplate } = {
         color: new Rgba(200, 200, 0, 255),
         colorInfluence: 0.01,
         action: (bot, x, y, world, property) => {
-            bot.age += 1;
             bot.health = Math.min(1, bot.health + 0.1);
             return { completed: true, goto: null };
         }
