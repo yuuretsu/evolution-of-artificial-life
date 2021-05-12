@@ -17,7 +17,7 @@ const animation = keyframes`
 
 const Wrapper = styled.canvas`
     background-color: rgb(5, 5, 5);
-    border: 1px solid rgb(20, 20, 20);
+    border: 2px solid rgb(20, 20, 20);
     border-radius: 5px;
     animation: ${animation} 0.2s ease;
 `;
@@ -42,8 +42,8 @@ const GameImage = (props: GameImageProps) => {
 
     useEffect(() => {
         if (canvasRef.current && ctx) {
-            canvasRef.current.width = props.image.width * 5;
-            canvasRef.current.height = props.image.height * 5;
+            canvasRef.current.width = props.image.width * 6;
+            canvasRef.current.height = props.image.height * 6;
             ctx.imageSmoothingEnabled = false;
             ctx.drawImage(props.image, 0, 0, canvasRef.current.width, canvasRef.current.height);
         }
@@ -55,8 +55,8 @@ const GameImage = (props: GameImageProps) => {
             style={{ transform: `translate(${props.offset.x}px, ${props.offset.y}px)` }}
             onClick={(e) => {
                 const rect = canvasRef.current!.getBoundingClientRect();
-                const x = Math.floor((e.clientX - rect.left) / 5);
-                const y = Math.floor((e.clientY - rect.top) / 5);
+                const x = Math.floor((e.clientX - rect.left) / 6);
+                const y = Math.floor((e.clientY - rect.top) / 6);
                 const block = props.world.get(x, y);
                 console.log(block, x, y);
                 props.setSelectedBlock(block ? block : null);
