@@ -2,6 +2,7 @@ import React from "react";
 import styled, { keyframes } from 'styled-components';
 import Accordion from "../components/App/Sidebar/Accordion";
 import Block from "../components/App/Sidebar/Block";
+import InputNumberSmall from "../components/App/Sidebar/InputNumberSmall";
 import OptionalBlock from "../components/App/Sidebar/OptionalBlock";
 import SubBlock from "../components/App/Sidebar/SubBlock";
 import { Bot } from "./bot";
@@ -34,6 +35,7 @@ const GeneCell2Wrapper = styled.div`
 type GeneCell2Props = {
     gene: Gene;
     state: null | 'activeLast' | 'active';
+    onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 const transitionVariants: GeneCell2Props['state'][] = ['active', 'activeLast'];
@@ -82,7 +84,9 @@ const GeneCell2 = (props: GeneCell2Props) => {
                     borderRadius: '100%',
                     minWidth: size,
                     minHeight: size,
+                    cursor: 'pointer'
                 }}
+                onClick={props.onClick}
             />
         </GeneCell2Wrapper>
     );
@@ -164,8 +168,71 @@ export class Genome {
         bot.energy -= 1;
     }
     getInfo() {
+        const [selectedGene, setSelectedGene] = React.useState<Gene | null>(null);
+        const [branches, setBranches] = React.useState<Array<number | string> | null>(null);
+        const [option, setOption] = React.useState<number | string | null>(null);
+        React.useEffect(() => {
+            setSelectedGene(null);
+        }, [this]);
+        React.useEffect(() => {
+            setBranches(selectedGene?.property.branches || null);
+            setOption(selectedGene?.property.option.toFixed(2) || null);
+        }, [selectedGene]);
         return (
             <>
+                <Accordion name="Ген" small defaultOpened>
+                    {selectedGene
+                        ?
+                        <>
+                            <div style={{ fontWeight: 'bold' }}>{selectedGene.template.name}</div>
+                            <InputNumberSmall
+                                name={`Параметр`}
+                                value={option?.toString()}
+                                onChange={e => {
+                                    const value = e.target.value;
+                                    setOption(value);
+                                }}
+                                onBlur={e => {
+                                    const value = e.target.value;
+                                    if (value.length > 0) {
+                                        selectedGene.property.option = limit(
+                                            0,
+                                            1,
+                                            parseFloat(value)
+                                        );
+                                    }
+                                    setOption(selectedGene.property.option);
+                                }}
+                            />
+                            {branches && selectedGene
+                                .property
+                                .branches
+                                .map((value, i) => {
+                                    return (<InputNumberSmall
+                                        name={`Ветка ${i + 1}`}
+                                        value={branches[i]}
+                                        onChange={e => {
+                                            const value = e.target.value;
+                                            const newBranches = [...branches];
+                                            newBranches[i] = value;
+                                            setBranches(newBranches);
+                                        }}
+                                        onBlur={e => {
+                                            const value = e.target.value;
+                                            if (value.length > 0) {
+                                                selectedGene.property.branches[i] = fixNumber(
+                                                    0,
+                                                    this.genes.length,
+                                                    parseInt(value)
+                                                );
+                                            }
+                                            setBranches(selectedGene.property.branches);
+                                        }}
+                                    />);
+                                })}
+                        </>
+                        : <span>Кликните по круглому гену на вкладке ниже, чтобы увидеть информацию о нём.</span>}
+                </Accordion>
                 <Accordion name="Геном" small defaultOpened>
                     <GenomeWrapper>
                         {this.genes.map((gene, i) => {
@@ -192,6 +259,7 @@ export class Genome {
                                     key={i}
                                     gene={gene}
                                     state={state}
+                                    onClick={_e => setSelectedGene(gene)}
                                 />
                             );
                         })}
@@ -228,26 +296,6 @@ export class Genome {
                         }}>
                             {this.activeGene.template.name}
                         </LiAction>}
-                        {/* {this
-                            .recentlyUsedGenes
-                            .map((gene, i) => {
-                                return <LiAction
-                                    key={i}
-                                >
-                                    {gene.template.name}
-                                </LiAction>
-                            })}
-                        {this.activeGene && <LiAction>
-                            {this.activeGene.template.name}
-                        </LiAction>}
-                        {new Array(MAX_ACTIONS - this.recentlyUsedGenes.length - 1)
-                            .fill(0)
-                            .map((_, i) => {
-                                return <LiAction
-                                    key={i}
-                                >
-                                </LiAction>
-                            })} */}
                     </SubBlock>
                 </Accordion>
             </>

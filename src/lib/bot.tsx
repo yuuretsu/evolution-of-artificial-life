@@ -10,6 +10,9 @@ import SubBlock from "../components/App/Sidebar/SubBlock";
 import Block from "../components/App/Sidebar/Block";
 import WorldBlockIcon from "./WorldBlockVisualiser";
 import OptionalBlock from "../components/App/Sidebar/OptionalBlock";
+import Accordion from "../components/App/Sidebar/Accordion";
+import InputNumberSmall from "../components/App/Sidebar/InputNumberSmall";
+import WideButton from "../components/App/Sidebar/WideButton";
 
 export type BotAbilityName = keyof typeof Bot.prototype.abilities;
 
@@ -115,7 +118,12 @@ export class Bot extends DynamicBlock {
         );
     }
     live(x: number, y: number, world: World) {
-        if (this.age > 2000 || this.energy < 1 || this.energy > 300 || this.health <= 0) {
+        if (
+            this.age > 2000 ||
+            this.energy < 1 ||
+            this.energy > 300 ||
+            this.health <= 0
+        ) {
             this.alive = false;
             world.remove(x, y);
             // world.set(x, y, new Block(this.color.interpolate(new Rgba(0, 0, 0, 255), 0.5)));
@@ -126,8 +134,85 @@ export class Bot extends DynamicBlock {
         this.health = Math.min(1, this.health + 0.01);
     }
     getInfo() {
+        const [age, setAge] = React.useState<number | string>(this.age);
+        const [energy, setEnergy] = React.useState<number | string>(this.energy.toFixed(2));
+        const [health, setHealth] = React.useState<number | string>(this.health.toFixed(2));
+        React.useEffect(() => {
+            setAge(this.age);
+        }, [this.age]);
+        React.useEffect(() => {
+            setHealth(this.health.toFixed(2));
+        }, [this.health]);
+        React.useEffect(() => {
+            setEnergy(this.energy.toFixed(2));
+        }, [this.energy]);
         return (
             <>
+                <SubBlock>
+                    Бот
+                    </SubBlock>
+                <SubBlock>
+                    {this.alive ? <div>
+                        <InputNumberSmall
+                            name='Возраст'
+                            value={age}
+                            onChange={e => {
+                                const age = e.target.value;
+                                setAge(age);
+                            }}
+                            onBlur={e => {
+                                const age = e.target.value;
+                                if (age.length > 0) {
+                                    this.age = parseFloat(age);
+                                }
+                                setAge(this.age);
+                            }}
+                        />
+                        <InputNumberSmall
+                            name='Здоровье'
+                            value={health}
+                            onChange={e => {
+                                const health = e.target.value;
+                                setHealth(health);
+                            }}
+                            onBlur={e => {
+                                const health = e.target.value;
+                                if (health.length > 0) {
+                                    this.health = parseFloat(health);
+                                }
+                                setHealth(this.health);
+                            }}
+                        />
+                        <InputNumberSmall
+                            name='Энергия'
+                            value={energy}
+                            onChange={e => {
+                                const energy = e.target.value;
+                                setEnergy(energy);
+                            }}
+                            onBlur={e => {
+                                const energy = e.target.value;
+                                if (energy.length > 0) {
+                                    this.energy = parseFloat(energy);
+                                }
+                                setEnergy(this.energy);
+                            }}
+                        />
+                        <div>Потомков: {this.childrenAmount}</div>
+                        <div>Направление: {narrowToName(this.narrow)}</div>
+                    </div> : <div style={{ color: 'red', fontWeight: 'bold', textAlign: 'center' }}>Этот бот мёртв</div>}
+                </SubBlock>
+                <SubBlock>
+                    {this.genome.getInfo()}
+                </SubBlock>
+            </>
+        );
+    }
+    getInfo2() {
+        const [val, setVal] = React.useState(0);
+        return (
+            <>
+                <WideButton onClick={() => setVal(val + 1)}>{val}</WideButton>
                 <SubBlock>
                     <div style={{ display: 'flex' }} >
                         <div style={{ transform: 'translateY(3px)' }}>
