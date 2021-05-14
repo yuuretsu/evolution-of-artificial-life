@@ -25,10 +25,6 @@ const RoundButton = styled.button`
         display: block;
         transition-duration: 0.2s;
     }
-    &:hover {
-        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.5);
-        background-color: rgb(90, 90, 90);
-    }
     &:active {
         box-shadow: none;
         background-color: rgb(60, 60, 60);

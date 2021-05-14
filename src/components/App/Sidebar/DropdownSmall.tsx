@@ -43,7 +43,9 @@ const Body = styled.div`
     z-index: 999;
     box-sizing: border-box;
     position: absolute;
-    background-color: #141414;
+    background-color: #282828;
+    border-radius: 5px;
+    overflow: hidden;
     box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.5);
     width: 100%;
     animation: ${anim} 0.2s;
@@ -67,6 +69,9 @@ const DropdownSmall: React.FC<{
         <Wrapper>
             <Header
                 onClick={() => setOpened(!opened)}
+                style={{
+                    padding: opened ? '10px' : '0',
+                }}
             >
                 {props.name}
                 <MdKeyboardArrowDown
