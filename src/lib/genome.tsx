@@ -36,6 +36,7 @@ type GeneCell2Props = {
     gene: Gene;
     state: null | 'activeLast' | 'active';
     onClick?: React.MouseEventHandler<HTMLDivElement>;
+    children?: React.ReactNode;
 }
 
 const transitionVariants: GeneCell2Props['state'][] = ['active', 'activeLast'];
@@ -75,6 +76,9 @@ const GeneCell2 = (props: GeneCell2Props) => {
         <GeneCell2Wrapper>
             <div
                 style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     boxSizing: 'border-box',
                     backgroundColor,
                     border,
@@ -84,10 +88,13 @@ const GeneCell2 = (props: GeneCell2Props) => {
                     borderRadius: '100%',
                     minWidth: size,
                     minHeight: size,
-                    cursor: 'pointer'
+                    maxWidth: size,
+                    maxHeight: size,
+                    cursor: 'pointer',
+                    fontSize: '8px',
                 }}
                 onClick={props.onClick}
-            />
+            ><span>{props.children}</span></div>
         </GeneCell2Wrapper>
     );
 };

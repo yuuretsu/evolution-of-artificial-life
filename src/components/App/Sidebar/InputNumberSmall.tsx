@@ -31,11 +31,12 @@ const Wrapper = styled.div`
 
 const Input = styled.input.attrs({ type: 'number' })`
   background-color: transparent;
-  color: whitesmoke;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
   width: 100%;
   margin: 0;
   padding: 0;
-  transform: translateY(1px);
   border: none;
   transition-duration: 0.2s;
   -moz-appearance: textfield;
