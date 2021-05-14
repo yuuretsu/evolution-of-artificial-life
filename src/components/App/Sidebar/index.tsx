@@ -1,6 +1,7 @@
 import React from "react";
 import styled from 'styled-components';
 import { WorldBlock } from "../../../lib/block";
+import Rgba from "../../../lib/color";
 import { GENES } from "../../../lib/genome";
 import { limit } from "../../../lib/helpers";
 import VIEW_MODES, { VisualiserParams } from "../../../lib/view-modes";
@@ -74,14 +75,23 @@ type SidebarProps = {
 const Sidebar = (props: SidebarProps) => {
   return (
     <Wrapper opened={props.opened} padding={props.style.padding} width={props.style.width}>
-      {/* <Dropdown
-        selected={'Hello'}
-        list={[
-          { value: '5', title: '5' },
-          { value: 'sg', title: 'Sf' },
-        ]}
-        onChange={() => { }}
-      /> */}
+      <Accordion name='Легенда'>
+        {Object
+          .keys(GENES)
+          .filter(key => GENES[key]!.description)
+          .map(key => {
+            const gene = GENES[key]!;
+            return (
+              <Accordion
+                name={gene.name}
+                color={gene.color?.interpolate(new Rgba(127, 127, 127, 255), 0.5).toString()}
+                small
+              >
+                {gene.description}
+              </Accordion>
+            );
+          })}
+      </Accordion>
       <Accordion name='Инфо о мире' defaultOpened>
         <div>Возраст: {(props.worldInfo.cycle / 1000).toFixed(1)} тыс. кадров</div>
         <div>Ботов: {props.worldInfo.dynamicBlocks}</div>

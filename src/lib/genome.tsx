@@ -368,6 +368,7 @@ export type ActionFn = (
 
 export type GeneTemplate = {
   name: string,
+  description?: string,
   defaultEnabled: boolean,
   color: Rgba | null,
   colorInfluence: number | null,
@@ -382,6 +383,7 @@ export type Gene = {
 export const GENES: { [index: string]: GeneTemplate } = {
   doNothing: {
     name: 'Лечение',
+    description: `Прибавляет 0.1 к здоровью`,
     defaultEnabled: true,
     color: new Rgba(200, 200, 0, 255),
     colorInfluence: 0.01,
@@ -392,13 +394,14 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   multiply: {
     name: 'Размножение',
+    description: `Бот теряет 0.1 энергии на попытку размножения. Если клетка перед ним пуста, энергии больше 5 единиц, а возраст больше 10 кадров, бот размножается.`,
     defaultEnabled: true,
     color: new Rgba(255, 255, 200, 255),
     colorInfluence: 0.01,
     action: (bot, x, y, world, property) => {
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
       const F_BLOCK = world.get(...F_COORDS);
-      bot.energy *= 0.99;
+      bot.energy *= 0.9;
       if (!F_BLOCK && bot.energy > 5 && bot.age > 10) {
         world.set(...F_COORDS, bot.multiply(world.genePool));
       }
@@ -407,6 +410,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   rotate: {
     name: 'Поворот',
+    description: `Бот поворачивается по часовой стрелке, если параметр гена > 0.5, иначе против часовой стрелки`,
     defaultEnabled: true,
     color: null,
     colorInfluence: null,
@@ -419,6 +423,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   photosynthesis: {
     name: 'Фотосинтез',
+    description: `Бот получает энергию путем фотосинтеза. При этом эффективность его фотосинтеза возрастает, а эффективность атак -- падает. Восстанавливает своё здоровье на 0.01.`,
     defaultEnabled: true,
     color: new Rgba(0, 255, 0, 255),
     colorInfluence: 0.01,
@@ -431,6 +436,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   attack: {
     name: 'Атака',
+    description: `Бот атакует блок перед собой, забирая себе часть его энергии. Повышает здоровье на 0.01.`,
     defaultEnabled: true,
     color: new Rgba(255, 0, 0, 255),
     colorInfluence: 0.01,
@@ -448,6 +454,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   virus: {
     name: 'Заразить геном',
+    description: `Бот копирует с свой геном в бота напротив, при этом есть шанс мутации. Расходует 0.1 здоровья и 0.1 энергии.`,
     defaultEnabled: false,
     color: new Rgba(255, 50, 255, 255),
     colorInfluence: 0.1,
@@ -465,6 +472,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   moveForward: {
     name: 'Двигаться вперед',
+    description: `Бот перемещется в клетку перед собой, если она пустая. Расходует 1 энергии.`,
     defaultEnabled: true,
     color: new Rgba(200, 200, 200, 255),
     colorInfluence: null,
@@ -473,13 +481,14 @@ export const GENES: { [index: string]: GeneTemplate } = {
       const F_BLOCK = world.get(...F_COORDS);
       if (!F_BLOCK) {
         world.swap(x, y, ...F_COORDS);
-        bot.energy -= 1;
       }
+      bot.energy -= 0.1;
       return { completed: true, goto: null };
     }
   },
   push: {
     name: 'Толкнуть',
+    description: `Бот отталкивает блок перед собой на одну клетку, если клетка за ним пуста. Расходует 0.1 энергии.`,
     defaultEnabled: true,
     color: new Rgba(0, 0, 255, 255),
     colorInfluence: 0.01,
@@ -491,11 +500,13 @@ export const GENES: { [index: string]: GeneTemplate } = {
       if (F_BLOCK && !O_BLOCK) {
         world.swap(...F_COORDS, ...O_COORDS);
       }
+      bot.energy -= 1;
       return { completed: true, goto: null };
     }
   },
   swap: {
     name: 'Меняться местами',
+    description: `Бот меняется местами с клеткой перед собой, расходуя при этом 1 энергии.`,
     defaultEnabled: false,
     color: new Rgba(255, 255, 255, 255),
     colorInfluence: null,
@@ -508,6 +519,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   movePointer: {
     name: 'Переместить указатель',
+    description: `Следующая команда генома будет той, которая указана в ветке 1 текущего гена.`,
     defaultEnabled: true,
     color: null,
     colorInfluence: null,
@@ -517,6 +529,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   checkHealth: {
     name: 'Проверить здоровье',
+    description: `Следующая команда генома будет той, на которую указывает ветка 1 текущего гена, если здоровье бота меньше, чем параметр текущего гена. Иначе следующая команда берется из ветки 2.`,
     defaultEnabled: true,
     color: null,
     colorInfluence: null,
@@ -529,11 +542,12 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   checkEnergy: {
     name: 'Проверить энергию',
+    description: `Следующая команда генома будет той, на которую указывает ветка 1 текущего гена, если энергия бота меньше, чем параметр текущего гена, умноженный на 300. Иначе следующая команда берется из ветки 2.`,
     defaultEnabled: true,
     color: null,
     colorInfluence: null,
     action: (bot, x, y, world, property) => {
-      if (bot.energy / 500 < property.option) {
+      if (bot.energy / 300 < property.option) {
         return { completed: false, goto: property.branches[0] };
       }
       return { completed: false, goto: property.branches[1] };
@@ -541,6 +555,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   forward: {
     name: 'Спереди блок?',
+    description: `Следующая команда генома будет той, на которую указывает ветка 1 текущего гена, если перед ботом есть пустая клетка. Иначе следующая команда берется из ветки 2.`,
     defaultEnabled: true,
     color: null,
     colorInfluence: null,

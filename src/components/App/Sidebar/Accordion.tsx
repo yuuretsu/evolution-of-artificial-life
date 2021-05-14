@@ -14,6 +14,7 @@ const Wrapper = styled.div<IWrapper>`
 
 interface IHeadWrapper {
     readonly small: boolean | undefined,
+    readonly color?: string,
 }
 
 const HeadWrapper = styled.div<IHeadWrapper>`
@@ -24,7 +25,7 @@ const HeadWrapper = styled.div<IHeadWrapper>`
     font-weight: bold;
     font-size: ${props => props.small ? 'inherit' : '1.25em'};
     margin-bottom: ${props => props.small ? '5px' : '10px'};
-    border-left: 5px solid rgb(80, 80, 80);
+    border-left: 5px solid ${props => props.color ? props.color : 'rgb(80, 80, 80)'};
     padding-left: 10px;
     justify-content: space-between;
     cursor: pointer;
@@ -52,13 +53,17 @@ type AccordionProps = {
     children?: React.ReactNode,
     defaultOpened?: boolean,
     small?: boolean
+    color?: string,
 };
 
 const Accordion = (props: AccordionProps) => {
     const [opened, setOpened] = React.useState(props.defaultOpened);
     return (
         <Wrapper small={props.small}>
-            <HeadWrapper onClick={() => setOpened(!opened)} small={props.small}>
+            <HeadWrapper
+                onClick={() => setOpened(!opened)} small={props.small}
+                color={props.color}
+            >
                 {props.name}
                 <MdKeyboardArrowDown
                     style={{
