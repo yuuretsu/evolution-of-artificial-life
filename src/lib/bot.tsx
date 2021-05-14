@@ -19,6 +19,7 @@ export type BotAbilityName = keyof typeof Bot.prototype.abilities;
 export class Bot extends DynamicBlock {
     alive = true;
     private _narrow: number = randInt(0, 8);
+    lastActions: string[] = [];
     age = 0;
     health = 0.5;
     childrenAmount = 0;
@@ -98,9 +99,9 @@ export class Bot extends DynamicBlock {
     onAttack(bot: Bot, value: number) {
         const REAL_VALUE = Math.min(this.energy, value);
         this.energy -= REAL_VALUE;
-        bot.energy += REAL_VALUE * bot.abilities.attack ** 2;
+        bot.energy += REAL_VALUE;
         this.health -= 0.1;
-        bot.increaseAbility('attack');
+        return REAL_VALUE;
     }
     onVirus(bot: Bot, pool: GenePool) {
         const pointer = this.genome.pointer;
@@ -121,6 +122,7 @@ export class Bot extends DynamicBlock {
         );
     }
     live(x: number, y: number, world: World) {
+        this.lastActions = [];
         if (
             this.age > 2000 ||
             this.energy < 1 ||
@@ -153,7 +155,7 @@ export class Bot extends DynamicBlock {
             <>
                 <SubBlock>
                     Бот
-                    </SubBlock>
+                </SubBlock>
                 <SubBlock>
                     {this.alive ? <div>
                         <InputNumberSmall
@@ -219,6 +221,15 @@ export class Bot extends DynamicBlock {
                 <SubBlock>
                     {this.genome.getInfo()}
                 </SubBlock>
+                <Accordion name='Последние действия' small>
+                    {this.lastActions.map((action, i) => {
+                        return (
+                            <div key={i}>
+                                {action}
+                            </div>
+                        );
+                    })}
+                </Accordion>
             </>
         );
     }

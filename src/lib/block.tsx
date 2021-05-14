@@ -33,7 +33,7 @@ export class WorldBlock {
     getHealthColor(): Rgba | null {
         return null;
     }
-    onAttack(bot: Bot, value: number) { }
+    onAttack(bot: Bot, value: number): number { return 0; }
     onVirus(bot: Bot, pool: GenePool) { }
     getInfo() {
         return (

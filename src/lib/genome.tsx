@@ -162,6 +162,8 @@ export class Genome {
         .template
         .action(bot, x, y, world, gene.property);
       this.recentlyUsedGenes.push(gene);
+      this.activeGene = gene;
+      bot.lastActions.push(result.msg || gene.template.name);
       if (gene.template.colorInfluence !== null && gene.template.color) {
         bot.color = bot.color.interpolate(gene.template.color, gene.template.colorInfluence);
       }
@@ -169,11 +171,11 @@ export class Genome {
         ? this.pointer = result.goto
         : this.pointer = this.pointer + 1;
       if (result.completed) {
-        this.activeGene = this.recentlyUsedGenes.pop() || null;
+        // this.activeGene = this.recentlyUsedGenes.pop() || null;
         return;
       };
     }
-    this.activeGene = this.recentlyUsedGenes.pop() || null;
+    // this.activeGene = this.recentlyUsedGenes.pop() || null;
     bot.energy -= 1;
   }
   getInfo() {
@@ -182,8 +184,9 @@ export class Genome {
     const [option, setOption] = React.useState<number | string>(0);
     const [branches, setBranches] = React.useState<Array<number | string>>([0, 0]);
 
+    const activeGene = this.recentlyUsedGenes[this.recentlyUsedGenes.length - 1];
+
     React.useEffect(() => {
-      console.log('use effect this');
       setGenes(this.genes);
       setSelectedGene(null);
     }, [this]);
@@ -261,7 +264,7 @@ export class Genome {
           <SubBlock>Позиция указателя: {this.pointer}</SubBlock>
           <GenomeWrapper>
             {genes.map((gene, i) => {
-              const state = this.activeGene === gene
+              const state = activeGene === gene
                 ? 'active'
                 : this.recentlyUsedGenes.includes(gene)
                   ? 'activeLast'
@@ -276,39 +279,6 @@ export class Genome {
               )
             })}
           </GenomeWrapper>
-        </Accordion>
-        <Accordion name="Последние действия" small>
-          <SubBlock>
-            {this
-              .recentlyUsedGenes
-              .map((gene, i) => {
-                return <LiAction
-                  key={i}
-                  style={{
-                    color: gene.template.color
-                      ? gene
-                        .template
-                        .color
-                        .interpolate(new Rgba(255, 255, 255, 255), 0.5)
-                        .toString()
-                      : 'white'
-                  }}
-                >
-                  {gene.template.name}
-                </LiAction>
-              })}
-            {this.activeGene && <LiAction style={{
-              color: this.activeGene.template.color
-                ? this.activeGene
-                  .template
-                  .color
-                  .interpolate(new Rgba(255, 255, 255, 255), 0.5)
-                  .toString()
-                : 'white'
-            }}>
-              {this.activeGene.template.name}
-            </LiAction>}
-          </SubBlock>
         </Accordion>
       </>
     );
@@ -349,7 +319,7 @@ export function randGene(pool: GenePool, genomeLength: number): Gene {
   }
 }
 
-export type ActionResult = { completed: boolean, goto: number | null };
+export type ActionResult = { completed: boolean, goto: number | null, msg?: string };
 
 export type GeneProperty = {
   option: number,
@@ -386,8 +356,9 @@ export const GENES: { [index: string]: GeneTemplate } = {
     color: new Rgba(200, 200, 0, 255),
     colorInfluence: 0.01,
     action: (bot, x, y, world, property) => {
+      const value = 0.1;
       bot.health = Math.min(1, bot.health + 0.1);
-      return { completed: true, goto: null };
+      return { completed: true, goto: null, msg: `Лечение +${value}` };
     }
   },
   multiply: {
@@ -400,10 +371,11 @@ export const GENES: { [index: string]: GeneTemplate } = {
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
       const F_BLOCK = world.get(...F_COORDS);
       bot.energy *= 0.9;
-      if (!F_BLOCK && bot.energy > 5 && bot.age > 10) {
-        world.set(...F_COORDS, bot.multiply(world.genePool, property.option));
-      }
-      return { completed: true, goto: null };
+      if (F_BLOCK) return { completed: true, goto: null, msg: `Размножение не удалось: спереди блок` };
+      if (bot.energy <= 5) return { completed: true, goto: null, msg: `Размножение не удалось: мало энергии` };
+      if (bot.age <= 10) return { completed: true, goto: null, msg: `Размножение не удалось: бот слишком молод` };
+      world.set(...F_COORDS, bot.multiply(world.genePool, property.option));
+      return { completed: true, goto: null, msg: `Размножение` };
     }
   },
   rotate: {
@@ -416,25 +388,26 @@ export const GENES: { [index: string]: GeneTemplate } = {
       bot.narrow = property.option > 0.5
         ? bot.narrow + 1
         : bot.narrow - 1
-      return { completed: false, goto: null };
+      return { completed: false, goto: null, msg: `Поворот ${property.option > 0.5 ? 'направо' : 'налево'}` };
     }
   },
   photosynthesis: {
     name: 'Фотосинтез',
-    description: `Бот получает энергию путем фотосинтеза. При этом эффективность его фотосинтеза возрастает, а эффективность атак -- падает. Восстанавливает своё здоровье на 0.01.`,
+    description: `Бот получает энергию путем фотосинтеза.При этом эффективность его фотосинтеза возрастает, а эффективность атак-- падает.Восстанавливает своё здоровье на 0.01.`,
     defaultEnabled: true,
     color: new Rgba(0, 255, 0, 255),
     colorInfluence: 0.01,
     action: (bot, x, y, world, property) => {
-      bot.energy += 1 * bot.abilities.photosynthesis ** 2;
+      const energy = 1 * bot.abilities.photosynthesis ** 2;
+      bot.energy += energy;
       bot.increaseAbility('photosynthesis');
       bot.health = Math.min(1, bot.health + 0.01);
-      return { completed: true, goto: null };
+      return { completed: true, goto: null, msg: `Фототсинтез: +${energy.toFixed(2)} энергии` };
     }
   },
   attack: {
     name: 'Атака',
-    description: `Бот атакует блок перед собой, забирая себе часть его энергии. Повышает здоровье на 0.01.`,
+    description: `Бот атакует блок перед собой, забирая себе часть его энергии.Повышает здоровье на 0.01.`,
     defaultEnabled: true,
     color: new Rgba(255, 0, 0, 255),
     colorInfluence: 0.01,
@@ -442,17 +415,23 @@ export const GENES: { [index: string]: GeneTemplate } = {
       const F_BLOCK = world.get(
         ...world.narrowToCoords(x, y, bot.narrow, 1)
       );
+      let msg: string;
       if (F_BLOCK) {
-        F_BLOCK.onAttack(bot, interpolate(0, 5, property.option));
+        const value = interpolate(0, 5, property.option) * bot.abilities.attack ** 2;
+        const result = F_BLOCK.onAttack(bot, value);
+        bot.increaseAbility('attack');
         bot.health = Math.min(1, bot.health + 0.01);
+        msg = `Атака: +${result.toFixed(2)} энергии`;
+      } else {
+        msg = `Атака не удалась`;
       }
       bot.energy -= 0.05;
-      return { completed: true, goto: null };
+      return { completed: true, goto: null, msg };
     }
   },
   virus: {
     name: 'Заразить геном',
-    description: `Бот копирует с свой геном в бота напротив, при этом есть шанс мутации. Расходует 0.1 здоровья и 0.1 энергии.`,
+    description: `Бот копирует с свой геном в бота напротив, при этом есть шанс мутации.Расходует 0.1 здоровья и 0.1 энергии.`,
     defaultEnabled: false,
     color: new Rgba(255, 50, 255, 255),
     colorInfluence: 0.1,
@@ -460,33 +439,41 @@ export const GENES: { [index: string]: GeneTemplate } = {
       const F_BLOCK = world.get(
         ...world.narrowToCoords(x, y, bot.narrow, 1)
       );
+      let msg: string;
       if (F_BLOCK) {
         F_BLOCK.onVirus(bot, world.genePool);
+        msg = `Заражение другого бота`;
+      } else {
+        msg = `Заражение не удалось`;
       }
       bot.health -= 0.1;
       bot.energy -= 0.1;
-      return { completed: true, goto: null };
+      return { completed: true, goto: null, msg };
     }
   },
   moveForward: {
     name: 'Двигаться вперед',
-    description: `Бот перемещется в клетку перед собой, если она пустая. Расходует 0.5 энергии.`,
+    description: `Бот перемещется в клетку перед собой, если она пустая.Расходует 0.5 энергии.`,
     defaultEnabled: true,
     color: new Rgba(200, 200, 200, 255),
     colorInfluence: null,
     action: (bot, x, y, world, property) => {
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
       const F_BLOCK = world.get(...F_COORDS);
+      let msg: string;
       if (!F_BLOCK) {
         world.swap(x, y, ...F_COORDS);
+        msg = `Передвижение`;
+      } else {
+        msg = `Передвижение не удалось`;
       }
       bot.energy -= 0.5;
-      return { completed: true, goto: null };
+      return { completed: true, goto: null, msg };
     }
   },
   push: {
     name: 'Толкнуть',
-    description: `Бот отталкивает блок перед собой на одну клетку, если клетка за ним пуста. Расходует 0.1 энергии.`,
+    description: `Бот отталкивает блок перед собой на одну клетку, если клетка за ним пуста.Расходует 0.1 энергии.`,
     defaultEnabled: true,
     color: new Rgba(0, 0, 255, 255),
     colorInfluence: 0.01,
@@ -495,11 +482,15 @@ export const GENES: { [index: string]: GeneTemplate } = {
       const F_BLOCK = world.get(...F_COORDS);
       const O_COORDS = world.narrowToCoords(x, y, bot.narrow, 2);
       const O_BLOCK = world.get(...O_COORDS);
+      let msg: string;
       if (F_BLOCK && !O_BLOCK) {
         world.swap(...F_COORDS, ...O_COORDS);
+        msg = `Толкнул другой объект`;
+      } else {
+        msg = `Не удалось толкнуть другой объект`;
       }
       bot.energy -= 1;
-      return { completed: true, goto: null };
+      return { completed: true, goto: null, msg };
     }
   },
   swap: {
@@ -512,7 +503,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
       world.swap(...F_COORDS, x, y);
       bot.energy -= 1;
-      return { completed: true, goto: null };
+      return { completed: true, goto: null, msg: `Поменялся местами с другой клеткой` };
     }
   },
   movePointer: {
@@ -522,20 +513,26 @@ export const GENES: { [index: string]: GeneTemplate } = {
     color: null,
     colorInfluence: null,
     action: (bot, x, y, world, property) => {
-      return { completed: false, goto: property.branches[0] };
+      const goto = property.branches[0];
+      const msg = `Перенос указателя -> ${goto}`;
+      return { completed: false, goto, msg };
     }
   },
   checkHealth: {
     name: 'Проверить здоровье',
-    description: `Следующая команда генома будет той, на которую указывает ветка 1 текущего гена, если здоровье бота меньше, чем параметр текущего гена. Иначе следующая команда берется из ветки 2.`,
+    description: `Следующая команда генома будет той, на которую указывает ветка 1 текущего гена, если здоровье бота меньше, чем параметр текущего гена.Иначе следующая команда берется из ветки 2.`,
     defaultEnabled: true,
     color: null,
     colorInfluence: null,
     action: (bot, x, y, world, property) => {
       if (bot.health < property.option) {
-        return { completed: false, goto: property.branches[0] };
+        const goto = property.branches[0];
+        const msg = `Проверка здоровья -> ${goto}`;
+        return { completed: false, goto, msg };
       }
-      return { completed: false, goto: property.branches[1] };
+      const goto = property.branches[1];
+      const msg = `Проверка здоровья -> ${goto}`;
+      return { completed: false, goto, msg };
     }
   },
   checkEnergy: {
@@ -546,14 +543,18 @@ export const GENES: { [index: string]: GeneTemplate } = {
     colorInfluence: null,
     action: (bot, x, y, world, property) => {
       if (bot.energy / 300 < property.option) {
-        return { completed: false, goto: property.branches[0] };
+        const goto = property.branches[0];
+        const msg = `Проверка энергии -> ${goto}`;
+        return { completed: false, goto, msg };
       }
-      return { completed: false, goto: property.branches[1] };
+      const goto = property.branches[1];
+      const msg = `Проверка энергии -> ${goto}`;
+      return { completed: false, goto, msg };
     }
   },
   forward: {
     name: 'Спереди блок?',
-    description: `Следующая команда генома будет той, на которую указывает ветка 1 текущего гена, если перед ботом есть пустая клетка. Иначе следующая команда берется из ветки 2.`,
+    description: `Следующая команда генома будет той, на которую указывает ветка 1 текущего гена, если перед ботом есть пустая клетка.Иначе следующая команда берется из ветки 2.`,
     defaultEnabled: true,
     color: null,
     colorInfluence: null,
@@ -561,9 +562,13 @@ export const GENES: { [index: string]: GeneTemplate } = {
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
       const F_BLOCK = world.get(...F_COORDS);
       if (F_BLOCK) {
-        return { completed: false, goto: property.branches[0] };
+        const goto = property.branches[0];
+        const msg = `Спереди блок -> ${goto}`;
+        return { completed: false, goto, msg };
       }
-      return { completed: false, goto: property.branches[1] };
+      const goto = property.branches[1];
+      const msg = `Спереди нет блока -> ${goto}`;
+      return { completed: false, goto, msg };
     }
   }
 };
