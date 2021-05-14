@@ -29,8 +29,8 @@ for (const name in GENES) {
 const initialGenePool = enabledGenesToPool(initialEnabledGenes);
 
 const INIT_WORLD_PROPS: NewWorldProps = {
-  width: 160,
-  height: 80,
+  width: Math.max(Math.floor((window.innerWidth - 300) / 6) - 8, 80),
+  height: Math.max(Math.floor(window.innerHeight / 6) - 8, 80),
   botsAmount: 100,
   genePool: initialGenePool
 };
@@ -140,6 +140,24 @@ const App = (props: AppProps) => {
         world={world}
         setSelectedBlock={setSelectedBlock}
       />}
+      <Sidebar
+        opened={sidebarOpened}
+        style={props.sidebar}
+        setViewMode={setViewMode}
+        viewModesList={viewModesList}
+        viewMode={viewMode}
+        visualizerParams={visualizerParams}
+        setVisualizerParams={setVisualizerParams}
+        newWorldProps={newWorldProps}
+        setNewWorldProps={setNewWorldProps}
+        setWorld={setWorld}
+        world={world}
+        worldInfo={worldInfo}
+        enabledGenes={enabledGenes}
+        setEnabledGenes={setEnabledGenes}
+        selectedBlock={selectedBlock}
+        setSelectedBlock={setSelectedBlock}
+      />
       <RoundButtonsGroup
         sidebarWidth={props.sidebar.width}
         sidebarOpened={sidebarOpened}
@@ -171,24 +189,6 @@ const App = (props: AppProps) => {
           <MdSkipNext style={ROUND_BUTTON_ICON_STYLE} />
         </RoundButton>
       </RoundButtonsGroup>
-      <Sidebar
-        opened={sidebarOpened}
-        style={props.sidebar}
-        setViewMode={setViewMode}
-        viewModesList={viewModesList}
-        viewMode={viewMode}
-        visualizerParams={visualizerParams}
-        setVisualizerParams={setVisualizerParams}
-        newWorldProps={newWorldProps}
-        setNewWorldProps={setNewWorldProps}
-        setWorld={setWorld}
-        world={world}
-        worldInfo={worldInfo}
-        enabledGenes={enabledGenes}
-        setEnabledGenes={setEnabledGenes}
-        selectedBlock={selectedBlock}
-        setSelectedBlock={setSelectedBlock}
-      />
     </Wrapper>
   );
 };

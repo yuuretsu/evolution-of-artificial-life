@@ -31,10 +31,10 @@ const Wrapper = styled.div<ISidebarProps>`
     min-width: ${props => props.width};
     height: 100%;
     overflow-y: auto;
-    padding: ${props => `${props.padding} ${props.padding} 0 ${props.padding}`};
+    padding: ${props => `calc(${props.padding} * 2 + 55px) ${props.padding} 0 ${props.padding}`};
     background-color: rgba(20, 20, 20);
     color: whitesmoke;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 1);
     transition-duration: 0.2s;
     &::after {
         content: "";
@@ -83,6 +83,7 @@ const Sidebar = (props: SidebarProps) => {
             const gene = GENES[key]!;
             return (
               <Accordion
+                key={key}
                 name={gene.name}
                 color={gene.color?.interpolate(new Rgba(127, 127, 127, 255), 0.5).toString()}
                 small

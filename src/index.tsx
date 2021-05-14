@@ -5,7 +5,7 @@ import "./index.css";
 
 const SIDEBAR_STYLE = {
   padding: '20px',
-  width: '265px'
+  width: '300px'
 };
 
 ReactDOM.render(

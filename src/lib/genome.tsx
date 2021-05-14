@@ -13,7 +13,7 @@ import { World } from "./world";
 
 export type GenePool = GeneTemplate[];
 
-const CELL_SIZE = 26;
+const CELL_SIZE = 30;
 
 const GenomeWrapper = styled.div`
     display: flex;
@@ -115,7 +115,7 @@ export class Genome {
       template: GENES.doNothing!,
       property: {
         option: 0,
-        branches: [0, 0, 0, 0]
+        branches: [0, 0]
       }
     });
   }
@@ -140,7 +140,7 @@ export class Genome {
           i => Math.random() > 0.9
             ? randInt(0, this.genes.length)
             : i
-        ) as [number, number, number, number]
+        ) as [number, number]
       }
     }
   }
@@ -180,7 +180,7 @@ export class Genome {
     const [genes, setGenes] = React.useState(this.genes);
     const [selectedGene, setSelectedGene] = React.useState<Gene | null>(null);
     const [option, setOption] = React.useState<number | string>(0);
-    const [branches, setBranches] = React.useState<Array<number | string> | null>(null);
+    const [branches, setBranches] = React.useState<Array<number | string>>([0, 0]);
 
     React.useEffect(() => {
       console.log('use effect this');
@@ -190,7 +190,7 @@ export class Genome {
 
     React.useEffect(() => {
       setOption(selectedGene?.property.option.toFixed(2) || 0);
-      setBranches(selectedGene?.property.branches || null);
+      setBranches(selectedGene?.property.branches || [0, 0]);
     }, [selectedGene]);
 
     return (
@@ -338,8 +338,6 @@ export function randGeneProperty(genomeLength: number): GeneProperty {
     branches: [
       randInt(0, genomeLength),
       randInt(0, genomeLength),
-      randInt(0, genomeLength),
-      randInt(0, genomeLength),
     ]
   }
 }
@@ -355,7 +353,7 @@ export type ActionResult = { completed: boolean, goto: number | null };
 
 export type GeneProperty = {
   option: number,
-  branches: [number, number, number, number]
+  branches: [number, number]
 };
 
 export type ActionFn = (

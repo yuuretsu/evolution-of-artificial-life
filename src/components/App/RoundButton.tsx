@@ -19,9 +19,19 @@ const RoundButton = styled.button`
     padding: 5px;
     cursor: pointer;
     animation: ${animation} 0.2s ease;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    transition-duration: 0.2s;
     & > * {
         display: block;
         transition-duration: 0.2s;
+    }
+    &:hover {
+        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.5);
+        background-color: rgb(90, 90, 90);
+    }
+    &:active {
+        box-shadow: none;
+        background-color: rgb(60, 60, 60);
     }
     &:active > * {
         transform: scale(0.8);
