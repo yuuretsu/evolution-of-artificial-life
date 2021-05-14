@@ -8,6 +8,7 @@ import { SquareWorld, World, WorldInfo, NewWorldProps } from "../../../lib/world
 import Accordion from "./Accordion";
 import Block from "./Block";
 import Checkbox from "./Checkbox";
+import DropdownSmall from "./DropdownSmall";
 import InputNumber from "./InputNumber";
 import InputRange from "./InputRange";
 import OptionalBlock from "./OptionalBlock";
@@ -73,6 +74,14 @@ type SidebarProps = {
 const Sidebar = (props: SidebarProps) => {
   return (
     <Wrapper opened={props.opened} padding={props.style.padding} width={props.style.width}>
+      {/* <Dropdown
+        selected={'Hello'}
+        list={[
+          { value: '5', title: '5' },
+          { value: 'sg', title: 'Sf' },
+        ]}
+        onChange={() => { }}
+      /> */}
       <Accordion name='Инфо о мире' defaultOpened>
         <div>Возраст: {(props.worldInfo.cycle / 1000).toFixed(1)} тыс. кадров</div>
         <div>Ботов: {props.worldInfo.dynamicBlocks}</div>
@@ -204,16 +213,18 @@ const Sidebar = (props: SidebarProps) => {
             min={1}
             max={2048}
             value={props.newWorldProps.width}
-            onChange={e => props.setNewWorldProps({
-              ...props.newWorldProps,
-              ...{
-                width: limit(
-                  parseInt(e.target.min),
-                  parseInt(e.target.max),
-                  parseInt(e.target.value)
-                )
-              }
-            })}
+            onChange={e => {
+              props.setNewWorldProps({
+                ...props.newWorldProps,
+                ...{
+                  width: limit(
+                    parseInt(e.target.min),
+                    parseInt(e.target.max),
+                    parseInt(e.target.value)
+                  )
+                }
+              })
+            }}
           />
           <InputNumber
             placeholder="Высота"
@@ -252,7 +263,8 @@ const Sidebar = (props: SidebarProps) => {
         <SubBlock>
           <WideButton
             onClick={() => {
-              props.setWorld(new SquareWorld(props.newWorldProps))
+              props.setWorld(new SquareWorld(props.newWorldProps));
+              props.setSelectedBlock(null);
             }}
           >
             Рестарт

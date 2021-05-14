@@ -103,7 +103,9 @@ export class Bot extends DynamicBlock {
         bot.increaseAbility('attack');
     }
     onVirus(bot: Bot, pool: GenePool) {
+        const pointer = this.genome.pointer;
         this.genome = bot.genome.replication(pool);
+        this.genome.pointer = pointer;
     }
     multiply(pool: GenePool) {
         const colorCopy = Object
@@ -200,35 +202,18 @@ export class Bot extends DynamicBlock {
                         />
                         <div>Потомков: {this.childrenAmount}</div>
                         <div>Направление: {narrowToName(this.narrow)}</div>
-                    </div> : <div style={{ color: 'red', fontWeight: 'bold', textAlign: 'center' }}>Этот бот мёртв</div>}
-                </SubBlock>
-                <SubBlock>
-                    {this.genome.getInfo()}
-                </SubBlock>
-            </>
-        );
-    }
-    getInfo2() {
-        const [val, setVal] = React.useState(0);
-        return (
-            <>
-                <WideButton onClick={() => setVal(val + 1)}>{val}</WideButton>
-                <SubBlock>
-                    <div style={{ display: 'flex' }} >
-                        <div style={{ transform: 'translateY(3px)' }}>
-                            <WorldBlockIcon block={this} />
-                        </div>
-                        <span style={{ marginLeft: '5px' }}>Бот</span>
-                    </div>
-                </SubBlock>
-                <SubBlock>
-                    {this.alive ? <div>
-                        <div>Возраст: {this.age}</div>
-                        <div>Энергия: {this.energy.toFixed(2)}</div>
-                        <div>Здоровье: {this.health.toFixed(2)}</div>
-                        <div>Потомков: {this.childrenAmount}</div>
-                        <div>Направление: {narrowToName(this.narrow)}</div>
-                    </div> : <div style={{ color: 'red', fontWeight: 'bold', textAlign: 'center' }}>Этот бот мёртв</div>}
+                    </div> : <div
+                        style={{
+                            color: 'red',
+                            backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                            border: '2px solid red',
+                            lineHeight: '50px',
+                            borderRadius: '5px',
+                        }}>
+                        Этот бот мёртв
+                        </div>}
                 </SubBlock>
                 <SubBlock>
                     {this.genome.getInfo()}

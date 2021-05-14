@@ -53,7 +53,7 @@ export class SquareWorld extends World {
             this.set(
                 ...this.randEmpty(),
                 new Bot(
-                    new Rgba(0, 255, 50, 255),
+                    new Rgba(100, 100, 100, 255),
                     100,
                     { photosynthesis: 0.5, attack: 0.5 },
                     new Genome(64).fillRandom(props.genePool))

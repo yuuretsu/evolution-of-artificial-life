@@ -2,9 +2,13 @@ import React from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import styled, { keyframes } from "styled-components";
 
-const Wrapper = styled.div`
+interface IWrapper {
+    readonly small: boolean | undefined;
+}
+
+const Wrapper = styled.div<IWrapper>`
     &:not(:last-child) {
-        margin-bottom: 20px;
+        margin-bottom: ${props => props.small ? 10 : 20}px;
     }
 `;
 
@@ -53,7 +57,7 @@ type AccordionProps = {
 const Accordion = (props: AccordionProps) => {
     const [opened, setOpened] = React.useState(props.defaultOpened);
     return (
-        <Wrapper>
+        <Wrapper small={props.small}>
             <HeadWrapper onClick={() => setOpened(!opened)} small={props.small}>
                 {props.name}
                 <MdKeyboardArrowDown
