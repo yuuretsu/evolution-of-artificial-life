@@ -91,9 +91,11 @@ const App = (props: AppProps) => {
   const [selectedBlock, setSelectedBlock] = useState<WorldBlock | null>(null);
 
   useEffect(() => {
-    window.addEventListener('resize', () => {
+    const handleResize = () => {
       setAppHeight(window.innerHeight);
-    });
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
