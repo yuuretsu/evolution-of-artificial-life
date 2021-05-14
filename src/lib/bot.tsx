@@ -107,14 +107,15 @@ export class Bot extends DynamicBlock {
         this.genome = bot.genome.replication(pool);
         this.genome.pointer = pointer;
     }
-    multiply(pool: GenePool) {
+    multiply(pool: GenePool, energyCoef: number) {
         const colorCopy = Object
             .assign(Object.create(Object.getPrototypeOf(this.color)), this.color) as Rgba;
-        this.energy /= 2;
+        const energy = this.energy * energyCoef;
+        this.energy -= energy;
         this.childrenAmount++;
         return new Bot(
             colorCopy,
-            this.energy,
+            energy,
             { ...this.abilities },
             this.genome.replication(pool)
         );

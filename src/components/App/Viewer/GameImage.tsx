@@ -42,8 +42,8 @@ const GameImage = (props: GameImageProps) => {
 
     useEffect(() => {
         if (canvasRef.current && ctx) {
-            canvasRef.current.width = props.image.width * 6;
-            canvasRef.current.height = props.image.height * 6;
+            canvasRef.current.width = props.image.width * 7;
+            canvasRef.current.height = props.image.height * 7;
             ctx.imageSmoothingEnabled = false;
             ctx.drawImage(props.image, 0, 0, canvasRef.current.width, canvasRef.current.height);
         }
@@ -55,8 +55,8 @@ const GameImage = (props: GameImageProps) => {
             style={{ transform: `translate(${props.offset.x}px, ${props.offset.y}px)` }}
             onClick={(e) => {
                 const rect = canvasRef.current!.getBoundingClientRect();
-                const x = Math.floor((e.clientX - rect.left) / 6);
-                const y = Math.floor((e.clientY - rect.top) / 6);
+                const x = Math.floor((e.clientX - rect.left) / 7);
+                const y = Math.floor((e.clientY - rect.top) / 7);
                 const block = props.world.get(x, y);
                 console.log(block, x, y);
                 props.setSelectedBlock(block ? block : null);

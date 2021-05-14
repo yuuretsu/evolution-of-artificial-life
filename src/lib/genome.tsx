@@ -392,7 +392,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   multiply: {
     name: 'Размножение',
-    description: `Бот теряет 0.1 энергии на попытку размножения. Если клетка перед ним пуста, энергии больше 5 единиц, а возраст больше 10 кадров, бот размножается.`,
+    description: `Бот теряет 1/10 энергии на попытку размножения. Если клетка перед ним пуста, энергии больше 5 единиц, а возраст больше 10 кадров, бот размножается. Потомку передается количество энергии, равное параметру гена, такое же количество вычитается из собственной энергии.`,
     defaultEnabled: true,
     color: new Rgba(255, 255, 200, 255),
     colorInfluence: 0.01,
@@ -401,7 +401,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
       const F_BLOCK = world.get(...F_COORDS);
       bot.energy *= 0.9;
       if (!F_BLOCK && bot.energy > 5 && bot.age > 10) {
-        world.set(...F_COORDS, bot.multiply(world.genePool));
+        world.set(...F_COORDS, bot.multiply(world.genePool, property.option));
       }
       return { completed: true, goto: null };
     }

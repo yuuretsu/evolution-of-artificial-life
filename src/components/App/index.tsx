@@ -29,8 +29,8 @@ for (const name in GENES) {
 const initialGenePool = enabledGenesToPool(initialEnabledGenes);
 
 const INIT_WORLD_PROPS: NewWorldProps = {
-  width: Math.max(Math.floor((window.innerWidth - 300) / 6) - 8, 80),
-  height: Math.max(Math.floor(window.innerHeight / 6) - 8, 80),
+  width: Math.max(Math.floor((window.innerWidth - 300) / 7) - 6, 80),
+  height: Math.max(Math.floor(window.innerHeight / 7) - 6, 80),
   botsAmount: 100,
   genePool: initialGenePool
 };

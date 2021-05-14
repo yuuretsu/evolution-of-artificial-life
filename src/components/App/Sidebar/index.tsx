@@ -32,7 +32,7 @@ const Wrapper = styled.div<ISidebarProps>`
     height: 100%;
     overflow-y: auto;
     padding: ${props => `calc(${props.padding} * 2 + 55px) ${props.padding} 0 ${props.padding}`};
-    background-color: rgba(20, 20, 20, 0.95);
+    background-color: rgba(20, 20, 20, 0.99);
     color: whitesmoke;
     box-shadow: ${props => props.opened ? '0 0 10px 0 rgba(0, 0, 0, 1)' : 'none'};
     transition-duration: 0.2s;

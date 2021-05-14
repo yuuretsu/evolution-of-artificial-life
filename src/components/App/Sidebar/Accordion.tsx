@@ -22,7 +22,7 @@ const HeadWrapper = styled.div<IHeadWrapper>`
     display: flex;
     width: 100%;
     text-transform: ${props => props.small ? 'none' : 'uppercase'};
-    font-weight: bold;
+    font-weight: ${props => props.small ? 'normal' : 'bold'};
     font-size: ${props => props.small ? 'inherit' : '1.25em'};
     margin-bottom: ${props => props.small ? '5px' : '10px'};
     border-left: 5px solid ${props => props.color ? props.color : 'rgb(80, 80, 80)'};
@@ -31,6 +31,10 @@ const HeadWrapper = styled.div<IHeadWrapper>`
     cursor: pointer;
     /* align-items: center; */
     user-select: none;
+    transition-duration: 0.2s;
+    &:active {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
 `;
 
 const anim = keyframes`
@@ -45,7 +49,7 @@ const anim = keyframes`
 `;
 
 const BodyWrapper = styled.div`
-    animation: ${anim} 0.2s;
+    animation: ${anim} 0.5s;
 `;
 
 type AccordionProps = {
