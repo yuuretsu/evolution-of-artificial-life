@@ -472,7 +472,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   moveForward: {
     name: 'Двигаться вперед',
-    description: `Бот перемещется в клетку перед собой, если она пустая. Расходует 1 энергии.`,
+    description: `Бот перемещется в клетку перед собой, если она пустая. Расходует 0.5 энергии.`,
     defaultEnabled: true,
     color: new Rgba(200, 200, 200, 255),
     colorInfluence: null,
@@ -482,7 +482,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
       if (!F_BLOCK) {
         world.swap(x, y, ...F_COORDS);
       }
-      bot.energy -= 0.1;
+      bot.energy -= 0.5;
       return { completed: true, goto: null };
     }
   },
