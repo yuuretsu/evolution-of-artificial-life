@@ -393,7 +393,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   photosynthesis: {
     name: 'Фотосинтез',
-    description: `Бот получает энергию путем фотосинтеза.При этом эффективность его фотосинтеза возрастает, а эффективность атак-- падает.Восстанавливает своё здоровье на 0.01.`,
+    description: `Бот получает энергию путем фотосинтеза.При этом эффективность его фотосинтеза возрастает, а эффективность атак -- падает.Восстанавливает своё здоровье на 0.01.`,
     defaultEnabled: true,
     color: new Rgba(0, 255, 0, 255),
     colorInfluence: 0.01,
@@ -514,7 +514,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
     colorInfluence: null,
     action: (bot, x, y, world, property) => {
       const goto = property.branches[0];
-      const msg = `Перенос указателя -> ${goto}`;
+      const msg = `Перенос указателя → ${goto}`;
       return { completed: false, goto, msg };
     }
   },
@@ -527,11 +527,11 @@ export const GENES: { [index: string]: GeneTemplate } = {
     action: (bot, x, y, world, property) => {
       if (bot.health < property.option) {
         const goto = property.branches[0];
-        const msg = `Проверка здоровья -> ${goto}`;
+        const msg = `Проверка здоровья → ${goto}`;
         return { completed: false, goto, msg };
       }
       const goto = property.branches[1];
-      const msg = `Проверка здоровья -> ${goto}`;
+      const msg = `Проверка здоровья → ${goto}`;
       return { completed: false, goto, msg };
     }
   },
@@ -544,11 +544,11 @@ export const GENES: { [index: string]: GeneTemplate } = {
     action: (bot, x, y, world, property) => {
       if (bot.energy / 300 < property.option) {
         const goto = property.branches[0];
-        const msg = `Проверка энергии -> ${goto}`;
+        const msg = `Проверка энергии → ${goto}`;
         return { completed: false, goto, msg };
       }
       const goto = property.branches[1];
-      const msg = `Проверка энергии -> ${goto}`;
+      const msg = `Проверка энергии → ${goto}`;
       return { completed: false, goto, msg };
     }
   },
@@ -563,11 +563,11 @@ export const GENES: { [index: string]: GeneTemplate } = {
       const F_BLOCK = world.get(...F_COORDS);
       if (F_BLOCK) {
         const goto = property.branches[0];
-        const msg = `Спереди блок -> ${goto}`;
+        const msg = `Спереди блок → ${goto}`;
         return { completed: false, goto, msg };
       }
       const goto = property.branches[1];
-      const msg = `Спереди нет блока -> ${goto}`;
+      const msg = `Спереди нет блока → ${goto}`;
       return { completed: false, goto, msg };
     }
   }
