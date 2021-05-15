@@ -15,6 +15,9 @@ export class WorldBlock {
     getNormalColor(): Rgba | null {
         return null;
     }
+    getFamilyColor(): Rgba | null {
+        return null;
+    }
     getEnergyColor(params: VisualiserParams): Rgba | null {
         return null;
     }

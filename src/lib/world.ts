@@ -54,9 +54,10 @@ export class SquareWorld extends World {
                 ...this.randEmpty(),
                 new Bot(
                     new Rgba(100, 100, 100, 255),
+                    Rgba.randRgb(),
                     100,
                     { photosynthesis: 0.5, attack: 0.5 },
-                    new Genome(64).fillRandom(props.genePool))
+                    new Genome(32).fillRandom(props.genePool))
             );
             this.info.dynamicBlocks++;
         }

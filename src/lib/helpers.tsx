@@ -4,6 +4,10 @@ export function* range(from: number, to: number) {
     }
 }
 
+export function copy<T>(value: T) {
+    return Object.assign<T, T>(Object.create(Object.getPrototypeOf(value)), value);
+}
+
 export function randFloat(bottom: number, top: number) {
     return Math.random() * (top - bottom) + bottom;
 }

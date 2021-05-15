@@ -1,7 +1,15 @@
-import { interpolate, limit, randFloat } from "./helpers";
+import { interpolate, limit, randFloat, randInt } from "./helpers";
 
 export default class Rgba {
     private static readonly MAX_DIF = 255 * 4;
+    static randRgb() {
+        return new Rgba(
+            randInt(0, 256),
+            randInt(0, 256),
+            randInt(0, 256),
+            255
+        );
+    }
     constructor(
         readonly red: number,
         readonly green: number,

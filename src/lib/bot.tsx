@@ -1,7 +1,7 @@
 import { World } from "./world";
 import Rgba from "./color";
 import { Coords } from "./grid";
-import { fixNumber, limit, randInt } from "./helpers";
+import { copy, fixNumber, limit, randInt } from "./helpers";
 import { WorldBlock, DynamicBlock } from "./block";
 import { Gene, GenePool, GENES, GeneTemplate, Genome } from "./genome";
 import { VisualiserParams } from "./view-modes";
@@ -25,6 +25,7 @@ export class Bot extends DynamicBlock {
     childrenAmount = 0;
     constructor(
         color: Rgba,
+        public familyColor: Rgba,
         public energy: number,
         public abilities: {
             photosynthesis: number,
@@ -42,6 +43,9 @@ export class Bot extends DynamicBlock {
     }
     getNormalColor(): Rgba {
         return this.color;
+    }
+    getFamilyColor(): Rgba {
+        return this.familyColor;
     }
     getEnergyColor(params: VisualiserParams): Rgba {
         return new Rgba(0, 0, 100, 255)
@@ -107,15 +111,19 @@ export class Bot extends DynamicBlock {
         const pointer = this.genome.pointer;
         this.genome = bot.genome.replication(pool);
         this.genome.pointer = pointer;
+        this.familyColor = bot.familyColor.mutateRgb(5);
     }
     multiply(pool: GenePool, energyCoef: number) {
-        const colorCopy = Object
-            .assign(Object.create(Object.getPrototypeOf(this.color)), this.color) as Rgba;
+        // const colorCopy = Object
+        //     .assign(Object.create(Object.getPrototypeOf(this.color)), this.color) as Rgba;
         const energy = this.energy * energyCoef;
         this.energy -= energy;
         this.childrenAmount++;
         return new Bot(
-            colorCopy,
+            // copy(this.color),
+            // new Rgba(127, 127, 127, 255),
+            this.color.interpolate(new Rgba(255, 255, 255, 0), 0.25),
+            this.familyColor.mutateRgb(5),
             energy,
             { ...this.abilities },
             this.genome.replication(pool)

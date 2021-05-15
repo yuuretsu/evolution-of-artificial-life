@@ -22,6 +22,10 @@ const VIEW_MODES: { [key: string]: ViewMode } = {
         name: 'Стандартный',
         blockToColor: (block, params) => block.color,
     },
+    family: {
+        name: 'Семейства',
+        blockToColor: (block, params) => block.getFamilyColor(),
+    },
     age: {
         name: 'Возраст',
         blockToColor: (block, params) => {

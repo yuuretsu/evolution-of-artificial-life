@@ -434,7 +434,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
     description: `Бот копирует с свой геном в бота напротив, при этом есть шанс мутации.Расходует 0.1 здоровья и 0.1 энергии.`,
     defaultEnabled: false,
     color: new Rgba(255, 50, 255, 255),
-    colorInfluence: 0.1,
+    colorInfluence: 0.05,
     action: (bot, x, y, world, property) => {
       const F_BLOCK = world.get(
         ...world.narrowToCoords(x, y, bot.narrow, 1)
@@ -568,6 +568,31 @@ export const GENES: { [index: string]: GeneTemplate } = {
       }
       const goto = property.branches[1];
       const msg = `Спереди нет блока → ${goto}`;
+      return { completed: false, goto, msg };
+    }
+  },
+  compareFamilies: {
+    name: 'Спереди родственник?',
+    description: `Следующая команда генома будет той, на которую указывает ветка 1 текущего гена, если перед ботом находится родственник. Иначе следующая команда берется из ветки 2.`,
+    defaultEnabled: true,
+    color: null,
+    colorInfluence: null,
+    action: (bot, x, y, world, property) => {
+      const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
+      const F_BLOCK = world.get(...F_COORDS);
+      if (F_BLOCK) {
+        const familyColor = F_BLOCK.getFamilyColor();
+        if (
+          familyColor !== null &&
+          familyColor.difference(bot.familyColor) > property.option
+        ) {
+          const goto = property.branches[0];
+          const msg = `Спереди родственник → ${goto}`;
+          return { completed: false, goto, msg };
+        }
+      }
+      const goto = property.branches[1];
+      const msg = `Спереди нет родственника → ${goto}`;
       return { completed: false, goto, msg };
     }
   }
