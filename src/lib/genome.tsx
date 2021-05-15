@@ -425,7 +425,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
       } else {
         msg = `Атака не удалась`;
       }
-      bot.energy -= 0.05;
+      bot.energy -= 0.5;
       return { completed: true, goto: null, msg };
     }
   },

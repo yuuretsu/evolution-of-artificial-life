@@ -8,10 +8,11 @@ import {
   World, WorldInfo, NewWorldProps
 } from "../../lib/world";
 import {
-  MdSettings,
+  MdMenu,
   MdPlayArrow,
   MdPause,
-  MdSkipNext
+  MdSkipNext,
+  MdClose
 } from 'react-icons/md';
 import { WorldBlock } from "../../lib/block";
 import {
@@ -163,7 +164,9 @@ const App = (props: AppProps) => {
         sidebarOpened={sidebarOpened}
       >
         <RoundButton title="Настройки" onClick={() => setSidebarOpened(!sidebarOpened)}>
-          <MdSettings style={ROUND_BUTTON_ICON_STYLE} />
+          {sidebarOpened
+            ? <MdClose style={ROUND_BUTTON_ICON_STYLE} />
+            : <MdMenu style={ROUND_BUTTON_ICON_STYLE} />}
         </RoundButton>
         <RoundButton
           title="Пауза / продолжить"

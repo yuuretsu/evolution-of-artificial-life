@@ -23,7 +23,6 @@ const RoundButton = styled.button`
     transition-duration: 0.2s;
     & > * {
         display: block;
-        transition-duration: 0.2s;
     }
     &:active {
         box-shadow: none;

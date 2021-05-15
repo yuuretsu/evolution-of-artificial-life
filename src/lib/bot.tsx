@@ -122,7 +122,6 @@ export class Bot extends DynamicBlock {
         );
     }
     live(x: number, y: number, world: World) {
-        this.lastActions = [];
         if (
             this.age > 2000 ||
             this.energy < 1 ||
@@ -132,8 +131,10 @@ export class Bot extends DynamicBlock {
             this.alive = false;
             world.remove(x, y);
             // world.set(x, y, new Block(this.color.interpolate(new Rgba(0, 0, 0, 255), 0.5)));
+            this.lastActions.push('Смерть');
             return;
         }
+        this.lastActions = [];
         this.genome.doAction(this, x, y, world);
         this.age++;
         this.health = Math.min(1, this.health + 0.01);
@@ -224,7 +225,7 @@ export class Bot extends DynamicBlock {
                 <Accordion name='Последние действия' small>
                     {this.lastActions.map((action, i) => {
                         return (
-                            <div key={i}>
+                            <div key={i} style={{ fontSize: '80%' }}>
                                 {action}
                             </div>
                         );
