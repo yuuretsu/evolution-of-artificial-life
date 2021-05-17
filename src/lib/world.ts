@@ -1,6 +1,6 @@
 import Rgba from "./color";
 import Grid, { Coords } from "./grid";
-import { fixNumber, limit, randInt } from "./helpers";
+import { fixNumber, limit } from "./helpers";
 import { BlockVisualiser, VisualiserParams } from "./view-modes";
 import { WorldBlock, DynamicBlock } from "./block";
 import { Bot } from "./bot";

@@ -1,10 +1,8 @@
 import React from "react";
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import Accordion from "../components/App/Sidebar/Accordion";
-import Block from "../components/App/Sidebar/Block";
 import DropdownSmall from "../components/App/Sidebar/DropdownSmall";
 import InputNumberSmall from "../components/App/Sidebar/InputNumberSmall";
-import OptionalBlock from "../components/App/Sidebar/OptionalBlock";
 import SubBlock from "../components/App/Sidebar/SubBlock";
 import { Bot } from "./bot";
 import Rgba from "./color";

@@ -12,7 +12,6 @@ const MenuOpenButton = styled.button<IMenuOpenButton>`
     left: ${props =>
         `calc(${props.sidebarOpened ? props.sidebarWidth : '0px'} + ${props.distance})`
     };
-    /* background-color: transparent; */
     background-color: rgb(80, 80, 80);
     color: inherit;
     border-radius: 100px;

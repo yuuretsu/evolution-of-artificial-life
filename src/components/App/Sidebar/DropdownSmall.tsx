@@ -11,9 +11,7 @@ const Header = styled.div`
     font-weight: bold;
     display: flex;
     width: 100%;
-    /* justify-content: space-between; */
     cursor: pointer;
-    /* border: 1px solid rgba(255, 255, 255, 0.1); */
     transition-duration: 0.2s;
     &:hover {
         background-color: rgba(255, 255, 255, 0.05);

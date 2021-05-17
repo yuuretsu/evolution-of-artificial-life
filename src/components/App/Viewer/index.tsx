@@ -68,7 +68,7 @@ const Viewer = (props: ViewerProps) => {
             }}
             onTouchMove={e => {
                 if (draggingActive) {
-                    // e.preventDefault();
+                    e.preventDefault();
                     setCurrentPos({
                         x: e.touches[0]!.clientX - initPos.x,
                         y: e.touches[0]!.clientY - initPos.y

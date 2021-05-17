@@ -1,18 +1,13 @@
 import { World } from "./world";
 import Rgba from "./color";
-import { Coords } from "./grid";
-import { copy, fixNumber, limit, randInt } from "./helpers";
-import { WorldBlock, DynamicBlock } from "./block";
-import { Gene, GenePool, GENES, GeneTemplate, Genome } from "./genome";
+import { fixNumber, limit, randInt } from "./helpers";
+import { DynamicBlock } from "./block";
+import { GenePool, Genome } from "./genome";
 import { VisualiserParams } from "./view-modes";
 import React from "react";
 import SubBlock from "../components/App/Sidebar/SubBlock";
-import Block from "../components/App/Sidebar/Block";
-import WorldBlockIcon from "./WorldBlockVisualiser";
-import OptionalBlock from "../components/App/Sidebar/OptionalBlock";
 import Accordion from "../components/App/Sidebar/Accordion";
 import InputNumberSmall from "../components/App/Sidebar/InputNumberSmall";
-import WideButton from "../components/App/Sidebar/WideButton";
 
 export type BotAbilityName = keyof typeof Bot.prototype.abilities;
 

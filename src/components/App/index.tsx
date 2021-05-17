@@ -20,7 +20,6 @@ import {
 } from "../../lib/genome";
 import RoundButtonsGroup from "./RoundButtonsGroup";
 import RoundButton, { ROUND_BUTTON_ICON_STYLE } from "./RoundButton";
-import { Bot } from "../../lib/bot";
 
 const initialEnabledGenes: { [geneName: string]: boolean } = {};
 for (const name in GENES) {
@@ -32,7 +31,7 @@ const initialGenePool = enabledGenesToPool(initialEnabledGenes);
 const INIT_WORLD_PROPS: NewWorldProps = {
   width: Math.max(Math.floor((window.innerWidth - 300) / 8) - 6, 50),
   height: Math.max(Math.floor(window.innerHeight / 8) - 6, 50),
-  botsAmount: 100,
+  botsAmount: 500,
   genePool: initialGenePool
 };
 

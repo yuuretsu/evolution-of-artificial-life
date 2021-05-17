@@ -2,11 +2,9 @@ import { World } from "./world";
 import Rgba from "./color";
 import { Bot } from "./bot";
 import { VisualiserParams } from "./view-modes";
-import SubBlock from "../components/App/Sidebar/SubBlock";
 import React from "react";
 import Block from "../components/App/Sidebar/Block";
 import { GenePool } from "./genome";
-import WideButton from "../components/App/Sidebar/WideButton";
 
 export class WorldBlock {
     public age: number | null = null;

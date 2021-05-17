@@ -13,11 +13,7 @@ const Wrapper = styled.div<IRoundButtonsGroup>`
     padding: 10px;
     border-radius: 100px;
     box-shadow: 0 0 10px 0 black;
-    /* flex-direction: column; */
     top: 20px;
-    /* left: ${props =>
-        `calc(${props.sidebarOpened ? props.sidebarWidth : '0px'} + 20px)`
-    }; */
     left: 20px;
     & > *:not(:last-child) {
         margin-right: 10px;

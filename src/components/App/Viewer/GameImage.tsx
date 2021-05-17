@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled, { keyframes } from 'styled-components';
 import { WorldBlock } from "../../../lib/block";
-import Rgba from "../../../lib/color";
 import VIEW_MODES from "../../../lib/view-modes";
 import { World } from "../../../lib/world";
 

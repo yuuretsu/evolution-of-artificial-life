@@ -29,20 +29,12 @@ const VIEW_MODES: { [key: string]: ViewMode } = {
     age: {
         name: 'Возраст',
         blockToColor: (block, params) => {
-            // const AGE = block.age;
-            // if (AGE === null) return new Rgba(40, 40, 40, 255);
-            // const VAL = interpolate(20, 255, AGE / params.ageDivider);
-            // return new Rgba(VAL, VAL, VAL, 255);
             return block.getAgeColor(params);
         },
     },
     energy: {
         name: 'Энергия',
         blockToColor: (block, params) => {
-            // const ENERGY = block.energy;
-            // if (ENERGY === null) return new Rgba(40, 40, 40, 255);
-            // return new Rgba(0, 0, 100, 255)
-            //     .interpolate(new Rgba(255, 255, 0, 255), ENERGY / params.energyDivider);
             return block.getEnergyColor(params);
         },
     },
