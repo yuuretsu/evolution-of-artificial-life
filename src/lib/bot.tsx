@@ -114,15 +114,11 @@ export class Bot extends DynamicBlock {
         this.familyColor = bot.familyColor.mutateRgb(5);
     }
     multiply(pool: GenePool, energyCoef: number) {
-        // const colorCopy = Object
-        //     .assign(Object.create(Object.getPrototypeOf(this.color)), this.color) as Rgba;
         const energy = this.energy * energyCoef;
         this.energy -= energy;
         this.childrenAmount++;
         return new Bot(
-            // copy(this.color),
-            // new Rgba(127, 127, 127, 255),
-            this.color.interpolate(new Rgba(255, 255, 255, 0), 0.25),
+            this.color.interpolate(new Rgba(255, 255, 255, 255), 0.1),
             this.familyColor.mutateRgb(5),
             energy,
             { ...this.abilities },
