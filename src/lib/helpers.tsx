@@ -16,8 +16,8 @@ export function randInt(bottom: number, top: number) {
     return Math.floor(randFloat(bottom, top));
 }
 
-export function randChoice<T>(arr: T[]): T {
-    return arr[randInt(0, arr.length)]!;
+export function randChoice<T>(arr: T[]) {
+    return arr[randInt(0, arr.length)];
 }
 
 export function fixNumber(

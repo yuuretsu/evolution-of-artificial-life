@@ -100,9 +100,6 @@ const GeneCell2 = (props: GeneCell2Props) => {
   );
 };
 
-const LiAction = styled.div`
-`;
-
 const MAX_ACTIONS = 8;
 
 export class Genome {
@@ -112,7 +109,7 @@ export class Genome {
   genes: Gene[];
   constructor(length: number) {
     this.genes = new Array<Gene>(length).fill({
-      template: GENES.doNothing!,
+      template: NULL_GENE_TEMPLATE,
       property: {
         option: 0,
         branches: [0, 0]
@@ -133,7 +130,7 @@ export class Genome {
   }
   mutateGene(pool: GenePool, gene: Gene): Gene {
     return {
-      template: randChoice(pool),
+      template: randChoice(pool) || NULL_GENE_TEMPLATE,
       property: {
         option: limit(0, 1, gene.property.option + randFloat(-0.01, 0.01)),
         branches: gene.property.branches.map(
@@ -148,8 +145,8 @@ export class Genome {
     const genome = new Genome(this.genes.length);
     for (let i = 0; i < this.genes.length; i++) {
       genome.genes[i] = Math.random() > 0.995
-        ? this.mutateGene(pool, this.genes[i]!)
-        : this.genes[i]!;
+        ? this.mutateGene(pool, this.genes[i] || NULL_GENE)
+        : this.genes[i] || NULL_GENE;
     }
     return genome;
   }
@@ -157,7 +154,7 @@ export class Genome {
     this.recentlyUsedGenes = [];
     for (let i = 0; i < MAX_ACTIONS; i++) {
       const gene = this.genes[this.pointer];
-      if (!gene) break;
+      if (!gene) continue;
       const result = gene
         .template
         .action(bot, x, y, world, gene.property);
@@ -203,10 +200,10 @@ export class Genome {
             <DropdownSmall
               name={selectedGene.template.name}
               list={Object.keys(GENES).map(key => {
-                return { value: key, title: GENES[key]!.name }
+                return { value: key, title: GENES[key]?.name || NULL_GENE_TEMPLATE.name }
               })}
               onChange={value => {
-                selectedGene.template = GENES[value]!;
+                selectedGene.template = GENES[value] || NULL_GENE_TEMPLATE;
                 this.genes = [...genes];
                 setGenes(this.genes);
               }}
@@ -314,7 +311,7 @@ export function randGeneProperty(genomeLength: number): GeneProperty {
 
 export function randGene(pool: GenePool, genomeLength: number): Gene {
   return {
-    template: randChoice(pool),
+    template: randChoice(pool) || NULL_GENE_TEMPLATE,
     property: randGeneProperty(genomeLength)
   }
 }
@@ -348,12 +345,31 @@ export type Gene = {
   property: GeneProperty
 };
 
+export const NULL_GENE_TEMPLATE: GeneTemplate = {
+  name: 'Пустой ген',
+  description: `Ничего не происходит`,
+  defaultEnabled: false,
+  color: new Rgba(127, 127, 127, 255),
+  colorInfluence: 0.01,
+  action: (bot, x, y, world, property) => {
+    return { completed: true, goto: null, msg: `Бездействие` };
+  }
+};
+
+export const NULL_GENE: Gene = {
+  template: NULL_GENE_TEMPLATE,
+  property: {
+    option: 0,
+    branches: [0, 0],
+  }
+}
+
 export const GENES: { [index: string]: GeneTemplate } = {
   doNothing: {
-    name: 'Лечение',
+    name: 'Отдых',
     description: `Прибавляет 0.1 к здоровью`,
     defaultEnabled: true,
-    color: new Rgba(200, 200, 0, 255),
+    color: new Rgba(100, 100, 0, 255),
     colorInfluence: 0.01,
     action: (bot, x, y, world, property) => {
       const value = 0.1;
