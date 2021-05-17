@@ -38,8 +38,6 @@ export function normalizeNumber(
     return (number - min) / (max - min);
 }
 
-console.log(normalizeNumber(0, 100, 50));
-
 export function limit(
     min: number,
     max: number,

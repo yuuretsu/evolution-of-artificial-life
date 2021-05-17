@@ -161,7 +161,6 @@ const Sidebar = (props: SidebarProps) => {
                           ...props.visualizerParams,
                         };
                         newParams.action[value] = checked;
-                        console.log('chbx click');
                         props.setVisualizerParams(newParams);
                       }}
                     />

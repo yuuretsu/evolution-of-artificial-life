@@ -52,8 +52,6 @@ Object
     }
   });
 
-console.log(initVisualizerParams.action);
-
 
 const viewModesList = Object
   .keys(VIEW_MODES)
@@ -106,8 +104,6 @@ const App = (props: AppProps) => {
       ...{ genePool: newGenePool }
     });
     world.genePool = newGenePool;
-    console.log('changed');
-    console.log(visualizerParams);
     setImage(world.toImage(VIEW_MODES[viewMode]!.blockToColor, visualizerParams));
     setWorldInfo(world.getInfo());
     if (!paused) {
@@ -118,13 +114,13 @@ const App = (props: AppProps) => {
       });
       console.log(
         `%c -> start loop (id: ${id}) `,
-        'background: #eee; color: #314c4e; font-family: "Cascadia Code"'
+        'background: #eee; color: #314c4e;'
       );
       return () => {
         clearInterval(id);
         console.log(
           `%c -| stop loop (id: ${id}) `,
-          'background: #eee; color: #314c4e; font-family: "Cascadia Code"'
+          'background: #eee; color: #314c4e;'
         );
       };
     }

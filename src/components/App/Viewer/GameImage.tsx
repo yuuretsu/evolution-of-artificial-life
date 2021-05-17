@@ -58,7 +58,6 @@ const GameImage = (props: GameImageProps) => {
                 const x = Math.floor((e.clientX - rect.left) / 8);
                 const y = Math.floor((e.clientY - rect.top) / 8);
                 const block = props.world.get(x, y);
-                console.log(block, x, y);
                 props.setSelectedBlock(block ? block : null);
             }}
         />

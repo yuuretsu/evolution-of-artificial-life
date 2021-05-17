@@ -27,7 +27,6 @@ export abstract class World extends Grid<WorldBlock> {
     constructor(props: NewWorldProps) {
         super(props.width, props.height);
         this.genePool = props.genePool;
-        console.log('world created', props.width, props.height);
     }
     abstract toImage(visualizer: BlockVisualiser, params: VisualiserParams): HTMLCanvasElement;
     abstract step(): void;
@@ -84,10 +83,7 @@ export class SquareWorld extends World {
         for (const object of shuffled) {
             object.obj.live(...object.pos, this);
         }
-        // this.info.dynamicBlocks = shuffled.length;
-        // console.time('flat');
         this.info.dynamicBlocks = this.flat().filter(value => value instanceof DynamicBlock).length;
-        // console.timeEnd('flat');
         this.info.cycle++;
     }
     toImage(visualizer: BlockVisualiser, params: VisualiserParams) {
