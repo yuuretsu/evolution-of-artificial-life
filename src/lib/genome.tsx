@@ -487,7 +487,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   push: {
     name: 'Толкнуть',
-    description: `Бот отталкивает блок перед собой на одну клетку, если клетка за ним пуста.Расходует 0.1 энергии.`,
+    description: `Бот отталкивает блок перед собой на одну клетку, если клетка за ним пуста.Расходует 0.5 энергии.`,
     defaultEnabled: true,
     color: new Rgba(0, 0, 255, 255),
     colorInfluence: 0.01,
@@ -503,7 +503,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
       } else {
         msg = `Не удалось толкнуть другой объект`;
       }
-      bot.energy -= 1;
+      bot.energy -= 0.5;
       return { completed: true, goto: null, msg };
     }
   },
