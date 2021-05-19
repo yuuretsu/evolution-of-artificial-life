@@ -4,6 +4,7 @@ import Accordion from "../components/App/Sidebar/Accordion";
 import DropdownSmall from "../components/App/Sidebar/DropdownSmall";
 import InputNumberSmall from "../components/App/Sidebar/InputNumberSmall";
 import SubBlock from "../components/App/Sidebar/SubBlock";
+import WideButton from "../components/App/Sidebar/WideButton";
 import { Bot } from "./bot";
 import Rgba from "./color";
 import { fixNumber, interpolate, limit, randChoice, randFloat, randInt } from "./helpers";
@@ -22,7 +23,7 @@ const GenomeWrapper = styled.div`
     border-radius: ${CELL_SIZE / 2 + 3}px;
 `;
 
-const GeneCell2Wrapper = styled.div`
+const GeneCellWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -36,11 +37,12 @@ type GeneCell2Props = {
   state: null | 'activeLast' | 'active';
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   children?: React.ReactNode;
+  selected?: boolean,
 }
 
 const transitionVariants: GeneCell2Props['state'][] = ['active', 'activeLast'];
 
-const GeneCell2 = (props: GeneCell2Props) => {
+const GeneCell = (props: GeneCell2Props) => {
   const backgroundColor = props.gene.template.color
     ? props
       .gene
@@ -63,16 +65,22 @@ const GeneCell2 = (props: GeneCell2Props) => {
     ? `${CELL_SIZE * 0.9}px`
     : `${CELL_SIZE * 0.6}px`;
   const transition = transitionVariants.includes(props.state)
-    ? 'none'
-    : 'background-color 0.2s, transform 0.5s, min-width 0.2s, min-height 0.2s';
-  const boxShadow = props.state === 'active'
-    ? `0 0 5px 0 ${props.gene.template.color?.interpolate(new Rgba(255, 255, 255, 255), 0.5).toString()}`
+    ? 'box-shadow 0.5s'
+    : 'background-color 0.2s, transform 0.5s, min-width 0.2s, min-height 0.2s, box-shadow 0.5s';
+  const colorIfActive = props
+    .gene
+    .template
+    .color
+    ?.interpolate(new Rgba(255, 255, 255, 255), 0.5)
+    .toString() || 'gray';
+  const boxShadow = props.selected
+    ? `0 0 10px 0 ${colorIfActive}`
     : 'none';
   const zIndex = props.state === 'active'
     ? 1
     : 0;
   return (
-    <GeneCell2Wrapper>
+    <GeneCellWrapper>
       <div
         style={{
           display: 'flex',
@@ -94,7 +102,7 @@ const GeneCell2 = (props: GeneCell2Props) => {
         }}
         onClick={props.onClick}
       ><span>{props.children}</span></div>
-    </GeneCell2Wrapper>
+    </GeneCellWrapper>
   );
 };
 
@@ -175,7 +183,7 @@ export class Genome {
   }
   getInfo() {
     const [genes, setGenes] = React.useState(this.genes);
-    const [selectedGene, setSelectedGene] = React.useState<Gene | null>(null);
+    const [selectedGene, setSelectedGene] = React.useState<{id: number, gene: Gene} | null>(null);
     const [option, setOption] = React.useState<number | string>(0);
     const [branches, setBranches] = React.useState<Array<number | string>>([0, 0]);
 
@@ -187,21 +195,22 @@ export class Genome {
     }, [this]);
 
     React.useEffect(() => {
-      setOption(selectedGene?.property.option.toFixed(2) || 0);
-      setBranches(selectedGene?.property.branches || [0, 0]);
+      setOption(selectedGene?.gene.property.option.toFixed(2) || 0);
+      setBranches(selectedGene?.gene.property.branches || [0, 0]);
     }, [selectedGene]);
 
     return (
       <>
         <Accordion name="Ген" small defaultOpened>
           {selectedGene ? <>
+            <SubBlock>
             <DropdownSmall
-              name={selectedGene.template.name}
+              name={selectedGene.gene.template.name}
               list={Object.keys(GENES).map(key => {
                 return { value: key, title: GENES[key]?.name || NULL_GENE_TEMPLATE.name }
               })}
               onChange={value => {
-                selectedGene.template = GENES[value] || NULL_GENE_TEMPLATE;
+                selectedGene.gene.template = GENES[value] || NULL_GENE_TEMPLATE;
                 this.genes = [...genes];
                 setGenes(this.genes);
               }}
@@ -215,16 +224,17 @@ export class Genome {
               onBlur={e => {
                 const value = e.target.value;
                 if (value.length > 0) {
-                  selectedGene.property.option = limit(
+                  selectedGene.gene.property.option = limit(
                     0,
                     1,
                     parseFloat(value)
                   );
                 }
-                setOption(selectedGene.property.option);
+                setOption(selectedGene.gene.property.option);
               }}
             />
             {branches && selectedGene
+              .gene
               .property
               .branches
               .map((value, i) => {
@@ -242,17 +252,28 @@ export class Genome {
                     onBlur={e => {
                       const value = e.target.value;
                       if (value.length > 0) {
-                        selectedGene.property.branches[i] = fixNumber(
+                        selectedGene.gene.property.branches[i] = fixNumber(
                           0,
                           this.genes.length,
                           parseInt(value)
                         );
                       }
-                      setBranches(selectedGene.property.branches);
+                      setBranches(selectedGene.gene.property.branches);
                     }}
                   />
                 );
               })}
+            </SubBlock>
+              <WideButton onClick={() => {
+                this.genes[selectedGene.id] = {
+                  template: selectedGene.gene.template,
+                  property: {
+                    ...selectedGene.gene.property,
+                    branches: [...selectedGene.gene.property.branches]
+                  }
+                }
+                setSelectedGene({...selectedGene, gene: this.genes[selectedGene.id]!});
+              }}>Сделать индивидуальным</WideButton>
           </> : <span>Кликните по круглому гену на вкладке ниже, чтобы увидеть информацию о нём.</span>}
         </Accordion>
         <Accordion name="Геном" small defaultOpened>
@@ -265,11 +286,12 @@ export class Genome {
                   ? 'activeLast'
                   : null;
               return (
-                <GeneCell2
+                <GeneCell
                   key={i}
+                  selected={selectedGene?.id === i}
                   gene={gene}
                   state={state}
-                  onClick={() => setSelectedGene(gene)}
+                  onClick={() => setSelectedGene(selectedGene?.id === i ? null : {id: i, gene})}
                 />
               )
             })}
@@ -349,7 +371,7 @@ export const NULL_GENE_TEMPLATE: GeneTemplate = {
   defaultEnabled: false,
   color: new Rgba(127, 127, 127, 255),
   colorInfluence: 0.01,
-  action: (bot, x, y, world, property) => {
+  action: (_bot, _x, _y, _world, _property) => {
     return { completed: true, goto: null, msg: `Бездействие` };
   }
 };
