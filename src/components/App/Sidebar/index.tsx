@@ -6,6 +6,7 @@ import { GENES } from "../../../lib/genome";
 import { limit } from "../../../lib/helpers";
 import { VisualiserParams } from "../../../lib/view-modes";
 import { SquareWorld, World, WorldInfo, NewWorldProps } from "../../../lib/world";
+import { SIDEBAR_PADDING, SIDEBAR_WIDTH } from "../../../settings";
 import Accordion from "./Accordion";
 import Checkbox from "./Checkbox";
 import InputNumber from "./InputNumber";
@@ -17,19 +18,17 @@ import WideButton from "./WideButton";
 
 interface ISidebarProps {
   readonly opened: boolean,
-  readonly padding: string;
-  readonly width: string;
 };
 
 const Wrapper = styled.div<ISidebarProps>`
     position: fixed;
-    left: ${props => props.opened ? 0 : `-${props.width}`};
+    left: ${props => props.opened ? 0 : `-${SIDEBAR_WIDTH}`};
     box-sizing: border-box;
-    width: ${props => props.width};
-    min-width: ${props => props.width};
+    width: ${SIDEBAR_WIDTH};
+    min-width: ${SIDEBAR_WIDTH};
     height: 100%;
     overflow-y: auto;
-    padding: ${props => `calc(${props.padding} * 2 + 55px) ${props.padding} 0 ${props.padding}`};
+    padding: calc(${SIDEBAR_PADDING} * 2 + 55px) ${SIDEBAR_PADDING} 0 ${SIDEBAR_PADDING};
     background-color: rgba(20, 20, 20, 0.99);
     color: whitesmoke;
     box-shadow: ${props => props.opened ? '0 0 10px 0 rgba(0, 0, 0, 1)' : 'none'};
@@ -37,7 +36,7 @@ const Wrapper = styled.div<ISidebarProps>`
     &::after {
         content: "";
         display: block;
-        padding-bottom: ${props => props.padding};
+        padding-bottom: ${SIDEBAR_PADDING};
     }
     &::-webkit-scrollbar {
         width: 6px;
@@ -54,7 +53,6 @@ const Wrapper = styled.div<ISidebarProps>`
 
 type SidebarProps = {
   opened: boolean,
-  style: { padding: string, width: string },
   viewModesList: { value: string, title: string }[],
   viewMode: string,
   visualizerParams: VisualiserParams,
@@ -73,7 +71,7 @@ type SidebarProps = {
 
 const Sidebar = (props: SidebarProps) => {
   return (
-    <Wrapper opened={props.opened} padding={props.style.padding} width={props.style.width}>
+    <Wrapper opened={props.opened}>
       <Accordion name='Легенда'>
         {Object
           .keys(GENES)

@@ -3,12 +3,7 @@ import ReactDOM from "react-dom";
 import App from "./components/App";
 import "./index.css";
 
-const SIDEBAR_STYLE = {
-  padding: '20px',
-  width: '300px'
-};
-
 ReactDOM.render(
-  <App sidebar={SIDEBAR_STYLE} />,
+  <App />,
   document.getElementById("root")
 );

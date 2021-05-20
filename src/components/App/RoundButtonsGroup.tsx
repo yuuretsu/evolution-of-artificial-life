@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import React from 'react';
 
 interface IRoundButtonsGroup {
-    readonly sidebarWidth: string;
     readonly sidebarOpened: boolean;
 };
 
@@ -22,7 +21,6 @@ const Wrapper = styled.div<IRoundButtonsGroup>`
 `;
 
 type RoundButtonsGroupProps = {
-    sidebarWidth: string;
     sidebarOpened: boolean;
     children?: React.ReactNode;
 };
@@ -30,7 +28,6 @@ type RoundButtonsGroupProps = {
 const RoundButtonsGroup = (props: RoundButtonsGroupProps) => {
     return (
         <Wrapper
-            sidebarWidth={props.sidebarWidth}
             sidebarOpened={props.sidebarOpened}
         >{props.children}</Wrapper>
     );

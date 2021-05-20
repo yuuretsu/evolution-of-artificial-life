@@ -68,14 +68,7 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
-type AppProps = {
-  sidebar: {
-    padding: string,
-    width: string
-  };
-};
-
-const App = (props: AppProps) => {
+const App = () => {
   const [appHeight, setAppHeight] = useState(window.innerHeight);
   const [sidebarOpened, setSidebarOpened] = useState(true);
   const [paused, setPaused] = useState(false);
@@ -130,7 +123,7 @@ const App = (props: AppProps) => {
       {image && <Viewer
         sidebarOpened={sidebarOpened}
         paused={paused}
-        sidebarWidth={props.sidebar.width}
+        sidebarWidth={"300px"}
         viewMode={viewMode}
         image={image}
         world={world}
@@ -138,7 +131,6 @@ const App = (props: AppProps) => {
       />}
       <Sidebar
         opened={sidebarOpened}
-        style={props.sidebar}
         setViewMode={setViewMode}
         viewModesList={viewModesList}
         viewMode={viewMode}
@@ -155,7 +147,6 @@ const App = (props: AppProps) => {
         setSelectedBlock={setSelectedBlock}
       />
       <RoundButtonsGroup
-        sidebarWidth={props.sidebar.width}
         sidebarOpened={sidebarOpened}
       >
         <RoundButton title="Настройки" onClick={() => setSidebarOpened(!sidebarOpened)}>

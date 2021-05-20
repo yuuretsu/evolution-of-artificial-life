@@ -5,6 +5,7 @@ import DropdownSmall from "../components/App/Sidebar/DropdownSmall";
 import InputNumberSmall from "../components/App/Sidebar/InputNumberSmall";
 import SubBlock from "../components/App/Sidebar/SubBlock";
 import WideButton from "../components/App/Sidebar/WideButton";
+import { GenomeVisualizer } from "../components/GenomeVisualizer";
 import { Bot } from "./bot";
 import Rgba from "./color";
 import { fixNumber, interpolate, limit, randChoice, randFloat, randInt } from "./helpers";
@@ -12,105 +13,11 @@ import { World } from "./world";
 
 export type GenePool = GeneTemplate[];
 
-const CELL_SIZE = 30;
-
-const GenomeWrapper = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    width: ${8 * CELL_SIZE}px;
-    /* height: ${8 * 21}px; */
-    border: 2px solid #505050;
-    border-radius: ${CELL_SIZE / 2 + 3}px;
-`;
-
-const GeneCellWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: ${CELL_SIZE}px;
-    height: ${CELL_SIZE}px;
-`;
-
-
-type GeneCell2Props = {
-  gene: Gene;
-  state: null | 'activeLast' | 'active';
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
-  children?: React.ReactNode;
-  selected?: boolean,
-}
-
-const transitionVariants: GeneCell2Props['state'][] = ['active', 'activeLast'];
-
-const GeneCell = (props: GeneCell2Props) => {
-  const backgroundColor = props.gene.template.color
-    ? props
-      .gene
-      .template
-      .color
-      .interpolate(
-        props.state === 'active'
-          ? props.gene.template.color
-          : new Rgba(50, 50, 50, 127),
-        0.75
-      )
-      .toString()
-    : 'rgba(127, 127, 127, 0.1)';
-  const border = props.state
-    ? props.state === 'active'
-      ? '3px solid white'
-      : '2px solid rgba(255, 255, 255, 0.5)'
-    : 'none';
-  const size = props.state === 'active'
-    ? `${CELL_SIZE * 0.9}px`
-    : `${CELL_SIZE * 0.6}px`;
-  const transition = transitionVariants.includes(props.state)
-    ? 'box-shadow 0.5s'
-    : 'background-color 0.2s, transform 0.5s, min-width 0.2s, min-height 0.2s, box-shadow 0.5s';
-  const colorIfActive = props
-    .gene
-    .template
-    .color
-    ?.interpolate(new Rgba(255, 255, 255, 255), 0.5)
-    .toString() || 'gray';
-  const boxShadow = props.selected
-    ? `0 0 10px 0 ${colorIfActive}`
-    : 'none';
-  const zIndex = props.state === 'active'
-    ? 1
-    : 0;
-  return (
-    <GeneCellWrapper>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          boxSizing: 'border-box',
-          backgroundColor,
-          border,
-          transition,
-          boxShadow,
-          zIndex,
-          borderRadius: '100%',
-          minWidth: size,
-          minHeight: size,
-          maxWidth: size,
-          maxHeight: size,
-          cursor: 'pointer',
-          fontSize: '8px',
-        }}
-        onClick={props.onClick}
-      ><span>{props.children}</span></div>
-    </GeneCellWrapper>
-  );
-};
-
 const MAX_ACTIONS = 8;
 
 export class Genome {
   private _pointer: number = 0;
-  private recentlyUsedGenes: Gene[] = [];
+  recentlyUsedGenes: Gene[] = [];
   activeGene: Gene | null = null;
   genes: Gene[];
   constructor(length: number) {
@@ -278,24 +185,11 @@ export class Genome {
         </Accordion>
         <Accordion name="Геном" small defaultOpened>
           <SubBlock>Позиция указателя: {this.pointer}</SubBlock>
-          <GenomeWrapper>
-            {genes.map((gene, i) => {
-              const state = activeGene === gene
-                ? 'active'
-                : this.recentlyUsedGenes.includes(gene)
-                  ? 'activeLast'
-                  : null;
-              return (
-                <GeneCell
-                  key={i}
-                  selected={selectedGene?.id === i}
-                  gene={gene}
-                  state={state}
-                  onClick={() => setSelectedGene(selectedGene?.id === i ? null : {id: i, gene})}
-                />
-              )
-            })}
-          </GenomeWrapper>
+          <GenomeVisualizer
+            genome={this}
+            selectedGene={selectedGene}
+            setSelectedGene={setSelectedGene}
+          />
         </Accordion>
       </>
     );
