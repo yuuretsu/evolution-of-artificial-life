@@ -3,7 +3,7 @@ import Rgba from "./color";
 import { Bot } from "./bot";
 import { VisualiserParams } from "./view-modes";
 import React from "react";
-import Block from "../components/App/Sidebar/Block";
+import Block from "../App/Sidebar/Block";
 import { GenePool } from "./genome";
 
 export class WorldBlock {

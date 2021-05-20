@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
-import { WorldBlock } from "../../../lib/block";
-import VIEW_MODES from "../../../lib/view-modes";
-import { World } from "../../../lib/world";
+import { WorldBlock } from "../../lib/block";
+import VIEW_MODES from "../../lib/view-modes";
+import { World } from "../../lib/world";
 import GameImage from "./GameImage";
 
 interface IViewerProps {

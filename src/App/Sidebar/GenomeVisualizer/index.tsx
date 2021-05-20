@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Gene, Genome } from "../../lib/genome";
-import { GENE_CELL_SIZE as CELL_SIZE } from "../../settings";
+import { Gene, Genome } from "../../../lib/genome";
+import { GENE_CELL_SIZE as CELL_SIZE } from "../../../settings";
 import { GeneCell } from "./GeneCell";
 
 const GenomeWrapper = styled.div`

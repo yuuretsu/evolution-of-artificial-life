@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import Rgba from "../../lib/color";
-import { Gene } from "../../lib/genome";
-import { GENE_CELL_SIZE as CELL_SIZE } from "../../settings";
+import Rgba from "../../../lib/color";
+import { Gene } from "../../../lib/genome";
+import { GENE_CELL_SIZE as CELL_SIZE } from "../../../settings";
 
 const GeneCellWrapper = styled.div`
   display: flex;
@@ -43,11 +43,7 @@ export const GeneCell = (props: GeneCellProps) => {
   const transition = transitionVariants.includes(props.state)
     ? "box-shadow 0.5s"
     : "background-color 0.2s, transform 0.5s, min-width 0.2s, min-height 0.2s, box-shadow 0.5s";
-  const colorIfActive =
-    props.gene.template.color
-      ?.interpolate(new Rgba(255, 255, 255, 255), 0.5)
-      .toString() || "gray";
-  const boxShadow = props.selected ? `0 0 10px 0 ${colorIfActive}` : "none";
+  const boxShadow = props.selected ? `0 0 10px 0 white` : "none";
   const zIndex = props.state === "active" ? 1 : 0;
   return (
     <GeneCellWrapper>

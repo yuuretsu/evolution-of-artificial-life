@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
-import VIEW_MODES, { VisualiserParams } from "../../lib/view-modes";
+import VIEW_MODES, { VisualiserParams } from "../lib/view-modes";
 import Sidebar from "./Sidebar";
 import Viewer from "./Viewer";
 import {
   SquareWorld,
   World, WorldInfo, NewWorldProps
-} from "../../lib/world";
+} from "../lib/world";
 import {
   MdMenu,
   MdPlayArrow,
@@ -14,10 +14,10 @@ import {
   MdSkipNext,
   MdClose
 } from 'react-icons/md';
-import { WorldBlock } from "../../lib/block";
+import { WorldBlock } from "../lib/block";
 import {
   GENES, enabledGenesToPool
-} from "../../lib/genome";
+} from "../lib/genome";
 import RoundButtonsGroup from "./RoundButtonsGroup";
 import RoundButton, { ROUND_BUTTON_ICON_STYLE } from "./RoundButton";
 
