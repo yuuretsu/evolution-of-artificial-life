@@ -3,7 +3,8 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import styled, { keyframes } from "styled-components";
 
 const Wrapper = styled.div`
-    position: relative;
+  position: relative;
+  user-select: none;
 `;
 
 interface IHeader {
@@ -16,8 +17,9 @@ const Header = styled.div<IHeader>`
   display: flex;
   width: 100%;
   cursor: pointer;
-  border-radius: 2px;
+  border-radius: ${props => props.opened ? '5px 5px 0 0' : '2px'};
   padding: ${props => props.opened ? '10px' : 'none'};
+  background-color: ${props => props.opened ? 'rgba(255, 255, 255, 0.05)' : 'transparent'};
   transition-duration: 0.2s;
   &:hover {
     background-color: rgba(255, 255, 255, 0.05);
@@ -41,7 +43,7 @@ const Body = styled.div`
   box-sizing: border-box;
   position: absolute;
   background-color: #282828;
-  border-radius: 5px;
+  border-radius: 0 0 5px 5px;
   overflow: hidden;
   box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.5);
   width: 100%;
