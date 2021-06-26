@@ -60,6 +60,7 @@ export class SquareWorld extends World {
       this.set(
         ...this.randEmpty(),
         new Bot(
+          0,
           new Rgba(100, 100, 100, 255),
           Rgba.randRgb(),
           100,

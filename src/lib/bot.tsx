@@ -19,6 +19,7 @@ export class Bot extends DynamicBlock {
     health = 0.5;
     childrenAmount = 0;
     constructor(
+        public generation: number,
         color: Rgba,
         public familyColor: Rgba,
         public energy: number,
@@ -113,6 +114,7 @@ export class Bot extends DynamicBlock {
         this.energy -= energy;
         this.childrenAmount++;
         return new Bot(
+            this.generation + 1,
             this.color.interpolate(new Rgba(255, 255, 255, 255), 0.1),
             this.familyColor.mutateRgb(5),
             energy,
@@ -154,7 +156,7 @@ export class Bot extends DynamicBlock {
         return (
             <>
                 <SubBlock>
-                    Бот
+                    <b>Бот</b>
                 </SubBlock>
                 <SubBlock>
                     {this.alive ? <div>
@@ -205,6 +207,7 @@ export class Bot extends DynamicBlock {
                         />
                         <div>Потомков: {this.childrenAmount}</div>
                         <div>Направление: {narrowToName(this.narrow)}</div>
+                        <div>Поколение: {this.generation}</div>
                     </div> : <div
                         style={{
                             color: 'red',
