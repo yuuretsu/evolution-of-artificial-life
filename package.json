@@ -1,5 +1,5 @@
 {
-  "name": "artifical-life",
+  "name": "artificial-life",
   "version": "1.0.0",
   "description": "evolution simulator",
   "scripts": {
@@ -7,8 +7,7 @@
     "serve": "webpack serve --mode=development --progress",
     "build": "webpack --mode production"
   },
-  "keywords": [],
-  "author": "YuraFrozen",
+  "author": "Yurii Morozov",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.13.16",
