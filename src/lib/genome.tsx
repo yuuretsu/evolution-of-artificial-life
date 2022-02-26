@@ -280,7 +280,7 @@ export const NULL_GENE: Gene = {
 export const GENES: { [index: string]: GeneTemplate } = {
   doNothing: {
     name: 'Отдых',
-    description: `Прибавляет 0.1 к здоровью`,
+    description: `Прибавляет 0,1 к здоровью`,
     defaultEnabled: true,
     color: new Rgba(100, 100, 0, 255),
     colorInfluence: 0.01,
@@ -309,7 +309,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   rotate: {
     name: 'Поворот',
-    description: `Бот поворачивается по часовой стрелке, если параметр гена > 0.5, иначе против часовой стрелки`,
+    description: `Бот поворачивается по часовой стрелке, если параметр гена > 0,5, иначе против часовой стрелки`,
     defaultEnabled: true,
     color: null,
     colorInfluence: null,
@@ -322,7 +322,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   photosynthesis: {
     name: 'Фотосинтез',
-    description: `Бот получает энергию путем фотосинтеза.При этом эффективность его фотосинтеза возрастает, а эффективность атак -- падает.Восстанавливает своё здоровье на 0.01.`,
+    description: `Бот получает энергию путем фотосинтеза. При этом эффективность его фотосинтеза возрастает, а эффективность атак — падает. Восстанавливает своё здоровье на 0,01.`,
     defaultEnabled: true,
     color: new Rgba(0, 255, 0, 255),
     colorInfluence: 0.01,
@@ -336,7 +336,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   attack: {
     name: 'Атака',
-    description: `Бот атакует блок перед собой, забирая себе часть его энергии.Повышает здоровье на 0.01.`,
+    description: `Бот атакует блок перед собой, забирая себе часть его энергии.Повышает здоровье на 0,01.`,
     defaultEnabled: true,
     color: new Rgba(255, 0, 0, 255),
     colorInfluence: 0.01,
@@ -360,7 +360,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   virus: {
     name: 'Заразить геном',
-    description: `Бот копирует с свой геном в бота напротив, при этом есть шанс мутации.Расходует 0.1 здоровья и 0.1 энергии.`,
+    description: `Бот копирует с свой геном в бота напротив, при этом есть шанс мутации. Расходует 0,1 здоровья и 0,1 энергии.`,
     defaultEnabled: false,
     color: new Rgba(255, 50, 255, 255),
     colorInfluence: 0.05,
@@ -382,7 +382,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   moveForward: {
     name: 'Двигаться вперед',
-    description: `Бот перемещется в клетку перед собой, если она пустая.Расходует 0.5 энергии.`,
+    description: `Бот перемещется в клетку перед собой, если она пустая. Расходует 0,5 энергии.`,
     defaultEnabled: true,
     color: new Rgba(200, 200, 200, 255),
     colorInfluence: null,
@@ -402,7 +402,7 @@ export const GENES: { [index: string]: GeneTemplate } = {
   },
   push: {
     name: 'Толкнуть',
-    description: `Бот отталкивает блок перед собой на одну клетку, если клетка за ним пуста.Расходует 0.5 энергии.`,
+    description: `Бот отталкивает блок перед собой на одну клетку, если клетка за ним пуста. Расходует 0,5 энергии.`,
     defaultEnabled: true,
     color: new Rgba(0, 0, 255, 255),
     colorInfluence: 0.01,
