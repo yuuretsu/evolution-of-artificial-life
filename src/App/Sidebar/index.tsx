@@ -93,6 +93,7 @@ const Sidebar = (props: SidebarProps) => {
       <Accordion name='Инфо о мире' defaultOpened>
         <div>Возраст: {(props.worldInfo.cycle / 1000).toFixed(1)} тыс. кадров</div>
         <div>Ботов: {props.worldInfo.dynamicBlocks}</div>
+        <div>Время обработки: {props.worldInfo.stepTime.toFixed(1)} мс.</div>
       </Accordion>
       <Accordion name='Инфо о блоке' defaultOpened>
         {props.selectedBlock
@@ -178,7 +179,7 @@ const Sidebar = (props: SidebarProps) => {
             }}
           >
             Включить все
-            </WideButton>
+          </WideButton>
           <WideButton
             onClick={() => {
               const newParams = {
@@ -275,7 +276,7 @@ const Sidebar = (props: SidebarProps) => {
             }}
           >
             Рестарт
-                    </WideButton>
+          </WideButton>
         </SubBlock>
       </Accordion>
     </Wrapper>

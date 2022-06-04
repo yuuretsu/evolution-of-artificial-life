@@ -16,12 +16,14 @@ export type NewWorldProps = {
 export type WorldInfo = {
   cycle: number;
   dynamicBlocks: number;
+  stepTime: number;
 };
 
 export abstract class World extends Grid<WorldBlock> {
   protected info: WorldInfo = {
     cycle: 0,
     dynamicBlocks: 0,
+    stepTime: 0
   };
   genePool: GenePool;
   constructor(props: NewWorldProps) {
@@ -81,6 +83,7 @@ export class SquareWorld extends World {
     return this.info;
   }
   step() {
+    const start = performance.now();
     // this.info.dynamicBlocks = 0;
     const filtered: { pos: Coords; obj: DynamicBlock }[] = [];
     for (let x = 0; x < this.width; x++) {
@@ -89,14 +92,16 @@ export class SquareWorld extends World {
         if (obj instanceof DynamicBlock) filtered.push({ pos: [x, y], obj });
       }
     }
-    const shuffled = filtered.sort(() => Math.random() - 0.5);
-    for (const object of shuffled) {
+    // filtered.sort(() => Math.random() - 0.5);
+    shuffle(filtered);
+    for (const object of filtered) {
       object.obj.live(...object.pos, this);
     }
     this.info.dynamicBlocks = this.flat().filter(
       (value) => value instanceof DynamicBlock
     ).length;
     this.info.cycle++;
+    this.info.stepTime = performance.now() - start;
   }
   toImage(visualizer: BlockVisualiser, params: VisualiserParams) {
     const canvas = document.createElement("canvas");
@@ -124,4 +129,22 @@ export class SquareWorld extends World {
       throw "Не удалось получить контекст из канваса";
     }
   }
+}
+
+function shuffle<T>(array: T[]) {
+  let currentIndex = array.length, randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex]!, array[randomIndex]!] = [
+      array[randomIndex]!, array[currentIndex]!];
+  }
+
+  return array;
 }
