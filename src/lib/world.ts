@@ -11,6 +11,7 @@ export type NewWorldProps = {
   height: number;
   botsAmount: number;
   genePool: GenePool;
+  genomeSize: number;
 };
 
 export type WorldInfo = {
@@ -67,7 +68,7 @@ export class SquareWorld extends World {
           Rgba.randRgb(),
           100,
           { photosynthesis: 0.5, attack: 0.5 },
-          new Genome(32).fillRandom(props.genePool)
+          new Genome(props.genomeSize).fillRandom(props.genePool)
         )
       );
       this.info.dynamicBlocks++;

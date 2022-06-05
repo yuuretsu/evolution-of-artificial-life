@@ -32,7 +32,8 @@ const INIT_WORLD_PROPS: NewWorldProps = {
   width: Math.max(Math.floor((window.innerWidth - 300) / 8) - 6, 50),
   height: Math.max(Math.floor(window.innerHeight / 8) - 6, 50),
   botsAmount: 500,
-  genePool: initialGenePool
+  genePool: initialGenePool,
+  genomeSize: 32,
 };
 
 const initWorld = new SquareWorld(INIT_WORLD_PROPS);

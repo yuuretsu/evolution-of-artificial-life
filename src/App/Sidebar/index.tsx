@@ -268,6 +268,23 @@ const Sidebar = (props: SidebarProps) => {
             })}
           />
         </SubBlock>
+        <SubBlock name="Размер генома">
+          <InputNumber
+            placeholder="Размер генома"
+            min={8}
+            max={256}
+            value={props.newWorldProps.genomeSize}
+            onChange={e => props.setNewWorldProps({
+              ...props.newWorldProps,
+              ...{
+                genomeSize: limit(
+                  parseInt(e.target.min),
+                  parseInt(e.target.max),
+                  parseInt(e.target.value))
+              }
+            })}
+          />
+        </SubBlock>
         <SubBlock>
           <WideButton
             onClick={() => {
