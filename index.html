@@ -1,1 +1,26 @@
-<!doctype html><html lang="ru"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1"/><title>Artificial Life Evolution</title><link rel="icon" href="favicon.png"><script defer="defer" src="bundle-43875ebad89dceca4df4.js"></script></head><body><div id="root"></div></body></html>
+<!doctype html><html lang="ru"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1"/><title>Evolution of Artificial Life</title><script>/*
+    ВНИМАНИЕ!
+
+    Я чисто по приколу вставил на эту страницу
+    простейшую и тупейшую "аналитику".
+    При загрузке страницы
+    мне в телеграм приходит сообщение.
+    Всё, что я получаю -- это только ссылку,
+    откуда пришел пользователь.
+    По идее вы можете украсть токен моего бота
+    и использовать в своих целях (но зачем? да и я этого не боюсь).
+    Ну а вообще, можете чисто по приколу отправить мне сообщение с этого бота,
+    я наверное даже немного обрадусь. :)
+    Такая вот пасхалочка.
+
+    Спасибо за внимание!
+    */
+
+    (function () {
+      const tgBotApiUrl = 'https://api.telegram.org';
+      const token = '5459661296:AAGoB0Y4lSaYvs0gmDSXjOxLIDdvPNcjFRE';
+      const messageText = document.referrer
+        ? `Загружена симуляция: ${document.referrer}`
+        : `Загружена симуляция`;
+      fetch(`${tgBotApiUrl}/bot${token}/sendMessage?chat_id=76008211&text=${messageText}`);
+    })();</script><link rel="icon" href="favicon.png"><script defer="defer" src="bundle-a4af4dc5bf6efda9341e.js"></script></head><body><div id="root"></div></body></html>
