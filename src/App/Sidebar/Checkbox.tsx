@@ -4,6 +4,7 @@ import styled from 'styled-components';
 const Wrapper = styled.label`
     display: block;
     user-select: none;
+    cursor: pointer;
     &:not(:last-child) {
         margin-bottom: 5px;
     }

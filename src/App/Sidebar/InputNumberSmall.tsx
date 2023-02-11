@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
   display: flex;
+  cursor: text;
 `;
 
 const Input = styled.input.attrs({ type: 'number' })`
@@ -41,12 +42,12 @@ const InputNumberSmall: React.FC<{
   onChange?: React.ChangeEventHandler<HTMLInputElement>,
   onBlur?: React.FocusEventHandler<HTMLInputElement>,
 }> = (props) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const onClickLabel = () => inputRef.current?.focus();
   return (
     <Wrapper>
-      <span style={{ whiteSpace: 'nowrap' }}>{props.name}:&nbsp;</span>
-      <Input
-        {...props}
-      />
+      <span style={{ whiteSpace: 'nowrap' }} onClick={onClickLabel}>{props.name}:&nbsp;</span>
+      <Input ref={inputRef} {...props} />
     </Wrapper>
   );
 };

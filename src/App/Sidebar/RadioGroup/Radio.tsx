@@ -5,6 +5,7 @@ const Wrapper = styled.label`
     display: block;
     user-select: none;
     margin-bottom: 5px;
+    cursor: pointer;
 `;
 
 const Input = styled.input.attrs({
