@@ -1,6 +1,13 @@
 import { observer } from 'mobx-react';
 import React, { FC } from 'react';
-import { MdClose, MdMenu, MdPause, MdPlayArrow, MdSkipNext } from 'react-icons/md';
+import {
+  MdClose,
+  MdMenu,
+  MdPause,
+  MdPlayArrow,
+  MdSkipNext,
+  MdReplay
+} from 'react-icons/md';
 import { appStore } from 'stores/app';
 import { sidebarStore } from 'stores/sidebar';
 import styled from 'styled-components';
@@ -23,6 +30,7 @@ const Wrapper = styled.div`
 
 export interface IControlsProps {
   onClickStep: () => void;
+  onClickRestart: () => void;
 }
 
 export const Controls: FC<IControlsProps> = observer((props) => {
@@ -46,6 +54,12 @@ export const Controls: FC<IControlsProps> = observer((props) => {
         onClick={props.onClickStep}
       >
         <MdSkipNext style={CIRCLE_BUTTON_ICON_STYLE} />
+      </CircleButton>
+      <CircleButton
+        title="рестарт"
+        onClick={props.onClickRestart}
+      >
+        <MdReplay style={CIRCLE_BUTTON_ICON_STYLE} />
       </CircleButton>
     </Wrapper>
   )

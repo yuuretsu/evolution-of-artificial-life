@@ -71,6 +71,7 @@ type SidebarProps = {
   setEnabledGenes: (value: { [name: string]: boolean }) => any;
   selectedBlock: WorldBlock | null;
   setSelectedBlock: (block: WorldBlock | null) => void;
+  onClickRestart: () => void;
 };
 
 const Sidebar = observer((props: SidebarProps) => {
@@ -291,12 +292,7 @@ const Sidebar = observer((props: SidebarProps) => {
           />
         </SubBlock>
         <SubBlock>
-          <WideButton
-            onClick={() => {
-              props.onChangeWorld(new SquareWorld(props.newWorldProps));
-              props.setSelectedBlock(null);
-            }}
-          >
+          <WideButton onClick={props.onClickRestart}>
             Рестарт
           </WideButton>
         </SubBlock>

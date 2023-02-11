@@ -87,6 +87,11 @@ export const App: React.FC = observer(() => {
     updateWorldView();
   };
 
+  const restart = () => {
+    setWorld(new SquareWorld(newWorldProps));
+    setSelectedBlock(null);
+  };
+
   return (
     <Wrapper style={{ height: `${appHeight}px` }}>
       <Viewer
@@ -106,8 +111,8 @@ export const App: React.FC = observer(() => {
         setEnabledGenes={setEnabledGenes}
         selectedBlock={selectedBlock}
         setSelectedBlock={setSelectedBlock}
-      />
-      <Controls onClickStep={onClickStep} />
+        onClickRestart={restart} />
+      <Controls onClickStep={onClickStep} onClickRestart={restart} />
     </Wrapper>
   );
 });
