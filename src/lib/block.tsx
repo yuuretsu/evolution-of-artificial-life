@@ -36,11 +36,8 @@ export class WorldBlock {
     }
     onAttack(bot: Bot, value: number): number { return 0; }
     onVirus(bot: Bot, pool: GenePool) { }
-    getInfo() {
-        return (
-            <Block name={'Блок'}>Нет информации. Попробуйте выбрать другой блок.</Block>
-        );
-    }
+
+    Render = () => <Block name={'Блок'}>Нет информации. Попробуйте выбрать другой блок.</Block>;
 }
 
 export abstract class DynamicBlock extends WorldBlock {

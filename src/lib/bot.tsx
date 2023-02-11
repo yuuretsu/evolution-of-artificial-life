@@ -4,7 +4,7 @@ import { fixNumber, limit, randInt } from "./helpers";
 import { DynamicBlock } from "./block";
 import { GenePool, Genome } from "./genome";
 import { VisualiserParams } from "./view-modes";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SubBlock from "../App/Sidebar/SubBlock";
 import Accordion from "../App/Sidebar/Accordion";
 import InputNumberSmall from "../App/Sidebar/InputNumberSmall";
@@ -140,19 +140,23 @@ export class Bot extends DynamicBlock {
         this.age++;
         this.health = Math.min(1, this.health + 0.01);
     }
-    getInfo() {
-        const [age, setAge] = React.useState<number | string>(this.age);
-        const [energy, setEnergy] = React.useState<number | string>(this.energy.toFixed(2));
-        const [health, setHealth] = React.useState<number | string>(this.health.toFixed(2));
-        React.useEffect(() => {
+    Render = () => {
+        const [age, setAge] = useState<number | string>(this.age);
+        const [energy, setEnergy] = useState<number | string>(this.energy.toFixed(2));
+        const [health, setHealth] = useState<number | string>(this.health.toFixed(2));
+
+        useEffect(() => {
             setAge(this.age);
         }, [this.age]);
-        React.useEffect(() => {
+
+        useEffect(() => {
             setHealth(this.health.toFixed(2));
         }, [this.health]);
-        React.useEffect(() => {
+
+        useEffect(() => {
             setEnergy(this.energy.toFixed(2));
         }, [this.energy]);
+
         return (
             <>
                 <SubBlock>
@@ -219,10 +223,10 @@ export class Bot extends DynamicBlock {
                             borderRadius: '5px',
                         }}>
                         Этот бот мёртв
-                        </div>}
+                    </div>}
                 </SubBlock>
                 <SubBlock>
-                    {this.genome.getInfo()}
+                    <this.genome.Render />
                 </SubBlock>
                 <Accordion name='Последние действия' small>
                     {this.lastActions.map((action, i) => {

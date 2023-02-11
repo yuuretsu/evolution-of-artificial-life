@@ -2,6 +2,7 @@ import { World } from 'lib/world';
 import { observer } from 'mobx-react';
 import React, { FC } from 'react';
 import { MdClose, MdMenu, MdPause, MdPlayArrow, MdSkipNext } from 'react-icons/md';
+import { appStore } from 'stores/app';
 import { sidebarStore } from 'stores/sidebar';
 import styled from 'styled-components';
 import RoundButton, { ROUND_BUTTON_ICON_STYLE } from './RoundButton';
@@ -22,9 +23,6 @@ const Wrapper = styled.div`
 `;
 
 export interface IControlsProps {
-  world: World
-  isPaused: boolean;
-  onClickPlayPause: () => void;
   onClickStep: () => void;
 }
 
@@ -38,9 +36,9 @@ const Controls: FC<IControlsProps> = observer((props) => {
       </RoundButton>
       <RoundButton
         title="Пауза / продолжить"
-        onClick={props.onClickPlayPause}
+        onClick={appStore.toggleIsPaused}
       >
-        {props.isPaused
+        {appStore.isPaused
           ? <MdPlayArrow style={ROUND_BUTTON_ICON_STYLE} />
           : <MdPause style={ROUND_BUTTON_ICON_STYLE} />}
       </RoundButton>

@@ -81,7 +81,7 @@ export class SquareWorld extends World {
     return this.fixCoords(x2, y2);
   }
   getInfo() {
-    return this.info;
+    return { ...this.info };
   }
   step() {
     const start = performance.now();

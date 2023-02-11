@@ -102,7 +102,8 @@ const Sidebar = observer((props: SidebarProps) => {
             <SubBlock>
               <WideButton onClick={() => props.setSelectedBlock(null)}>Снять выделение</WideButton>
             </SubBlock>
-            {props.selectedBlock.getInfo()}
+            {/* {props.selectedBlock.getInfo()} */}
+            <props.selectedBlock.Render />
           </>
           : <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>
         }
