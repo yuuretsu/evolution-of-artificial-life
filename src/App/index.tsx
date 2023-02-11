@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
-import VIEW_MODES, { initVisualizerParams, viewModesList, VisualiserParams } from "lib/view-modes";
+import VIEW_MODES, { initVisualizerParams, VisualiserParams } from "lib/view-modes";
 import Sidebar from "./Sidebar";
 import Viewer from "./Viewer";
 import {
@@ -53,7 +53,14 @@ const App = observer(() => {
 
   const currentViewMode = VIEW_MODES[appStore.viewMode.current]!;
 
+  const updateWorldView = () => {
+    setImage(world.toImage(currentViewMode.blockToColor, visualizerParams));
+    setWorldInfo(world.getInfo());
+  };
+
   useEventListener("resize", () => setAppHeight(window.innerHeight));
+
+  useEffect(updateWorldView, [currentViewMode.blockToColor, world, visualizerParams]);
 
   useEffect(() => {
     const newGenePool = enabledGenesToPool(enabledGenes);
@@ -62,21 +69,18 @@ const App = observer(() => {
       ...{ genePool: newGenePool }
     });
     world.genePool = newGenePool;
-    setImage(world.toImage(currentViewMode.blockToColor, visualizerParams));
-    setWorldInfo(world.getInfo());
-  }, [currentViewMode.blockToColor, world, visualizerParams, enabledGenes]);
+  }, [enabledGenes]);
 
   useInterval(() => {
     world.step();
-    setImage(world.toImage(currentViewMode.blockToColor, visualizerParams));
-    setWorldInfo(world.getInfo());
+    updateWorldView();
   }, appStore.isPaused ? null : 0);
 
   const onClickStep = () => {
-    world.step();
-    appStore.pause();
-    setImage(world.toImage(currentViewMode.blockToColor, visualizerParams));
-    setWorldInfo(world.getInfo());
+    appStore.isPaused
+      ? world.step()
+      : appStore.pause();
+    updateWorldView();
   };
 
   return (
