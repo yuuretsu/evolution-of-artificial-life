@@ -1,14 +1,15 @@
 import { observer } from "mobx-react";
 import React from "react";
+import { appStore } from "stores/app";
 import { sidebarStore } from "stores/sidebar";
 import styled from 'styled-components';
-import { WorldBlock } from "../../lib/block";
-import Rgba from "../../lib/color";
-import { GENES } from "../../lib/genome";
-import { limit } from "../../lib/helpers";
-import { VisualiserParams } from "../../lib/view-modes";
-import { SquareWorld, World, WorldInfo, NewWorldProps } from "../../lib/world";
-import { SIDEBAR_PADDING, SIDEBAR_WIDTH } from "../../settings";
+import { WorldBlock } from "lib/block";
+import Rgba from "lib/color";
+import { GENES } from "lib/genome";
+import { limit } from "lib/helpers";
+import { viewModesList, VisualiserParams } from "lib/view-modes";
+import { SquareWorld, World, WorldInfo, NewWorldProps } from "lib/world";
+import { SIDEBAR_PADDING, SIDEBAR_WIDTH } from "settings";
 import Accordion from "./Accordion";
 import Checkbox from "./Checkbox";
 import InputNumber from "./InputNumber";
@@ -54,14 +55,11 @@ const Wrapper = styled.div<ISidebarProps>`
 `;
 
 type SidebarProps = {
-  viewModesList: { value: string, title: string }[],
-  viewMode: string,
   visualizerParams: VisualiserParams,
   setVisualizerParams: (value: VisualiserParams) => any;
   newWorldProps: NewWorldProps,
   setNewWorldProps: (value: NewWorldProps) => any
   setWorld: (world: World) => any,
-  setViewMode: (value: string) => any,
   world: World,
   worldInfo: WorldInfo,
   enabledGenes: { [name: string]: boolean }
@@ -102,7 +100,6 @@ const Sidebar = observer((props: SidebarProps) => {
             <SubBlock>
               <WideButton onClick={() => props.setSelectedBlock(null)}>Снять выделение</WideButton>
             </SubBlock>
-            {/* {props.selectedBlock.getInfo()} */}
             <props.selectedBlock.Render />
           </>
           : <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>
@@ -112,12 +109,12 @@ const Sidebar = observer((props: SidebarProps) => {
         <SubBlock name="Режим отображения">
           <RadioGroup
             name='view-mode'
-            list={props.viewModesList}
-            defaultChecked={props.viewMode}
-            onChange={props.setViewMode as (value: string) => any}
+            list={viewModesList}
+            defaultChecked={appStore.viewMode.current}
+            onChange={appStore.viewMode.set}
           />
         </SubBlock>
-        {props.viewMode === 'age' && <OptionalBlock>
+        {appStore.viewMode.current === 'age' && <OptionalBlock>
           <SubBlock name="Делитель возраста">
             <InputRange
               min={10}
@@ -130,7 +127,7 @@ const Sidebar = observer((props: SidebarProps) => {
             />
           </SubBlock>
         </OptionalBlock>}
-        {props.viewMode === 'energy' && <OptionalBlock>
+        {appStore.viewMode.current === 'energy' && <OptionalBlock>
           <SubBlock name="Делитель энергии">
             <InputRange
               min={1}
@@ -143,7 +140,7 @@ const Sidebar = observer((props: SidebarProps) => {
             />
           </SubBlock>
         </OptionalBlock>}
-        {props.viewMode === 'lastAction' && <OptionalBlock>
+        {appStore.viewMode.current === 'lastAction' && <OptionalBlock>
           <SubBlock name="Отображение отдельных действий">
             {
               Object

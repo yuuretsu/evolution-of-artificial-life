@@ -71,4 +71,13 @@ const VIEW_MODES: { [key: string]: ViewMode } = {
   },
 };
 
+export const viewModesList = Object
+  .keys(VIEW_MODES)
+  .map(key => {
+    return {
+      value: key,
+      title: VIEW_MODES[key]!.name
+    };
+  });
+
 export default VIEW_MODES;

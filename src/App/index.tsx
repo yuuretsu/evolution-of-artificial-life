@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
-import VIEW_MODES, { VisualiserParams } from "../lib/view-modes";
+import VIEW_MODES, { viewModesList, VisualiserParams } from "lib/view-modes";
 import Sidebar from "./Sidebar";
 import Viewer from "./Viewer";
 import {
   SquareWorld,
   World, WorldInfo, NewWorldProps
-} from "../lib/world";
-import { WorldBlock } from "../lib/block";
+} from "lib/world";
+import { WorldBlock } from "lib/block";
 import {
   GENES, enabledGenesToPool
-} from "../lib/genome";
+} from "lib/genome";
 import Controls from "./Controls";
 import { observer } from "mobx-react";
 import { appStore } from "stores/app";
-import { reaction } from "mobx";
 
 const initialEnabledGenes: { [geneName: string]: boolean } = {};
 for (const name in GENES) {
@@ -48,15 +47,6 @@ Object
   });
 
 
-const viewModesList = Object
-  .keys(VIEW_MODES)
-  .map(key => {
-    return {
-      value: key,
-      title: VIEW_MODES[key]!.name
-    };
-  });
-
 const Wrapper = styled.div`
   display: flex;
   background-color: black;
@@ -66,7 +56,6 @@ const Wrapper = styled.div`
 
 const App = observer(() => {
   const [appHeight, setAppHeight] = useState(window.innerHeight);
-  const [viewMode, setViewMode] = useState<string>('normal');
   const [visualizerParams, setVisualizerParams] = useState<VisualiserParams>(initVisualizerParams);
   const [newWorldProps, setNewWorldProps] = useState<NewWorldProps>(INIT_WORLD_PROPS);
   const [world, setWorld] = useState<World>(initWorld);
@@ -90,12 +79,12 @@ const App = observer(() => {
       ...{ genePool: newGenePool }
     });
     world.genePool = newGenePool;
-    setImage(world.toImage(VIEW_MODES[viewMode]!.blockToColor, visualizerParams));
+    setImage(world.toImage(currentViewMode.blockToColor, visualizerParams));
     setWorldInfo(world.getInfo());
     if (!appStore.isPaused) {
       let id = setInterval(() => {
         world.step();
-        setImage(world.toImage(VIEW_MODES[viewMode]!.blockToColor, visualizerParams));
+        setImage(world.toImage(currentViewMode.blockToColor, visualizerParams));
         setWorldInfo(world.getInfo());
       });
       console.log(
@@ -110,20 +99,20 @@ const App = observer(() => {
         );
       };
     }
-  }, [viewMode, appStore.isPaused, world, visualizerParams, enabledGenes]);
+  }, [appStore.viewMode.current, appStore.isPaused, world, visualizerParams, enabledGenes]);
+
+  const currentViewMode = VIEW_MODES[appStore.viewMode.current]!;
 
   return (
     <Wrapper style={{ height: `${appHeight}px` }}>
       {image && <Viewer
-        viewMode={viewMode}
+        viewMode={appStore.viewMode.current}
         image={image}
         world={world}
         setSelectedBlock={setSelectedBlock}
       />}
       <Sidebar
-        setViewMode={setViewMode}
-        viewModesList={viewModesList}
-        viewMode={viewMode}
+        setViewMode={appStore.viewMode.set}
         visualizerParams={visualizerParams}
         setVisualizerParams={setVisualizerParams}
         newWorldProps={newWorldProps}
@@ -140,7 +129,7 @@ const App = observer(() => {
         onClickStep={() => {
           world.step();
           appStore.pause();
-          setImage(world.toImage(VIEW_MODES[viewMode]!.blockToColor, visualizerParams));
+          setImage(world.toImage(currentViewMode.blockToColor, visualizerParams));
           setWorldInfo(world.getInfo());
         }}
       />
