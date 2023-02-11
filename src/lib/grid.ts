@@ -59,7 +59,7 @@ export default class Grid<T> {
         this.set(x, y, bufferB);
         this.set(x2, y2, bufferA);
     }
-    forEach(func: CallbackFn<T, any>) {
+    forEach(func: CallbackFn<T, void>) {
         for (let x = 0; x < this.width; x++) {
             for (let y = 0; y < this.height; y++) {
                 func(this.get(x, y), x, y);

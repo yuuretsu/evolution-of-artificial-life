@@ -61,14 +61,14 @@ const Wrapper = styled.div<ISidebarProps>`
 
 type SidebarProps = {
   visualizerParams: VisualiserParams,
-  setVisualizerParams: (value: VisualiserParams) => any;
+  setVisualizerParams: (value: VisualiserParams) => void;
   newWorldProps: NewWorldProps,
-  setNewWorldProps: (value: NewWorldProps) => any
-  onChangeWorld: (world: World) => any,
+  setNewWorldProps: (value: NewWorldProps) => void
+  onChangeWorld: (world: World) => void,
   world: World,
   worldInfo: WorldInfo,
   enabledGenes: { [name: string]: boolean }
-  setEnabledGenes: (value: { [name: string]: boolean }) => any;
+  setEnabledGenes: (value: { [name: string]: boolean }) => void;
   selectedBlock: WorldBlock | null;
   setSelectedBlock: (block: WorldBlock | null) => void;
   onClickRestart: () => void;

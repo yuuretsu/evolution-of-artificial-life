@@ -3,9 +3,8 @@ import React, { useEffect, useState } from "react";
 import { SIDEBAR_WIDTH } from "settings";
 import { sidebarStore } from "stores/sidebar";
 import styled from 'styled-components';
-import { WorldBlock } from "../../lib/block";
-import VIEW_MODES from "../../lib/view-modes";
-import { World } from "../../lib/world";
+import { WorldBlock } from "lib/block";
+import { World } from "lib/world";
 import GameImage from "./GameImage";
 
 interface IViewerProps {
@@ -28,7 +27,7 @@ const Wrapper = styled.div<IViewerProps>`
 type ViewerProps = {
     image: HTMLCanvasElement,
     world: World
-    onClickPixel: (block: WorldBlock | null) => any;
+    onClickPixel: (block: WorldBlock | null) => void;
 };
 
 const Viewer = observer((props: ViewerProps) => {

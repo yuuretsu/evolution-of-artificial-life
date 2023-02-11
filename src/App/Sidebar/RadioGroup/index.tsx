@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 type RadioGrpoupProps = {
     name: string;
     list: { value: string, title: string }[];
-    onChange: (value: string) => any;
+    onChange: (value: string) => void;
     defaultChecked?: string;
 };
 

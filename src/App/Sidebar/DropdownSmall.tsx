@@ -61,7 +61,7 @@ const Select = styled.div`
 const DropdownSmall: React.FC<{
   name: string,
   list: { value: string, title: string }[],
-  onChange: (value: string) => any
+  onChange: (value: string) => void
 }> = (props) => {
   const [opened, setOpened] = React.useState(false);
   return (

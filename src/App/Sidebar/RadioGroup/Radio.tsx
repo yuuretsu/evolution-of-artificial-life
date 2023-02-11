@@ -52,7 +52,7 @@ type RadioProps = {
     title: string,
     name: string,
     value: string,
-    onChange: (value: string) => any,
+    onChange: (value: string) => void,
     defaultChecked?: boolean
 };
 
