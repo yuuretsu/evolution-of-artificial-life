@@ -80,4 +80,17 @@ export const viewModesList = Object
     };
   });
 
+export const initVisualizerParams: VisualiserParams = {
+  ageDivider: 1000,
+  energyDivider: 100,
+  action: Object.keys(GENES).reduce((action, geneName) => {
+    return GENES[geneName]?.color === null
+      ? action
+      : {
+        ...action,
+        [GENES[geneName]!.name]: true
+      }
+  }, {})
+};
+
 export default VIEW_MODES;
