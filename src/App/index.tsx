@@ -33,6 +33,7 @@ const INIT_WORLD_PROPS: NewWorldProps = {
 
 const initWorld = new SquareWorld(INIT_WORLD_PROPS);
 const initWorldInfo = initWorld.getInfo();
+const initWorldImage = initWorld.toImage(() => null, initVisualizerParams);
 
 const Wrapper = styled.div`
   display: flex;
@@ -46,7 +47,7 @@ const App = observer(() => {
   const [visualizerParams, setVisualizerParams] = useState<VisualiserParams>(initVisualizerParams);
   const [newWorldProps, setNewWorldProps] = useState<NewWorldProps>(INIT_WORLD_PROPS);
   const [world, setWorld] = useState<World>(initWorld);
-  const [image, setImage] = useState<HTMLCanvasElement | null>(null);
+  const [image, setImage] = useState<HTMLCanvasElement>(initWorldImage);
   const [worldInfo, setWorldInfo] = useState<WorldInfo>(initWorldInfo);
   const [enabledGenes, setEnabledGenes] = useState(initialEnabledGenes);
   const [selectedBlock, setSelectedBlock] = useState<WorldBlock | null>(null);
@@ -85,11 +86,11 @@ const App = observer(() => {
 
   return (
     <Wrapper style={{ height: `${appHeight}px` }}>
-      {image && <Viewer
+      <Viewer
         image={image}
         world={world}
         onClickPixel={setSelectedBlock}
-      />}
+      />
       <Sidebar
         visualizerParams={visualizerParams}
         setVisualizerParams={setVisualizerParams}
