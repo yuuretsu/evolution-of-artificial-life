@@ -1,11 +1,10 @@
-import { World } from 'lib/world';
 import { observer } from 'mobx-react';
 import React, { FC } from 'react';
 import { MdClose, MdMenu, MdPause, MdPlayArrow, MdSkipNext } from 'react-icons/md';
 import { appStore } from 'stores/app';
 import { sidebarStore } from 'stores/sidebar';
 import styled from 'styled-components';
-import RoundButton, { ROUND_BUTTON_ICON_STYLE } from './RoundButton';
+import CircleButton, { CIRCLE_BUTTON_ICON_STYLE } from './CircleButton';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -29,25 +28,25 @@ export interface IControlsProps {
 const Controls: FC<IControlsProps> = observer((props) => {
   return (
     <Wrapper>
-      <RoundButton title="Настройки" onClick={sidebarStore.toggle}>
+      <CircleButton title="Настройки" onClick={sidebarStore.toggle}>
         {sidebarStore.isOpen
-          ? <MdClose style={ROUND_BUTTON_ICON_STYLE} />
-          : <MdMenu style={ROUND_BUTTON_ICON_STYLE} />}
-      </RoundButton>
-      <RoundButton
-        title="Пауза / продолжить"
+          ? <MdClose style={CIRCLE_BUTTON_ICON_STYLE} />
+          : <MdMenu style={CIRCLE_BUTTON_ICON_STYLE} />}
+      </CircleButton>
+      <CircleButton
+        title={appStore.isPaused ? "Продолжить" : "Пауза"}
         onClick={appStore.toggleIsPaused}
       >
         {appStore.isPaused
-          ? <MdPlayArrow style={ROUND_BUTTON_ICON_STYLE} />
-          : <MdPause style={ROUND_BUTTON_ICON_STYLE} />}
-      </RoundButton>
-      <RoundButton
+          ? <MdPlayArrow style={CIRCLE_BUTTON_ICON_STYLE} />
+          : <MdPause style={CIRCLE_BUTTON_ICON_STYLE} />}
+      </CircleButton>
+      <CircleButton
         title="Шаг симуляции"
         onClick={props.onClickStep}
       >
-        <MdSkipNext style={ROUND_BUTTON_ICON_STYLE} />
-      </RoundButton>
+        <MdSkipNext style={CIRCLE_BUTTON_ICON_STYLE} />
+      </CircleButton>
     </Wrapper>
   )
 });
