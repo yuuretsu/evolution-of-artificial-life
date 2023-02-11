@@ -4,7 +4,7 @@ import { MdClose, MdMenu, MdPause, MdPlayArrow, MdSkipNext } from 'react-icons/m
 import { appStore } from 'stores/app';
 import { sidebarStore } from 'stores/sidebar';
 import styled from 'styled-components';
-import CircleButton, { CIRCLE_BUTTON_ICON_STYLE } from './CircleButton';
+import { CircleButton, CIRCLE_BUTTON_ICON_STYLE } from './CircleButton';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -25,7 +25,7 @@ export interface IControlsProps {
   onClickStep: () => void;
 }
 
-const Controls: FC<IControlsProps> = observer((props) => {
+export const Controls: FC<IControlsProps> = observer((props) => {
   return (
     <Wrapper>
       <CircleButton title="Настройки" onClick={sidebarStore.toggle}>
@@ -50,5 +50,3 @@ const Controls: FC<IControlsProps> = observer((props) => {
     </Wrapper>
   )
 });
-
-export default Controls;

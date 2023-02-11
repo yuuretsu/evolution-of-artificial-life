@@ -5,6 +5,8 @@ import { ValueStore } from "stores";
 class AppStore {
   isPaused = false;
 
+  timeBetweenSteps = new ValueStore(0);
+
   viewModeName = new ValueStore<string>(Object.keys(VIEW_MODES)[0] || "");
 
   constructor() {

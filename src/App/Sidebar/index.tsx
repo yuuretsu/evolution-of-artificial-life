@@ -106,6 +106,14 @@ const Sidebar = observer((props: SidebarProps) => {
         }
       </Accordion>
       <Accordion name='Настройки просмотра' defaultOpened>
+        <SubBlock name={`Время между обновлениями`}>
+          <InputRange
+            min={1}
+            max={200}
+            value={appStore.timeBetweenSteps.current}
+            onChange={e => appStore.timeBetweenSteps.set(+e.target.value)}
+          />
+        </SubBlock>
         <SubBlock name="Режим отображения">
           <RadioGroup
             name='view-mode'

@@ -14,7 +14,7 @@ import { WorldBlock } from "lib/block";
 import {
   GENES, enabledGenesToPool
 } from "lib/genome";
-import Controls from "./Controls";
+import { Controls } from "./Controls";
 import { observer } from "mobx-react";
 import { appStore } from "stores/app";
 import { useEventListener, useInterval } from "usehooks-ts";
@@ -45,7 +45,7 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
-const App = observer(() => {
+export const App: React.FC = observer(() => {
   const [appHeight, setAppHeight] = useState(window.innerHeight);
   const [visualizerParams, setVisualizerParams] = useState<VisualiserParams>(initVisualizerParams);
   const [newWorldProps, setNewWorldProps] = useState<NewWorldProps>(INIT_WORLD_PROPS);
@@ -78,7 +78,7 @@ const App = observer(() => {
   useInterval(() => {
     world.step();
     updateWorldView();
-  }, appStore.isPaused ? null : 0);
+  }, appStore.isPaused ? null : appStore.timeBetweenSteps.current);
 
   const onClickStep = () => {
     appStore.isPaused
@@ -111,5 +111,3 @@ const App = observer(() => {
     </Wrapper>
   );
 });
-
-export default App;

@@ -10,7 +10,7 @@ const animation = keyframes`
   }
 `;
 
-const CircleButton = styled.button`
+export const CircleButton = styled.button`
   background-color: rgb(80, 80, 80);
   border-radius: 100px;
   border: none;
@@ -38,5 +38,3 @@ export const CIRCLE_BUTTON_ICON_STYLE: React.CSSProperties = {
   height: '25px',
   fill: 'whitesmoke'
 };
-
-export default CircleButton;
