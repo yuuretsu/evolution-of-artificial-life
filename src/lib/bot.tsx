@@ -231,7 +231,7 @@ export class Bot extends DynamicBlock {
                 </SubBlock>
                 <Accordion name='Последние действия' small>
                     <LastActionsWrapper>
-                        {[...this.lastActions, ...this.lastActions, ...this.lastActions, ...this.lastActions].map((action, i) => {
+                        {this.lastActions.map((action, i) => {
                             return (
                                 <div key={i} style={{ fontSize: '80%' }}>
                                     - {action}
