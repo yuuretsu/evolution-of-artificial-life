@@ -18,7 +18,7 @@ import { WorldBlock } from "../lib/block";
 import {
   GENES, enabledGenesToPool
 } from "../lib/genome";
-import RoundButtonsGroup from "./RoundButtonsGroup";
+import Controls from "./Controls";
 import RoundButton, { ROUND_BUTTON_ICON_STYLE } from "./RoundButton";
 import { observer } from "mobx-react";
 import { sidebarStore } from "stores/sidebar";
@@ -147,9 +147,7 @@ const App = observer(() => {
         selectedBlock={selectedBlock}
         setSelectedBlock={setSelectedBlock}
       />
-      <RoundButtonsGroup
-        sidebarOpened={sidebarStore.isOpen}
-      >
+      <Controls>
         <RoundButton title="Настройки" onClick={sidebarStore.toggle}>
           {sidebarStore.isOpen
             ? <MdClose style={ROUND_BUTTON_ICON_STYLE} />
@@ -178,7 +176,7 @@ const App = observer(() => {
         >
           <MdSkipNext style={ROUND_BUTTON_ICON_STYLE} />
         </RoundButton>
-      </RoundButtonsGroup>
+      </Controls>
     </Wrapper>
   );
 });
