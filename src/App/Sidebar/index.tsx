@@ -72,22 +72,18 @@ const Sidebar = observer((props: SidebarProps) => {
   return (
     <Wrapper opened={sidebarStore.isOpen}>
       <Accordion name='Легенда'>
-        {Object
-          .keys(GENES)
-          .filter(key => GENES[key]!.description)
-          .map(key => {
-            const gene = GENES[key]!;
-            return (
-              <Accordion
-                key={key}
-                name={gene.name}
-                color={gene.color?.interpolate(new Rgba(127, 127, 127, 255), 0.5).toString()}
-                small
-              >
-                {gene.description}
-              </Accordion>
-            );
-          })}
+        {Object.entries(GENES)
+          .filter(([, geneTemplate]) => typeof geneTemplate.description === "string")
+          .map(([key, geneTemplate]) =>
+            <Accordion
+              key={key}
+              name={geneTemplate.name}
+              color={geneTemplate.color?.interpolate(new Rgba(127, 127, 127, 255), 0.5).toString()}
+              small
+            >
+              {geneTemplate.description}
+            </Accordion>
+          )}
       </Accordion>
       <Accordion name='Инфо о мире' defaultOpened>
         <div>Возраст: {(props.worldInfo.cycle / 1000).toFixed(1)} тыс. кадров</div>
