@@ -104,10 +104,9 @@ const App = observer(() => {
   return (
     <Wrapper style={{ height: `${appHeight}px` }}>
       {image && <Viewer
-        viewMode={appStore.viewMode.current}
         image={image}
         world={world}
-        setSelectedBlock={setSelectedBlock}
+        onClickPixel={setSelectedBlock}
       />}
       <Sidebar
         visualizerParams={visualizerParams}

@@ -26,10 +26,9 @@ const Wrapper = styled.div<IViewerProps>`
 `;
 
 type ViewerProps = {
-    viewMode: keyof typeof VIEW_MODES,
     image: HTMLCanvasElement,
     world: World
-    setSelectedBlock: (block: WorldBlock | null) => any;
+    onClickPixel: (block: WorldBlock | null) => any;
 };
 
 const Viewer = observer((props: ViewerProps) => {
@@ -86,8 +85,7 @@ const Viewer = observer((props: ViewerProps) => {
             <GameImage
                 offset={currentPos}
                 image={props.image}
-                viewMode={props.viewMode}
-                setSelectedBlock={props.setSelectedBlock}
+                onClickPixel={props.onClickPixel}
                 world={props.world}
             />
         </Wrapper>

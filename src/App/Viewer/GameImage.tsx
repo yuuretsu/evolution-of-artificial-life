@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled, { keyframes } from 'styled-components';
-import { WorldBlock } from "../../lib/block";
-import VIEW_MODES from "../../lib/view-modes";
-import { World } from "../../lib/world";
+import { WorldBlock } from "lib/block";
+import { World } from "lib/world";
 
 const animation = keyframes`
   from {
@@ -21,8 +20,7 @@ const Wrapper = styled.canvas`
 type GameImageProps = {
   offset: { x: number, y: number },
   image: HTMLCanvasElement,
-  viewMode: keyof typeof VIEW_MODES;
-  setSelectedBlock: (block: WorldBlock | null) => any;
+  onClickPixel: (block: WorldBlock | null) => any;
   world: World
 };
 
@@ -52,7 +50,7 @@ const GameImage = (props: GameImageProps) => {
         const x = Math.floor((e.clientX - rect.left) / 8);
         const y = Math.floor((e.clientY - rect.top) / 8);
         const block = props.world.get(x, y);
-        props.setSelectedBlock(block ? block : null);
+        props.onClickPixel(block ? block : null);
       }}
     />
   );
