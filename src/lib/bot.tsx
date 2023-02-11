@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import SubBlock from "../App/Sidebar/SubBlock";
 import Accordion from "../App/Sidebar/Accordion";
 import InputNumberSmall from "../App/Sidebar/InputNumberSmall";
+import styled from "styled-components";
 
 export type BotAbilityName = keyof typeof Bot.prototype.abilities;
 
@@ -229,18 +230,28 @@ export class Bot extends DynamicBlock {
                     <this.genome.Render />
                 </SubBlock>
                 <Accordion name='Последние действия' small>
-                    {this.lastActions.map((action, i) => {
-                        return (
-                            <div key={i} style={{ fontSize: '80%' }}>
-                                {action}
-                            </div>
-                        );
-                    })}
+                    <LastActionsWrapper>
+                        {[...this.lastActions, ...this.lastActions, ...this.lastActions, ...this.lastActions].map((action, i) => {
+                            return (
+                                <div key={i} style={{ fontSize: '80%' }}>
+                                    - {action}
+                                </div>
+                            );
+                        })}
+                    </LastActionsWrapper>
                 </Accordion>
             </>
         );
-    }
+    };
 }
+
+const LastActionsWrapper = styled.div`
+    aspect-ratio: 1;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #333;
+    overflow-y: auto;
+`;
 
 function narrowToName(narrow: number) {
     switch (narrow) {
