@@ -59,7 +59,7 @@ type SidebarProps = {
   setVisualizerParams: (value: VisualiserParams) => any;
   newWorldProps: NewWorldProps,
   setNewWorldProps: (value: NewWorldProps) => any
-  setWorld: (world: World) => any,
+  onChangeWorld: (world: World) => any,
   world: World,
   worldInfo: WorldInfo,
   enabledGenes: { [name: string]: boolean }
@@ -284,7 +284,7 @@ const Sidebar = observer((props: SidebarProps) => {
         <SubBlock>
           <WideButton
             onClick={() => {
-              props.setWorld(new SquareWorld(props.newWorldProps));
+              props.onChangeWorld(new SquareWorld(props.newWorldProps));
               props.setSelectedBlock(null);
             }}
           >

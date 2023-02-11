@@ -113,7 +113,7 @@ const App = observer(() => {
         setVisualizerParams={setVisualizerParams}
         newWorldProps={newWorldProps}
         setNewWorldProps={setNewWorldProps}
-        setWorld={setWorld}
+        onChangeWorld={setWorld}
         world={world}
         worldInfo={worldInfo}
         enabledGenes={enabledGenes}
