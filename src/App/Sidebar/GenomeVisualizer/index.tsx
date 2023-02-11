@@ -1,22 +1,24 @@
 import React from "react";
 import styled from "styled-components";
-import { Gene, Genome } from "../../../lib/genome";
-import { GENE_CELL_SIZE as CELL_SIZE } from "../../../settings";
+import { Gene, Genome } from "lib/genome";
 import { GeneCell } from "./GeneCell";
+import { GENE_CELL_SIZE_PX } from "settings";
 
 const GenomeWrapper = styled.div`
+  box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
-  width: ${8 * CELL_SIZE}px;
   border: 2px solid #505050;
-  border-radius: ${CELL_SIZE / 2 + 3}px;
+  border-radius: ${GENE_CELL_SIZE_PX / 2 + 3}px;
 `;
 
-export const GenomeVisualizer: React.FC<{
+export interface IGenomeVisualizerProps {
   genome: Genome;
-  selectedGene: {id: number, gene: Gene} | null;
-  setSelectedGene: (value: {id: number, gene: Gene} | null) => any;
-}> = (props) => {
+  selectedGene: { id: number, gene: Gene } | null;
+  setSelectedGene: (value: { id: number, gene: Gene } | null) => void;
+}
+
+export const GenomeVisualizer: React.FC<IGenomeVisualizerProps> = (props) => {
   const activeGene = props.genome.recentlyUsedGenes[props.genome.recentlyUsedGenes.length - 1];
   return (
     <GenomeWrapper>

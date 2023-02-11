@@ -1,15 +1,15 @@
 import React from "react";
+import { GENE_CELL_SIZE_PX } from "settings";
 import styled from "styled-components";
 import Rgba from "../../../lib/color";
-import { Gene } from "../../../lib/genome";
-import { GENE_CELL_SIZE as CELL_SIZE } from "../../../settings";
+import { Gene } from "lib/genome";
 
 const GeneCellWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${CELL_SIZE}px;
-  height: ${CELL_SIZE}px;
+  width: ${GENE_CELL_SIZE_PX}px;
+  height: ${GENE_CELL_SIZE_PX}px;
 `;
 
 type GeneCellProps = {
@@ -25,13 +25,13 @@ const transitionVariants: GeneCellProps["state"][] = ["active", "activeLast"];
 export const GeneCell = (props: GeneCellProps) => {
   const backgroundColor = props.gene.template.color
     ? props.gene.template.color
-        .interpolate(
-          props.state === "active"
-            ? props.gene.template.color
-            : new Rgba(50, 50, 50, 127),
-          0.75
-        )
-        .toString()
+      .interpolate(
+        props.state === "active"
+          ? props.gene.template.color
+          : new Rgba(50, 50, 50, 127),
+        0.75
+      )
+      .toString()
     : "rgba(127, 127, 127, 0.1)";
   const border = props.state
     ? props.state === "active"
@@ -39,7 +39,7 @@ export const GeneCell = (props: GeneCellProps) => {
       : "2px solid rgba(255, 255, 255, 0.5)"
     : "none";
   const size =
-    props.state === "active" ? `${CELL_SIZE * 0.9}px` : `${CELL_SIZE * 0.6}px`;
+    props.state === "active" ? `${GENE_CELL_SIZE_PX * 0.9}px` : `${GENE_CELL_SIZE_PX * 0.6}px`;
   const transition = transitionVariants.includes(props.state)
     ? "box-shadow 0.5s"
     : "background-color 0.2s, transform 0.5s, min-width 0.2s, min-height 0.2s, box-shadow 0.5s";

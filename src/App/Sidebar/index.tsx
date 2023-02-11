@@ -41,7 +41,7 @@ const Wrapper = styled.div<ISidebarProps>`
     display: block;
     padding-bottom: ${SIDEBAR_PADDING};
   }
-  &::-webkit-scrollbar {
+  /* &::-webkit-scrollbar {
     width: 6px;
     background-color: rgb(15, 15, 15);
   }
@@ -51,7 +51,12 @@ const Wrapper = styled.div<ISidebarProps>`
   }
   &::-webkit-scrollbar-thumb:hover {
     background-color: rgb(80, 80, 80);
+  } */
+  &::-webkit-scrollbar {
+    display: none;
   }
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 `;
 
 type SidebarProps = {
