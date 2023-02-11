@@ -1,4 +1,6 @@
+import { observer } from "mobx-react";
 import React from "react";
+import { sidebarStore } from "stores/sidebar";
 import styled from 'styled-components';
 import { WorldBlock } from "../../lib/block";
 import Rgba from "../../lib/color";
@@ -52,7 +54,6 @@ const Wrapper = styled.div<ISidebarProps>`
 `;
 
 type SidebarProps = {
-  opened: boolean,
   viewModesList: { value: string, title: string }[],
   viewMode: string,
   visualizerParams: VisualiserParams,
@@ -69,9 +70,9 @@ type SidebarProps = {
   setSelectedBlock: (block: WorldBlock | null) => void;
 };
 
-const Sidebar = (props: SidebarProps) => {
+const Sidebar = observer((props: SidebarProps) => {
   return (
-    <Wrapper opened={props.opened}>
+    <Wrapper opened={sidebarStore.isOpen}>
       <Accordion name='Легенда'>
         {Object
           .keys(GENES)
@@ -295,6 +296,6 @@ const Sidebar = (props: SidebarProps) => {
       </Accordion>
     </Wrapper>
   );
-};
+});
 
 export default Sidebar;

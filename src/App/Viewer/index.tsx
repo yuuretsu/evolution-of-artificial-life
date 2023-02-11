@@ -1,4 +1,6 @@
+import { observer } from "mobx-react";
 import React, { useEffect, useState } from "react";
+import { sidebarStore } from "stores/sidebar";
 import styled from 'styled-components';
 import { WorldBlock } from "../../lib/block";
 import VIEW_MODES from "../../lib/view-modes";
@@ -24,7 +26,6 @@ const Wrapper = styled.div<IViewerProps>`
 `;
 
 type ViewerProps = {
-    sidebarOpened: boolean,
     paused: boolean;
     sidebarWidth: string,
     viewMode: keyof typeof VIEW_MODES,
@@ -33,7 +34,7 @@ type ViewerProps = {
     setSelectedBlock: (block: WorldBlock | null) => any;
 };
 
-const Viewer = (props: ViewerProps) => {
+const Viewer = observer((props: ViewerProps) => {
     const [initPos, setInitPos] = useState({ x: 0, y: 0 });
     const [draggingActive, setDraggingActive] = useState(false);
     const [currentPos, setCurrentPos] = useState({ x: 0, y: 0 });
@@ -46,7 +47,7 @@ const Viewer = (props: ViewerProps) => {
 
     return (
         <Wrapper
-            sidebarOpened={props.sidebarOpened}
+            sidebarOpened={sidebarStore.isOpen}
             sidebarWidth={props.sidebarWidth}
             onMouseDown={e => {
                 setInitPos({ x: e.clientX - imageOffset.x, y: e.clientY - imageOffset.y });
@@ -95,6 +96,6 @@ const Viewer = (props: ViewerProps) => {
             />
         </Wrapper>
     );
-};
+});
 
 export default Viewer;

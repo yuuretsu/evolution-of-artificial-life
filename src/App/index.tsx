@@ -20,6 +20,8 @@ import {
 } from "../lib/genome";
 import RoundButtonsGroup from "./RoundButtonsGroup";
 import RoundButton, { ROUND_BUTTON_ICON_STYLE } from "./RoundButton";
+import { observer } from "mobx-react";
+import { sidebarStore } from "stores/sidebar";
 
 const initialEnabledGenes: { [geneName: string]: boolean } = {};
 for (const name in GENES) {
@@ -69,9 +71,9 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
-const App = () => {
+const App = observer(() => {
   const [appHeight, setAppHeight] = useState(window.innerHeight);
-  const [sidebarOpened, setSidebarOpened] = useState(true);
+  // const [sidebarOpened, setSidebarOpened] = useState(true);
   const [paused, setPaused] = useState(false);
   const [viewMode, setViewMode] = useState<string>('normal');
   const [visualizerParams, setVisualizerParams] = useState<VisualiserParams>(initVisualizerParams);
@@ -122,7 +124,6 @@ const App = () => {
   return (
     <Wrapper style={{ height: `${appHeight}px` }}>
       {image && <Viewer
-        sidebarOpened={sidebarOpened}
         paused={paused}
         sidebarWidth={"300px"}
         viewMode={viewMode}
@@ -131,7 +132,6 @@ const App = () => {
         setSelectedBlock={setSelectedBlock}
       />}
       <Sidebar
-        opened={sidebarOpened}
         setViewMode={setViewMode}
         viewModesList={viewModesList}
         viewMode={viewMode}
@@ -148,10 +148,10 @@ const App = () => {
         setSelectedBlock={setSelectedBlock}
       />
       <RoundButtonsGroup
-        sidebarOpened={sidebarOpened}
+        sidebarOpened={sidebarStore.isOpen}
       >
-        <RoundButton title="Настройки" onClick={() => setSidebarOpened(!sidebarOpened)}>
-          {sidebarOpened
+        <RoundButton title="Настройки" onClick={sidebarStore.toggle}>
+          {sidebarStore.isOpen
             ? <MdClose style={ROUND_BUTTON_ICON_STYLE} />
             : <MdMenu style={ROUND_BUTTON_ICON_STYLE} />}
         </RoundButton>
@@ -181,6 +181,6 @@ const App = () => {
       </RoundButtonsGroup>
     </Wrapper>
   );
-};
+});
 
 export default App;
