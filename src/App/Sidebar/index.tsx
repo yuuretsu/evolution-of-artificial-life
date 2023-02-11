@@ -23,34 +23,34 @@ interface ISidebarProps {
 };
 
 const Wrapper = styled.div<ISidebarProps>`
-    position: fixed;
-    left: ${props => props.opened ? 0 : `-${SIDEBAR_WIDTH}`};
-    box-sizing: border-box;
-    width: ${SIDEBAR_WIDTH};
-    min-width: ${SIDEBAR_WIDTH};
-    height: 100%;
-    overflow-y: auto;
-    padding: calc(${SIDEBAR_PADDING} * 2 + 55px) ${SIDEBAR_PADDING} 0 ${SIDEBAR_PADDING};
-    background-color: rgba(20, 20, 20, 0.99);
-    color: whitesmoke;
-    box-shadow: ${props => props.opened ? '0 0 10px 0 rgba(0, 0, 0, 1)' : 'none'};
-    transition-duration: 0.2s;
-    &::after {
-        content: "";
-        display: block;
-        padding-bottom: ${SIDEBAR_PADDING};
-    }
-    &::-webkit-scrollbar {
-        width: 6px;
-        background-color: rgb(15, 15, 15);
-    }
-    &::-webkit-scrollbar-thumb {
-        background-color: rgb(50, 50, 50);
-        border-radius: 3px;
-    }
-    &::-webkit-scrollbar-thumb:hover {
-        background-color: rgb(80, 80, 80);
-    }
+  position: fixed;
+  left: ${props => props.opened ? 0 : `-${SIDEBAR_WIDTH}`};
+  box-sizing: border-box;
+  width: ${SIDEBAR_WIDTH};
+  min-width: ${SIDEBAR_WIDTH};
+  height: 100%;
+  overflow-y: auto;
+  padding: calc(${SIDEBAR_PADDING} * 2 + 55px) ${SIDEBAR_PADDING} 0 ${SIDEBAR_PADDING};
+  background-color: rgba(20, 20, 20, 0.99);
+  color: whitesmoke;
+  box-shadow: ${props => props.opened ? '0 0 10px 0 rgba(0, 0, 0, 1)' : 'none'};
+  transition-duration: 0.2s;
+  &::after {
+    content: "";
+    display: block;
+    padding-bottom: ${SIDEBAR_PADDING};
+  }
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: rgb(15, 15, 15);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(50, 50, 50);
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(80, 80, 80);
+  }
 `;
 
 type SidebarProps = {

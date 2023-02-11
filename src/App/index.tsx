@@ -73,7 +73,6 @@ const Wrapper = styled.div`
 
 const App = observer(() => {
   const [appHeight, setAppHeight] = useState(window.innerHeight);
-  // const [sidebarOpened, setSidebarOpened] = useState(true);
   const [paused, setPaused] = useState(false);
   const [viewMode, setViewMode] = useState<string>('normal');
   const [visualizerParams, setVisualizerParams] = useState<VisualiserParams>(initVisualizerParams);
