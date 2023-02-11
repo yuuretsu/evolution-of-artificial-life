@@ -110,11 +110,11 @@ const Sidebar = observer((props: SidebarProps) => {
           <RadioGroup
             name='view-mode'
             list={viewModesList}
-            defaultChecked={appStore.viewMode.current}
-            onChange={appStore.viewMode.set}
+            defaultChecked={appStore.viewModeName.current}
+            onChange={appStore.viewModeName.set}
           />
         </SubBlock>
-        {appStore.viewMode.current === 'age' && <OptionalBlock>
+        {appStore.viewModeName.current === 'age' && <OptionalBlock>
           <SubBlock name="Делитель возраста">
             <InputRange
               min={10}
@@ -127,7 +127,7 @@ const Sidebar = observer((props: SidebarProps) => {
             />
           </SubBlock>
         </OptionalBlock>}
-        {appStore.viewMode.current === 'energy' && <OptionalBlock>
+        {appStore.viewModeName.current === 'energy' && <OptionalBlock>
           <SubBlock name="Делитель энергии">
             <InputRange
               min={1}
@@ -140,7 +140,7 @@ const Sidebar = observer((props: SidebarProps) => {
             />
           </SubBlock>
         </OptionalBlock>}
-        {appStore.viewMode.current === 'lastAction' && <OptionalBlock>
+        {appStore.viewModeName.current === 'lastAction' && <OptionalBlock>
           <SubBlock name="Отображение отдельных действий">
             {
               Object

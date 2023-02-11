@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
-import VIEW_MODES, { initVisualizerParams, VisualiserParams } from "lib/view-modes";
+import VIEW_MODES, {
+  initVisualizerParams,
+  VisualiserParams
+} from "lib/view-modes";
 import Sidebar from "./Sidebar";
 import Viewer from "./Viewer";
 import {
@@ -52,7 +55,7 @@ const App = observer(() => {
   const [enabledGenes, setEnabledGenes] = useState(initialEnabledGenes);
   const [selectedBlock, setSelectedBlock] = useState<WorldBlock | null>(null);
 
-  const currentViewMode = VIEW_MODES[appStore.viewMode.current]!;
+  const currentViewMode = VIEW_MODES[appStore.viewModeName.current]!;
 
   const updateWorldView = () => {
     setImage(world.toImage(currentViewMode.blockToColor, visualizerParams));

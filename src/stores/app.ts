@@ -5,7 +5,7 @@ import { ValueStore } from "stores";
 class AppStore {
   isPaused = false;
 
-  viewMode = new ValueStore<string>(Object.keys(VIEW_MODES)[0] || "");
+  viewModeName = new ValueStore<string>(Object.keys(VIEW_MODES)[0] || "");
 
   constructor() {
     makeAutoObservable(this);
