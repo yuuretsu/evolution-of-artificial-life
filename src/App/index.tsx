@@ -7,21 +7,12 @@ import {
   SquareWorld,
   World, WorldInfo, NewWorldProps
 } from "../lib/world";
-import {
-  MdMenu,
-  MdPlayArrow,
-  MdPause,
-  MdSkipNext,
-  MdClose
-} from 'react-icons/md';
 import { WorldBlock } from "../lib/block";
 import {
   GENES, enabledGenesToPool
 } from "../lib/genome";
 import Controls from "./Controls";
-import RoundButton, { ROUND_BUTTON_ICON_STYLE } from "./RoundButton";
 import { observer } from "mobx-react";
-import { sidebarStore } from "stores/sidebar";
 
 const initialEnabledGenes: { [geneName: string]: boolean } = {};
 for (const name in GENES) {
@@ -73,7 +64,7 @@ const Wrapper = styled.div`
 
 const App = observer(() => {
   const [appHeight, setAppHeight] = useState(window.innerHeight);
-  const [paused, setPaused] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [viewMode, setViewMode] = useState<string>('normal');
   const [visualizerParams, setVisualizerParams] = useState<VisualiserParams>(initVisualizerParams);
   const [newWorldProps, setNewWorldProps] = useState<NewWorldProps>(INIT_WORLD_PROPS);
@@ -100,7 +91,7 @@ const App = observer(() => {
     world.genePool = newGenePool;
     setImage(world.toImage(VIEW_MODES[viewMode]!.blockToColor, visualizerParams));
     setWorldInfo(world.getInfo());
-    if (!paused) {
+    if (!isPaused) {
       let id = setInterval(() => {
         world.step();
         setImage(world.toImage(VIEW_MODES[viewMode]!.blockToColor, visualizerParams));
@@ -118,12 +109,12 @@ const App = observer(() => {
         );
       };
     }
-  }, [viewMode, paused, world, visualizerParams, enabledGenes]);
+  }, [viewMode, isPaused, world, visualizerParams, enabledGenes]);
 
   return (
     <Wrapper style={{ height: `${appHeight}px` }}>
       {image && <Viewer
-        paused={paused}
+        paused={isPaused}
         sidebarWidth={"300px"}
         viewMode={viewMode}
         image={image}
@@ -146,36 +137,21 @@ const App = observer(() => {
         selectedBlock={selectedBlock}
         setSelectedBlock={setSelectedBlock}
       />
-      <Controls>
-        <RoundButton title="Настройки" onClick={sidebarStore.toggle}>
-          {sidebarStore.isOpen
-            ? <MdClose style={ROUND_BUTTON_ICON_STYLE} />
-            : <MdMenu style={ROUND_BUTTON_ICON_STYLE} />}
-        </RoundButton>
-        <RoundButton
-          title="Пауза / продолжить"
-          onClick={() => setPaused(!paused)}
-        >
-          {paused
-            ? <MdPlayArrow style={ROUND_BUTTON_ICON_STYLE} />
-            : <MdPause style={ROUND_BUTTON_ICON_STYLE} />}
-        </RoundButton>
-        <RoundButton
-          title="Шаг симуляции"
-          onClick={() => {
-            world.step();
-            setPaused(true);
-            setImage(
-              world.toImage(
-                VIEW_MODES[viewMode]!.blockToColor,
-                visualizerParams
-              )
+      <Controls
+        world={world}
+        isPaused={isPaused}
+        onClickPlayPause={() => setIsPaused(!isPaused)}
+        onClickStep={() => {
+          world.step();
+          setIsPaused(true);
+          setImage(
+            world.toImage(
+              VIEW_MODES[viewMode]!.blockToColor,
+              visualizerParams
             )
-          }}
-        >
-          <MdSkipNext style={ROUND_BUTTON_ICON_STYLE} />
-        </RoundButton>
-      </Controls>
+          )
+        }}
+      />
     </Wrapper>
   );
 });
