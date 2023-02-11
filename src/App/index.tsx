@@ -35,17 +35,15 @@ const initWorldInfo = initWorld.getInfo();
 const initVisualizerParams: VisualiserParams = {
   ageDivider: 1000,
   energyDivider: 100,
-  action: {}
+  action: Object.keys(GENES).reduce((action, geneName) => {
+    return GENES[geneName]?.color === null
+      ? action
+      : {
+        ...action,
+        [GENES[geneName]!.name]: true
+      }
+  }, {})
 };
-
-Object
-  .keys(GENES)
-  .map(geneName => {
-    if (GENES[geneName]?.color !== null) {
-      initVisualizerParams.action[GENES[geneName]!.name] = true;
-    }
-  });
-
 
 const Wrapper = styled.div`
   display: flex;
@@ -112,7 +110,6 @@ const App = observer(() => {
         setSelectedBlock={setSelectedBlock}
       />}
       <Sidebar
-        setViewMode={appStore.viewMode.set}
         visualizerParams={visualizerParams}
         setVisualizerParams={setVisualizerParams}
         newWorldProps={newWorldProps}
