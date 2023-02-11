@@ -115,8 +115,6 @@ const App = observer(() => {
   return (
     <Wrapper style={{ height: `${appHeight}px` }}>
       {image && <Viewer
-        paused={appStore.isPaused}
-        sidebarWidth={"300px"}
         viewMode={viewMode}
         image={image}
         world={world}

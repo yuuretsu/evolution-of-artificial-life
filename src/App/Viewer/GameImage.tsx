@@ -19,7 +19,6 @@ const Wrapper = styled.canvas`
 
 
 type GameImageProps = {
-  paused: boolean;
   offset: { x: number, y: number },
   image: HTMLCanvasElement,
   viewMode: keyof typeof VIEW_MODES;

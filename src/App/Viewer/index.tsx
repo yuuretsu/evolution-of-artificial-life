@@ -1,5 +1,6 @@
 import { observer } from "mobx-react";
 import React, { useEffect, useState } from "react";
+import { SIDEBAR_WIDTH } from "settings";
 import { sidebarStore } from "stores/sidebar";
 import styled from 'styled-components';
 import { WorldBlock } from "../../lib/block";
@@ -8,8 +9,7 @@ import { World } from "../../lib/world";
 import GameImage from "./GameImage";
 
 interface IViewerProps {
-    readonly sidebarOpened: boolean;
-    readonly sidebarWidth: string;
+    readonly isSidebarOpen: boolean;
 }
 
 const Wrapper = styled.div<IViewerProps>`
@@ -21,13 +21,11 @@ const Wrapper = styled.div<IViewerProps>`
     height: 100%;
     width: 100%;
     overflow: visible;
-    margin-left: ${props => props.sidebarOpened ? props.sidebarWidth : '0px'};
+    margin-left: ${props => props.isSidebarOpen ? SIDEBAR_WIDTH : '0px'};
     transition-duration: 0.2s;
 `;
 
 type ViewerProps = {
-    paused: boolean;
-    sidebarWidth: string,
     viewMode: keyof typeof VIEW_MODES,
     image: HTMLCanvasElement,
     world: World
@@ -47,8 +45,7 @@ const Viewer = observer((props: ViewerProps) => {
 
     return (
         <Wrapper
-            sidebarOpened={sidebarStore.isOpen}
-            sidebarWidth={props.sidebarWidth}
+            isSidebarOpen={sidebarStore.isOpen}
             onMouseDown={e => {
                 setInitPos({ x: e.clientX - imageOffset.x, y: e.clientY - imageOffset.y });
                 setDraggingActive(true);
@@ -89,7 +86,6 @@ const Viewer = observer((props: ViewerProps) => {
             <GameImage
                 offset={currentPos}
                 image={props.image}
-                paused={props.paused}
                 viewMode={props.viewMode}
                 setSelectedBlock={props.setSelectedBlock}
                 world={props.world}
