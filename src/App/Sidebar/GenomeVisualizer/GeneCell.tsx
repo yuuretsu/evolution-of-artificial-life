@@ -1,7 +1,7 @@
 import React from "react";
 import { GENE_CELL_SIZE_PX } from "settings";
 import styled from "styled-components";
-import Rgba from "../../../lib/color";
+import Rgba from "lib/color";
 import { Gene } from "lib/genome";
 
 const GeneCellWrapper = styled.div`

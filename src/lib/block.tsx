@@ -3,8 +3,8 @@ import Rgba from "./color";
 import { Bot } from "./bot";
 import { VisualiserParams } from "./view-modes";
 import React from "react";
-import Block from "../App/Sidebar/Block";
 import { GenePool } from "./genome";
+import Block from "App/Sidebar/Block";
 
 export class WorldBlock {
     public age: number | null = null;

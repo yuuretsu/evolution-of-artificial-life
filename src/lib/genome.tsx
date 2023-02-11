@@ -1,10 +1,10 @@
 import React from "react";
-import Accordion from "../App/Sidebar/Accordion";
-import DropdownSmall from "../App/Sidebar/DropdownSmall";
-import InputNumberSmall from "../App/Sidebar/InputNumberSmall";
-import SubBlock from "../App/Sidebar/SubBlock";
-import WideButton from "../App/Sidebar/WideButton";
-import { GenomeVisualizer } from "../App/Sidebar/GenomeVisualizer";
+import Accordion from "App/Sidebar/Accordion";
+import DropdownSmall from "App/Sidebar/DropdownSmall";
+import InputNumberSmall from "App/Sidebar/InputNumberSmall";
+import SubBlock from "App/Sidebar/SubBlock";
+import WideButton from "App/Sidebar/WideButton";
+import { GenomeVisualizer } from "App/Sidebar/GenomeVisualizer";
 import { Bot } from "./bot";
 import Rgba from "./color";
 import { fixNumber, interpolate, limit, randChoice, randFloat, randInt } from "./helpers";

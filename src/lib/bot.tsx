@@ -5,9 +5,9 @@ import { DynamicBlock } from "./block";
 import { GenePool, Genome } from "./genome";
 import { VisualiserParams } from "./view-modes";
 import React, { useEffect, useState } from "react";
-import SubBlock from "../App/Sidebar/SubBlock";
-import Accordion from "../App/Sidebar/Accordion";
-import InputNumberSmall from "../App/Sidebar/InputNumberSmall";
+import SubBlock from "App/Sidebar/SubBlock";
+import Accordion from "App/Sidebar/Accordion";
+import InputNumberSmall from "App/Sidebar/InputNumberSmall";
 import styled from "styled-components";
 
 export type BotAbilityName = keyof typeof Bot.prototype.abilities;
