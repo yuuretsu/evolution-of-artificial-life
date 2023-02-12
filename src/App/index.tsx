@@ -18,6 +18,7 @@ import { Controls } from "./Controls";
 import { observer } from "mobx-react";
 import { appStore } from "stores/app";
 import { useEventListener, useInterval } from "usehooks-ts";
+import GameImage from "./Viewer/GameImage";
 
 const initialEnabledGenes: { [geneName: string]: boolean } = {};
 for (const name in GENES) {
@@ -98,11 +99,13 @@ export const App: React.FC = observer(() => {
 
   return (
     <Wrapper style={{ height: `${appHeight}px` }}>
-      <Viewer
-        image={image}
-        world={world}
-        onClickPixel={onClickPixel}
-      />
+      <Viewer world={world}>
+        <GameImage
+          image={image}
+          onClickPixel={onClickPixel}
+          world={world}
+        />
+      </Viewer>
       <Sidebar
         visualizerParams={visualizerParams}
         setVisualizerParams={setVisualizerParams}

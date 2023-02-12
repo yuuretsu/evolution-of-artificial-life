@@ -18,7 +18,6 @@ const Wrapper = styled.canvas`
 
 
 type GameImageProps = {
-  offset: { x: number, y: number },
   image: HTMLCanvasElement,
   onClickPixel: (x: number, y: number) => void;
   world: World
@@ -44,7 +43,6 @@ const GameImage = (props: GameImageProps) => {
   return (
     <Wrapper
       ref={canvasRef}
-      style={{ transform: `translate(${props.offset.x}px, ${props.offset.y}px)` }}
       onClick={(e) => {
         const rect = canvasRef.current!.getBoundingClientRect();
         const x = Math.floor((e.clientX - rect.left) / 8);

@@ -1,17 +1,12 @@
 import { observer } from "mobx-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { SIDEBAR_WIDTH } from "settings";
 import { sidebarStore } from "stores/sidebar";
 import styled from 'styled-components';
-import { WorldBlock } from "lib/block";
 import { World } from "lib/world";
 import GameImage from "./GameImage";
 
-interface IViewerProps {
-    readonly isSidebarOpen: boolean;
-}
-
-const Wrapper = styled.div<IViewerProps>`
+const Wrapper = styled.div<{ isSidebarOpen: boolean }>`
     touch-action: none;
     display: flex;
     top: 0;
@@ -24,71 +19,66 @@ const Wrapper = styled.div<IViewerProps>`
     transition-duration: 0.2s;
 `;
 
-type ViewerProps = {
-    image: HTMLCanvasElement,
-    world: World
-    onClickPixel: (x: number, y: number) => void;
+export interface IViewerProps {
+  world: World
+  children: React.ReactNode;
 };
 
-const Viewer = observer((props: ViewerProps) => {
-    const [initPos, setInitPos] = useState({ x: 0, y: 0 });
-    const [draggingActive, setDraggingActive] = useState(false);
-    const [currentPos, setCurrentPos] = useState({ x: 0, y: 0 });
-    const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
+const Viewer: React.FC<IViewerProps> = observer(props => {
+  const [initPos, setInitPos] = useState({ x: 0, y: 0 });
+  const [draggingActive, setDraggingActive] = useState(false);
+  const [currentPos, setCurrentPos] = useState({ x: 0, y: 0 });
+  const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
 
-    useEffect(() => {
-        setCurrentPos({ x: 0, y: 0 });
-        setImageOffset({ x: 0, y: 0 });
-    }, [props.world]);
+  useEffect(() => {
+    setCurrentPos({ x: 0, y: 0 });
+    setImageOffset({ x: 0, y: 0 });
+  }, [props.world]);
 
-    return (
-        <Wrapper
-            isSidebarOpen={sidebarStore.isOpen}
-            onMouseDown={e => {
-                setInitPos({ x: e.clientX - imageOffset.x, y: e.clientY - imageOffset.y });
-                setDraggingActive(true);
-            }}
-            onTouchStart={e => {
-                setInitPos({
-                    x: e.touches[0]!.clientX - imageOffset.x,
-                    y: e.touches[0]!.clientY - imageOffset.y
-                });
-                setDraggingActive(true);
-            }}
-            onMouseMove={e => {
-                if (draggingActive) {
-                    e.preventDefault();
-                    setCurrentPos({ x: e.clientX - initPos.x, y: e.clientY - initPos.y });
-                    setImageOffset(currentPos);
-                }
-            }}
-            onTouchMove={e => {
-                if (draggingActive) {
-                    e.preventDefault();
-                    setCurrentPos({
-                        x: e.touches[0]!.clientX - initPos.x,
-                        y: e.touches[0]!.clientY - initPos.y
-                    });
-                    setImageOffset(currentPos);
-                }
-            }}
-            onMouseUp={() => {
-                setInitPos(currentPos);
-                setDraggingActive(false);
-            }}
-            onTouchEnd={() => {
-                setInitPos(currentPos);
-                setDraggingActive(false);
-            }}
-        >
-            <GameImage
-                offset={currentPos}
-                image={props.image}
-                onClickPixel={props.onClickPixel}
-                world={props.world}
-            />
-        </Wrapper>
-    );
+  const onCancel = () => {
+    setInitPos(currentPos);
+    setDraggingActive(false);
+  };
+
+  return (
+    <Wrapper
+      isSidebarOpen={sidebarStore.isOpen}
+      onMouseDown={e => {
+        setInitPos({ x: e.clientX - imageOffset.x, y: e.clientY - imageOffset.y });
+        setDraggingActive(true);
+      }}
+      onTouchStart={e => {
+        setInitPos({
+          x: e.touches[0]!.clientX - imageOffset.x,
+          y: e.touches[0]!.clientY - imageOffset.y
+        });
+        setDraggingActive(true);
+      }}
+      onMouseMove={e => {
+        if (draggingActive) {
+          e.preventDefault();
+          setCurrentPos({ x: e.clientX - initPos.x, y: e.clientY - initPos.y });
+          setImageOffset(currentPos);
+        }
+      }}
+      onTouchMove={e => {
+        if (draggingActive) {
+          e.preventDefault();
+          setCurrentPos({
+            x: e.touches[0]!.clientX - initPos.x,
+            y: e.touches[0]!.clientY - initPos.y
+          });
+          setImageOffset(currentPos);
+        }
+      }}
+      onMouseUp={onCancel}
+      onTouchEnd={onCancel}
+    >
+      <div style={{ transform: `translate(${imageOffset.x}px, ${imageOffset.y}px)` }}>
+        {props.children}
+      </div>
+    </Wrapper>
+  );
 });
 
 export default Viewer;
