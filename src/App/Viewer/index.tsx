@@ -41,6 +41,12 @@ const Viewer: React.FC<IViewerProps> = observer(props => {
     document.body.style.userSelect = initialBodyUserSelect;
   };
 
+  const onStart = () => {
+    setInitialBodyUserSelect(document.body.style.userSelect);
+    document.body.style.userSelect = "none";
+    setIsDraggingActive(true);
+  };
+
   useEventListener("mouseup", onCancel);
   useEventListener("touchend", onCancel);
 
@@ -62,18 +68,14 @@ const Viewer: React.FC<IViewerProps> = observer(props => {
       isSidebarOpen={sidebarStore.isOpen}
       onMouseDown={e => {
         setInitPos({ x: e.clientX - imageOffset.x, y: e.clientY - imageOffset.y });
-        setInitialBodyUserSelect(document.body.style.userSelect);
-        document.body.style.userSelect = "none";
-        setIsDraggingActive(true);
+        onStart();
       }}
       onTouchStart={e => {
         setInitPos({
           x: e.touches[0]!.clientX - imageOffset.x,
           y: e.touches[0]!.clientY - imageOffset.y
         });
-        setInitialBodyUserSelect(document.body.style.userSelect);
-        document.body.style.userSelect = "none";
-        setIsDraggingActive(true);
+        onStart();
       }}
     >
       <div style={{ transform: `translate(${imageOffset.x}px, ${imageOffset.y}px)` }}>
