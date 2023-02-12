@@ -10,6 +10,7 @@ const animation = keyframes`
 `;
 
 const Wrapper = styled.canvas`
+  display: block;
   background-color: rgb(5, 5, 5);
   border: 2px solid rgb(20, 20, 20);
   border-radius: 5px;
