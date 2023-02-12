@@ -20,7 +20,7 @@ const Wrapper = styled.canvas`
 type GameImageProps = {
   offset: { x: number, y: number },
   image: HTMLCanvasElement,
-  onClickPixel: (block: WorldBlock | null) => void;
+  onClickPixel: (x: number, y: number) => void;
   world: World
 };
 
@@ -49,8 +49,7 @@ const GameImage = (props: GameImageProps) => {
         const rect = canvasRef.current!.getBoundingClientRect();
         const x = Math.floor((e.clientX - rect.left) / 8);
         const y = Math.floor((e.clientY - rect.top) / 8);
-        const block = props.world.get(x, y);
-        props.onClickPixel(block ? block : null);
+        props.onClickPixel(x, y);
       }}
     />
   );

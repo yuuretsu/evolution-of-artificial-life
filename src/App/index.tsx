@@ -92,12 +92,16 @@ export const App: React.FC = observer(() => {
     setSelectedBlock(null);
   };
 
+  const onClickPixel = (x: number, y: number) => {
+    setSelectedBlock(world.get(x, y) || null);
+  };
+
   return (
     <Wrapper style={{ height: `${appHeight}px` }}>
       <Viewer
         image={image}
         world={world}
-        onClickPixel={setSelectedBlock}
+        onClickPixel={onClickPixel}
       />
       <Sidebar
         visualizerParams={visualizerParams}
@@ -111,7 +115,8 @@ export const App: React.FC = observer(() => {
         setEnabledGenes={setEnabledGenes}
         selectedBlock={selectedBlock}
         setSelectedBlock={setSelectedBlock}
-        onClickRestart={restart} />
+        onClickRestart={restart}
+      />
       <Controls onClickStep={onClickStep} onClickRestart={restart} />
     </Wrapper>
   );

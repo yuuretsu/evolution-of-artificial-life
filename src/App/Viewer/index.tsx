@@ -27,7 +27,7 @@ const Wrapper = styled.div<IViewerProps>`
 type ViewerProps = {
     image: HTMLCanvasElement,
     world: World
-    onClickPixel: (block: WorldBlock | null) => void;
+    onClickPixel: (x: number, y: number) => void;
 };
 
 const Viewer = observer((props: ViewerProps) => {
