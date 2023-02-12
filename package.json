@@ -4,7 +4,7 @@
   "description": "evolution simulator",
   "scripts": {
     "watch": "webpack --watch --mode development",
-    "serve": "webpack serve --mode=development --progress",
+    "start": "webpack serve --mode=development --progress",
     "build": "webpack --mode production"
   },
   "author": "Yurii Morozov",
