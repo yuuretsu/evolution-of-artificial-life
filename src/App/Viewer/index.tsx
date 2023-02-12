@@ -30,7 +30,7 @@ export interface IViewerProps {
 };
 
 const Viewer: React.FC<IViewerProps> = observer(props => {
-  const [initPos, setInitPos] = useState(props.position);
+  const [initPos, setInitPos] = useState({ x: 0, y: 0 });
   const [isDraggingActive, setIsDraggingActive] = useState(false);
   const [initialBodyUserSelect, setInitialBodyUserSelect] = useState(document.body.style.userSelect);
   const imageOffset = props.position;
