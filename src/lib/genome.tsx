@@ -9,10 +9,9 @@ import { Bot } from "./bot";
 import Rgba from "./color";
 import { fixNumber, interpolate, limit, randChoice, randFloat, randInt } from "./helpers";
 import { World } from "./world";
+import { MAX_ACTIONS } from "settings";
 
 export type GenePool = GeneTemplate[];
-
-const MAX_ACTIONS = 8;
 
 export class Genome {
   private _pointer: number = 0;
