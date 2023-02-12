@@ -9,6 +9,7 @@ import SubBlock from "App/Sidebar/SubBlock";
 import Accordion from "App/Sidebar/Accordion";
 import InputNumberSmall from "App/Sidebar/InputNumberSmall";
 import styled from "styled-components";
+import { MAX_BOT_AGE } from "settings";
 
 export type BotAbilityName = keyof typeof Bot.prototype.abilities;
 
@@ -125,7 +126,7 @@ export class Bot extends DynamicBlock {
     }
     live(x: number, y: number, world: World) {
         if (
-            this.age > 2000 ||
+            this.age > MAX_BOT_AGE ||
             this.energy < 1 ||
             this.energy > 300 ||
             this.health <= 0

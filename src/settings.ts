@@ -11,6 +11,7 @@ const GENOME_VIEW_GENES_IN_ROW = 8;
 
 // BOT
 export const MAX_ACTIONS = 8;
+export const MAX_BOT_AGE = 2000;
 
 export const GENE_CELL_SIZE_PX =
   (SIDEBAR_WIDTH_PX - SIDEBAR_PADDING_PX * 2 - GENOME_VIEW_BORDER_PX * 2) /
