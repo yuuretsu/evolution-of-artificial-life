@@ -33,12 +33,14 @@ export interface IViewerProps {
 const Viewer: React.FC<IViewerProps> = observer(props => {
   const [initPos, setInitPos] = useState({ x: 0, y: 0 });
   const [isDraggingActive, setIsDraggingActive] = useState(false);
+  const [isDraggingNow, setIsDraggingNow] = useState(isDraggingActive);
   const [initialBodyUserSelect, setInitialBodyUserSelect] = useState(document.body.style.userSelect);
   const imageOffset = props.position;
 
   const onCancel = () => {
     setIsDraggingActive(false);
     document.body.style.userSelect = initialBodyUserSelect;
+    setIsDraggingNow(false);
   };
 
   const onStart = () => {
@@ -47,13 +49,11 @@ const Viewer: React.FC<IViewerProps> = observer(props => {
     setIsDraggingActive(true);
   };
 
-  useEventListener("mouseup", onCancel);
-  useEventListener("touchend", onCancel);
-
   useEventListener("mousemove", (e) => {
     if (!isDraggingActive) return;
     e.preventDefault();
     props.onMove(e.clientX - initPos.x, e.clientY - initPos.y);
+    setIsDraggingNow(true);
   });
 
   useEventListener("touchmove", (e) => {
@@ -62,9 +62,12 @@ const Viewer: React.FC<IViewerProps> = observer(props => {
     props.onMove(e.touches[0]!.clientX - initPos.x, e.touches[0]!.clientY - initPos.y);
   });
 
+  useEventListener("mouseup", onCancel);
+  useEventListener("touchend", onCancel);
+
   return (
     <Wrapper
-      isDragging={isDraggingActive}
+      isDragging={isDraggingNow}
       isSidebarOpen={sidebarStore.isOpen}
       onMouseDown={e => {
         setInitPos({ x: e.clientX - imageOffset.x, y: e.clientY - imageOffset.y });
