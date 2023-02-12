@@ -104,14 +104,6 @@ export const App: React.FC = observer(() => {
     appStore.imageOffset.set({ x, y });
   };
 
-  const onClickFullScreen = appRef.current?.requestFullscreen
-    ? () => {
-      document.fullscreenElement === appRef.current
-        ? document.exitFullscreen()
-        : appRef.current?.requestFullscreen();
-    }
-    : undefined;
-
   return (
     <Wrapper ref={appRef} style={{ height: `${appHeight}px` }}>
       <Viewer
