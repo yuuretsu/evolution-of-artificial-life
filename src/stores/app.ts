@@ -9,6 +9,8 @@ class AppStore {
 
   viewModeName = new ValueStore<string>(Object.keys(VIEW_MODES)[0] || "");
 
+  imageOffset = new ValueStore({ x: 0, y: 0 });
+
   constructor() {
     makeAutoObservable(this);
   }

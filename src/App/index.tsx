@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from 'styled-components';
 import VIEW_MODES, {
   initVisualizerParams,
@@ -47,6 +47,7 @@ const Wrapper = styled.div`
 `;
 
 export const App: React.FC = observer(() => {
+  const appRef = useRef<HTMLDivElement>(null);
   const [appHeight, setAppHeight] = useState(window.innerHeight);
   const [visualizerParams, setVisualizerParams] = useState<VisualiserParams>(initVisualizerParams);
   const [newWorldProps, setNewWorldProps] = useState<NewWorldProps>(INIT_WORLD_PROPS);
@@ -55,7 +56,6 @@ export const App: React.FC = observer(() => {
   const [worldInfo, setWorldInfo] = useState<WorldInfo>(initWorldInfo);
   const [enabledGenes, setEnabledGenes] = useState(initialEnabledGenes);
   const [selectedBlock, setSelectedBlock] = useState<WorldBlock | null>(null);
-  const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
 
   const currentViewMode = VIEW_MODES[appStore.viewModeName.current]!;
 
@@ -93,7 +93,7 @@ export const App: React.FC = observer(() => {
   const restart = () => {
     setWorld(new SquareWorld(newWorldProps));
     setSelectedBlock(null);
-    setImageOffset({ x: 0, y: 0 });
+    appStore.imageOffset.set({ x: 0, y: 0 });
   };
 
   const onClickPixel = (x: number, y: number) => {
@@ -101,12 +101,23 @@ export const App: React.FC = observer(() => {
   };
 
   const onMoveImage = (x: number, y: number) => {
-    setImageOffset({ x, y });
+    appStore.imageOffset.set({ x, y });
   };
 
+  const onClickFullScreen = appRef.current?.requestFullscreen
+    ? () => {
+      document.fullscreenElement === appRef.current
+        ? document.exitFullscreen()
+        : appRef.current?.requestFullscreen();
+    }
+    : undefined;
+
   return (
-    <Wrapper style={{ height: `${appHeight}px` }}>
-      <Viewer position={imageOffset} onMove={onMoveImage}>
+    <Wrapper ref={appRef} style={{ height: `${appHeight}px` }}>
+      <Viewer
+        position={appStore.imageOffset.current}
+        onMove={onMoveImage}
+      >
         <GameImage image={image} onClickPixel={onClickPixel} />
       </Viewer>
       <Sidebar
@@ -123,7 +134,11 @@ export const App: React.FC = observer(() => {
         setSelectedBlock={setSelectedBlock}
         onClickRestart={restart}
       />
-      <Controls onClickStep={onClickStep} onClickRestart={restart} />
+      <Controls
+        onClickStep={onClickStep}
+        onClickRestart={restart}
+        fullscreenElement={appRef.current}
+      />
     </Wrapper>
   );
 });

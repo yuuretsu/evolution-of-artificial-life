@@ -6,7 +6,9 @@ import {
   MdPause,
   MdPlayArrow,
   MdSkipNext,
-  MdReplay
+  MdReplay,
+  MdFullscreen,
+  MdFullscreenExit
 } from 'react-icons/md';
 import { appStore } from 'stores/app';
 import { sidebarStore } from 'stores/sidebar';
@@ -31,9 +33,22 @@ const Wrapper = styled.div`
 export interface IControlsProps {
   onClickStep: () => void;
   onClickRestart: () => void;
+  fullscreenElement?: HTMLElement | null;
 }
 
 export const Controls: FC<IControlsProps> = observer((props) => {
+  const PlayPauseIcon = appStore.isPaused ? MdPlayArrow : MdPause;
+
+  const { fullscreenElement: fullscreen } = props;
+  const isCanFullscreen = !!fullscreen?.requestFullscreen;
+  const isInfullscreen = document.fullscreenElement === fullscreen;
+
+  const onClickFullscreen = () => isInfullscreen
+    ? document.exitFullscreen()
+    : fullscreen?.requestFullscreen?.();
+
+  const FullscreenIcon = isInfullscreen ? MdFullscreenExit : MdFullscreen;
+
   return (
     <Wrapper>
       <CircleButton title="Настройки" onClick={sidebarStore.toggle}>
@@ -45,9 +60,7 @@ export const Controls: FC<IControlsProps> = observer((props) => {
         title={appStore.isPaused ? "Продолжить" : "Пауза"}
         onClick={appStore.toggleIsPaused}
       >
-        {appStore.isPaused
-          ? <MdPlayArrow style={CIRCLE_BUTTON_ICON_STYLE} />
-          : <MdPause style={CIRCLE_BUTTON_ICON_STYLE} />}
+        <PlayPauseIcon style={CIRCLE_BUTTON_ICON_STYLE} />
       </CircleButton>
       <CircleButton
         title="Шаг симуляции"
@@ -56,11 +69,19 @@ export const Controls: FC<IControlsProps> = observer((props) => {
         <MdSkipNext style={CIRCLE_BUTTON_ICON_STYLE} />
       </CircleButton>
       <CircleButton
-        title="рестарт"
+        title="Рестарт"
         onClick={props.onClickRestart}
       >
         <MdReplay style={CIRCLE_BUTTON_ICON_STYLE} />
       </CircleButton>
+      {isCanFullscreen && (
+        <CircleButton
+          title="Fullscreen"
+          onClick={onClickFullscreen}
+        >
+          <FullscreenIcon style={CIRCLE_BUTTON_ICON_STYLE} />
+        </CircleButton>
+      )}
     </Wrapper>
   )
 });
