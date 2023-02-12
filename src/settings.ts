@@ -2,6 +2,9 @@
 const SIDEBAR_WIDTH_PX = 300;
 const SIDEBAR_PADDING_PX = 20;
 
+// VIEW
+export const PIXEL_SIZE = 8;
+
 // GENOME VIEW
 const GENOME_VIEW_BORDER_PX = 2;
 const GENOME_VIEW_GENES_IN_ROW = 8;

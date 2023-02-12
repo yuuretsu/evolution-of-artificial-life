@@ -19,6 +19,7 @@ import { observer } from "mobx-react";
 import { appStore } from "stores/app";
 import { useEventListener, useInterval } from "usehooks-ts";
 import GameImage from "./Viewer/GameImage";
+import { PIXEL_SIZE } from "settings";
 
 const initialEnabledGenes: { [geneName: string]: boolean } = {};
 for (const name in GENES) {
@@ -28,8 +29,8 @@ for (const name in GENES) {
 const initialGenePool = enabledGenesToPool(initialEnabledGenes);
 
 const INIT_WORLD_PROPS: NewWorldProps = {
-  width: Math.max(Math.floor((window.innerWidth - 300) / 8) - 6, 50),
-  height: Math.max(Math.floor(window.innerHeight / 8) - 6, 50),
+  width: Math.max(Math.floor((window.innerWidth - 300) / PIXEL_SIZE) - 6, 50),
+  height: Math.max(Math.floor(window.innerHeight / PIXEL_SIZE) - 6, 50),
   botsAmount: 500,
   genePool: initialGenePool,
   genomeSize: 32,

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { PIXEL_SIZE } from "settings";
 import styled, { keyframes } from 'styled-components';
 
 const animation = keyframes`
@@ -31,8 +32,8 @@ const GameImage = (props: GameImageProps) => {
 
   useEffect(() => {
     if (canvasRef.current && ctx) {
-      canvasRef.current.width = props.image.width * 8;
-      canvasRef.current.height = props.image.height * 8;
+      canvasRef.current.width = props.image.width * PIXEL_SIZE;
+      canvasRef.current.height = props.image.height * PIXEL_SIZE;
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(props.image, 0, 0, canvasRef.current.width, canvasRef.current.height);
     }
@@ -43,8 +44,8 @@ const GameImage = (props: GameImageProps) => {
       ref={canvasRef}
       onClick={(e) => {
         const rect = canvasRef.current!.getBoundingClientRect();
-        const x = Math.floor((e.clientX - rect.left) / 8);
-        const y = Math.floor((e.clientY - rect.top) / 8);
+        const x = Math.floor((e.clientX - rect.left) / PIXEL_SIZE);
+        const y = Math.floor((e.clientY - rect.top) / PIXEL_SIZE);
         props.onClickPixel(x, y);
       }}
     />
