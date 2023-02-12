@@ -5,7 +5,7 @@ import { sidebarStore } from "stores/sidebar";
 import styled from 'styled-components';
 import { useEventListener } from "usehooks-ts";
 
-const Wrapper = styled.div<{ isSidebarOpen: boolean }>`
+const Wrapper = styled.div<{ isSidebarOpen: boolean, isDragging: boolean }>`
   touch-action: none;
   display: flex;
   top: 0;
@@ -15,6 +15,7 @@ const Wrapper = styled.div<{ isSidebarOpen: boolean }>`
   width: 100%;
   overflow: hidden;
   margin-left: ${props => props.isSidebarOpen ? SIDEBAR_WIDTH : '0px'};
+  cursor: ${props => props.isDragging ? "grabbing" : "default"};
   transition-duration: 0.2s;
 `;
 
@@ -57,6 +58,7 @@ const Viewer: React.FC<IViewerProps> = observer(props => {
 
   return (
     <Wrapper
+      isDragging={isDraggingActive}
       isSidebarOpen={sidebarStore.isOpen}
       onMouseDown={e => {
         setInitPos({ x: e.clientX - imageOffset.x, y: e.clientY - imageOffset.y });
