@@ -1,8 +1,6 @@
 import Rgba from "./color";
-import { interpolate } from "./helpers";
 import { WorldBlock } from "./block";
 import { GENES } from "./genome";
-import { Key } from "react";
 
 export type VisualiserParams = {
   ageDivider: number;

@@ -1,4 +1,3 @@
-import React from "react";
 import styled from 'styled-components';
 
 const InputRange = styled.input.attrs({

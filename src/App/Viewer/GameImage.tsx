@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled, { keyframes } from 'styled-components';
-import { WorldBlock } from "lib/block";
-import { World } from "lib/world";
 
 const animation = keyframes`
   from {
