@@ -2,6 +2,7 @@ const path = require("path");
 const CleanWebpackPlugin = require('clean-webpack-plugin').CleanWebpackPlugin;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const CleanTerminalPlugin = require('clean-terminal-webpack-plugin');
 
 module.exports = {
     entry: "./src/index.tsx",
@@ -29,6 +30,7 @@ module.exports = {
     },
     devtool: "source-map",
     plugins: [
+        new CleanTerminalPlugin(),
         new HtmlWebpackPlugin({
             favicon: "./src/favicon.png",
             template: './src/index.html',
