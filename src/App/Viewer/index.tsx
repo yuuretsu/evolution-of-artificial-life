@@ -1,22 +1,21 @@
 import { observer } from "mobx-react";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SIDEBAR_WIDTH } from "settings";
 import { sidebarStore } from "stores/sidebar";
 import styled from 'styled-components';
 import { World } from "lib/world";
-import GameImage from "./GameImage";
 
 const Wrapper = styled.div<{ isSidebarOpen: boolean }>`
-    touch-action: none;
-    display: flex;
-    top: 0;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    overflow: visible;
-    margin-left: ${props => props.isSidebarOpen ? SIDEBAR_WIDTH : '0px'};
-    transition-duration: 0.2s;
+  touch-action: none;
+  display: flex;
+  top: 0;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  margin-left: ${props => props.isSidebarOpen ? SIDEBAR_WIDTH : '0px'};
+  transition-duration: 0.2s;
 `;
 
 export interface IViewerProps {
