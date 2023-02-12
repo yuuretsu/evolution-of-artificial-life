@@ -55,12 +55,18 @@ export const App: React.FC = observer(() => {
   const [worldInfo, setWorldInfo] = useState<WorldInfo>(initWorldInfo);
   const [enabledGenes, setEnabledGenes] = useState(initialEnabledGenes);
   const [selectedBlock, setSelectedBlock] = useState<WorldBlock | null>(null);
+  const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
 
   const currentViewMode = VIEW_MODES[appStore.viewModeName.current]!;
 
   const updateWorldView = () => {
     setImage(world.toImage(currentViewMode.blockToColor, visualizerParams));
     setWorldInfo(world.getInfo());
+  };
+
+  const step = () => {
+    world.step();
+    updateWorldView();
   };
 
   useEventListener("resize", () => setAppHeight(window.innerHeight));
@@ -76,35 +82,32 @@ export const App: React.FC = observer(() => {
     world.genePool = newGenePool;
   }, [enabledGenes]);
 
-  useInterval(() => {
-    world.step();
-    updateWorldView();
-  }, appStore.isPaused ? null : appStore.timeBetweenSteps.current);
+  useInterval(step, appStore.isPaused ? null : appStore.timeBetweenSteps.current);
 
   const onClickStep = () => {
     appStore.isPaused
-      ? world.step()
+      ? step()
       : appStore.pause();
-    updateWorldView();
   };
 
   const restart = () => {
     setWorld(new SquareWorld(newWorldProps));
     setSelectedBlock(null);
+    setImageOffset({ x: 0, y: 0 });
   };
 
   const onClickPixel = (x: number, y: number) => {
     setSelectedBlock(world.get(x, y) || null);
   };
 
+  const onMoveImage = (x: number, y: number) => {
+    setImageOffset({ x, y });
+  };
+
   return (
     <Wrapper style={{ height: `${appHeight}px` }}>
-      <Viewer world={world}>
-        <GameImage
-          image={image}
-          onClickPixel={onClickPixel}
-          world={world}
-        />
+      <Viewer position={imageOffset} onMove={onMoveImage}>
+        <GameImage image={image} onClickPixel={onClickPixel} />
       </Viewer>
       <Sidebar
         visualizerParams={visualizerParams}
