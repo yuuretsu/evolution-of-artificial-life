@@ -20,8 +20,12 @@ export type ViewMode = {
 
 const VIEW_MODES: { [key: string]: ViewMode } = {
   normal: {
-    name: "Стандартный",
+    name: "Обычный",
     blockToColor: (block, params) => block.color,
+  },
+  informative: {
+    name: "Информативный",
+    blockToColor: (block, params) => block.getNormalColor(),
   },
   family: {
     name: "Семейства",

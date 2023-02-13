@@ -40,7 +40,9 @@ export class Bot extends DynamicBlock {
         return this._narrow;
     }
     getNormalColor(): Rgba {
-        return this.color;
+        return this.color
+            .interpolate(new Rgba(50, 50, 50, 255), Math.max(0, 1 - (this.energy / 10) ** (1 / 3)))
+            .interpolate(this.getFamilyColor(), 0.25);
     }
     getFamilyColor(): Rgba {
         return this.familyColor;
@@ -127,7 +129,7 @@ export class Bot extends DynamicBlock {
     live(x: number, y: number, world: World) {
         if (
             this.age > MAX_BOT_AGE ||
-            this.energy < 1 ||
+            this.energy <= 0 ||
             this.energy > 300 ||
             this.health <= 0
         ) {
