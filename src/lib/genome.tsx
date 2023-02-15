@@ -40,25 +40,21 @@ export class Genome {
     return this;
   }
   mutateGene(pool: GenePool, gene: Gene): Gene {
-    return {
-      template: randChoice(pool) || NULL_GENE_TEMPLATE,
-      property: {
-        option: limit(0, 1, gene.property.option + randFloat(-0.01, 0.01)),
-        branches: gene.property.branches.map(
-          i => Math.random() > 0.9
-            ? randInt(0, this.genes.length)
-            : i
-        ) as [number, number]
-      }
-    }
+    const template = randChoice(pool) || NULL_GENE_TEMPLATE;
+
+    const branches = gene.property.branches.map(i => {
+      return Math.random() > 0.9 ? randInt(0, this.genes.length) : i;
+    }) as [number, number];
+
+    const option = limit(0, 1, gene.property.option + randFloat(-0.01, 0.01));
+
+    return { template, property: { option, branches } };
   }
   replication(pool: GenePool) {
     const genome = new Genome(this.genes.length);
-    for (let i = 0; i < this.genes.length; i++) {
-      genome.genes[i] = Math.random() > 0.995
-        ? this.mutateGene(pool, this.genes[i] || NULL_GENE)
-        : this.genes[i] || NULL_GENE;
-    }
+    genome.genes = this.genes.map(gene =>
+      Math.random() > 0.995 ? this.mutateGene(pool, gene || NULL_GENE) : gene || NULL_GENE
+    );
     return genome;
   }
   doAction(bot: Bot, x: number, y: number, world: World) {
@@ -76,14 +72,10 @@ export class Genome {
         bot.color = bot.color.interpolate(gene.template.color, gene.template.colorInfluence);
       }
       this.pointer = result.goto !== null
-        ? this.pointer = result.goto
-        : this.pointer = this.pointer + 1;
-      if (result.completed) {
-        // this.activeGene = this.recentlyUsedGenes.pop() || null;
-        return;
-      };
+        ? result.goto
+        : this.pointer + 1;
+      if (result.completed) return;
     }
-    // this.activeGene = this.recentlyUsedGenes.pop() || null;
     bot.energy -= 1;
   }
   Render = () => {
