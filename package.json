@@ -3,32 +3,20 @@
   "version": "1.0.0",
   "description": "evolution simulator",
   "scripts": {
-    "watch": "webpack --watch --mode development",
-    "start": "webpack serve --mode=development --progress",
-    "build": "webpack --mode production"
+    "dev": "vite",
+    "build": "tsc && vite build --base=/evolution-of-artificial-life/",
+    "preview": "vite preview"
   },
   "author": "Yurii Morozov",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.13.16",
-    "@babel/preset-env": "^7.13.15",
-    "@babel/preset-react": "^7.13.13",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@types/styled-components": "^5.1.9",
-    "babel-loader": "^8.2.2",
-    "clean-terminal-webpack-plugin": "^3.0.0",
-    "clean-webpack-plugin": "^4.0.0-alpha.0",
-    "css-loader": "^5.2.4",
-    "html-webpack-plugin": "^5.3.1",
-    "mini-css-extract-plugin": "^1.5.0",
-    "style-loader": "^2.0.0",
-    "ts-loader": "^9.0.0",
-    "tsconfig-paths-webpack-plugin": "^4.0.0",
-    "typescript": "^4.2.4",
-    "webpack": "^5.34.0",
-    "webpack-cli": "^4.6.0",
-    "webpack-dev-server": "^4.9.1"
+    "@vitejs/plugin-react": "^3.1.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.2.0",
+    "vite-tsconfig-paths": "^4.0.7"
   },
   "dependencies": {
     "mobx": "^6.8.0",
