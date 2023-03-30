@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 import React, { useState } from "react";
-import { SIDEBAR_WIDTH } from "settings";
+import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_WIDTH } from "settings";
 import { sidebarStore } from "stores/sidebar";
 import styled from 'styled-components';
 import { useEventListener } from "usehooks-ts";
@@ -16,7 +16,7 @@ const Wrapper = styled.div<{ isSidebarOpen: boolean, isDragging: boolean }>`
   overflow: hidden;
   margin-left: ${props => props.isSidebarOpen ? SIDEBAR_WIDTH : '0px'};
   cursor: ${props => props.isDragging ? "grabbing" : "default"};
-  transition-duration: 0.2s;
+  transition-duration: ${SIDEBAR_ANIMATION_SPEED};
 `;
 
 export interface IVec2 {

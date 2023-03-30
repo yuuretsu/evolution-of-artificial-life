@@ -1,5 +1,4 @@
 import { observer } from "mobx-react";
-import React from "react";
 import { appStore } from "stores/app";
 import { sidebarStore } from "stores/sidebar";
 import styled from 'styled-components';
@@ -8,8 +7,8 @@ import Rgba from "lib/color";
 import { GENES } from "lib/genome";
 import { limit } from "lib/helpers";
 import { viewModesList, VisualiserParams } from "lib/view-modes";
-import { SquareWorld, World, WorldInfo, NewWorldProps } from "lib/world";
-import { SIDEBAR_PADDING, SIDEBAR_WIDTH } from "settings";
+import { World, WorldInfo, NewWorldProps } from "lib/world";
+import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_PADDING, SIDEBAR_WIDTH } from "settings";
 import Accordion from "./Accordion";
 import Checkbox from "./Checkbox";
 import InputNumber from "./InputNumber";
@@ -35,7 +34,7 @@ const Wrapper = styled.div<ISidebarProps>`
   background-color: rgba(20, 20, 20, 0.99);
   color: whitesmoke;
   box-shadow: ${props => props.opened ? '0 0 10px 0 rgba(0, 0, 0, 1)' : 'none'};
-  transition-duration: 0.2s;
+  transition-duration: ${SIDEBAR_ANIMATION_SPEED};
   &::after {
     content: "";
     display: block;
