@@ -188,7 +188,7 @@ Error generating stack: `+o.message+`
     &:not(:last-child) {
         margin-bottom: 5px;
     }
-`,Ev=300,Cv=20,Ov="2s",_r=8,z1=2,I1=8,L1=8,j1=2e3,Zi=(Ev-Cv*2-z1*2)/I1,ol=`${Ev}px`,Bo=`${Cv}px`,M1=q.div`
+`,Ev=300,Cv=20,Ov="0.2s",_r=8,z1=2,I1=8,L1=8,j1=2e3,Zi=(Ev-Cv*2-z1*2)/I1,ol=`${Ev}px`,Bo=`${Cv}px`,M1=q.div`
   display: flex;
   justify-content: center;
   align-items: center;
