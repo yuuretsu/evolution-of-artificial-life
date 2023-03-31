@@ -1,4 +1,4 @@
-import React from "react";
+import { FC, useState } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import styled, { keyframes } from "styled-components";
 
@@ -60,8 +60,8 @@ type AccordionProps = {
     color?: string,
 };
 
-const Accordion = (props: AccordionProps) => {
-    const [opened, setOpened] = React.useState(props.defaultOpened);
+const Accordion: FC<AccordionProps> = (props) => {
+    const [opened, setOpened] = useState(props.defaultOpened);
     return (
         <Wrapper small={props.small}>
             <HeadWrapper

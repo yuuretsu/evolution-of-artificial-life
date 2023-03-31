@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import styled, { keyframes } from "styled-components";
 
@@ -63,7 +63,7 @@ const DropdownSmall: React.FC<{
   list: { value: string, title: string }[],
   onChange: (value: string) => void
 }> = (props) => {
-  const [opened, setOpened] = React.useState(false);
+  const [opened, setOpened] = useState(false);
   return (
     <Wrapper>
       <Header

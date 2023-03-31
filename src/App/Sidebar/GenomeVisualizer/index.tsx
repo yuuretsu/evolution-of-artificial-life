@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { Gene, Genome } from "lib/genome";
 import { GeneCell } from "./GeneCell";

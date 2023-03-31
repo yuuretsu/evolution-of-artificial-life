@@ -1,4 +1,3 @@
-import React from "react";
 import { GENE_CELL_SIZE_PX } from "settings";
 import styled from "styled-components";
 import Rgba from "lib/color";

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import styled from 'styled-components';
 import VIEW_MODES, {
   initVisualizerParams,
@@ -47,7 +47,7 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
-export const App: React.FC = observer(() => {
+export const App: FC = observer(() => {
   const appRef = useRef<HTMLDivElement>(null);
   const [appHeight, setAppHeight] = useState(window.innerHeight);
   const [visualizerParams, setVisualizerParams] = useState<VisualiserParams>(initVisualizerParams);

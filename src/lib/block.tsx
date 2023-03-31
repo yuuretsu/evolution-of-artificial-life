@@ -2,7 +2,6 @@ import { World } from "./world";
 import Rgba from "./color";
 import { Bot } from "./bot";
 import { VisualiserParams } from "./view-modes";
-import React from "react";
 import { GenePool } from "./genome";
 import Block from "App/Sidebar/Block";
 

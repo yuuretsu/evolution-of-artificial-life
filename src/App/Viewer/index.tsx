@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_WIDTH } from "settings";
 import { sidebarStore } from "stores/sidebar";
 import styled from 'styled-components';

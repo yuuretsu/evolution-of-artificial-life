@@ -1,4 +1,3 @@
-import React from "react";
 import Accordion from "App/Sidebar/Accordion";
 import DropdownSmall from "App/Sidebar/DropdownSmall";
 import InputNumberSmall from "App/Sidebar/InputNumberSmall";
@@ -10,6 +9,7 @@ import Rgba from "./color";
 import { fixNumber, interpolate, limit, randChoice, randFloat, randInt } from "./helpers";
 import { World } from "./world";
 import { MAX_ACTIONS } from "settings";
+import { useEffect, useState } from "react";
 
 export type GenePool = GeneTemplate[];
 
@@ -79,19 +79,19 @@ export class Genome {
     bot.energy -= 1;
   }
   Render = () => {
-    const [genes, setGenes] = React.useState(this.genes);
-    const [selectedGene, setSelectedGene] = React.useState<{ id: number, gene: Gene } | null>(null);
-    const [option, setOption] = React.useState<number | string>(0);
-    const [branches, setBranches] = React.useState<Array<number | string>>([0, 0]);
+    const [genes, setGenes] = useState(this.genes);
+    const [selectedGene, setSelectedGene] = useState<{ id: number, gene: Gene } | null>(null);
+    const [option, setOption] = useState<number | string>(0);
+    const [branches, setBranches] = useState<Array<number | string>>([0, 0]);
 
     const activeGene = this.recentlyUsedGenes[this.recentlyUsedGenes.length - 1];
 
-    React.useEffect(() => {
+    useEffect(() => {
       setGenes(this.genes);
       setSelectedGene(null);
     }, [this]);
 
-    React.useEffect(() => {
+    useEffect(() => {
       setOption(selectedGene?.gene.property.option.toFixed(2) || 0);
       setBranches(selectedGene?.gene.property.branches || [0, 0]);
     }, [selectedGene]);
