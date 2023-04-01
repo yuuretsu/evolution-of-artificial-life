@@ -127,11 +127,13 @@ export const App: FC = observer(() => {
         setSelectedBlock={setSelectedBlock}
         onClickRestart={restart}
       />
-      <Controls
-        onClickStep={onClickStep}
-        onClickRestart={restart}
-        fullscreenElement={appRef.current}
-      />
+      {!!appRef.current && (
+        <Controls
+          onClickStep={onClickStep}
+          onClickRestart={restart}
+          fullscreenElement={appRef.current}
+        />
+      )}
     </Wrapper>
   );
 });
