@@ -20,6 +20,7 @@ interface IHeadWrapper {
 const HeadWrapper = styled.div<IHeadWrapper>`
     box-sizing: border-box;
     display: flex;
+    align-items: center;
     width: 100%;
     text-transform: ${props => props.small ? 'none' : 'uppercase'};
     font-weight: ${props => props.small ? 'normal' : 'bold'};
@@ -68,7 +69,9 @@ const Accordion: FC<AccordionProps> = (props) => {
                 onClick={() => setOpened(!opened)} small={props.small}
                 color={props.color}
             >
-                {props.name}
+                <span>
+                    {props.name}
+                </span>
                 <MdKeyboardArrowDown
                     style={{
                         transform: opened ? 'none' : 'rotate(-90deg)',
