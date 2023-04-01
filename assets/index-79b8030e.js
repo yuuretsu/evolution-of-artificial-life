@@ -62,6 +62,7 @@ Error generating stack: `+o.message+`
 `,S1=q.div`
     box-sizing: border-box;
     display: flex;
+    align-items: center;
     width: 100%;
     text-transform: ${e=>e.small?"none":"uppercase"};
     font-weight: ${e=>e.small?"normal":"bold"};
@@ -88,7 +89,7 @@ Error generating stack: `+o.message+`
     }
 `,k1=q.div`
     animation: ${x1} 0.5s;
-`,It=e=>{const[t,n]=I.useState(e.defaultOpened);return G(w1,{small:e.small,children:[G(S1,{onClick:()=>n(!t),small:e.small,color:e.color,children:[e.name,k(kv,{style:{transform:t?"none":"rotate(-90deg)",transitionDuration:"0.2s",minWidth:e.small?"20px":"25px",minHeight:e.small?"20px":"25px",marginLeft:e.small?"10px":"20px"}})]}),t&&k(k1,{children:e.children})]})},E1=q.div`
+`,It=e=>{const[t,n]=I.useState(e.defaultOpened);return G(w1,{small:e.small,children:[G(S1,{onClick:()=>n(!t),small:e.small,color:e.color,children:[k("span",{children:e.name}),k(kv,{style:{transform:t?"none":"rotate(-90deg)",transitionDuration:"0.2s",minWidth:e.small?"20px":"25px",minHeight:e.small?"20px":"25px",marginLeft:e.small?"10px":"20px"}})]}),t&&k(k1,{children:e.children})]})},E1=q.div`
   position: relative;
   user-select: none;
 `,C1=q.div`
@@ -493,4 +494,4 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   background-color: black;
   overflow: hidden;
   width: 100%;
-`,$S=Ba(()=>{const e=I.useRef(null),[t,n]=I.useState(window.innerHeight),[r,i]=I.useState(Av),[o,l]=I.useState(zm),[a,u]=I.useState(qc),[s,c]=I.useState(TS),[h,v]=I.useState(RS),[w,y]=I.useState(Jc),[_,C]=I.useState(null),d=Fl[Ce.viewModeName.current],f=()=>{c(a.toImage(d.blockToColor,r)),v(a.getInfo())},p=()=>{a.step(),f()};gi("resize",()=>n(window.innerHeight)),I.useEffect(f,[d.blockToColor,a,r]),I.useEffect(()=>{const R=bv(w);l({...o,genePool:R}),a.genePool=R},[w]),dS(p,Ce.isPaused?null:Ce.timeBetweenSteps.current);const g=()=>{Ce.isPaused?p():Ce.pause()},S=()=>{u(new Ti(o)),C(null),Ce.imageOffset.set({x:0,y:0})},b=(R,U)=>{C(a.get(R,U)||null)},T=(R,U)=>{Ce.imageOffset.set({x:R,y:U})};return G(NS,{ref:e,style:{height:`${t}px`},children:[k(hS,{position:Ce.imageOffset.current,onMove:T,children:k(AS,{image:s,onClickPixel:b})}),k(fS,{visualizerParams:r,setVisualizerParams:i,newWorldProps:o,setNewWorldProps:l,onChangeWorld:u,world:a,worldInfo:h,enabledGenes:w,setEnabledGenes:y,selectedBlock:_,setSelectedBlock:C,onClickRestart:S}),k(CS,{onClickStep:g,onClickRestart:S,fullscreenElement:e.current})]})});iv(document.getElementById("root")).render(k($S,{}));
+`,$S=Ba(()=>{const e=I.useRef(null),[t,n]=I.useState(window.innerHeight),[r,i]=I.useState(Av),[o,l]=I.useState(zm),[a,u]=I.useState(qc),[s,c]=I.useState(TS),[h,v]=I.useState(RS),[w,y]=I.useState(Jc),[_,C]=I.useState(null),d=Fl[Ce.viewModeName.current],f=()=>{c(a.toImage(d.blockToColor,r)),v(a.getInfo())},p=()=>{a.step(),f()};gi("resize",()=>n(window.innerHeight)),I.useEffect(f,[d.blockToColor,a,r]),I.useEffect(()=>{const R=bv(w);l({...o,genePool:R}),a.genePool=R},[w]),dS(p,Ce.isPaused?null:Ce.timeBetweenSteps.current);const g=()=>{Ce.isPaused?p():Ce.pause()},S=()=>{u(new Ti(o)),C(null),Ce.imageOffset.set({x:0,y:0})},b=(R,U)=>{C(a.get(R,U)||null)},T=(R,U)=>{Ce.imageOffset.set({x:R,y:U})};return G(NS,{ref:e,style:{height:`${t}px`},children:[k(hS,{position:Ce.imageOffset.current,onMove:T,children:k(AS,{image:s,onClickPixel:b})}),k(fS,{visualizerParams:r,setVisualizerParams:i,newWorldProps:o,setNewWorldProps:l,onChangeWorld:u,world:a,worldInfo:h,enabledGenes:w,setEnabledGenes:y,selectedBlock:_,setSelectedBlock:C,onClickRestart:S}),!!e.current&&k(CS,{onClickStep:g,onClickRestart:S,fullscreenElement:e.current})]})});iv(document.getElementById("root")).render(k($S,{}));
