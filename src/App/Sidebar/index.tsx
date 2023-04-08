@@ -74,6 +74,16 @@ type SidebarProps = {
 };
 
 const Sidebar = observer((props: SidebarProps) => {
+  const enableDefaultGenes = () => {
+    const entries = Object.entries(props.enabledGenes);
+    const resultEntries = entries.map(([k]) => [k, !!GENES[k]?.defaultEnabled]);
+    props.setEnabledGenes(Object.fromEntries(resultEntries))
+  };
+
+  const disableAllGenes = () => {
+    props.setEnabledGenes(Object.fromEntries(Object.entries(props.enabledGenes).map(([k]) => [k, false])))
+  };
+
   return (
     <Wrapper opened={sidebarStore.isOpen}>
       <Accordion name='Легенда'>
@@ -221,6 +231,12 @@ const Sidebar = observer((props: SidebarProps) => {
             />)
           })}
         </SubBlock>
+        <WideButton onClick={enableDefaultGenes}>
+          Вернуть стандартные
+        </WideButton>
+        <WideButton onClick={disableAllGenes}>
+          Выключить все
+        </WideButton>
       </Accordion>
       <Accordion name='Перезапуск' defaultOpened>
         <SubBlock name="Размер мира">
