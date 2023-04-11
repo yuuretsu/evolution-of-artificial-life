@@ -13,7 +13,7 @@ import {
 import { appStore } from 'stores/app';
 import { sidebarStore } from 'stores/sidebar';
 import styled from 'styled-components';
-import { CircleButton, CIRCLE_BUTTON_ICON_STYLE } from './CircleButton';
+import { CircleButton, CIRCLE_BUTTON_ICON_STYLE } from 'ui';
 
 const Wrapper = styled.div`
   position: fixed;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const InputNumber = styled.input.attrs({
+export const InputNumber = styled.input.attrs({
   type: "number",
 })`
   display: block;
@@ -16,6 +16,7 @@ const InputNumber = styled.input.attrs({
   color: whitesmoke;
   margin-bottom: 5px;
   transition-duration: 0.2s;
+  appearance: textfield;
   -moz-appearance: textfield;
   &::-webkit-inner-spin-button {
     appearance: none;
@@ -24,5 +25,3 @@ const InputNumber = styled.input.attrs({
     box-shadow: 0 0 0 2px rgba(50, 50, 50);
   }
 `;
-
-export default InputNumber;

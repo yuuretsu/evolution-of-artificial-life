@@ -11,12 +11,12 @@ import { World, WorldInfo, NewWorldProps } from "lib/world";
 import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_PADDING, SIDEBAR_WIDTH } from "settings";
 import Accordion from "./Accordion";
 import Checkbox from "./Checkbox";
-import InputNumber from "./InputNumber";
-import InputRange from "./InputRange";
+import { InputNumber } from "ui";
+import { InputRange } from "ui";
 import OptionalBlock from "./OptionalBlock";
 import RadioGroup from "./RadioGroup";
 import SubBlock from "./SubBlock";
-import WideButton from "./WideButton";
+import { WideButton } from "ui";
 
 interface ISidebarProps {
   readonly opened: boolean,

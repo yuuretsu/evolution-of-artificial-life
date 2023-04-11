@@ -58,7 +58,7 @@ const Select = styled.div`
   }
 `;
 
-const DropdownSmall: React.FC<{
+export const DropdownSmall: React.FC<{
   name: string,
   list: { value: string, title: string }[],
   onChange: (value: string) => void
@@ -98,5 +98,3 @@ const DropdownSmall: React.FC<{
     </Wrapper>
   );
 };
-
-export default DropdownSmall;

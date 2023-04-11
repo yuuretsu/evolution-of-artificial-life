@@ -16,6 +16,7 @@ const Input = styled.input.attrs({ type: 'number' })`
   padding: 0;
   border: none;
   transition-duration: 0.2s;
+  appearance: textfield;
   -moz-appearance: textfield;
   &::-webkit-inner-spin-button {
     appearance: none;
@@ -34,7 +35,7 @@ const Input = styled.input.attrs({ type: 'number' })`
   }
 `;
 
-const InputNumberSmall: React.FC<{
+export const InputNumberSmall: React.FC<{
   name: string,
   min?: string | number,
   max?: string | number,
@@ -51,5 +52,3 @@ const InputNumberSmall: React.FC<{
     </Wrapper>
   );
 };
-
-export default InputNumberSmall;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const WideButton = styled.button`
+export const WideButton = styled.button`
     display: block;
     font-size: 100%;
     text-align: center;
@@ -24,5 +24,3 @@ const WideButton = styled.button`
         margin-bottom: 5px;
     }
 `;
-
-export default WideButton;

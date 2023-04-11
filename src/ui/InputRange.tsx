@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const InputRange = styled.input.attrs({
+export const InputRange = styled.input.attrs({
     type: "range",
 })`
     display: block;

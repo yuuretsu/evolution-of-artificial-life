@@ -1,8 +1,6 @@
 import Accordion from "App/Sidebar/Accordion";
-import DropdownSmall from "App/Sidebar/DropdownSmall";
-import InputNumberSmall from "App/Sidebar/InputNumberSmall";
+import { DropdownSmall, WideButton, InputNumberSmall } from "ui";
 import SubBlock from "App/Sidebar/SubBlock";
-import WideButton from "App/Sidebar/WideButton";
 import { GenomeVisualizer } from "App/Sidebar/GenomeVisualizer";
 import { Bot } from "lib/bot";
 import { fixNumber, limit } from "../helpers";
