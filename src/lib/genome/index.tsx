@@ -171,5 +171,5 @@ export class Genome {
 }
 
 export type { GenePool };
-export { GENES };
+export { GENES, Gene };
 export { enabledGenesToPool } from "./genes";
