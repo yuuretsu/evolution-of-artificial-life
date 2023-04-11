@@ -1,22 +1,24 @@
-import { observer } from "mobx-react";
-import { appStore } from "stores/app";
-import { sidebarStore } from "stores/sidebar";
-import styled from 'styled-components';
 import { WorldBlock } from "lib/block";
 import Rgba from "lib/color";
 import { GENES } from "lib/genome";
 import { limit } from "lib/helpers";
 import { viewModesList, VisualiserParams } from "lib/view-modes";
-import { World, WorldInfo, NewWorldProps } from "lib/world";
+import { NewWorldProps, World, WorldInfo } from "lib/world";
+import { observer } from "mobx-react";
 import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_PADDING, SIDEBAR_WIDTH } from "settings";
-import Accordion from "./Accordion";
-import Checkbox from "./Checkbox";
-import { InputNumber } from "ui";
-import { InputRange } from "ui";
-import OptionalBlock from "./OptionalBlock";
-import RadioGroup from "./RadioGroup";
-import SubBlock from "./SubBlock";
-import { WideButton } from "ui";
+import { appStore } from "stores/app";
+import { sidebarStore } from "stores/sidebar";
+import styled from 'styled-components';
+import {
+  Accordion,
+  Checkbox,
+  InputNumber,
+  InputRange,
+  OptionalBlock,
+  SubBlock,
+  WideButton
+} from "ui";
+import { Radio } from "ui";
 
 interface ISidebarProps {
   readonly opened: boolean,
@@ -126,7 +128,7 @@ const Sidebar = observer((props: SidebarProps) => {
           />
         </SubBlock>
         <SubBlock name="Режим отображения">
-          <RadioGroup
+          <Radio
             name='view-mode'
             list={viewModesList}
             defaultChecked={appStore.viewModeName.current}

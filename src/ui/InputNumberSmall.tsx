@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { ComponentProps, useRef } from "react";
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -35,19 +35,23 @@ const Input = styled.input.attrs({ type: 'number' })`
   }
 `;
 
-export const InputNumberSmall: React.FC<{
-  name: string,
-  min?: string | number,
-  max?: string | number,
+export interface IInputNumberSmallProps {
+  name: string;
+  min?: string | number;
+  max?: string | number;
   value?: string | number | readonly string[]
-  onChange?: React.ChangeEventHandler<HTMLInputElement>,
-  onBlur?: React.FocusEventHandler<HTMLInputElement>,
-}> = (props) => {
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+}
+
+export const InputNumberSmall: React.FC<IInputNumberSmallProps> = (props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const onClickLabel = () => inputRef.current?.focus();
   return (
     <Wrapper>
-      <span style={{ whiteSpace: 'nowrap' }} onClick={onClickLabel}>{props.name}:&nbsp;</span>
+      <span style={{ whiteSpace: 'nowrap' }} onClick={onClickLabel}>
+        {props.name}:&nbsp;
+      </span>
       <Input ref={inputRef} {...props} />
     </Wrapper>
   );

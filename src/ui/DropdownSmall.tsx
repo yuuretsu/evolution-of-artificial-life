@@ -17,13 +17,14 @@ const Header = styled.div<IHeader>`
   display: flex;
   width: 100%;
   cursor: pointer;
-  border-radius: ${props => props.opened ? '5px 5px 0 0' : '2px'};
-  padding: ${props => props.opened ? '10px' : 'none'};
-  background-color: ${props => props.opened ? 'rgba(255, 255, 255, 0.05)' : 'transparent'};
+  border-radius: ${(props) => (props.opened ? "5px 5px 0 0" : "2px")};
+  padding: ${(props) => (props.opened ? "10px" : "none")};
+  background-color: ${(props) =>
+    props.opened ? "rgba(255, 255, 255, 0.05)" : "transparent"};
   transition-duration: 0.2s;
   &:hover {
     background-color: rgba(255, 255, 255, 0.05);
-    padding-left: ${props => props.opened ? '10px' : '5px'};
+    padding-left: ${(props) => (props.opened ? "10px" : "5px")};
   }
   &:focus {
     background-color: rgba(255, 255, 255, 0.1);
@@ -58,43 +59,44 @@ const Select = styled.div`
   }
 `;
 
-export const DropdownSmall: React.FC<{
-  name: string,
-  list: { value: string, title: string }[],
-  onChange: (value: string) => void
-}> = (props) => {
+const IconArrow = styled(MdKeyboardArrowDown)`
+  min-width: 15px;
+  min-height: 15px;
+  transform: translateY(3px);
+  margin-left: 5px;
+`;
+
+export interface IDropdownSmallProps {
+  name: string;
+  list: { value: string; title: string }[];
+  onChange: (value: string) => void;
+}
+
+export const DropdownSmall: React.FC<IDropdownSmallProps> = (props) => {
   const [opened, setOpened] = useState(false);
   return (
     <Wrapper>
-      <Header
-        onClick={() => setOpened(!opened)}
-        opened={opened}
-      >
+      <Header onClick={() => setOpened(!opened)} opened={opened}>
         {props.name}
-        <MdKeyboardArrowDown
-          style={{
-            minWidth: '15px',
-            minHeight: '15px',
-            transform: 'translateY(3px)',
-            marginLeft: '5px',
-          }}
-        />
+        <IconArrow />
       </Header>
-      {opened && <Body>
-        {props.list.map(value => {
-          return (
-            <Select
-              key={value.value}
-              onClick={e => {
-                setOpened(false);
-                props.onChange(value.value);
-              }}
-            >
-              {value.title}
-            </Select>
-          );
-        })}
-      </Body>}
+      {opened && (
+        <Body>
+          {props.list.map((value) => {
+            return (
+              <Select
+                key={value.value}
+                onClick={() => {
+                  setOpened(false);
+                  props.onChange(value.value);
+                }}
+              >
+                {value.title}
+              </Select>
+            );
+          })}
+        </Body>
+      )}
     </Wrapper>
   );
 };

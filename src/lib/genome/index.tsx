@@ -1,15 +1,14 @@
-import Accordion from "App/Sidebar/Accordion";
-import { DropdownSmall, WideButton, InputNumberSmall } from "ui";
-import SubBlock from "App/Sidebar/SubBlock";
 import { GenomeVisualizer } from "App/Sidebar/GenomeVisualizer";
+import { SubBlock } from "ui";
 import { Bot } from "lib/bot";
-import { fixNumber, limit } from "../helpers";
 import { World } from "lib/world";
-import { MAX_ACTIONS } from "settings";
 import { useEffect, useState } from "react";
-import { GenePool } from "./types";
+import { MAX_ACTIONS } from "settings";
+import { Accordion, DropdownSmall, InputNumberSmall, WideButton } from "ui";
+import { fixNumber, limit } from "../helpers";
 import { Gene, NULL_GENE, NULL_GENE_TEMPLATE } from "./gene";
 import { GENES } from "./genes";
+import { GenePool } from "./types";
 
 export class Genome {
   private _pointer: number = 0;
@@ -168,6 +167,7 @@ export class Genome {
   }
 }
 
+export { enabledGenesToPool } from "./genes";
 export type { GenePool };
 export { GENES, Gene };
-export { enabledGenesToPool } from "./genes";
+

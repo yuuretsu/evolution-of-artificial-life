@@ -1,15 +1,14 @@
-import { World } from "./world";
-import Rgba from "./color";
-import { fixNumber, limit, randInt } from "./helpers";
-import { DynamicBlock } from "./block";
-import { GenePool, Genome } from "./genome";
-import { VisualiserParams } from "./view-modes";
+import { SubBlock } from "ui";
 import { useEffect, useState } from "react";
-import SubBlock from "App/Sidebar/SubBlock";
-import Accordion from "App/Sidebar/Accordion";
-import { InputNumberSmall } from "ui";
-import styled from "styled-components";
 import { MAX_BOT_AGE } from "settings";
+import styled from "styled-components";
+import { Accordion, InputNumberSmall } from "ui";
+import { DynamicBlock } from "./block";
+import Rgba from "./color";
+import { GenePool, Genome } from "./genome";
+import { fixNumber, limit, randInt } from "./helpers";
+import { VisualiserParams } from "./view-modes";
+import { World } from "./world";
 
 export type BotAbilityName = keyof typeof Bot.prototype.abilities;
 

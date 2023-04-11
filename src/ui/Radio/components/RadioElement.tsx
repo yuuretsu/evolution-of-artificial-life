@@ -3,14 +3,12 @@ import styled from "styled-components";
 const Wrapper = styled.label`
   display: block;
   user-select: none;
+  margin-bottom: 5px;
   cursor: pointer;
-  &:not(:last-child) {
-    margin-bottom: 5px;
-  }
 `;
 
 const Input = styled.input.attrs({
-  type: "checkbox",
+  type: "radio",
 })`
   position: relative;
   appearance: none;
@@ -19,7 +17,7 @@ const Input = styled.input.attrs({
   outline: none;
   border: none;
   &:checked::after {
-    transform: rotateZ(-45deg);
+    transform: none;
     opacity: 1;
   }
   &::before {
@@ -29,7 +27,7 @@ const Input = styled.input.attrs({
     display: block;
     width: 15px;
     height: 15px;
-    border-radius: 2px;
+    border-radius: 100%;
     background-color: rgb(80, 80, 80);
     transition-duration: 0.2s;
   }
@@ -37,38 +35,36 @@ const Input = styled.input.attrs({
     content: "";
     position: absolute;
     display: block;
-    left: 1px;
-    top: 3px;
-    width: 10px;
-    height: 5px;
-    transform: translateY(-2px) rotateZ(-45deg);
-    border-bottom: 4px solid whitesmoke;
-    border-left: 4px solid whitesmoke;
+    transform: scale(0);
+    background-color: whitesmoke;
+    width: 9px;
+    height: 9px;
+    border-radius: 100%;
+    left: 3px;
+    top: 5px;
     opacity: 0;
     transition-duration: 0.2s;
   }
 `;
 
-export interface ICheckboxProps {
+type RadioElementProps = {
   title: string;
+  name: string;
   value: string;
-  onChange: (value: string, checked: boolean) => void;
-  checked?: boolean;
-}
+  onChange: (value: string) => void;
+  defaultChecked?: boolean;
+};
 
-const Checkbox: React.FC<ICheckboxProps> = (props) => {
+export const RadioElement = (props: RadioElementProps) => {
   return (
     <Wrapper>
       <Input
+        name={props.name}
         value={props.value}
-        checked={props.checked}
-        onChange={(e) => {
-          props.onChange(e.target.value, e.target.checked);
-        }}
+        defaultChecked={props.defaultChecked}
+        onChange={(e) => props.onChange(props.value)}
       />
       {props.title}
     </Wrapper>
   );
 };
-
-export default Checkbox;

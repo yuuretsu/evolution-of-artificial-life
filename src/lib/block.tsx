@@ -1,9 +1,9 @@
-import { World } from "./world";
-import Rgba from "./color";
+import { Block } from "ui";
 import { Bot } from "./bot";
-import { VisualiserParams } from "./view-modes";
+import Rgba from "./color";
 import { GenePool } from "./genome";
-import Block from "App/Sidebar/Block";
+import { VisualiserParams } from "./view-modes";
+import { World } from "./world";
 
 export class WorldBlock {
     public age: number | null = null;
@@ -15,16 +15,16 @@ export class WorldBlock {
     getFamilyColor(): Rgba | null {
         return null;
     }
-    getEnergyColor(params: VisualiserParams): Rgba | null {
+    getEnergyColor(_params: VisualiserParams): Rgba | null {
         return null;
     }
-    getAgeColor(params: VisualiserParams): Rgba | null {
+    getAgeColor(_params: VisualiserParams): Rgba | null {
         return null;
     }
-    getLastActionColor(params: VisualiserParams): Rgba | null {
+    getLastActionColor(_params: VisualiserParams): Rgba | null {
         return null;
     }
-    getChildrenAmountColor(params: VisualiserParams): Rgba | null {
+    getChildrenAmountColor(_params: VisualiserParams): Rgba | null {
         return null;
     }
     getAbilityColor(): Rgba | null {
@@ -33,8 +33,8 @@ export class WorldBlock {
     getHealthColor(): Rgba | null {
         return null;
     }
-    onAttack(bot: Bot, value: number): number { return 0; }
-    onVirus(bot: Bot, pool: GenePool) { }
+    onAttack(_bot: Bot, _value: number): number { return 0; }
+    onVirus(_bot: Bot, _pool: GenePool) { }
 
     Render = () => <Block name={'Блок'}>Нет информации. Попробуйте выбрать другой блок.</Block>;
 }
