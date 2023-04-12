@@ -1,15 +1,5 @@
 import { FC } from 'react';
-import styled from 'styled-components';
-
-const Wrapper = styled.div`
-  &:not(:last-child) {
-    margin-bottom: 10px;
-  }
-`;
-
-const Title = styled.div`
-    margin-bottom: 5px;
-`;
+import { FlexColumn } from './FlexColumn';
 
 type SubBlockProps = {
   name?: string;
@@ -18,9 +8,11 @@ type SubBlockProps = {
 
 export const SubBlock: FC<SubBlockProps> = (props) => {
   return (
-    <Wrapper>
-      {props.name && <Title>{props.name}</Title>}
-      {props.children}
-    </Wrapper>
+    <FlexColumn gap={5}>
+      {props.name && props.name}
+      <div>
+        {props.children}
+      </div>
+    </FlexColumn>
   );
 };

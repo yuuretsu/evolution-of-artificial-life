@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { RadioElement } from "./components/RadioElement";
+import { FlexColumn } from "ui/FlexColumn";
 
 const Wrapper = styled.div`
   display: block;
@@ -18,16 +19,18 @@ type RadioProps = {
 export const Radio = (props: RadioProps) => {
   return (
     <Wrapper>
-      {props.list.map((variant) => (
-        <RadioElement
-          key={variant.value}
-          name={props.name}
-          title={variant.title}
-          defaultChecked={variant.value == props.defaultChecked}
-          value={variant.value}
-          onChange={props.onChange}
-        />
-      ))}
+      <FlexColumn gap={5}>
+        {props.list.map((variant) => (
+          <RadioElement
+            key={variant.value}
+            name={props.name}
+            title={variant.title}
+            defaultChecked={variant.value == props.defaultChecked}
+            value={variant.value}
+            onChange={props.onChange}
+          />
+        ))}
+      </FlexColumn>
     </Wrapper>
   );
 };

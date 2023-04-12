@@ -1,5 +1,5 @@
 import { GenomeVisualizer } from "App/Sidebar/GenomeVisualizer";
-import { SubBlock } from "ui";
+import { FlexColumn, SubBlock } from "ui";
 import { Bot } from "lib/bot";
 import { World } from "lib/world";
 import { useEffect, useState } from "react";
@@ -80,7 +80,7 @@ export class Genome {
     }, [selectedGene]);
 
     return (
-      <>
+      <FlexColumn gap={10}>
         <Accordion name="Ген" small defaultOpened>
           {selectedGene ? <>
             <SubBlock>
@@ -155,14 +155,16 @@ export class Genome {
           </> : <span>Кликните по круглому гену на вкладке ниже, чтобы увидеть информацию о нём.</span>}
         </Accordion>
         <Accordion name="Геном" small defaultOpened>
-          <SubBlock>Позиция указателя: {this.pointer}</SubBlock>
-          <GenomeVisualizer
-            genome={this}
-            selectedGene={selectedGene}
-            setSelectedGene={setSelectedGene}
-          />
+          <FlexColumn gap={10}>
+            <SubBlock>Позиция указателя: {this.pointer}</SubBlock>
+            <GenomeVisualizer
+              genome={this}
+              selectedGene={selectedGene}
+              setSelectedGene={setSelectedGene}
+            />
+          </FlexColumn>
         </Accordion>
-      </>
+      </FlexColumn>
     );
   }
 }

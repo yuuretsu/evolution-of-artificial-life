@@ -10,4 +10,4 @@ export * from "./OptionalBlock";
 export * from "./Radio";
 export * from "./SubBlock";
 export * from "./WideButton";
-
+export * from "./FlexColumn";

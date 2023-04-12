@@ -1,16 +1,7 @@
 import { FC, useState } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import styled, { keyframes } from "styled-components";
-
-interface IWrapper {
-  readonly small: boolean | undefined;
-}
-
-const Wrapper = styled.div<IWrapper>`
-  &:not(:last-child) {
-    margin-bottom: ${props => props.small ? 10 : 20}px;
-  }
-`;
+import { FlexColumn } from "./FlexColumn";
 
 interface IHeadWrapper {
   readonly small: boolean | undefined,
@@ -25,7 +16,6 @@ const HeadWrapper = styled.div<IHeadWrapper>`
   text-transform: ${props => props.small ? 'none' : 'uppercase'};
   font-weight: ${props => props.small ? 'normal' : 'bold'};
   font-size: ${props => props.small ? 'inherit' : '1.25em'};
-  margin-bottom: ${props => props.small ? '5px' : '10px'};
   border-left: 5px solid ${props => props.color ? props.color : 'rgb(80, 80, 80)'};
   padding-left: 10px;
   justify-content: space-between;
@@ -64,7 +54,7 @@ type AccordionProps = {
 export const Accordion: FC<AccordionProps> = (props) => {
   const [opened, setOpened] = useState(props.defaultOpened);
   return (
-    <Wrapper small={props.small}>
+    <FlexColumn gap={props.small ? 5 : 10}>
       <HeadWrapper
         onClick={() => setOpened(!opened)} small={props.small}
         color={props.color}
@@ -83,6 +73,6 @@ export const Accordion: FC<AccordionProps> = (props) => {
         />
       </HeadWrapper>
       {opened && <BodyWrapper>{props.children}</BodyWrapper>}
-    </Wrapper>
+    </FlexColumn>
   );
 }

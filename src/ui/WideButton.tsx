@@ -20,7 +20,4 @@ export const WideButton = styled.button`
         box-shadow: none;
         background-color: rgb(60, 60, 60);
     }
-    &:not(:last-child) {
-        margin-bottom: 5px;
-    }
 `;

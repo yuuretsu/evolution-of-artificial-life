@@ -1,12 +1,6 @@
 import { FC } from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.div`
-  &:not(:last-child) {
-    margin-bottom: 20px;
-  }
-`;
-
 const Title = styled.div`
   font-weight: bold;
   margin-bottom: 10px;
@@ -21,9 +15,9 @@ type BlockProps = {
 
 export const Block: FC<BlockProps> = ({ name, children }) => {
   return (
-    <Wrapper>
+    <div>
       {name && <Title>{name}</Title>}
       {children}
-    </Wrapper>
+    </div>
   );
 };

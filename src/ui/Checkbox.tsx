@@ -4,9 +4,6 @@ const Wrapper = styled.label`
   display: block;
   user-select: none;
   cursor: pointer;
-  &:not(:last-child) {
-    margin-bottom: 5px;
-  }
 `;
 
 const Input = styled.input.attrs({

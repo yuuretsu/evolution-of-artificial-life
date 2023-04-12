@@ -14,7 +14,6 @@ export const InputNumber = styled.input.attrs({
   line-height: 20px;
   background-color: rgb(40, 40, 40);
   color: whitesmoke;
-  margin-bottom: 5px;
   transition-duration: 0.2s;
   appearance: textfield;
   -moz-appearance: textfield;
