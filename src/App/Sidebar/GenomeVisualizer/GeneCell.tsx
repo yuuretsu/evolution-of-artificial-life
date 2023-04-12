@@ -34,8 +34,8 @@ export const GeneCell = (props: GeneCellProps) => {
     : "rgba(127, 127, 127, 0.1)";
   const border = props.state
     ? props.state === "active"
-      ? "3px solid white"
-      : "2px solid rgba(255, 255, 255, 0.5)"
+      ? `${GENE_CELL_SIZE_PX / 10}px solid white`
+      : `${GENE_CELL_SIZE_PX / 15}px solid rgba(255, 255, 255, 0.5)`
     : "none";
   const size =
     props.state === "active" ? `${GENE_CELL_SIZE_PX * 0.9}px` : `${GENE_CELL_SIZE_PX * 0.6}px`;
