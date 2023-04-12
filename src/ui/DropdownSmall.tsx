@@ -15,6 +15,7 @@ const Header = styled.div<IHeader>`
   box-sizing: border-box;
   font-weight: bold;
   display: flex;
+  align-items: center;
   width: 100%;
   cursor: pointer;
   border-radius: ${(props) => (props.opened ? "5px 5px 0 0" : "2px")};
@@ -62,7 +63,6 @@ const Select = styled.div`
 const IconArrow = styled(MdKeyboardArrowDown)`
   min-width: 15px;
   min-height: 15px;
-  transform: translateY(3px);
   margin-left: 5px;
 `;
 
