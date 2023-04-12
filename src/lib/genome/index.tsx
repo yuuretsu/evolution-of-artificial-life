@@ -53,8 +53,8 @@ export class Genome {
       this.pointer = result.goto !== null
         ? result.goto
         : this.pointer + 1;
+      bot.lastActions.push(result.msg || gene.template.name);
       if (result.completed) {
-        bot.lastActions.push(result.msg || gene.template.name);
         return;
       }
     }
