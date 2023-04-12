@@ -13,7 +13,7 @@ type RadioProps = {
   name: string;
   list: { value: string; title: string }[];
   onChange: (value: string) => void;
-  defaultChecked?: string;
+  checked?: string;
 };
 
 export const Radio = (props: RadioProps) => {
@@ -25,7 +25,7 @@ export const Radio = (props: RadioProps) => {
             key={variant.value}
             name={props.name}
             title={variant.title}
-            defaultChecked={variant.value == props.defaultChecked}
+            checked={variant.value == props.checked}
             value={variant.value}
             onChange={props.onChange}
           />
