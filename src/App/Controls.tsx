@@ -57,7 +57,7 @@ export const Controls: FC<IControlsProps> = observer((props) => {
           : <MdMenu style={CIRCLE_BUTTON_ICON_STYLE} />}
       </CircleButton>
       <CircleButton
-        title={appStore.isPaused ? "Продолжить" : "Пауза"}
+        title={appStore.isPaused ? 'Продолжить' : 'Пауза'}
         onClick={appStore.toggleIsPaused}
       >
         <PlayPauseIcon style={CIRCLE_BUTTON_ICON_STYLE} />
@@ -83,5 +83,5 @@ export const Controls: FC<IControlsProps> = observer((props) => {
         </CircleButton>
       )}
     </Wrapper>
-  )
+  );
 });

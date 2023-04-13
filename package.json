@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build --base=/evolution-of-artificial-life/",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "eslint": "eslint ./src/**/*.{ts,tsx}"
   },
   "author": "Yurii Morozov",
   "license": "ISC",
@@ -13,7 +14,11 @@
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@types/styled-components": "^5.1.9",
+    "@typescript-eslint/eslint-plugin": "^5.58.0",
+    "@typescript-eslint/parser": "^5.58.0",
     "@vitejs/plugin-react": "^3.1.0",
+    "eslint": "^8.38.0",
+    "eslint-plugin-react": "^7.32.2",
     "typescript": "^4.9.3",
     "vite": "^4.2.0",
     "vite-tsconfig-paths": "^4.0.7"

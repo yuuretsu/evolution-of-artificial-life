@@ -1,4 +1,4 @@
-import { ComponentProps, useRef } from "react";
+import { ChangeEventHandler, FC, FocusEventHandler, useRef } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -40,11 +40,11 @@ export interface IInputNumberSmallProps {
   min?: string | number;
   max?: string | number;
   value?: string | number | readonly string[]
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
 }
 
-export const InputNumberSmall: React.FC<IInputNumberSmallProps> = (props) => {
+export const InputNumberSmall: FC<IInputNumberSmallProps> = (props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const onClickLabel = () => inputRef.current?.focus();
   return (

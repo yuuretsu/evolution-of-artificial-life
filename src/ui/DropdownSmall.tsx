@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { MdKeyboardArrowDown } from "react-icons/md";
-import styled, { keyframes } from "styled-components";
+import { FC, useState } from 'react';
+import { MdKeyboardArrowDown } from 'react-icons/md';
+import styled, { keyframes } from 'styled-components';
 
 const Wrapper = styled.div`
   position: relative;
@@ -18,14 +18,14 @@ const Header = styled.div<IHeader>`
   align-items: center;
   width: 100%;
   cursor: pointer;
-  border-radius: ${(props) => (props.opened ? "5px 5px 0 0" : "2px")};
-  padding: ${(props) => (props.opened ? "10px" : "none")};
+  border-radius: ${(props) => (props.opened ? '5px 5px 0 0' : '2px')};
+  padding: ${(props) => (props.opened ? '10px' : 'none')};
   background-color: ${(props) =>
-    props.opened ? "rgba(255, 255, 255, 0.05)" : "transparent"};
+    props.opened ? 'rgba(255, 255, 255, 0.05)' : 'transparent'};
   transition-duration: 0.2s;
   &:hover {
     background-color: rgba(255, 255, 255, 0.05);
-    padding-left: ${(props) => (props.opened ? "10px" : "5px")};
+    padding-left: ${(props) => (props.opened ? '10px' : '5px')};
   }
   &:focus {
     background-color: rgba(255, 255, 255, 0.1);
@@ -72,7 +72,7 @@ export interface IDropdownSmallProps {
   onChange: (value: string) => void;
 }
 
-export const DropdownSmall: React.FC<IDropdownSmallProps> = (props) => {
+export const DropdownSmall: FC<IDropdownSmallProps> = (props) => {
   const [opened, setOpened] = useState(false);
   return (
     <Wrapper>

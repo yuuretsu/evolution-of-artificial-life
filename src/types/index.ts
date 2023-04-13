@@ -1,7 +1,7 @@
-import { World } from "lib/world";
-import { FC } from "react";
-import { CanGetColor } from "./can-get-color";
-import { CanInteract } from "./can-interact";
+import { World } from 'lib/world';
+import { FC } from 'react';
+import { CanGetColor } from './can-get-color';
+import { CanInteract } from './can-interact';
 
 export interface BaseWorldBlock extends CanGetColor, CanInteract {
   age: number;

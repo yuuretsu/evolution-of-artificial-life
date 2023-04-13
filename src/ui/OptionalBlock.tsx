@@ -1,5 +1,5 @@
-import { FC } from "react";
-import styled, { keyframes } from "styled-components";
+import { FC, ReactNode } from 'react';
+import styled, { keyframes } from 'styled-components';
 
 const anim = keyframes`
   from {
@@ -30,7 +30,7 @@ const Title = styled.div`
 
 type OptionalBlockProps = {
   title?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export const OptionalBlock: FC<OptionalBlockProps> = (props) => {

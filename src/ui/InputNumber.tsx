@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const InputNumber = styled.input.attrs({
-  type: "number",
+  type: 'number',
 })`
   display: block;
   box-sizing: border-box;

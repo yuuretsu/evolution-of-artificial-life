@@ -1,6 +1,6 @@
-import Rgba from "./color";
-import { GENES } from "./genome";
-import { WorldBlock } from "types";
+import Rgba from './color';
+import { GENES } from './genome';
+import { WorldBlock } from 'types';
 
 export type VisualiserParams = {
   ageDivider: number;
@@ -20,31 +20,31 @@ export type ViewMode = {
 
 const VIEW_MODES: { [key: string]: ViewMode } = {
   normal: {
-    name: "Обычный",
+    name: 'Обычный',
     blockToColor: (block) => block.getJustColor(),
   },
   informative: {
-    name: "Информативный",
+    name: 'Информативный',
     blockToColor: (block) => block.getInformativeColor(),
   },
   family: {
-    name: "Семейства",
+    name: 'Семейства',
     blockToColor: (block) => block.getFamilyColor(),
   },
   age: {
-    name: "Возраст",
+    name: 'Возраст',
     blockToColor: (block, params) => {
       return block.getAgeColor(params);
     },
   },
   energy: {
-    name: "Энергия",
+    name: 'Энергия',
     blockToColor: (block, params) => {
       return block.getEnergyColor(params);
     },
   },
   lastAction: {
-    name: "Последнее действие",
+    name: 'Последнее действие',
     blockToColor: (block, params) => {
       return (
         block
@@ -54,19 +54,19 @@ const VIEW_MODES: { [key: string]: ViewMode } = {
     },
   },
   childrenAmount: {
-    name: "Количество потомков",
+    name: 'Количество потомков',
     blockToColor: (block) => {
       return block.getChildrenAmountColor();
     },
   },
   ability: {
-    name: "Специализация в питании",
+    name: 'Специализация в питании',
     blockToColor: (block) => {
       return block.getAbilityColor();
     },
   },
   health: {
-    name: "Здоровье",
+    name: 'Здоровье',
     blockToColor: (block, params) => {
       return block.getHealthColor(params);
     },
@@ -91,7 +91,7 @@ export const initVisualizerParams: VisualiserParams = {
       : {
         ...action,
         [GENES[geneName]!.name]: true
-      }
+      };
   }, {})
 };
 

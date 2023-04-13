@@ -1,10 +1,10 @@
-import Rgba from "./color";
-import Grid, { Coords } from "./grid";
-import { fixNumber, limit } from "./helpers";
-import { BlockVisualiser, VisualiserParams } from "./view-modes";
-import { Bot } from "./bot";
-import { GenePool, Genome } from "./genome";
-import { WorldBlockDynamic, WorldBlock } from "types";
+import Rgba from './color';
+import Grid, { Coords } from './grid';
+import { fixNumber, limit } from './helpers';
+import { BlockVisualiser, VisualiserParams } from './view-modes';
+import { Bot } from './bot';
+import { GenePool, Genome } from './genome';
+import { WorldBlockDynamic, WorldBlock } from 'types';
 
 export type NewWorldProps = {
   width: number;
@@ -105,10 +105,10 @@ export class SquareWorld extends World {
     this.info.stepTime = performance.now() - start;
   }
   toImage(visualizer: BlockVisualiser, params: VisualiserParams) {
-    const canvas = document.createElement("canvas");
+    const canvas = document.createElement('canvas');
     canvas.width = this.width;
     canvas.height = this.height;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (ctx instanceof CanvasRenderingContext2D) {
       const data = ctx.createImageData(this.width, this.height);
       for (let x = 0; x < this.width; x++) {
@@ -127,19 +127,19 @@ export class SquareWorld extends World {
       ctx.putImageData(data, 0, 0);
       return canvas;
     } else {
-      throw "Не удалось получить контекст из канваса";
+      throw 'Не удалось получить контекст из канваса';
     }
   }
 }
 
 function shuffle<T>(array: T[]) {
-  let currentIndex = array.length, randomIndex;
+  let currentIndex = array.length;
 
   // While there remain elements to shuffle.
   while (currentIndex != 0) {
 
     // Pick a remaining element.
-    randomIndex = Math.floor(Math.random() * currentIndex);
+    const randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
 
     // And swap it with the current element.

@@ -1,3 +1,4 @@
+import { CSSProperties } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 const animation = keyframes`
@@ -33,7 +34,7 @@ export const CircleButton = styled.button`
   }
 `;
 
-export const CIRCLE_BUTTON_ICON_STYLE: React.CSSProperties = {
+export const CIRCLE_BUTTON_ICON_STYLE: CSSProperties = {
   width: '25px',
   height: '25px',
   fill: 'whitesmoke'

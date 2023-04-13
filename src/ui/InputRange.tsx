@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const InputRange = styled.input.attrs({
-  type: "range",
+  type: 'range',
 })`
   display: block;
   box-sizing: border-box;

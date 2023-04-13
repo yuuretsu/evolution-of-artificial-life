@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export interface IFlexColumnProps {
   gap?: string | number;
@@ -7,5 +7,5 @@ export interface IFlexColumnProps {
 export const FlexColumn = styled.div<IFlexColumnProps>`
   display: flex;
   flex-direction: column;
-  gap: ${({ gap }) => typeof gap === "number" ? `${gap}px` : gap};
+  gap: ${({ gap }) => typeof gap === 'number' ? `${gap}px` : gap};
 `;

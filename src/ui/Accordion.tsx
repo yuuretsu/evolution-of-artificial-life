@@ -1,7 +1,7 @@
-import { FC, useState } from "react";
-import { MdKeyboardArrowDown } from "react-icons/md";
-import styled, { keyframes } from "styled-components";
-import { FlexColumn } from "./FlexColumn";
+import { FC, ReactNode, useState } from 'react';
+import { MdKeyboardArrowDown } from 'react-icons/md';
+import styled, { keyframes } from 'styled-components';
+import { FlexColumn } from './FlexColumn';
 
 interface IHeadWrapper {
   readonly small: boolean | undefined,
@@ -45,7 +45,7 @@ const BodyWrapper = styled.div`
 
 type AccordionProps = {
   name: string;
-  children?: React.ReactNode,
+  children?: ReactNode,
   defaultOpened?: boolean,
   small?: boolean
   color?: string,
@@ -75,4 +75,4 @@ export const Accordion: FC<AccordionProps> = (props) => {
       {opened && <BodyWrapper>{props.children}</BodyWrapper>}
     </FlexColumn>
   );
-}
+};

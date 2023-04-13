@@ -1,25 +1,25 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import VIEW_MODES, {
   initVisualizerParams,
   VisualiserParams
-} from "lib/view-modes";
-import Sidebar from "./Sidebar";
-import Viewer from "./Viewer";
+} from 'lib/view-modes';
+import Sidebar from './Sidebar';
+import Viewer from './Viewer';
 import {
   SquareWorld,
   World, WorldInfo, NewWorldProps
-} from "lib/world";
+} from 'lib/world';
 import {
   GENES, enabledGenesToPool
-} from "lib/genome";
-import { Controls } from "./Controls";
-import { observer } from "mobx-react";
-import { appStore } from "stores/app";
-import { useEventListener, useInterval } from "usehooks-ts";
-import GameImage from "./Viewer/GameImage";
-import { PIXEL_SIZE } from "settings";
-import { WorldBlock } from "types";
+} from 'lib/genome';
+import { Controls } from './Controls';
+import { observer } from 'mobx-react';
+import { appStore } from 'stores/app';
+import { useEventListener, useInterval } from 'usehooks-ts';
+import GameImage from './Viewer/GameImage';
+import { PIXEL_SIZE } from 'settings';
+import { WorldBlock } from 'types';
 
 const initialEnabledGenes: { [geneName: string]: boolean } = {};
 for (const name in GENES) {
@@ -70,7 +70,7 @@ export const App: FC = observer(() => {
     updateWorldView();
   };
 
-  useEventListener("resize", () => setAppHeight(window.innerHeight));
+  useEventListener('resize', () => setAppHeight(window.innerHeight));
 
   useEffect(updateWorldView, [currentViewMode.blockToColor, world, visualizerParams]);
 

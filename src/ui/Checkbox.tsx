@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import { FC } from 'react';
+import styled from 'styled-components';
 
 const Wrapper = styled.label`
   display: block;
@@ -7,7 +8,7 @@ const Wrapper = styled.label`
 `;
 
 const Input = styled.input.attrs({
-  type: "checkbox",
+  type: 'checkbox',
 })`
   position: relative;
   appearance: none;
@@ -53,7 +54,7 @@ export interface ICheckboxProps {
   checked?: boolean;
 }
 
-export const Checkbox: React.FC<ICheckboxProps> = (props) => {
+export const Checkbox: FC<ICheckboxProps> = (props) => {
   return (
     <Wrapper>
       <Input

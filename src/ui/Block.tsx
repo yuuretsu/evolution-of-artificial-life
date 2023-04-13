@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import styled from 'styled-components';
 
 const Title = styled.div`
@@ -10,7 +10,7 @@ const Title = styled.div`
 
 type BlockProps = {
   name?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export const Block: FC<BlockProps> = ({ name, children }) => {

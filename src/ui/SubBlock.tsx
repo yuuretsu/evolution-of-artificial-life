@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import { FlexColumn } from './FlexColumn';
 
 type SubBlockProps = {
   name?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export const SubBlock: FC<SubBlockProps> = (props) => {

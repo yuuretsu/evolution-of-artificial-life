@@ -1,5 +1,5 @@
-import Rgba from "lib/color";
-import { VisualiserParams } from "lib/view-modes";
+import Rgba from 'lib/color';
+import { VisualiserParams } from 'lib/view-modes';
 
 export interface GetColorFn<T extends unknown[] = []> {
   (...args: T): Rgba | null;

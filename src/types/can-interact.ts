@@ -1,5 +1,5 @@
-import Rgba from "lib/color";
-import { Genome } from "lib/genome";
+import Rgba from 'lib/color';
+import { Genome } from 'lib/genome';
 
 export interface CanInteract {
   onAttack(value: number): number;
