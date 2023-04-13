@@ -1,6 +1,6 @@
-import { observer } from "mobx-react";
-import { FC } from "react";
-import { Accordion, FlexColumn } from "ui";
+import { observer } from 'mobx-react';
+import { FC } from 'react';
+import { Accordion, FlexColumn } from 'ui';
 
 export interface IWorldInformationProps {
   cycle: number;
@@ -17,5 +17,5 @@ export const WorldInformation: FC<IWorldInformationProps> = observer((props) => 
         <span>Время обработки: {props.stepTime.toFixed(1)} мс.</span>
       </FlexColumn>
     </Accordion>
-  )
+  );
 });

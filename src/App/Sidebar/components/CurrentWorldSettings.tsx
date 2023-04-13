@@ -1,7 +1,7 @@
-import { GENES } from "lib/genome";
-import { observer } from "mobx-react";
-import { FC } from "react";
-import { Accordion, Checkbox, FlexColumn, SubBlock, WideButton } from "ui";
+import { GENES } from 'lib/genome';
+import { observer } from 'mobx-react';
+import { FC } from 'react';
+import { Accordion, Checkbox, FlexColumn, SubBlock, WideButton } from 'ui';
 
 export interface ICurrentWorldSettingsProps {
   enabledGenes: Record<string, boolean>;
@@ -12,11 +12,11 @@ export const CurrentWorldSettings: FC<ICurrentWorldSettingsProps> = observer((pr
   const enableDefaultGenes = () => {
     const entries = Object.entries(props.enabledGenes);
     const resultEntries = entries.map(([k]) => [k, !!GENES[k]?.defaultEnabled]);
-    props.onChangeEnabledGenes(Object.fromEntries(resultEntries))
+    props.onChangeEnabledGenes(Object.fromEntries(resultEntries));
   };
 
   const disableAllGenes = () => {
-    props.onChangeEnabledGenes(Object.fromEntries(Object.entries(props.enabledGenes).map(([k]) => [k, false])))
+    props.onChangeEnabledGenes(Object.fromEntries(Object.entries(props.enabledGenes).map(([k]) => [k, false])));
   };
 
   return (
@@ -34,10 +34,10 @@ export const CurrentWorldSettings: FC<ICurrentWorldSettingsProps> = observer((pr
                   onChange={(value, checked) => {
                     const newEnabledGenes = { ...props.enabledGenes };
                     newEnabledGenes[value] = checked;
-                    props.onChangeEnabledGenes(newEnabledGenes)
+                    props.onChangeEnabledGenes(newEnabledGenes);
                   }}
                 />
-              )
+              );
             })}
           </FlexColumn>
           <FlexColumn gap={5}>
@@ -51,5 +51,5 @@ export const CurrentWorldSettings: FC<ICurrentWorldSettingsProps> = observer((pr
         </FlexColumn>
       </SubBlock>
     </Accordion>
-  )
+  );
 });

@@ -1,8 +1,8 @@
-import { VisualiserParams, viewModesList } from "lib/view-modes";
-import { observer } from "mobx-react";
-import { FC } from "react";
-import { appStore } from "stores/app";
-import { Accordion, Checkbox, FlexColumn, InputRange, OptionalBlock, Radio, SubBlock, WideButton } from "ui";
+import { VisualiserParams, viewModesList } from 'lib/view-modes';
+import { observer } from 'mobx-react';
+import { FC } from 'react';
+import { appStore } from 'stores/app';
+import { Accordion, Checkbox, FlexColumn, InputRange, OptionalBlock, Radio, SubBlock, WideButton } from 'ui';
 
 export interface IViewSettingsProps {
   visualizerParams: VisualiserParams;
@@ -28,7 +28,7 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
   return (
     <Accordion name='Настройки просмотра' defaultOpened>
       <FlexColumn gap={10}>
-        <SubBlock name={`Время между обновлениями`}>
+        <SubBlock name={'Время между обновлениями'}>
           <InputRange
             min={1}
             max={200}
@@ -109,5 +109,5 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
         )}
       </FlexColumn>
     </Accordion>
-  )
+  );
 });

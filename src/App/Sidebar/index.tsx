@@ -1,20 +1,21 @@
-import { VisualiserParams } from "lib/view-modes";
-import { NewWorldProps, World, WorldInfo } from "lib/world";
-import { observer } from "mobx-react";
-import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_PADDING, SIDEBAR_WIDTH } from "settings";
-import { sidebarStore } from "stores/sidebar";
+import { VisualiserParams } from 'lib/view-modes';
+import { NewWorldProps, World, WorldInfo } from 'lib/world';
+import { observer } from 'mobx-react';
+import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_PADDING, SIDEBAR_WIDTH } from 'settings';
+import { sidebarStore } from 'stores/sidebar';
 import styled from 'styled-components';
 import {
   Accordion,
   FlexColumn,
   WideButton
-} from "ui";
-import { CurrentWorldSettings } from "./components/CurrentWorldSettings";
-import { Legend } from "./components/Legend";
-import { NewWorldForm } from "./components/NewWorldForm";
-import { ViewSettings } from "./components/ViewSettings";
-import { WorldInformation } from "./components/WorldInfo";
-import { WorldBlock } from "types";
+} from 'ui';
+import { CurrentWorldSettings } from './components/CurrentWorldSettings';
+import { Legend } from './components/Legend';
+import { NewWorldForm } from './components/NewWorldForm';
+import { ViewSettings } from './components/ViewSettings';
+import { WorldInformation } from './components/WorldInfo';
+import { WorldBlock } from 'types';
+import { FC } from 'react';
 
 interface ISidebarProps {
   readonly opened: boolean,
@@ -64,14 +65,14 @@ type SidebarProps = {
   onChangeWorld: (world: World) => void,
   world: World,
   worldInfo: WorldInfo,
-  enabledGenes: { [name: string]: boolean }
-  setEnabledGenes: (value: { [name: string]: boolean }) => void;
+  enabledGenes: Record<string, boolean>
+  setEnabledGenes: (value: Record<string, boolean>) => void;
   selectedBlock: WorldBlock | null;
   setSelectedBlock: (block: WorldBlock | null) => void;
   onClickRestart: () => void;
 };
 
-const Sidebar = observer((props: SidebarProps) => {
+export const Sidebar: FC<SidebarProps> = observer((props) => {
   const deselectBlock = () => props.setSelectedBlock(null);
 
   return (
@@ -111,5 +112,3 @@ const Sidebar = observer((props: SidebarProps) => {
     </Wrapper>
   );
 });
-
-export default Sidebar;

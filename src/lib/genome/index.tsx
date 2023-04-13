@@ -1,14 +1,14 @@
-import { GenomeVisualizer } from "App/Sidebar/GenomeVisualizer";
-import { FlexColumn, SubBlock } from "ui";
-import { Bot } from "lib/bot";
-import { World } from "lib/world";
-import { useEffect, useState } from "react";
-import { MAX_ACTIONS } from "settings";
-import { Accordion, DropdownSmall, InputNumberSmall, WideButton } from "ui";
-import { fixNumber, limit } from "../helpers";
-import { Gene, NULL_GENE, NULL_GENE_TEMPLATE } from "./gene";
-import { GENES } from "./genes";
-import { GenePool } from "./types";
+import { GenomeVisualizer } from 'App/Sidebar/GenomeVisualizer';
+import { FlexColumn, SubBlock } from 'ui';
+import { Bot } from 'lib/bot';
+import { World } from 'lib/world';
+import { useEffect, useState } from 'react';
+import { MAX_ACTIONS } from 'settings';
+import { Accordion, DropdownSmall, InputNumberSmall, WideButton } from 'ui';
+import { fixNumber, limit } from '../helpers';
+import { Gene, NULL_GENE, NULL_GENE_TEMPLATE } from './gene';
+import { GENES } from './genes';
+import { GenePool } from './types';
 
 export class Genome {
   private _pointer: number = 0;
@@ -89,7 +89,7 @@ export class Genome {
                 <DropdownSmall
                   name={selectedGene.gene.template.name}
                   list={Object.keys(GENES).map(key => {
-                    return { value: key, title: GENES[key]?.name || NULL_GENE_TEMPLATE.name }
+                    return { value: key, title: GENES[key]?.name || NULL_GENE_TEMPLATE.name };
                   })}
                   onChange={value => {
                     selectedGene.gene.template = GENES[value] || NULL_GENE_TEMPLATE;
@@ -98,7 +98,7 @@ export class Genome {
                   }}
                 />
                 <InputNumberSmall
-                  name={`Параметр`}
+                  name={'Параметр'}
                   value={option.toString()}
                   onChange={e => {
                     setOption(e.target.value);
@@ -169,10 +169,10 @@ export class Genome {
         </Accordion>
       </FlexColumn>
     );
-  }
+  };
 }
 
-export { enabledGenesToPool } from "./genes";
+export { enabledGenesToPool } from './genes';
 export type { GenePool };
 export { GENES, Gene };
 

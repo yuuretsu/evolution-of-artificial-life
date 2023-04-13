@@ -5,7 +5,7 @@ import { WorldBlock } from 'types';
 export type VisualiserParams = {
   ageDivider: number;
   energyDivider: number;
-  action: { [name: string]: boolean };
+  action: Record<string, boolean>;
 };
 
 export type BlockVisualiser = (
@@ -18,7 +18,7 @@ export type ViewMode = {
   blockToColor: BlockVisualiser;
 };
 
-export const VIEW_MODES: { [key: string]: ViewMode } = {
+export const VIEW_MODES: Record<string, ViewMode> = {
   normal: {
     name: 'Обычный',
     blockToColor: (block) => block.getJustColor(),

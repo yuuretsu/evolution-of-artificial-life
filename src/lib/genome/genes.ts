@@ -17,7 +17,7 @@ function namesToGenePool(names: string[]): GenePool {
   }, []);
 }
 
-export const GENES: { [index: string]: GeneTemplate } = {
+export const GENES: Record<string, GeneTemplate> = {
   doNothing: {
     name: 'Отдых',
     description: 'Прибавляет 0,1 к здоровью',

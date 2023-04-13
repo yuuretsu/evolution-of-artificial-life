@@ -1,8 +1,8 @@
-import { limit } from "lib/helpers";
-import { NewWorldProps } from "lib/world";
-import { observer } from "mobx-react";
-import { FC } from "react";
-import { Accordion, FlexColumn, InputNumber, SubBlock, WideButton } from "ui";
+import { limit } from 'lib/helpers';
+import { NewWorldProps } from 'lib/world';
+import { observer } from 'mobx-react';
+import { FC } from 'react';
+import { Accordion, FlexColumn, InputNumber, SubBlock, WideButton } from 'ui';
 
 export interface INewWorldProps {
   newWorldProps: NewWorldProps;
@@ -32,7 +32,7 @@ export const NewWorldForm: FC<INewWorldProps> = observer((props) => {
                       parseInt(e.target.value)
                     )
                   }
-                })
+                });
               }}
             />
             <InputNumber

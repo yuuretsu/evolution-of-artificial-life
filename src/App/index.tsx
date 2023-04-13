@@ -19,11 +19,11 @@ import styled from 'styled-components';
 import { WorldBlock } from 'types';
 import { useEventListener, useInterval } from 'usehooks-ts';
 import { Controls } from './Controls';
-import Sidebar from './Sidebar';
-import Viewer from './Viewer';
-import GameImage from './Viewer/GameImage';
+import { Sidebar } from './Sidebar';
+import { Viewer } from './Viewer';
+import { GameImage } from './Viewer/GameImage';
 
-const initialEnabledGenes: { [geneName: string]: boolean } = {};
+const initialEnabledGenes: Record<string, boolean> = {};
 for (const name in GENES) {
   initialEnabledGenes[name] = GENES[name]!.defaultEnabled;
 }

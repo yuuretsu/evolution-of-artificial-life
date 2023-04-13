@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Wrapper = styled.label`
   display: block;
@@ -7,7 +7,7 @@ const Wrapper = styled.label`
 `;
 
 const Input = styled.input.attrs({
-  type: "radio",
+  type: 'radio',
 })`
   position: relative;
   appearance: none;

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { PIXEL_SIZE } from "settings";
+import { FC, useEffect, useRef, useState } from 'react';
+import { PIXEL_SIZE } from 'settings';
 import styled, { keyframes } from 'styled-components';
 
 const animation = keyframes`
@@ -22,7 +22,7 @@ type GameImageProps = {
   onClickPixel: (x: number, y: number) => void;
 };
 
-const GameImage = (props: GameImageProps) => {
+export const GameImage: FC<GameImageProps> = (props) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
 
@@ -51,5 +51,3 @@ const GameImage = (props: GameImageProps) => {
     />
   );
 };
-
-export default GameImage;

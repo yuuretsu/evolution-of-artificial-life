@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { Gene, Genome } from "lib/genome";
-import { GeneCell } from "./GeneCell";
-import { GENE_CELL_SIZE_PX } from "settings";
+import styled from 'styled-components';
+import { Gene, Genome } from 'lib/genome';
+import { GeneCell } from './GeneCell';
+import { GENE_CELL_SIZE_PX } from 'settings';
 
 const GenomeWrapper = styled.div`
   box-sizing: border-box;
@@ -24,9 +24,9 @@ export const GenomeVisualizer: React.FC<IGenomeVisualizerProps> = (props) => {
       {props.genome.genes.map((gene, i) => {
         const state =
           activeGene === gene
-            ? "active"
+            ? 'active'
             : props.genome.recentlyUsedGenes.includes(gene)
-              ? "activeLast"
+              ? 'activeLast'
               : null;
         return (
           <GeneCell

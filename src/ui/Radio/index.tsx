@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { RadioElement } from "./components/RadioElement";
-import { FlexColumn } from "ui/FlexColumn";
+import styled from 'styled-components';
+import { RadioElement } from './components/RadioElement';
+import { FlexColumn } from 'ui/FlexColumn';
 
 const Wrapper = styled.div`
   display: block;
