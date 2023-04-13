@@ -1,32 +1,7 @@
-import { Bot } from "lib/bot";
-import Rgba from "lib/color";
-import { GenePool } from "lib/genome";
-import { VisualiserParams } from "lib/view-modes";
 import { World } from "lib/world";
 import { FC } from "react";
-
-export interface GetColorFn<T extends unknown[] = []> {
-  (...args: T): Rgba | null;
-}
-
-export type TGetColorWithParamsFn = GetColorFn<[VisualiserParams]>;
-
-export interface CanGetColor {
-  getJustColor: GetColorFn;
-  getInformativeColor: GetColorFn;
-  getFamilyColor: GetColorFn;
-  getEnergyColor: TGetColorWithParamsFn;
-  getAgeColor: TGetColorWithParamsFn;
-  getLastActionColor: TGetColorWithParamsFn;
-  getChildrenAmountColor: GetColorFn;
-  getAbilityColor: GetColorFn;
-  getHealthColor: TGetColorWithParamsFn;
-}
-
-export interface CanInteract {
-  onAttack(bot: Bot, value: number): number;
-  onVirus(bot: Bot, pool: GenePool): void;
-}
+import { CanGetColor } from "./can-get-color";
+import { CanInteract } from "./can-interact";
 
 export interface BaseWorldBlock extends CanGetColor, CanInteract {
   age: number;

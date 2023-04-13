@@ -9,6 +9,7 @@ import { fixNumber, limit, randInt } from "./helpers";
 import { VisualiserParams } from "./view-modes";
 import { World } from "./world";
 import { WorldBlockDynamic } from "types";
+import { CanInteract } from "types/can-interact";
 
 export type BotAbilityName = keyof typeof Bot.prototype.abilities;
 
@@ -101,18 +102,17 @@ export class Bot implements WorldBlockDynamic {
             }
         }
     }
-    onAttack(bot: Bot, value: number) {
+    onAttack(value: number) {
         const REAL_VALUE = Math.min(this.energy, value);
         this.energy -= REAL_VALUE;
-        bot.energy += REAL_VALUE;
         this.health -= 0.1;
         return REAL_VALUE;
     }
-    onVirus(bot: Bot, pool: GenePool) {
+    onVirus(genome: Genome, color: Rgba) {
         const pointer = this.genome.pointer;
-        this.genome = bot.genome.replication(pool);
+        this.genome = genome;
         this.genome.pointer = pointer;
-        this.familyColor = bot.familyColor.mutateRgb(5);
+        this.familyColor = color;
     }
     multiply(pool: GenePool, energyCoef: number) {
         const energy = this.energy * energyCoef;

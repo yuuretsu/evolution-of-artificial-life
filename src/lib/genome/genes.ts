@@ -87,7 +87,8 @@ export const GENES: { [index: string]: GeneTemplate } = {
       let msg: string;
       if (F_BLOCK) {
         const value = interpolate(0, 5, property.option) * bot.abilities.attack ** 2;
-        const result = F_BLOCK.onAttack(bot, value);
+        const result = F_BLOCK.onAttack(value);
+        bot.energy += result;
         bot.increaseAbility('attack');
         bot.health = Math.min(1, bot.health + 0.01);
         msg = `Атака: +${result.toFixed(2)} энергии`;
@@ -110,7 +111,8 @@ export const GENES: { [index: string]: GeneTemplate } = {
       );
       let msg: string;
       if (F_BLOCK) {
-        F_BLOCK.onVirus(bot, world.genePool);
+        const genome = bot.genome.replication(world.genePool);
+        F_BLOCK.onVirus(genome, bot.familyColor.mutateRgb(5));
         msg = `Заражение другого бота`;
       } else {
         msg = `Заражение не удалось`;
