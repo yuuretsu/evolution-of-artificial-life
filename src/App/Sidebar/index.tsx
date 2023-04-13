@@ -1,26 +1,20 @@
 import { WorldBlock } from "lib/block";
-import { GENES } from "lib/genome";
-import { viewModesList, VisualiserParams } from "lib/view-modes";
+import { VisualiserParams } from "lib/view-modes";
 import { NewWorldProps, World, WorldInfo } from "lib/world";
 import { observer } from "mobx-react";
 import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_PADDING, SIDEBAR_WIDTH } from "settings";
-import { appStore } from "stores/app";
 import { sidebarStore } from "stores/sidebar";
 import styled from 'styled-components';
 import {
   Accordion,
-  Checkbox,
   FlexColumn,
-  InputRange,
-  OptionalBlock,
-  Radio,
-  SubBlock,
   WideButton
 } from "ui";
-import { NewWorldForm } from "./components/NewWorldForm";
+import { CurrentWorldSettings } from "./components/CurrentWorldSettings";
 import { Legend } from "./components/Legend";
-import { WorldInformation } from "./components/WorldInfo";
+import { NewWorldForm } from "./components/NewWorldForm";
 import { ViewSettings } from "./components/ViewSettings";
+import { WorldInformation } from "./components/WorldInfo";
 
 interface ISidebarProps {
   readonly opened: boolean,
@@ -78,16 +72,6 @@ type SidebarProps = {
 };
 
 const Sidebar = observer((props: SidebarProps) => {
-  const enableDefaultGenes = () => {
-    const entries = Object.entries(props.enabledGenes);
-    const resultEntries = entries.map(([k]) => [k, !!GENES[k]?.defaultEnabled]);
-    props.setEnabledGenes(Object.fromEntries(resultEntries))
-  };
-
-  const disableAllGenes = () => {
-    props.setEnabledGenes(Object.fromEntries(Object.entries(props.enabledGenes).map(([k]) => [k, false])))
-  };
-
   const deselectBlock = () => props.setSelectedBlock(null);
 
   return (
@@ -113,37 +97,10 @@ const Sidebar = observer((props: SidebarProps) => {
           visualizerParams={props.visualizerParams}
           setVisualizerParams={props.setVisualizerParams}
         />
-        <Accordion name='Настройки мира' defaultOpened>
-          <SubBlock name="Генофонд">
-            <FlexColumn gap={10}>
-              <FlexColumn gap={5}>
-                {Object.keys(props.enabledGenes).map(key => {
-                  return (
-                    <Checkbox
-                      title={GENES[key]!.name}
-                      value={key}
-                      key={key}
-                      checked={props.enabledGenes[key]}
-                      onChange={(value, checked) => {
-                        const newEnabledGenes = { ...props.enabledGenes };
-                        newEnabledGenes[value] = checked;
-                        props.setEnabledGenes(newEnabledGenes)
-                      }}
-                    />
-                  )
-                })}
-              </FlexColumn>
-              <FlexColumn gap={5}>
-                <WideButton onClick={enableDefaultGenes}>
-                  Вернуть стандартные
-                </WideButton>
-                <WideButton onClick={disableAllGenes}>
-                  Выключить все
-                </WideButton>
-              </FlexColumn>
-            </FlexColumn>
-          </SubBlock>
-        </Accordion>
+        <CurrentWorldSettings
+          enabledGenes={props.enabledGenes}
+          onChangeEnabledGenes={props.setEnabledGenes}
+        />
         <NewWorldForm
           newWorldProps={props.newWorldProps}
           maxBotsAmount={props.world.width * props.world.height}
