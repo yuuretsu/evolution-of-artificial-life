@@ -37,7 +37,10 @@ export class Bot implements WorldBlockDynamic {
     get narrow(): number {
         return this._narrow;
     }
-    getNormalColor(): Rgba {
+    getJustColor(): Rgba {
+        return this.color;
+    }
+    getInformativeColor(): Rgba {
         return this.color
             .interpolate(new Rgba(50, 50, 50, 255), Math.max(0, 1 - (this.energy / 10) ** (1 / 3)))
             .interpolate(this.getFamilyColor(), 0.25);

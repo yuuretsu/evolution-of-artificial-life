@@ -12,7 +12,8 @@ export interface GetColorFn<T extends unknown[] = []> {
 export type TGetColorWithParamsFn = GetColorFn<[VisualiserParams]>;
 
 export interface CanGetColor {
-  getNormalColor: GetColorFn;
+  getJustColor: GetColorFn;
+  getInformativeColor: GetColorFn;
   getFamilyColor: GetColorFn;
   getEnergyColor: TGetColorWithParamsFn;
   getAgeColor: TGetColorWithParamsFn;

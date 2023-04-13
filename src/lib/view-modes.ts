@@ -21,11 +21,11 @@ export type ViewMode = {
 const VIEW_MODES: { [key: string]: ViewMode } = {
   normal: {
     name: "Обычный",
-    blockToColor: (block) => block.getNormalColor(),
+    blockToColor: (block) => block.getJustColor(),
   },
   informative: {
     name: "Информативный",
-    blockToColor: (block) => block.getNormalColor(),
+    blockToColor: (block) => block.getInformativeColor(),
   },
   family: {
     name: "Семейства",
