@@ -3,14 +3,14 @@ import { GenePool, GeneProperty, GeneTemplate } from './types';
 import { Rgba } from 'lib/color';
 
 export class Gene {
+  constructor(public template: GeneTemplate, public property: GeneProperty) { }
+
   static random(pool: GenePool, genomeLength: number) {
     return new Gene(
       randChoice(pool) || NULL_GENE_TEMPLATE,
       randGeneProperty(genomeLength),
     );
   }
-
-  constructor(public template: GeneTemplate, public property: GeneProperty) { }
 
   mutate(pool: GenePool, genomeLength: number): Gene {
     const template = randChoice(pool) || NULL_GENE_TEMPLATE;

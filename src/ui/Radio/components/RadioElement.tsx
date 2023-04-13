@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.label`
@@ -54,14 +55,14 @@ type RadioElementProps = {
   checked?: boolean;
 };
 
-export const RadioElement = (props: RadioElementProps) => {
+export const RadioElement: FC<RadioElementProps> = (props) => {
   return (
     <Wrapper>
       <Input
         name={props.name}
         value={props.value}
         checked={props.checked}
-        onChange={(e) => props.onChange(props.value)}
+        onChange={() => props.onChange(props.value)}
       />
       {props.title}
     </Wrapper>

@@ -15,11 +15,12 @@ export type BotAbilityName = keyof typeof Bot.prototype.abilities;
 export class Bot implements WorldBlockDynamic {
   readonly isDynamic = true;
   alive = true;
-  private _narrow: number = randInt(0, 8);
   lastActions: string[] = [];
   age = 0;
   health = 0.5;
   childrenAmount = 0;
+  private _narrow: number = randInt(0, 8);
+
   constructor(
     public generation: number,
     public color: Rgba,
@@ -31,11 +32,11 @@ export class Bot implements WorldBlockDynamic {
     },
     public genome: Genome
   ) { }
-  set narrow(n: number) {
-    this._narrow = fixNumber(0, 8, n);
-  }
   get narrow(): number {
     return this._narrow;
+  }
+  set narrow(n: number) {
+    this._narrow = fixNumber(0, 8, n);
   }
   getJustColor(): Rgba {
     return this.color;

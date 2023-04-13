@@ -2,6 +2,14 @@ import { interpolate, limit, randFloat, randInt } from './helpers';
 
 export class Rgba {
   private static readonly MAX_DIF = 255 * 4;
+
+  constructor(
+    readonly red: number,
+    readonly green: number,
+    readonly blue: number,
+    readonly alpha: number
+  ) { }
+
   static randRgb() {
     return new Rgba(
       randInt(0, 256),
@@ -10,12 +18,6 @@ export class Rgba {
       255
     );
   }
-  constructor(
-    readonly red: number,
-    readonly green: number,
-    readonly blue: number,
-    readonly alpha: number
-  ) { }
   interpolate(other: Rgba, t: number): Rgba {
     return new Rgba(
       interpolate(this.red, other.red, t),

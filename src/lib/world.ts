@@ -21,12 +21,12 @@ export type WorldInfo = {
 };
 
 export abstract class World extends Grid<WorldBlock> {
+  genePool: GenePool;
   protected info: WorldInfo = {
     cycle: 0,
     dynamicBlocks: 0,
     stepTime: 0
   };
-  genePool: GenePool;
   constructor(props: NewWorldProps) {
     super(props.width, props.height);
     this.genePool = props.genePool;

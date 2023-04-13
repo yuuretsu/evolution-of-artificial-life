@@ -11,21 +11,23 @@ import { GENES } from './genes';
 import { GenePool } from './types';
 
 export class Genome {
-  private _pointer: number = 0;
   recentlyUsedGenes: Gene[] = [];
   genes: Gene[];
+  private _pointer: number = 0;
+
   constructor(length: number) {
     this.genes = new Array<Gene>(length)
       .fill(new Gene(NULL_GENE_TEMPLATE, { option: 0, branches: [0, 0] }));
   }
+
   get activeGene() {
     return this.recentlyUsedGenes.at(-1) || null;
   }
-  set pointer(n: number) {
-    this._pointer = fixNumber(0, this.genes.length, n);
-  }
   get pointer() {
     return this._pointer;
+  }
+  set pointer(n: number) {
+    this._pointer = fixNumber(0, this.genes.length, n);
   }
   fillRandom(pool: GenePool): this {
     this.genes = this.genes.map(() => Gene.random(pool, this.genes.length));

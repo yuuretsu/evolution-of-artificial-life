@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { RadioElement } from './components/RadioElement';
 import { FlexColumn } from 'ui/FlexColumn';
+import { FC } from 'react';
 
 const Wrapper = styled.div`
   display: block;
@@ -16,7 +17,7 @@ type RadioProps = {
   checked?: string;
 };
 
-export const Radio = (props: RadioProps) => {
+export const Radio: FC<RadioProps> = (props) => {
   return (
     <Wrapper>
       <FlexColumn gap={5}>
