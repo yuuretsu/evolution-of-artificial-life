@@ -4,7 +4,7 @@ import { fixNumber, limit } from "./helpers";
 import { BlockVisualiser, VisualiserParams } from "./view-modes";
 import { Bot } from "./bot";
 import { GenePool, Genome } from "./genome";
-import { IWorldBlockDynamic, TWorldBlock } from "types";
+import { WorldBlockDynamic, WorldBlock } from "types";
 
 export type NewWorldProps = {
   width: number;
@@ -20,7 +20,7 @@ export type WorldInfo = {
   stepTime: number;
 };
 
-export abstract class World extends Grid<TWorldBlock> {
+export abstract class World extends Grid<WorldBlock> {
   protected info: WorldInfo = {
     cycle: 0,
     dynamicBlocks: 0,
@@ -86,7 +86,7 @@ export class SquareWorld extends World {
   step() {
     const start = performance.now();
     // this.info.dynamicBlocks = 0;
-    const filtered: { pos: Coords; obj: IWorldBlockDynamic }[] = [];
+    const filtered: { pos: Coords; obj: WorldBlockDynamic }[] = [];
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
         const obj = this.get(x, y);

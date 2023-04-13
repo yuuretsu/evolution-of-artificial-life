@@ -27,18 +27,18 @@ export interface CanInteract {
   onVirus(bot: Bot, pool: GenePool): void;
 }
 
-export interface IWorldBlock extends CanGetColor, CanInteract {
+export interface BaseWorldBlock extends CanGetColor, CanInteract {
   age: number | null;
   Render: FC;
 }
 
-export interface IWorldBlockStatic extends IWorldBlock {
+export interface WorldBlockStatic extends BaseWorldBlock {
   isDynamic: false;
 }
 
-export interface IWorldBlockDynamic extends IWorldBlock {
+export interface WorldBlockDynamic extends BaseWorldBlock {
   isDynamic: true;
   live(x: number, y: number, world: World): void;
 }
 
-export type TWorldBlock = IWorldBlockStatic | IWorldBlockDynamic;
+export type WorldBlock = WorldBlockStatic | WorldBlockDynamic;

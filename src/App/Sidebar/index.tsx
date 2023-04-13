@@ -14,7 +14,7 @@ import { Legend } from "./components/Legend";
 import { NewWorldForm } from "./components/NewWorldForm";
 import { ViewSettings } from "./components/ViewSettings";
 import { WorldInformation } from "./components/WorldInfo";
-import { TWorldBlock } from "types";
+import { WorldBlock } from "types";
 
 interface ISidebarProps {
   readonly opened: boolean,
@@ -66,8 +66,8 @@ type SidebarProps = {
   worldInfo: WorldInfo,
   enabledGenes: { [name: string]: boolean }
   setEnabledGenes: (value: { [name: string]: boolean }) => void;
-  selectedBlock: TWorldBlock | null;
-  setSelectedBlock: (block: TWorldBlock | null) => void;
+  selectedBlock: WorldBlock | null;
+  setSelectedBlock: (block: WorldBlock | null) => void;
   onClickRestart: () => void;
 };
 

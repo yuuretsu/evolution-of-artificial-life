@@ -8,11 +8,11 @@ import { GenePool, Genome } from "./genome";
 import { fixNumber, limit, randInt } from "./helpers";
 import { VisualiserParams } from "./view-modes";
 import { World } from "./world";
-import { IWorldBlockDynamic } from "types";
+import { WorldBlockDynamic } from "types";
 
 export type BotAbilityName = keyof typeof Bot.prototype.abilities;
 
-export class Bot implements IWorldBlockDynamic {
+export class Bot implements WorldBlockDynamic {
     readonly isDynamic = true;
     alive = true;
     private _narrow: number = randInt(0, 8);
