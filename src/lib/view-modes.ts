@@ -1,6 +1,6 @@
 import Rgba from "./color";
-import { WorldBlock } from "./block";
 import { GENES } from "./genome";
+import { TWorldBlock } from "types";
 
 export type VisualiserParams = {
   ageDivider: number;
@@ -9,7 +9,7 @@ export type VisualiserParams = {
 };
 
 export type BlockVisualiser = (
-  block: WorldBlock,
+  block: TWorldBlock,
   params: VisualiserParams
 ) => Rgba | null;
 
@@ -21,15 +21,15 @@ export type ViewMode = {
 const VIEW_MODES: { [key: string]: ViewMode } = {
   normal: {
     name: "Обычный",
-    blockToColor: (block, params) => block.color,
+    blockToColor: (block) => block.getNormalColor(),
   },
   informative: {
     name: "Информативный",
-    blockToColor: (block, params) => block.getNormalColor(),
+    blockToColor: (block) => block.getNormalColor(),
   },
   family: {
     name: "Семейства",
-    blockToColor: (block, params) => block.getFamilyColor(),
+    blockToColor: (block) => block.getFamilyColor(),
   },
   age: {
     name: "Возраст",
@@ -55,20 +55,20 @@ const VIEW_MODES: { [key: string]: ViewMode } = {
   },
   childrenAmount: {
     name: "Количество потомков",
-    blockToColor: (block, params) => {
-      return block.getChildrenAmountColor(params);
+    blockToColor: (block) => {
+      return block.getChildrenAmountColor();
     },
   },
   ability: {
     name: "Специализация в питании",
-    blockToColor: (block, params) => {
+    blockToColor: (block) => {
       return block.getAbilityColor();
     },
   },
   health: {
     name: "Здоровье",
     blockToColor: (block, params) => {
-      return block.getHealthColor();
+      return block.getHealthColor(params);
     },
   },
 };

@@ -10,7 +10,6 @@ import {
   SquareWorld,
   World, WorldInfo, NewWorldProps
 } from "lib/world";
-import { WorldBlock } from "lib/block";
 import {
   GENES, enabledGenesToPool
 } from "lib/genome";
@@ -20,6 +19,7 @@ import { appStore } from "stores/app";
 import { useEventListener, useInterval } from "usehooks-ts";
 import GameImage from "./Viewer/GameImage";
 import { PIXEL_SIZE } from "settings";
+import { TWorldBlock } from "types";
 
 const initialEnabledGenes: { [geneName: string]: boolean } = {};
 for (const name in GENES) {
@@ -56,7 +56,7 @@ export const App: FC = observer(() => {
   const [image, setImage] = useState<HTMLCanvasElement>(initWorldImage);
   const [worldInfo, setWorldInfo] = useState<WorldInfo>(initWorldInfo);
   const [enabledGenes, setEnabledGenes] = useState(initialEnabledGenes);
-  const [selectedBlock, setSelectedBlock] = useState<WorldBlock | null>(null);
+  const [selectedBlock, setSelectedBlock] = useState<TWorldBlock | null>(null);
 
   const currentViewMode = VIEW_MODES[appStore.viewModeName.current]!;
 

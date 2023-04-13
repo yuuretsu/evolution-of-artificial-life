@@ -2,9 +2,9 @@ import Rgba from "./color";
 import Grid, { Coords } from "./grid";
 import { fixNumber, limit } from "./helpers";
 import { BlockVisualiser, VisualiserParams } from "./view-modes";
-import { WorldBlock, DynamicBlock } from "./block";
 import { Bot } from "./bot";
 import { GenePool, Genome } from "./genome";
+import { IWorldBlockDynamic, TWorldBlock } from "types";
 
 export type NewWorldProps = {
   width: number;
@@ -20,7 +20,7 @@ export type WorldInfo = {
   stepTime: number;
 };
 
-export abstract class World extends Grid<WorldBlock> {
+export abstract class World extends Grid<TWorldBlock> {
   protected info: WorldInfo = {
     cycle: 0,
     dynamicBlocks: 0,
@@ -86,11 +86,11 @@ export class SquareWorld extends World {
   step() {
     const start = performance.now();
     // this.info.dynamicBlocks = 0;
-    const filtered: { pos: Coords; obj: DynamicBlock }[] = [];
+    const filtered: { pos: Coords; obj: IWorldBlockDynamic }[] = [];
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
         const obj = this.get(x, y);
-        if (obj instanceof DynamicBlock) filtered.push({ pos: [x, y], obj });
+        if (obj?.isDynamic) filtered.push({ pos: [x, y], obj });
       }
     }
     // filtered.sort(() => Math.random() - 0.5);
@@ -99,7 +99,7 @@ export class SquareWorld extends World {
       object.obj.live(...object.pos, this);
     }
     this.info.dynamicBlocks = this.flat().filter(
-      (value) => value instanceof DynamicBlock
+      (value) => value?.isDynamic
     ).length;
     this.info.cycle++;
     this.info.stepTime = performance.now() - start;

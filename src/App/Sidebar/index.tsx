@@ -1,4 +1,3 @@
-import { WorldBlock } from "lib/block";
 import { VisualiserParams } from "lib/view-modes";
 import { NewWorldProps, World, WorldInfo } from "lib/world";
 import { observer } from "mobx-react";
@@ -15,6 +14,7 @@ import { Legend } from "./components/Legend";
 import { NewWorldForm } from "./components/NewWorldForm";
 import { ViewSettings } from "./components/ViewSettings";
 import { WorldInformation } from "./components/WorldInfo";
+import { TWorldBlock } from "types";
 
 interface ISidebarProps {
   readonly opened: boolean,
@@ -66,8 +66,8 @@ type SidebarProps = {
   worldInfo: WorldInfo,
   enabledGenes: { [name: string]: boolean }
   setEnabledGenes: (value: { [name: string]: boolean }) => void;
-  selectedBlock: WorldBlock | null;
-  setSelectedBlock: (block: WorldBlock | null) => void;
+  selectedBlock: TWorldBlock | null;
+  setSelectedBlock: (block: TWorldBlock | null) => void;
   onClickRestart: () => void;
 };
 

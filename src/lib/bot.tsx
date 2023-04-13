@@ -3,16 +3,17 @@ import { useEffect, useState } from "react";
 import { MAX_BOT_AGE } from "settings";
 import styled from "styled-components";
 import { Accordion, InputNumberSmall } from "ui";
-import { DynamicBlock } from "./block";
 import Rgba from "./color";
 import { GenePool, Genome } from "./genome";
 import { fixNumber, limit, randInt } from "./helpers";
 import { VisualiserParams } from "./view-modes";
 import { World } from "./world";
+import { IWorldBlockDynamic } from "types";
 
 export type BotAbilityName = keyof typeof Bot.prototype.abilities;
 
-export class Bot extends DynamicBlock {
+export class Bot implements IWorldBlockDynamic {
+    readonly isDynamic = true;
     alive = true;
     private _narrow: number = randInt(0, 8);
     lastActions: string[] = [];
@@ -21,7 +22,7 @@ export class Bot extends DynamicBlock {
     childrenAmount = 0;
     constructor(
         public generation: number,
-        color: Rgba,
+        public color: Rgba,
         public familyColor: Rgba,
         public energy: number,
         public abilities: {
@@ -29,9 +30,7 @@ export class Bot extends DynamicBlock {
             attack: number
         },
         public genome: Genome
-    ) {
-        super(color);
-    }
+    ) { }
     set narrow(n: number) {
         this._narrow = fixNumber(0, 8, n);
     }
@@ -70,7 +69,7 @@ export class Bot extends DynamicBlock {
             ? maybeColor
             : new Rgba(20, 20, 20, 255);
     }
-    getChildrenAmountColor(params: VisualiserParams): Rgba | null {
+    getChildrenAmountColor(): Rgba | null {
         return new Rgba(20, 20, 150, 255)
             .interpolate(
                 new Rgba(255, 0, 0, 255),
