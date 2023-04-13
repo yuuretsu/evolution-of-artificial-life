@@ -1,25 +1,27 @@
-import { FC, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
-import VIEW_MODES, {
-  initVisualizerParams,
-  VisualiserParams
-} from 'lib/view-modes';
-import Sidebar from './Sidebar';
-import Viewer from './Viewer';
-import {
-  SquareWorld,
-  World, WorldInfo, NewWorldProps
-} from 'lib/world';
 import {
   GENES, enabledGenesToPool
 } from 'lib/genome';
-import { Controls } from './Controls';
+import {
+  VIEW_MODES,
+  VisualiserParams,
+  initVisualizerParams
+} from 'lib/view-modes';
+import {
+  NewWorldProps,
+  SquareWorld,
+  World, WorldInfo
+} from 'lib/world';
 import { observer } from 'mobx-react';
-import { appStore } from 'stores/app';
-import { useEventListener, useInterval } from 'usehooks-ts';
-import GameImage from './Viewer/GameImage';
+import { FC, useEffect, useRef, useState } from 'react';
 import { PIXEL_SIZE } from 'settings';
+import { appStore } from 'stores/app';
+import styled from 'styled-components';
 import { WorldBlock } from 'types';
+import { useEventListener, useInterval } from 'usehooks-ts';
+import { Controls } from './Controls';
+import Sidebar from './Sidebar';
+import Viewer from './Viewer';
+import GameImage from './Viewer/GameImage';
 
 const initialEnabledGenes: { [geneName: string]: boolean } = {};
 for (const name in GENES) {

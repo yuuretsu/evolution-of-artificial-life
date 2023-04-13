@@ -1,6 +1,6 @@
-import { limit, randChoice, randFloat, randInt } from "lib/helpers";
-import { GenePool, GeneProperty, GeneTemplate } from "./types";
-import Rgba from "lib/color";
+import { limit, randChoice, randFloat, randInt } from 'lib/helpers';
+import { GenePool, GeneProperty, GeneTemplate } from './types';
+import { Rgba } from 'lib/color';
 
 export class Gene {
   static random(pool: GenePool, genomeLength: number) {
@@ -32,17 +32,17 @@ function randGeneProperty(genomeLength: number): GeneProperty {
       randInt(0, genomeLength),
       randInt(0, genomeLength),
     ]
-  }
+  };
 }
 
 export const NULL_GENE_TEMPLATE: GeneTemplate = {
   name: 'Пустой ген',
-  description: `Ничего не происходит`,
+  description: 'Ничего не происходит',
   defaultEnabled: false,
   color: new Rgba(127, 127, 127, 255),
   colorInfluence: 0.01,
   action: () => {
-    return { completed: true, goto: null, msg: `Бездействие` };
+    return { completed: true, goto: null, msg: 'Бездействие' };
   }
 };
 

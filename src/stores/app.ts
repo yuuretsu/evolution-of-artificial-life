@@ -1,4 +1,4 @@
-import VIEW_MODES from 'lib/view-modes';
+import { VIEW_MODES } from 'lib/view-modes';
 import { makeAutoObservable } from 'mobx';
 import { ValueStore } from 'stores';
 

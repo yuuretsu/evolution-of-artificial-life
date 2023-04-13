@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { MAX_BOT_AGE } from 'settings';
 import styled from 'styled-components';
 import { Accordion, InputNumberSmall } from 'ui';
-import Rgba from './color';
+import { Rgba } from './color';
 import { GenePool, Genome } from './genome';
 import { fixNumber, limit, randInt } from './helpers';
 import { VisualiserParams } from './view-modes';

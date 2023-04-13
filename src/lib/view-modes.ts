@@ -1,4 +1,4 @@
-import Rgba from './color';
+import { Rgba } from './color';
 import { GENES } from './genome';
 import { WorldBlock } from 'types';
 
@@ -18,7 +18,7 @@ export type ViewMode = {
   blockToColor: BlockVisualiser;
 };
 
-const VIEW_MODES: { [key: string]: ViewMode } = {
+export const VIEW_MODES: { [key: string]: ViewMode } = {
   normal: {
     name: 'Обычный',
     blockToColor: (block) => block.getJustColor(),
@@ -94,5 +94,3 @@ export const initVisualizerParams: VisualiserParams = {
       };
   }, {})
 };
-
-export default VIEW_MODES;

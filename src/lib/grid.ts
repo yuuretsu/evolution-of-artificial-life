@@ -4,7 +4,7 @@ export type Coords = [number, number];
 
 type CallbackFn<T, U> = (obj: T | undefined, x: number, y: number) => U;
 
-export default class Grid<T> {
+export class Grid<T> {
   private readonly cells: (T | undefined)[][];
   constructor(
     readonly width: number,

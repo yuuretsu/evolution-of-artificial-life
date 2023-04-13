@@ -33,6 +33,13 @@
       "error",
       "always"
     ],
-    "prefer-const": "error"
+    "prefer-const": "error",
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "ExportDefaultDeclaration",
+        "message": "Prefer named exports"
+      }
+    ]
   }
 }

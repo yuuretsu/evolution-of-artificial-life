@@ -1,5 +1,5 @@
-import Rgba from './color';
-import Grid, { Coords } from './grid';
+import { Rgba } from './color';
+import { Coords, Grid } from './grid';
 import { fixNumber, limit } from './helpers';
 import { BlockVisualiser, VisualiserParams } from './view-modes';
 import { Bot } from './bot';

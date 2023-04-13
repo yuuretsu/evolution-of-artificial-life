@@ -1,4 +1,4 @@
-import Rgba from 'lib/color';
+import { Rgba } from 'lib/color';
 import { Genome } from 'lib/genome';
 
 export interface CanInteract {
