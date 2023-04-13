@@ -29,7 +29,7 @@ export interface CanInteract {
 }
 
 export interface BaseWorldBlock extends CanGetColor, CanInteract {
-  age: number | null;
+  age: number;
   Render: FC;
 }
 
