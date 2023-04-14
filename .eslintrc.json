@@ -7,7 +7,8 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 5,
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "./tsconfig.json"
   },
   "settings": {
     "react": {
@@ -50,6 +51,7 @@
     "@typescript-eslint/consistent-indexed-object-style": "warn",
     "@typescript-eslint/member-ordering": "warn",
     "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/restrict-plus-operands": "error",
     "react/hook-use-state": "warn",
     "react/jsx-closing-bracket-location": "warn",
     "react/jsx-key": "warn"
