@@ -46,7 +46,7 @@ export abstract class World extends Grid<WorldBlock> {
 }
 
 export class SquareWorld extends World {
-  static readonly moore_neighbourhood: Coords[] = [
+  static readonly mooreNeighbourhood: Coords[] = [
     [-1, -1],
     [0, -1],
     [1, -1],
@@ -76,8 +76,8 @@ export class SquareWorld extends World {
   }
   narrowToCoords(x: number, y: number, narrow: number, length: number) {
     narrow = fixNumber(0, 8, narrow);
-    const x2 = x + SquareWorld.moore_neighbourhood[narrow]![0] * length;
-    const y2 = y + SquareWorld.moore_neighbourhood[narrow]![1] * length;
+    const x2 = x + SquareWorld.mooreNeighbourhood[narrow]![0] * length;
+    const y2 = y + SquareWorld.mooreNeighbourhood[narrow]![1] * length;
     return this.fixCoords(x2, y2);
   }
   getInfo() {
