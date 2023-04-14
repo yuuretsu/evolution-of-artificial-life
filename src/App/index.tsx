@@ -1,22 +1,26 @@
 import {
   GENES, enabledGenesToPool
 } from 'lib/genome';
+import type {
+  VisualiserParams} from 'lib/view-modes';
 import {
   VIEW_MODES,
-  VisualiserParams,
   initVisualizerParams
 } from 'lib/view-modes';
-import {
+import type {
   NewWorldProps,
-  SquareWorld,
   World, WorldInfo
 } from 'lib/world';
+import {
+  SquareWorld
+} from 'lib/world';
 import { observer } from 'mobx-react';
-import { FC, useEffect, useRef, useState } from 'react';
+import type { FC} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PIXEL_SIZE } from 'settings';
 import { appStore } from 'stores/app';
 import styled from 'styled-components';
-import { WorldBlock } from 'types';
+import type { WorldBlock } from 'types';
 import { useEventListener, useInterval } from 'usehooks-ts';
 import { Controls } from './Controls';
 import { Sidebar } from './Sidebar';

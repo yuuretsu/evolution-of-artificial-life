@@ -1,7 +1,7 @@
 import { Rgba } from 'lib/color';
 import { GENES } from 'lib/genome';
 import { observer } from 'mobx-react';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { Accordion, FlexColumn } from 'ui';
 
 export const Legend: FC = observer(() => {

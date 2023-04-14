@@ -53,8 +53,10 @@
     "@typescript-eslint/member-ordering": "warn",
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/restrict-plus-operands": "error",
+    "@typescript-eslint/consistent-type-imports": "warn",
     "react/hook-use-state": "warn",
     "react/jsx-closing-bracket-location": "warn",
-    "react/jsx-key": "warn"
+    "react/jsx-key": "warn",
+    "react/self-closing-comp": "warn"
   }
 }

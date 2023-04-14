@@ -1,4 +1,5 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import type { FC} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PIXEL_SIZE } from 'settings';
 import styled, { keyframes } from 'styled-components';
 

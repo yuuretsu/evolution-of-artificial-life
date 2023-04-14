@@ -1,10 +1,12 @@
-import { Rgba } from './color';
-import { Coords, Grid } from './grid';
-import { fixNumber, limit } from './helpers';
-import { BlockVisualiser, VisualiserParams } from './view-modes';
+import type { WorldBlock, WorldBlockDynamic } from 'types';
 import { Bot } from './bot';
-import { GenePool, Genome } from './genome';
-import { WorldBlockDynamic, WorldBlock } from 'types';
+import { Rgba } from './color';
+import type { GenePool } from './genome';
+import { Genome } from './genome';
+import type { Coords } from './grid';
+import { Grid } from './grid';
+import { fixNumber, limit } from './helpers';
+import type { BlockVisualiser, VisualiserParams } from './view-modes';
 
 export type NewWorldProps = {
   width: number;

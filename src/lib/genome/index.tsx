@@ -1,14 +1,14 @@
 import { GenomeVisualizer } from 'App/Sidebar/GenomeVisualizer';
 import { FlexColumn, SubBlock } from 'ui';
-import { Bot } from 'lib/bot';
-import { World } from 'lib/world';
+import type { Bot } from 'lib/bot';
+import type { World } from 'lib/world';
 import { useEffect, useState } from 'react';
 import { MAX_ACTIONS } from 'settings';
 import { Accordion, DropdownSmall, InputNumberSmall, WideButton } from 'ui';
 import { fixNumber, limit } from '../helpers';
 import { Gene, NULL_GENE, NULL_GENE_TEMPLATE } from './gene';
 import { GENES } from './genes';
-import { GenePool } from './types';
+import type { GenePool } from './types';
 
 export class Genome {
   recentlyUsedGenes: Gene[] = [];

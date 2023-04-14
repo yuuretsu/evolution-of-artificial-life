@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { Gene, Genome } from 'lib/genome';
-import { GeneCell } from './GeneCell';
+import type { Gene, Genome } from 'lib/genome';
 import { GENE_CELL_SIZE_PX } from 'settings';
+import styled from 'styled-components';
+import { GeneCell } from './GeneCell';
 
 const GenomeWrapper = styled.div`
   box-sizing: border-box;

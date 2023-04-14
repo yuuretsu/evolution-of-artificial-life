@@ -1,6 +1,6 @@
-import { Rgba } from 'lib/color';
-import { Bot } from 'lib/bot';
-import { World } from 'lib/world';
+import type { Rgba } from 'lib/color';
+import type { Bot } from 'lib/bot';
+import type { World } from 'lib/world';
 
 export type GeneTemplate = {
   name: string,

@@ -1,7 +1,7 @@
 import { limit } from 'lib/helpers';
-import { NewWorldProps } from 'lib/world';
+import type { NewWorldProps } from 'lib/world';
 import { observer } from 'mobx-react';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { Accordion, FlexColumn, InputNumber, SubBlock, WideButton } from 'ui';
 
 export interface INewWorldProps {

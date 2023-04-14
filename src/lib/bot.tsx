@@ -4,11 +4,11 @@ import { MAX_BOT_AGE } from 'settings';
 import styled from 'styled-components';
 import { Accordion, InputNumberSmall } from 'ui';
 import { Rgba } from './color';
-import { GenePool, Genome } from './genome';
+import type { GenePool, Genome } from './genome';
 import { fixNumber, limit, randInt } from './helpers';
-import { VisualiserParams } from './view-modes';
-import { World } from './world';
-import { WorldBlockDynamic } from 'types';
+import type { VisualiserParams } from './view-modes';
+import type { World } from './world';
+import type { WorldBlockDynamic } from 'types';
 
 export type BotAbilityName = keyof typeof Bot.prototype.abilities;
 

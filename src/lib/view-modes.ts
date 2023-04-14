@@ -1,6 +1,6 @@
 import { Rgba } from './color';
 import { GENES } from './genome';
-import { WorldBlock } from 'types';
+import type { WorldBlock } from 'types';
 
 export type VisualiserParams = {
   ageDivider: number;

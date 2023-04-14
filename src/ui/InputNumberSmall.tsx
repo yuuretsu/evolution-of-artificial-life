@@ -1,4 +1,5 @@
-import { ChangeEventHandler, FC, FocusEventHandler, useRef } from 'react';
+import type { ChangeEventHandler, FC, FocusEventHandler} from 'react';
+import { useRef } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`

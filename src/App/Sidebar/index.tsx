@@ -1,5 +1,5 @@
-import { VisualiserParams } from 'lib/view-modes';
-import { NewWorldProps, World, WorldInfo } from 'lib/world';
+import type { VisualiserParams } from 'lib/view-modes';
+import type { NewWorldProps, World, WorldInfo } from 'lib/world';
 import { observer } from 'mobx-react';
 import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_PADDING, SIDEBAR_WIDTH } from 'settings';
 import { sidebarStore } from 'stores/sidebar';
@@ -14,8 +14,8 @@ import { Legend } from './components/Legend';
 import { NewWorldForm } from './components/NewWorldForm';
 import { ViewSettings } from './components/ViewSettings';
 import { WorldInformation } from './components/WorldInfo';
-import { WorldBlock } from 'types';
-import { FC } from 'react';
+import type { WorldBlock } from 'types';
+import type { FC } from 'react';
 
 interface ISidebarProps {
   readonly opened: boolean,

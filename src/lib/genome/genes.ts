@@ -1,5 +1,5 @@
 import { Rgba } from 'lib/color';
-import { GenePool, GeneTemplate } from './types';
+import type { GenePool, GeneTemplate } from './types';
 import { interpolate } from 'lib/helpers';
 
 export function enabledGenesToPool(genes: Record<string, boolean>): GenePool {
