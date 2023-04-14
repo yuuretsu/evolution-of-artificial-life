@@ -1,31 +1,34 @@
 import {
   GENES, enabledGenesToPool
 } from 'lib/genome';
-import type {
-  VisualiserParams} from 'lib/view-modes';
 import {
   VIEW_MODES,
   initVisualizerParams
+} from 'lib/view-modes';
+import {
+  SquareWorld
+} from 'lib/world';
+import { observer } from 'mobx-react';
+import { useEffect, useRef, useState } from 'react';
+import { PIXEL_SIZE } from 'settings';
+import { appStore } from 'stores/app';
+import styled from 'styled-components';
+import { useEventListener, useInterval } from 'usehooks-ts';
+
+import { Controls } from './Controls';
+import { Sidebar } from './Sidebar';
+import { Viewer } from './Viewer';
+import { GameImage } from './Viewer/GameImage';
+
+import type {
+  VisualiserParams
 } from 'lib/view-modes';
 import type {
   NewWorldProps,
   World, WorldInfo
 } from 'lib/world';
-import {
-  SquareWorld
-} from 'lib/world';
-import { observer } from 'mobx-react';
-import type { FC} from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { PIXEL_SIZE } from 'settings';
-import { appStore } from 'stores/app';
-import styled from 'styled-components';
+import type { FC } from 'react';
 import type { WorldBlock } from 'types';
-import { useEventListener, useInterval } from 'usehooks-ts';
-import { Controls } from './Controls';
-import { Sidebar } from './Sidebar';
-import { Viewer } from './Viewer';
-import { GameImage } from './Viewer/GameImage';
 
 const initialEnabledGenes: Record<string, boolean> = {};
 for (const name in GENES) {

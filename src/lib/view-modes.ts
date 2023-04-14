@@ -1,5 +1,6 @@
 import { Rgba } from './color';
 import { GENES } from './genome';
+
 import type { WorldBlock } from 'types';
 
 export type VisualiserParams = {

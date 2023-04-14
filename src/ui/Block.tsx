@@ -1,5 +1,6 @@
-import type { FC, ReactNode } from 'react';
 import styled from 'styled-components';
+
+import type { FC, ReactNode } from 'react';
 
 const Title = styled.div`
   font-weight: bold;

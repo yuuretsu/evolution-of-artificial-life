@@ -1,9 +1,10 @@
-import type { VisualiserParams} from 'lib/view-modes';
 import { viewModesList } from 'lib/view-modes';
 import { observer } from 'mobx-react';
-import type { FC } from 'react';
 import { appStore } from 'stores/app';
 import { Accordion, Checkbox, FlexColumn, InputRange, OptionalBlock, Radio, SubBlock, WideButton } from 'ui';
+
+import type { VisualiserParams} from 'lib/view-modes';
+import type { FC } from 'react';
 
 export interface IViewSettingsProps {
   visualizerParams: VisualiserParams;

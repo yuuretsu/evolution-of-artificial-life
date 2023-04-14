@@ -1,7 +1,8 @@
 import { GENES } from 'lib/genome';
 import { observer } from 'mobx-react';
-import type { FC } from 'react';
 import { Accordion, Checkbox, FlexColumn, SubBlock, WideButton } from 'ui';
+
+import type { FC } from 'react';
 
 export interface ICurrentWorldSettingsProps {
   enabledGenes: Record<string, boolean>;

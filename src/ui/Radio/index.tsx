@@ -1,6 +1,8 @@
 import styled from 'styled-components';
-import { RadioElement } from './components/RadioElement';
 import { FlexColumn } from 'ui/FlexColumn';
+
+import { RadioElement } from './components/RadioElement';
+
 import type { FC } from 'react';
 
 const Wrapper = styled.div`

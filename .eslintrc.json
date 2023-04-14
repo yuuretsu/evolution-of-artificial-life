@@ -17,7 +17,8 @@
   },
   "plugins": [
     "react",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "import"
   ],
   "rules": {
     "indent": [
@@ -57,6 +58,21 @@
     "react/hook-use-state": "warn",
     "react/jsx-closing-bracket-location": "warn",
     "react/jsx-key": "warn",
-    "react/self-closing-comp": "warn"
+    "react/self-closing-comp": "warn",
+    "import/order": [
+      "warn",
+      {
+        "newlines-between": "always",
+        "groups": [
+          "builtin",
+          "external",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+          "type"
+        ]
+      }
+    ]
   }
 }

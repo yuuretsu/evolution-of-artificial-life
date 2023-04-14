@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
-import type { FC } from 'react';
 import { Accordion, FlexColumn } from 'ui';
+
+import type { FC } from 'react';
 
 export interface IWorldInformationProps {
   cycle: number;

@@ -1,5 +1,6 @@
-import type { FC, ReactNode } from 'react';
 import styled, { keyframes } from 'styled-components';
+
+import type { FC, ReactNode } from 'react';
 
 const anim = keyframes`
   from {

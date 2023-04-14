@@ -1,6 +1,7 @@
-import { limit, randChoice, randFloat, randInt } from 'lib/helpers';
-import type { GenePool, GeneProperty, GeneTemplate } from './types';
 import { Rgba } from 'lib/color';
+import { limit, randChoice, randFloat, randInt } from 'lib/helpers';
+
+import type { GenePool, GeneProperty, GeneTemplate } from './types';
 
 export class Gene {
   constructor(public template: GeneTemplate, public property: GeneProperty) { }

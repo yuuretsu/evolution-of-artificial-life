@@ -1,11 +1,13 @@
-import { SubBlock } from 'ui';
 import { useEffect, useState } from 'react';
 import { MAX_BOT_AGE } from 'settings';
 import styled from 'styled-components';
+import { SubBlock } from 'ui';
 import { Accordion, InputNumberSmall } from 'ui';
+
 import { Rgba } from './color';
-import type { GenePool, Genome } from './genome';
 import { fixNumber, limit, randInt } from './helpers';
+
+import type { GenePool, Genome } from './genome';
 import type { VisualiserParams } from './view-modes';
 import type { World } from './world';
 import type { WorldBlockDynamic } from 'types';

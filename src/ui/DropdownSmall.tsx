@@ -1,7 +1,8 @@
-import type { FC} from 'react';
 import { useState } from 'react';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import styled, { keyframes } from 'styled-components';
+
+import type { FC} from 'react';
 
 const Wrapper = styled.div`
   position: relative;

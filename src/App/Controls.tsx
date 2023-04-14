@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react';
-import type { FC } from 'react';
 import {
   MdClose,
   MdMenu,
@@ -14,6 +13,8 @@ import { appStore } from 'stores/app';
 import { sidebarStore } from 'stores/sidebar';
 import styled from 'styled-components';
 import { CircleButton, CIRCLE_BUTTON_ICON_STYLE } from 'ui';
+
+import type { FC } from 'react';
 
 const Wrapper = styled.div`
   position: fixed;

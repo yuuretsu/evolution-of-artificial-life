@@ -1,5 +1,6 @@
-import type { FC } from 'react';
 import styled from 'styled-components';
+
+import type { FC } from 'react';
 
 const Wrapper = styled.label`
   display: block;

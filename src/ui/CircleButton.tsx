@@ -1,5 +1,6 @@
-import type { CSSProperties } from 'react';
 import styled, { keyframes } from 'styled-components';
+
+import type { CSSProperties } from 'react';
 
 const animation = keyframes`
   0% {
