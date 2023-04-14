@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FlexColumn } from 'ui/FlexColumn';
+import { FlexColumn } from 'ui';
 
 import { RadioElement } from './components/RadioElement';
 
