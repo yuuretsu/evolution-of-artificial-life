@@ -69,8 +69,6 @@ export class Genome {
     const [option, setOption] = useState<number | string>(0);
     const [branches, setBranches] = useState<Array<number | string>>([0, 0]);
 
-    const activeGene = this.recentlyUsedGenes[this.recentlyUsedGenes.length - 1];
-
     useEffect(() => {
       setGenes(this.genes);
       setSelectedGene(null);

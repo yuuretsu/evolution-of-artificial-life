@@ -49,6 +49,7 @@
     "@typescript-eslint/ban-types": "error",
     "@typescript-eslint/consistent-indexed-object-style": "warn",
     "@typescript-eslint/member-ordering": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
     "react/hook-use-state": "warn",
     "react/jsx-closing-bracket-location": "warn",
     "react/jsx-key": "warn"
