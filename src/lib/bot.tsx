@@ -168,67 +168,72 @@ export class Bot implements WorldBlockDynamic {
           <b>Бот</b>
         </SubBlock>
         <SubBlock>
-          {this.alive ? <div>
-            <InputNumberSmall
-              name='Возраст'
-              value={age}
-              onChange={e => {
-                const age = e.target.value;
-                setAge(age);
+          {this.alive ? (
+            <div>
+              <InputNumberSmall
+                name='Возраст'
+                value={age}
+                onChange={e => {
+                  const age = e.target.value;
+                  setAge(age);
+                }}
+                onBlur={e => {
+                  const age = e.target.value;
+                  if (age.length > 0) {
+                    this.age = parseFloat(age);
+                  }
+                  setAge(this.age);
+                }}
+              />
+              <InputNumberSmall
+                name='Здоровье'
+                value={health}
+                onChange={e => {
+                  const health = e.target.value;
+                  setHealth(health);
+                }}
+                onBlur={e => {
+                  const health = e.target.value;
+                  if (health.length > 0) {
+                    this.health = parseFloat(health);
+                  }
+                  setHealth(this.health);
+                }}
+              />
+              <InputNumberSmall
+                name='Энергия'
+                value={energy}
+                onChange={e => {
+                  const energy = e.target.value;
+                  setEnergy(energy);
+                }}
+                onBlur={e => {
+                  const energy = e.target.value;
+                  if (energy.length > 0) {
+                    this.energy = parseFloat(energy);
+                  }
+                  setEnergy(this.energy);
+                }}
+              />
+              <div>Потомков: {this.childrenAmount}</div>
+              <div>Направление: {narrowToName(this.narrow)}</div>
+              <div>Поколение: {this.generation}</div>
+            </div>
+          ) : (
+            <div
+              style={{
+                color: 'red',
+                backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                fontWeight: 'bold',
+                textAlign: 'center',
+                border: '2px solid red',
+                lineHeight: '50px',
+                borderRadius: '5px',
               }}
-              onBlur={e => {
-                const age = e.target.value;
-                if (age.length > 0) {
-                  this.age = parseFloat(age);
-                }
-                setAge(this.age);
-              }}
-            />
-            <InputNumberSmall
-              name='Здоровье'
-              value={health}
-              onChange={e => {
-                const health = e.target.value;
-                setHealth(health);
-              }}
-              onBlur={e => {
-                const health = e.target.value;
-                if (health.length > 0) {
-                  this.health = parseFloat(health);
-                }
-                setHealth(this.health);
-              }}
-            />
-            <InputNumberSmall
-              name='Энергия'
-              value={energy}
-              onChange={e => {
-                const energy = e.target.value;
-                setEnergy(energy);
-              }}
-              onBlur={e => {
-                const energy = e.target.value;
-                if (energy.length > 0) {
-                  this.energy = parseFloat(energy);
-                }
-                setEnergy(this.energy);
-              }}
-            />
-            <div>Потомков: {this.childrenAmount}</div>
-            <div>Направление: {narrowToName(this.narrow)}</div>
-            <div>Поколение: {this.generation}</div>
-          </div> : <div
-            style={{
-              color: 'red',
-              backgroundColor: 'rgba(255, 0, 0, 0.1)',
-              fontWeight: 'bold',
-              textAlign: 'center',
-              border: '2px solid red',
-              lineHeight: '50px',
-              borderRadius: '5px',
-            }}>
-            Этот бот мёртв
-          </div>}
+            >
+              Этот бот мёртв
+            </div>
+          )}
         </SubBlock>
         <SubBlock>
           <this.genome.Render />

@@ -9,6 +9,11 @@
     "ecmaVersion": 5,
     "sourceType": "module"
   },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "plugins": [
     "react",
     "@typescript-eslint"
@@ -43,6 +48,9 @@
     ],
     "@typescript-eslint/ban-types": "error",
     "@typescript-eslint/consistent-indexed-object-style": "warn",
-    "@typescript-eslint/member-ordering": "warn"
+    "@typescript-eslint/member-ordering": "warn",
+    "react/hook-use-state": "warn",
+    "react/jsx-closing-bracket-location": "warn",
+    "react/jsx-key": "warn"
   }
 }

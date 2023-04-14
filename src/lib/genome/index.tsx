@@ -84,80 +84,84 @@ export class Genome {
     return (
       <FlexColumn gap={10}>
         <Accordion name="Ген" small defaultOpened>
-          {selectedGene ? <>
-            <FlexColumn gap={5}>
-              <div>
-
-                <DropdownSmall
-                  name={selectedGene.gene.template.name}
-                  list={Object.keys(GENES).map(key => {
-                    return { value: key, title: GENES[key]?.name || NULL_GENE_TEMPLATE.name };
-                  })}
-                  onChange={value => {
-                    selectedGene.gene.template = GENES[value] || NULL_GENE_TEMPLATE;
-                    this.genes = [...genes];
-                    setGenes(this.genes);
-                  }}
-                />
-                <InputNumberSmall
-                  name={'Параметр'}
-                  value={option.toString()}
-                  onChange={e => {
-                    setOption(e.target.value);
-                  }}
-                  onBlur={e => {
-                    const value = e.target.value;
-                    if (value.length > 0) {
-                      selectedGene.gene.property.option = limit(
-                        0,
-                        1,
-                        parseFloat(value)
+          {selectedGene ? (
+            <>
+              <FlexColumn gap={5}>
+                <div>
+                  <DropdownSmall
+                    name={selectedGene.gene.template.name}
+                    list={Object.keys(GENES).map(key => {
+                      return { value: key, title: GENES[key]?.name || NULL_GENE_TEMPLATE.name };
+                    })}
+                    onChange={value => {
+                      selectedGene.gene.template = GENES[value] || NULL_GENE_TEMPLATE;
+                      this.genes = [...genes];
+                      setGenes(this.genes);
+                    }}
+                  />
+                  <InputNumberSmall
+                    name={'Параметр'}
+                    value={option.toString()}
+                    onChange={e => {
+                      setOption(e.target.value);
+                    }}
+                    onBlur={e => {
+                      const value = e.target.value;
+                      if (value.length > 0) {
+                        selectedGene.gene.property.option = limit(
+                          0,
+                          1,
+                          parseFloat(value)
+                        );
+                      }
+                      setOption(selectedGene.gene.property.option);
+                    }}
+                  />
+                  {branches && selectedGene
+                    .gene
+                    .property
+                    .branches
+                    .map((value, i) => {
+                      return (
+                        <InputNumberSmall
+                          name={`Ветка ${i + 1}`}
+                          key={i}
+                          value={branches[i]}
+                          onChange={e => {
+                            const value = e.target.value;
+                            const newBranches = [...branches];
+                            newBranches[i] = value;
+                            setBranches(newBranches);
+                          }}
+                          onBlur={e => {
+                            const value = e.target.value;
+                            if (value.length > 0) {
+                              selectedGene.gene.property.branches[i] = fixNumber(
+                                0,
+                                this.genes.length,
+                                parseInt(value)
+                              );
+                            }
+                            setBranches(selectedGene.gene.property.branches);
+                          }}
+                        />
                       );
-                    }
-                    setOption(selectedGene.gene.property.option);
-                  }}
-                />
-                {branches && selectedGene
-                  .gene
-                  .property
-                  .branches
-                  .map((value, i) => {
-                    return (
-                      <InputNumberSmall
-                        name={`Ветка ${i + 1}`}
-                        key={i}
-                        value={branches[i]}
-                        onChange={e => {
-                          const value = e.target.value;
-                          const newBranches = [...branches];
-                          newBranches[i] = value;
-                          setBranches(newBranches);
-                        }}
-                        onBlur={e => {
-                          const value = e.target.value;
-                          if (value.length > 0) {
-                            selectedGene.gene.property.branches[i] = fixNumber(
-                              0,
-                              this.genes.length,
-                              parseInt(value)
-                            );
-                          }
-                          setBranches(selectedGene.gene.property.branches);
-                        }}
-                      />
-                    );
-                  })}
-              </div>
-              <WideButton onClick={() => {
-                this.genes[selectedGene.id] = new Gene(selectedGene.gene.template, {
-                  ...selectedGene.gene.property,
-                  branches: [...selectedGene.gene.property.branches]
-                });
+                    })}
+                </div>
+                <WideButton onClick={() => {
+                  this.genes[selectedGene.id] = new Gene(selectedGene.gene.template, {
+                    ...selectedGene.gene.property,
+                    branches: [...selectedGene.gene.property.branches]
+                  });
 
-                setSelectedGene({ ...selectedGene, gene: this.genes[selectedGene.id]! });
-              }}>Сделать индивидуальным</WideButton>
-            </FlexColumn>
-          </> : <span>Кликните по круглому гену на вкладке ниже, чтобы увидеть информацию о нём.</span>}
+                  setSelectedGene({ ...selectedGene, gene: this.genes[selectedGene.id]! });
+                }}
+                >Сделать индивидуальным</WideButton>
+              </FlexColumn>
+            </>
+          ) : (
+            <span>Кликните по круглому гену на вкладке ниже, чтобы увидеть информацию о нём.</span>
+          )}
         </Accordion>
         <Accordion name="Геном" small defaultOpened>
           <FlexColumn gap={10}>
