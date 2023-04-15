@@ -131,7 +131,7 @@ export const GENES: Record<string, GeneTemplate> = {
       bot.energy -= 0.5 * property.option;
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
       const F_BLOCK = world.get(...F_COORDS);
-      const O_COORDS = world.narrowToCoords(x, y, bot.narrow, 2 + Math.floor(property.option * 10));
+      const O_COORDS = world.narrowToCoords(x, y, bot.narrow, 2);
       const O_BLOCK = world.get(...O_COORDS);
       if (!F_BLOCK || O_BLOCK) return { completed: true, msg: 'Не удалось толкнуть другой объект' };
       world.swap(...F_COORDS, ...O_COORDS);
