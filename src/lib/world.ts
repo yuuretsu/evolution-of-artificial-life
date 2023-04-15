@@ -2,7 +2,7 @@ import { Bot } from './bot';
 import { Rgba } from './color';
 import { Genome } from './genome';
 import { Grid } from './grid';
-import { limit } from './helpers';
+import { limit, shuffle } from './helpers';
 
 import type { GenePool } from './genome';
 import type { Coords } from './grid';
@@ -125,22 +125,4 @@ export class SquareWorld extends World {
       throw 'Не удалось получить контекст из канваса';
     }
   }
-}
-
-function shuffle<T>(array: T[]) {
-  let currentIndex = array.length;
-
-  // While there remain elements to shuffle.
-  while (currentIndex != 0) {
-
-    // Pick a remaining element.
-    const randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    // And swap it with the current element.
-    [array[currentIndex]!, array[randomIndex]!] = [
-      array[randomIndex]!, array[currentIndex]!];
-  }
-
-  return array;
 }
