@@ -39,7 +39,7 @@ function randGeneProperty(genomeLength: number): GeneProperty {
 export const NULL_GENE_TEMPLATE: GeneTemplate = {
   name: 'Пустой ген',
   description: 'Ничего не происходит',
-  defaultEnabled: false,
+  isDefaultDisabled: true,
   color: new Rgba(127, 127, 127, 255),
   colorInfluence: 0.01,
   action: () => {

@@ -12,7 +12,7 @@ export interface ICurrentWorldSettingsProps {
 export const CurrentWorldSettings: FC<ICurrentWorldSettingsProps> = observer((props) => {
   const enableDefaultGenes = () => {
     const entries = Object.entries(props.enabledGenes);
-    const resultEntries = entries.map(([k]) => [k, !!GENES[k]?.defaultEnabled]);
+    const resultEntries = entries.map(([k]) => [k, !GENES[k]?.isDefaultDisabled]);
     props.onChangeEnabledGenes(Object.fromEntries(resultEntries));
   };
 

@@ -5,7 +5,8 @@ import type { World } from 'lib/world';
 type GeneTemplateBase = {
   name: string,
   description?: string,
-  defaultEnabled: boolean,
+  color?: Rgba,
+  isDefaultDisabled?: boolean,
   action: (parameters: GeneParameters) => ActionResult
 }
 
@@ -14,13 +15,8 @@ type GeneTemplateWithColorInfluence = GeneTemplateBase & {
   color: Rgba
 }
 
-type GeneTemplateWithoutColorInfluence = GeneTemplateBase & {
-  colorInfluence: null;
-  color: Rgba | null,
-}
-
 export type GeneTemplate =
-  | GeneTemplateWithoutColorInfluence
+  | GeneTemplateBase
   | GeneTemplateWithColorInfluence;
 
 export type GeneProperty = {

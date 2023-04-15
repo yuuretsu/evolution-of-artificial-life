@@ -32,7 +32,7 @@ import type { WorldBlock } from 'types';
 
 const initialEnabledGenes: Record<string, boolean> = {};
 for (const name in GENES) {
-  initialEnabledGenes[name] = GENES[name]!.defaultEnabled;
+  initialEnabledGenes[name] = !GENES[name]!.isDefaultDisabled;
 }
 
 const initialGenePool = enabledGenesToPool(initialEnabledGenes);

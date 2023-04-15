@@ -22,7 +22,6 @@ export const GENES: Record<string, GeneTemplate> = {
   doNothing: {
     name: 'Отдых',
     description: 'Прибавляет 0,1 к здоровью',
-    defaultEnabled: true,
     color: new Rgba(100, 100, 0, 255),
     colorInfluence: 0.01,
     action: ({ bot }) => {
@@ -34,7 +33,6 @@ export const GENES: Record<string, GeneTemplate> = {
   multiply: {
     name: 'Размножение',
     description: 'Бот теряет 1/10 энергии на попытку размножения. Если клетка перед ним пуста, энергии больше 5 единиц, а возраст больше 10 кадров, бот размножается. Потомку передается количество энергии, равное параметру гена, такое же количество вычитается из собственной энергии.',
-    defaultEnabled: true,
     color: new Rgba(255, 255, 200, 255),
     colorInfluence: 0.01,
     action: ({ bot, x, y, world, property }) => {
@@ -51,9 +49,6 @@ export const GENES: Record<string, GeneTemplate> = {
   rotate: {
     name: 'Поворот',
     description: 'Бот поворачивается по часовой стрелке, если параметр гена > 0,5, иначе против часовой стрелки',
-    defaultEnabled: true,
-    color: null,
-    colorInfluence: null,
     action: ({ bot, property }) => {
       const angle = Math.PI * 2 / 8;
 
@@ -67,7 +62,6 @@ export const GENES: Record<string, GeneTemplate> = {
   photosynthesis: {
     name: 'Фотосинтез',
     description: 'Бот получает энергию путем фотосинтеза. При этом эффективность его фотосинтеза возрастает, а эффективность атак — падает. Восстанавливает своё здоровье на 0,01.',
-    defaultEnabled: true,
     color: new Rgba(0, 255, 0, 255),
     colorInfluence: 0.01,
     action: ({ bot }) => {
@@ -81,7 +75,6 @@ export const GENES: Record<string, GeneTemplate> = {
   attack: {
     name: 'Атака',
     description: 'Бот атакует блок перед собой, забирая себе часть его энергии.Повышает здоровье на 0,01.',
-    defaultEnabled: true,
     color: new Rgba(255, 0, 0, 255),
     colorInfluence: 0.01,
     action: ({ bot, x, y, world, property }) => {
@@ -101,7 +94,7 @@ export const GENES: Record<string, GeneTemplate> = {
   virus: {
     name: 'Заразить геном',
     description: 'Бот копирует с свой геном в бота напротив, при этом есть шанс мутации. Расходует 0,1 здоровья и 0,1 энергии.',
-    defaultEnabled: false,
+    isDefaultDisabled: true,
     color: new Rgba(255, 50, 255, 255),
     colorInfluence: 0.05,
     action: ({ bot, x, y, world }) => {
@@ -119,9 +112,7 @@ export const GENES: Record<string, GeneTemplate> = {
   moveForward: {
     name: 'Двигаться вперед',
     description: 'Бот перемещется в клетку перед собой, если она пустая. Расходует 0,5 энергии.',
-    defaultEnabled: true,
     color: new Rgba(200, 200, 200, 255),
-    colorInfluence: null,
     action: ({ bot, x, y, world }) => {
       bot.energy -= 0.5;
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
@@ -134,7 +125,6 @@ export const GENES: Record<string, GeneTemplate> = {
   push: {
     name: 'Толкнуть',
     description: 'Бот отталкивает блок перед собой на одну клетку, если клетка за ним пуста. Расходует 0,5 энергии.',
-    defaultEnabled: true,
     color: new Rgba(0, 0, 255, 255),
     colorInfluence: 0.01,
     action: ({ bot, x, y, world, property }) => {
@@ -151,9 +141,8 @@ export const GENES: Record<string, GeneTemplate> = {
   swap: {
     name: 'Меняться местами',
     description: 'Бот меняется местами с клеткой перед собой, расходуя при этом 1 энергии.',
-    defaultEnabled: false,
+    isDefaultDisabled: true,
     color: new Rgba(255, 255, 255, 255),
-    colorInfluence: null,
     action: ({ bot, x, y, world }) => {
       bot.energy -= 1;
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
@@ -164,9 +153,6 @@ export const GENES: Record<string, GeneTemplate> = {
   movePointer: {
     name: 'Переместить указатель',
     description: 'Следующая команда генома будет той, которая указана в ветке 1 текущего гена.',
-    defaultEnabled: true,
-    color: null,
-    colorInfluence: null,
     action: ({ property }) => {
       const goto = property.branches[0];
       const msg = `Перенос указателя → ${goto}`;
@@ -176,9 +162,6 @@ export const GENES: Record<string, GeneTemplate> = {
   checkHealth: {
     name: 'Проверить здоровье',
     description: 'Следующая команда генома будет той, на которую указывает ветка 1 текущего гена, если здоровье бота меньше, чем параметр текущего гена.Иначе следующая команда берется из ветки 2.',
-    defaultEnabled: true,
-    color: null,
-    colorInfluence: null,
     action: ({ bot, property }) => {
       if (bot.health < property.option) {
         const goto = property.branches[0];
@@ -193,9 +176,6 @@ export const GENES: Record<string, GeneTemplate> = {
   checkEnergy: {
     name: 'Проверить энергию',
     description: 'Следующая команда генома будет той, на которую указывает ветка 1 текущего гена, если энергия бота меньше, чем параметр текущего гена, умноженный на 300. Иначе следующая команда берется из ветки 2.',
-    defaultEnabled: true,
-    color: null,
-    colorInfluence: null,
     action: ({ bot, property }) => {
       if (bot.energy / 300 < property.option) {
         const goto = property.branches[0];
@@ -210,9 +190,6 @@ export const GENES: Record<string, GeneTemplate> = {
   forward: {
     name: 'Спереди блок?',
     description: 'Следующая команда генома будет той, на которую указывает ветка 1 текущего гена, если перед ботом есть пустая клетка.Иначе следующая команда берется из ветки 2.',
-    defaultEnabled: true,
-    color: null,
-    colorInfluence: null,
     action: ({ bot, x, y, world, property }) => {
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
       const F_BLOCK = world.get(...F_COORDS);
@@ -229,9 +206,6 @@ export const GENES: Record<string, GeneTemplate> = {
   compareFamilies: {
     name: 'Спереди родственник?',
     description: 'Следующая команда генома будет той, на которую указывает ветка 1 текущего гена, если перед ботом находится родственник. Иначе следующая команда берется из ветки 2.',
-    defaultEnabled: true,
-    color: null,
-    colorInfluence: null,
     action: ({ bot, x, y, world, property }) => {
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
       const F_BLOCK = world.get(...F_COORDS);
