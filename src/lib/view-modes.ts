@@ -87,7 +87,7 @@ export const initVisualizerParams: VisualiserParams = {
   ageDivider: 1000,
   energyDivider: 100,
   action: Object.keys(GENES).reduce((action, geneName) => {
-    return GENES[geneName]?.color === null
+    return typeof GENES[geneName]?.color === 'undefined'
       ? action
       : {
         ...action,
