@@ -21,7 +21,7 @@ export class Bot implements WorldBlockDynamic {
   age = 0;
   health = 0.5;
   childrenAmount = 0;
-  private _narrow: number = randInt(0, 8);
+  private _narrow: number = randInt(0, 8) / 8 * Math.PI * 2;
 
   constructor(
     public generation: number,
@@ -33,12 +33,13 @@ export class Bot implements WorldBlockDynamic {
       attack: number
     },
     public genome: Genome
-  ) { }
+  ) {
+  }
   get narrow(): number {
     return this._narrow;
   }
   set narrow(n: number) {
-    this._narrow = fixNumber(0, 8, n);
+    this._narrow = fixNumber(0, Math.PI * 2, n);
   }
   getJustColor(): Rgba {
     return this.color;
@@ -218,7 +219,11 @@ export class Bot implements WorldBlockDynamic {
                 }}
               />
               <div>Потомков: {this.childrenAmount}</div>
-              <div>Направление: {narrowToName(this.narrow)}</div>
+              <div>
+                Направление: <div style={{ transform: `rotate(${this.narrow.toFixed(1)}rad)`, display: 'inline-block' }}>→</div>
+              </div>
+              <div style={{ transform: `rotate(${this.narrow.toFixed(1)}rad)`, display: 'inline-block' }}>→</div>
+              <div>{`rotate(${this.narrow.toFixed(1)}rad)`}</div>
               <div>Поколение: {this.generation}</div>
             </div>
           ) : (
@@ -264,15 +269,3 @@ const LastActionsWrapper = styled.div`
     overflow-y: auto;
 `;
 
-function narrowToName(narrow: number) {
-  switch (narrow) {
-    case 0: return '↖';
-    case 1: return '↑';
-    case 2: return '↗';
-    case 3: return '→';
-    case 4: return '↘';
-    case 5: return '↓';
-    case 6: return '↙';
-    case 7: return '←';
-  }
-}

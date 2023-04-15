@@ -2,7 +2,7 @@ import { Bot } from './bot';
 import { Rgba } from './color';
 import { Genome } from './genome';
 import { Grid } from './grid';
-import { fixNumber, limit } from './helpers';
+import { limit } from './helpers';
 
 import type { GenePool } from './genome';
 import type { Coords } from './grid';
@@ -49,16 +49,6 @@ export abstract class World extends Grid<WorldBlock> {
 }
 
 export class SquareWorld extends World {
-  static readonly mooreNeighbourhood: Coords[] = [
-    [-1, -1],
-    [0, -1],
-    [1, -1],
-    [1, 0],
-    [1, 1],
-    [0, 1],
-    [-1, 1],
-    [-1, 0],
-  ];
   constructor(props: NewWorldProps) {
     super(props);
     const amount = limit(0, this.width * this.height, props.botsAmount);
@@ -77,11 +67,13 @@ export class SquareWorld extends World {
       this.info.dynamicBlocks++;
     }
   }
-  narrowToCoords(x: number, y: number, narrow: number, length: number) {
-    narrow = fixNumber(0, 8, narrow);
-    const x2 = x + SquareWorld.mooreNeighbourhood[narrow]![0] * length;
-    const y2 = y + SquareWorld.mooreNeighbourhood[narrow]![1] * length;
-    return this.fixCoords(x2, y2);
+  narrowToCoords(x: number, y: number, angle: number, length: number) {
+    const [x2, y2] = [
+      Math.cos(angle) * length + x,
+      Math.sin(angle) * length + y
+    ].map(Math.round);
+
+    return this.fixCoords(x2!, y2!);
   }
   getInfo() {
     return { ...this.info };

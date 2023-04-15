@@ -55,9 +55,12 @@ export const GENES: Record<string, GeneTemplate> = {
     color: null,
     colorInfluence: null,
     action: ({ bot, property }) => {
-      bot.narrow = property.option > 0.5
-        ? bot.narrow + 1
-        : bot.narrow - 1;
+      const angle = Math.PI * 2 / 8;
+
+      bot.narrow += property.option > 0.5
+        ? angle
+        : -angle;
+
       return { completed: false, goto: null, msg: `Поворот ${property.option > 0.5 ? 'направо' : 'налево'}` };
     }
   },
