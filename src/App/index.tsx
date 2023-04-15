@@ -1,5 +1,6 @@
 import {
-  GENES, enabledGenesToPool
+  enabledGenesToPool,
+  getInitiallyEnabledGenesNames
 } from 'lib/genome';
 import {
   VIEW_MODES,
@@ -30,10 +31,7 @@ import type {
 import type { FC } from 'react';
 import type { WorldBlock } from 'types';
 
-const initialEnabledGenes: Record<string, boolean> = {};
-for (const name in GENES) {
-  initialEnabledGenes[name] = !GENES[name]!.isDefaultDisabled;
-}
+const initialEnabledGenes = getInitiallyEnabledGenesNames();
 
 const initialGenePool = enabledGenesToPool(initialEnabledGenes);
 

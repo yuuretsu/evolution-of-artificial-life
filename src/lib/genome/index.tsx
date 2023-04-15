@@ -178,6 +178,13 @@ export class Genome {
   };
 }
 
+export const getInitiallyEnabledGenesNames = () => Object
+  .entries(GENES)
+  .reduce<Record<string, boolean>>((acc, [name, template]) => ({
+    ...acc,
+    [name]: !template.isDefaultDisabled
+  }), {});
+
 export { enabledGenesToPool } from './genes';
 export type { GenePool };
 export { GENES, Gene };

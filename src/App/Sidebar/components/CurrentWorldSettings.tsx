@@ -1,4 +1,4 @@
-import { GENES } from 'lib/genome';
+import { GENES, getInitiallyEnabledGenesNames } from 'lib/genome';
 import { observer } from 'mobx-react';
 import { Accordion, Checkbox, FlexColumn, SubBlock, WideButton } from 'ui';
 
@@ -11,13 +11,11 @@ export interface ICurrentWorldSettingsProps {
 
 export const CurrentWorldSettings: FC<ICurrentWorldSettingsProps> = observer((props) => {
   const enableDefaultGenes = () => {
-    const entries = Object.entries(props.enabledGenes);
-    const resultEntries = entries.map(([k]) => [k, !GENES[k]?.isDefaultDisabled]);
-    props.onChangeEnabledGenes(Object.fromEntries(resultEntries));
+    props.onChangeEnabledGenes(getInitiallyEnabledGenesNames());
   };
 
   const disableAllGenes = () => {
-    props.onChangeEnabledGenes(Object.fromEntries(Object.entries(props.enabledGenes).map(([k]) => [k, false])));
+    props.onChangeEnabledGenes(Object.fromEntries(Object.keys(GENES).map((name) => [name, false])));
   };
 
   return (
