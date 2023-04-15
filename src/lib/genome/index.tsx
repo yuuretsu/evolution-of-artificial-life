@@ -54,7 +54,7 @@ export class Genome {
       if (gene.template.colorInfluence !== null && gene.template.color) {
         bot.color = bot.color.interpolate(gene.template.color, gene.template.colorInfluence);
       }
-      this.pointer = result.goto !== null
+      this.pointer = typeof result.goto !== 'undefined'
         ? result.goto
         : this.pointer + 1;
       bot.lastActions.push(result.msg || gene.template.name);

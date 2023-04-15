@@ -28,7 +28,7 @@ export const GENES: Record<string, GeneTemplate> = {
     action: ({ bot }) => {
       const value = 0.1;
       bot.health = Math.min(1, bot.health + 0.1);
-      return { completed: true, goto: null, msg: `Лечение +${value}` };
+      return { completed: true, msg: `Лечение +${value}` };
     }
   },
   multiply: {
@@ -41,11 +41,11 @@ export const GENES: Record<string, GeneTemplate> = {
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
       const F_BLOCK = world.get(...F_COORDS);
       bot.energy *= 0.9;
-      if (F_BLOCK) return { completed: true, goto: null, msg: 'Размножение не удалось: спереди блок' };
-      if (bot.energy <= 5) return { completed: true, goto: null, msg: 'Размножение не удалось: мало энергии' };
-      if (bot.age <= 10) return { completed: true, goto: null, msg: 'Размножение не удалось: бот слишком молод' };
+      if (F_BLOCK) return { completed: true, msg: 'Размножение не удалось: спереди блок' };
+      if (bot.energy <= 5) return { completed: true, msg: 'Размножение не удалось: мало энергии' };
+      if (bot.age <= 10) return { completed: true, msg: 'Размножение не удалось: бот слишком молод' };
       world.set(...F_COORDS, bot.multiply(world.genePool, property.option));
-      return { completed: true, goto: null, msg: 'Размножение' };
+      return { completed: true, msg: 'Размножение' };
     }
   },
   rotate: {
@@ -61,7 +61,7 @@ export const GENES: Record<string, GeneTemplate> = {
         ? angle
         : -angle;
 
-      return { completed: false, goto: null, msg: `Поворот ${property.option > 0.5 ? 'направо' : 'налево'}` };
+      return { msg: `Поворот ${property.option > 0.5 ? 'направо' : 'налево'}` };
     }
   },
   photosynthesis: {
@@ -75,7 +75,7 @@ export const GENES: Record<string, GeneTemplate> = {
       bot.energy += energy;
       bot.increaseAbility('photosynthesis');
       bot.health = Math.min(1, bot.health + 0.01);
-      return { completed: true, goto: null, msg: `Фототсинтез: +${energy.toFixed(2)} энергии` };
+      return { completed: true, msg: `Фототсинтез: +${energy.toFixed(2)} энергии` };
     }
   },
   attack: {
@@ -85,22 +85,17 @@ export const GENES: Record<string, GeneTemplate> = {
     color: new Rgba(255, 0, 0, 255),
     colorInfluence: 0.01,
     action: ({ bot, x, y, world, property }) => {
+      bot.energy -= 0.5;
       const F_BLOCK = world.get(
         ...world.narrowToCoords(x, y, bot.narrow, 1)
       );
-      let msg: string;
-      if (F_BLOCK) {
-        const value = interpolate(0, 5, property.option) * bot.abilities.attack ** 2;
-        const result = F_BLOCK.onAttack(value);
-        bot.energy += result;
-        bot.increaseAbility('attack');
-        bot.health = Math.min(1, bot.health + 0.01);
-        msg = `Атака: +${result.toFixed(2)} энергии`;
-      } else {
-        msg = 'Атака не удалась';
-      }
-      bot.energy -= 0.5;
-      return { completed: true, goto: null, msg };
+      if (!F_BLOCK) return { completed: true, msg: 'Атака не удалась' };
+      const value = interpolate(0, 5, property.option) * bot.abilities.attack ** 2;
+      const result = F_BLOCK.onAttack(value);
+      bot.energy += result;
+      bot.increaseAbility('attack');
+      bot.health = Math.min(1, bot.health + 0.01);
+      return { completed: true, msg: `Атака: +${result.toFixed(2)} энергии` };
     }
   },
   virus: {
@@ -110,20 +105,15 @@ export const GENES: Record<string, GeneTemplate> = {
     color: new Rgba(255, 50, 255, 255),
     colorInfluence: 0.05,
     action: ({ bot, x, y, world }) => {
+      bot.health -= 0.1;
+      bot.energy -= 0.1;
       const F_BLOCK = world.get(
         ...world.narrowToCoords(x, y, bot.narrow, 1)
       );
-      let msg: string;
-      if (F_BLOCK) {
-        const genome = bot.genome.replication(world.genePool);
-        F_BLOCK.onVirus(genome, bot.familyColor.mutateRgb(5));
-        msg = 'Заражение другого бота';
-      } else {
-        msg = 'Заражение не удалось';
-      }
-      bot.health -= 0.1;
-      bot.energy -= 0.1;
-      return { completed: true, goto: null, msg };
+      if (!F_BLOCK) return { completed: true, msg: 'Заражение не удалось' };
+      const genome = bot.genome.replication(world.genePool);
+      F_BLOCK.onVirus(genome, bot.familyColor.mutateRgb(5));
+      return { completed: true, msg: 'Заражение другого бота' };
     }
   },
   moveForward: {
@@ -133,17 +123,12 @@ export const GENES: Record<string, GeneTemplate> = {
     color: new Rgba(200, 200, 200, 255),
     colorInfluence: null,
     action: ({ bot, x, y, world }) => {
+      bot.energy -= 0.5;
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
       const F_BLOCK = world.get(...F_COORDS);
-      let msg: string;
-      if (!F_BLOCK) {
-        world.swap(x, y, ...F_COORDS);
-        msg = 'Передвижение';
-      } else {
-        msg = 'Передвижение не удалось';
-      }
-      bot.energy -= 0.5;
-      return { completed: true, goto: null, msg };
+      if (F_BLOCK) return { completed: true, msg: 'Передвижение не удалось' };
+      world.swap(x, y, ...F_COORDS);
+      return { completed: true, msg: 'Передвижение' };
     }
   },
   push: {
@@ -152,20 +137,15 @@ export const GENES: Record<string, GeneTemplate> = {
     defaultEnabled: true,
     color: new Rgba(0, 0, 255, 255),
     colorInfluence: 0.01,
-    action: ({ bot, x, y, world }) => {
+    action: ({ bot, x, y, world, property }) => {
+      bot.energy -= 0.5 * property.option;
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
       const F_BLOCK = world.get(...F_COORDS);
-      const O_COORDS = world.narrowToCoords(x, y, bot.narrow, 2);
+      const O_COORDS = world.narrowToCoords(x, y, bot.narrow, 2 + Math.floor(property.option * 10));
       const O_BLOCK = world.get(...O_COORDS);
-      let msg: string;
-      if (F_BLOCK && !O_BLOCK) {
-        world.swap(...F_COORDS, ...O_COORDS);
-        msg = 'Толкнул другой объект';
-      } else {
-        msg = 'Не удалось толкнуть другой объект';
-      }
-      bot.energy -= 0.5;
-      return { completed: true, goto: null, msg };
+      if (!F_BLOCK || O_BLOCK) return { completed: true, msg: 'Не удалось толкнуть другой объект' };
+      world.swap(...F_COORDS, ...O_COORDS);
+      return { completed: true, msg: 'Толкнул другой объект' };
     }
   },
   swap: {
@@ -175,10 +155,10 @@ export const GENES: Record<string, GeneTemplate> = {
     color: new Rgba(255, 255, 255, 255),
     colorInfluence: null,
     action: ({ bot, x, y, world }) => {
+      bot.energy -= 1;
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
       world.swap(...F_COORDS, x, y);
-      bot.energy -= 1;
-      return { completed: true, goto: null, msg: 'Поменялся местами с другой клеткой' };
+      return { completed: true, msg: 'Поменялся местами с другой клеткой' };
     }
   },
   movePointer: {
@@ -190,7 +170,7 @@ export const GENES: Record<string, GeneTemplate> = {
     action: ({ property }) => {
       const goto = property.branches[0];
       const msg = `Перенос указателя → ${goto}`;
-      return { completed: false, goto, msg };
+      return { goto, msg };
     }
   },
   checkHealth: {
@@ -203,11 +183,11 @@ export const GENES: Record<string, GeneTemplate> = {
       if (bot.health < property.option) {
         const goto = property.branches[0];
         const msg = `Проверка здоровья → ${goto}`;
-        return { completed: false, goto, msg };
+        return { goto, msg };
       }
       const goto = property.branches[1];
       const msg = `Проверка здоровья → ${goto}`;
-      return { completed: false, goto, msg };
+      return { goto, msg };
     }
   },
   checkEnergy: {
@@ -220,11 +200,11 @@ export const GENES: Record<string, GeneTemplate> = {
       if (bot.energy / 300 < property.option) {
         const goto = property.branches[0];
         const msg = `Проверка энергии → ${goto}`;
-        return { completed: false, goto, msg };
+        return { goto, msg };
       }
       const goto = property.branches[1];
       const msg = `Проверка энергии → ${goto}`;
-      return { completed: false, goto, msg };
+      return { goto, msg };
     }
   },
   forward: {
@@ -239,11 +219,11 @@ export const GENES: Record<string, GeneTemplate> = {
       if (F_BLOCK) {
         const goto = property.branches[0];
         const msg = `Спереди блок → ${goto}`;
-        return { completed: false, goto, msg };
+        return { goto, msg };
       }
       const goto = property.branches[1];
       const msg = `Спереди нет блока → ${goto}`;
-      return { completed: false, goto, msg };
+      return { goto, msg };
     }
   },
   compareFamilies: {
@@ -263,12 +243,12 @@ export const GENES: Record<string, GeneTemplate> = {
         ) {
           const goto = property.branches[0];
           const msg = `Спереди родственник → ${goto}`;
-          return { completed: false, goto, msg };
+          return { goto, msg };
         }
       }
       const goto = property.branches[1];
       const msg = `Спереди нет родственника → ${goto}`;
-      return { completed: false, goto, msg };
+      return { goto, msg };
     }
   }
 };

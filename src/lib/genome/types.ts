@@ -19,8 +19,8 @@ export type GeneProperty = {
 export type GenePool = GeneTemplate[];
 
 export type ActionResult = {
-  completed: boolean,
-  goto: number | null,
+  completed?: boolean,
+  goto?: number,
   msg: string
 };
 
