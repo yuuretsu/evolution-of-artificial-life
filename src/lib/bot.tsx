@@ -165,6 +165,11 @@ export class Bot implements WorldBlockDynamic {
       setEnergy(this.energy.toFixed(2));
     }, [this.energy]);
 
+    const narrowArrowStyle = {
+      transform: `rotate(${this.narrow.toFixed(1)}rad)`,
+      display: 'inline-block'
+    };
+
     return (
       <>
         <SubBlock>
@@ -220,10 +225,8 @@ export class Bot implements WorldBlockDynamic {
               />
               <div>Потомков: {this.childrenAmount}</div>
               <div>
-                Направление: <div style={{ transform: `rotate(${this.narrow.toFixed(1)}rad)`, display: 'inline-block' }}>→</div>
+                Направление: <div style={narrowArrowStyle}>→</div>
               </div>
-              <div style={{ transform: `rotate(${this.narrow.toFixed(1)}rad)`, display: 'inline-block' }}>→</div>
-              <div>{`rotate(${this.narrow.toFixed(1)}rad)`}</div>
               <div>Поколение: {this.generation}</div>
             </div>
           ) : (
