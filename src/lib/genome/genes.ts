@@ -65,7 +65,7 @@ export const GENES: Record<string, GeneTemplate> = {
     color: new Rgba(0, 255, 0, 255),
     colorInfluence: 0.01,
     action: ({ bot }) => {
-      const energy = 1 * bot.abilities.photosynthesis ** 2 * 0.1;
+      const energy = 1 * bot.abilities.photosynthesis ** 2;
       bot.energy += energy;
       bot.increaseAbility('photosynthesis');
       bot.health = Math.min(1, bot.health + 0.01);
