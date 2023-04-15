@@ -2,14 +2,26 @@ import type { Bot } from 'lib/bot';
 import type { Rgba } from 'lib/color';
 import type { World } from 'lib/world';
 
-export type GeneTemplate = {
+type GeneTemplateBase = {
   name: string,
   description?: string,
   defaultEnabled: boolean,
-  color: Rgba | null,
-  colorInfluence: number | null,
   action: (parameters: GeneParameters) => ActionResult
-};
+}
+
+type GeneTemplateWithColorInfluence = GeneTemplateBase & {
+  colorInfluence: number;
+  color: Rgba
+}
+
+type GeneTemplateWithoutColorInfluence = GeneTemplateBase & {
+  colorInfluence: null;
+  color: Rgba | null,
+}
+
+export type GeneTemplate =
+  | GeneTemplateWithoutColorInfluence
+  | GeneTemplateWithColorInfluence;
 
 export type GeneProperty = {
   option: number,
