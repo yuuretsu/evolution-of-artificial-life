@@ -52,3 +52,15 @@ export function shuffle<T>(array: T[]) {
   }
   return array;
 }
+
+export function numberToShortString(number: number, precision = 0) {
+  if (number >= 1_000_000_000) {
+    return (number / 1_000_000_000).toFixed(precision) + ' млрд.';
+  } else if (number >= 1_000_000) {
+    return (number / 1000000).toFixed(precision) + ' млн.';
+  } else if (number >= 1_000) {
+    return (number / 1000).toFixed(precision) + ' тыс.';
+  } else {
+    return number.toString();
+  }
+}
