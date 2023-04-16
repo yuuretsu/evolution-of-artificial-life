@@ -27,7 +27,7 @@ export const GENES: Record<string, GeneTemplate> = {
     action: ({ bot }) => {
       const value = 0.1;
       bot.health = Math.min(1, bot.health + 0.1);
-      return { completed: true, msg: `Лечение +${value}` };
+      return { isCompleted: true, msg: `Лечение +${value}` };
     }
   },
   multiply: {
@@ -39,11 +39,11 @@ export const GENES: Record<string, GeneTemplate> = {
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
       const F_BLOCK = world.get(...F_COORDS);
       bot.energy *= 0.9;
-      if (F_BLOCK) return { completed: true, msg: 'Размножение не удалось: спереди блок' };
-      if (bot.energy <= 5) return { completed: true, msg: 'Размножение не удалось: мало энергии' };
-      if (bot.age <= 10) return { completed: true, msg: 'Размножение не удалось: бот слишком молод' };
+      if (F_BLOCK) return { isCompleted: true, msg: 'Размножение не удалось: спереди блок' };
+      if (bot.energy <= 5) return { isCompleted: true, msg: 'Размножение не удалось: мало энергии' };
+      if (bot.age <= 10) return { isCompleted: true, msg: 'Размножение не удалось: бот слишком молод' };
       world.set(...F_COORDS, bot.multiply(world.genePool, property.option));
-      return { completed: true, msg: 'Размножение' };
+      return { isCompleted: true, msg: 'Размножение' };
     }
   },
   rotate: {
@@ -69,7 +69,7 @@ export const GENES: Record<string, GeneTemplate> = {
       bot.energy += energy;
       bot.increaseAbility('photosynthesis');
       bot.health = Math.min(1, bot.health + 0.01);
-      return { completed: true, msg: `Фототсинтез: +${energy.toFixed(2)} энергии` };
+      return { isCompleted: true, msg: `Фототсинтез: +${energy.toFixed(2)} энергии` };
     }
   },
   attack: {
@@ -82,13 +82,13 @@ export const GENES: Record<string, GeneTemplate> = {
       const F_BLOCK = world.get(
         ...world.narrowToCoords(x, y, bot.narrow, 1)
       );
-      if (!F_BLOCK) return { completed: true, msg: 'Атака не удалась' };
+      if (!F_BLOCK) return { isCompleted: true, msg: 'Атака не удалась' };
       const value = interpolate(0, 5, property.option) * bot.abilities.attack ** 2;
       const result = F_BLOCK.onAttack(value);
       bot.energy += result;
       bot.increaseAbility('attack');
       bot.health = Math.min(1, bot.health + 0.01);
-      return { completed: true, msg: `Атака: +${result.toFixed(2)} энергии` };
+      return { isCompleted: true, msg: `Атака: +${result.toFixed(2)} энергии` };
     }
   },
   virus: {
@@ -103,10 +103,10 @@ export const GENES: Record<string, GeneTemplate> = {
       const F_BLOCK = world.get(
         ...world.narrowToCoords(x, y, bot.narrow, 1)
       );
-      if (!F_BLOCK) return { completed: true, msg: 'Заражение не удалось' };
+      if (!F_BLOCK) return { isCompleted: true, msg: 'Заражение не удалось' };
       const genome = bot.genome.replication(world.genePool);
       F_BLOCK.onVirus(genome, bot.familyColor.mutateRgb(5));
-      return { completed: true, msg: 'Заражение другого бота' };
+      return { isCompleted: true, msg: 'Заражение другого бота' };
     }
   },
   moveForward: {
@@ -117,9 +117,9 @@ export const GENES: Record<string, GeneTemplate> = {
       bot.energy -= 0.5;
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
       const F_BLOCK = world.get(...F_COORDS);
-      if (F_BLOCK) return { completed: true, msg: 'Передвижение не удалось' };
+      if (F_BLOCK) return { isCompleted: true, msg: 'Передвижение не удалось' };
       world.swap(x, y, ...F_COORDS);
-      return { completed: true, msg: 'Передвижение' };
+      return { isCompleted: true, msg: 'Передвижение' };
     }
   },
   push: {
@@ -133,9 +133,9 @@ export const GENES: Record<string, GeneTemplate> = {
       const F_BLOCK = world.get(...F_COORDS);
       const O_COORDS = world.narrowToCoords(x, y, bot.narrow, -1);
       const O_BLOCK = world.get(...O_COORDS);
-      if (!F_BLOCK || O_BLOCK) return { completed: true, msg: 'Не удалось толкнуть другой объект' };
+      if (!F_BLOCK || O_BLOCK) return { isCompleted: true, msg: 'Не удалось толкнуть другой объект' };
       world.swap(...F_COORDS, ...O_COORDS);
-      return { completed: true, msg: 'Толкнул другой объект' };
+      return { isCompleted: true, msg: 'Толкнул другой объект' };
     }
   },
   swap: {
@@ -147,7 +147,7 @@ export const GENES: Record<string, GeneTemplate> = {
       bot.energy -= 1;
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
       world.swap(...F_COORDS, x, y);
-      return { completed: true, msg: 'Поменялся местами с другой клеткой' };
+      return { isCompleted: true, msg: 'Поменялся местами с другой клеткой' };
     }
   },
   movePointer: {

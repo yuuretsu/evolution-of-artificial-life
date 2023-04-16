@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { appStore } from 'stores/app';
 import { Accordion, Checkbox, FlexColumn, InputRange, OptionalBlock, Radio, SubBlock, WideButton } from 'ui';
 
-import type { VisualiserParams} from 'lib/view-modes';
+import type { VisualiserParams } from 'lib/view-modes';
 import type { FC } from 'react';
 
 export interface IViewSettingsProps {
@@ -28,7 +28,7 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
   };
 
   return (
-    <Accordion name='Настройки просмотра' defaultOpened>
+    <Accordion name='Настройки просмотра' isDefaultOpened>
       <FlexColumn gap={10}>
         <SubBlock name={'Время между обновлениями'}>
           <InputRange
@@ -85,7 +85,7 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
                           title={actionName}
                           value={actionName}
                           key={actionName}
-                          checked={props.visualizerParams.action[actionName]}
+                          isChecked={props.visualizerParams.action[actionName]}
                           onChange={(value, checked) => {
                             const newParams = {
                               ...props.visualizerParams,

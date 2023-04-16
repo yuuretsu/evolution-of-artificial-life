@@ -19,7 +19,7 @@ export const CurrentWorldSettings: FC<ICurrentWorldSettingsProps> = observer((pr
   };
 
   return (
-    <Accordion name='Настройки мира' defaultOpened>
+    <Accordion name='Настройки мира' isDefaultOpened>
       <SubBlock name="Генофонд">
         <FlexColumn gap={10}>
           <FlexColumn gap={5}>
@@ -29,7 +29,7 @@ export const CurrentWorldSettings: FC<ICurrentWorldSettingsProps> = observer((pr
                   title={GENES[key]!.name}
                   value={key}
                   key={key}
-                  checked={props.enabledGenes[key]}
+                  isChecked={props.enabledGenes[key]}
                   onChange={(value, checked) => {
                     const newEnabledGenes = { ...props.enabledGenes };
                     newEnabledGenes[value] = checked;

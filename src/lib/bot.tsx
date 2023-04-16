@@ -16,7 +16,7 @@ export type BotAbilityName = keyof typeof Bot.prototype.abilities;
 
 export class Bot implements WorldBlockDynamic {
   readonly isDynamic = true;
-  alive = true;
+  isAlive = true;
   lastActions: string[] = [];
   age = 0;
   health = 0.5;
@@ -137,7 +137,7 @@ export class Bot implements WorldBlockDynamic {
       this.energy > 300 ||
       this.health <= 0
     ) {
-      this.alive = false;
+      this.isAlive = false;
       world.remove(x, y);
       // world.set(x, y, new Block(this.color.interpolate(new Rgba(0, 0, 0, 255), 0.5)));
       this.lastActions.push('Смерть');
@@ -176,7 +176,7 @@ export class Bot implements WorldBlockDynamic {
           <b>Бот</b>
         </SubBlock>
         <SubBlock>
-          {this.alive ? (
+          {this.isAlive ? (
             <div>
               <InputNumberSmall
                 name='Возраст'
@@ -248,7 +248,7 @@ export class Bot implements WorldBlockDynamic {
         <SubBlock>
           <this.genome.Render />
         </SubBlock>
-        <Accordion name='Последние действия' small>
+        <Accordion name='Последние действия' isSmall>
           <LastActionsWrapper>
             {this.lastActions.map((action, i) => {
               return (

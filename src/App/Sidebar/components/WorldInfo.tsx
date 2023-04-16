@@ -12,7 +12,7 @@ export interface IWorldInformationProps {
 
 export const WorldInformation: FC<IWorldInformationProps> = observer((props) => {
   return (
-    <Accordion name='Инфо о мире' defaultOpened>
+    <Accordion name='Инфо о мире' isDefaultOpened>
       <FlexColumn>
         <span>Возраст: {numberToShortString(props.cycle, 2)} кадров</span>
         <span>Ботов: {props.botsAmount}</span>

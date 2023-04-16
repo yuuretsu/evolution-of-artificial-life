@@ -65,6 +65,26 @@
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/restrict-plus-operands": "error",
     "@typescript-eslint/consistent-type-imports": "warn",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "property",
+        "types": [
+          "boolean"
+        ],
+        "format": [
+          "PascalCase"
+        ],
+        "prefix": [
+          "is",
+          "should",
+          "has",
+          "can",
+          "did",
+          "will"
+        ]
+      }
+    ],
     "react/hook-use-state": "warn",
     "react/jsx-closing-bracket-location": "warn",
     "react/jsx-key": "warn",

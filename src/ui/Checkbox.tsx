@@ -52,7 +52,7 @@ export interface ICheckboxProps {
   title: string;
   value: string;
   onChange: (value: string, checked: boolean) => void;
-  checked?: boolean;
+  isChecked?: boolean;
 }
 
 export const Checkbox: FC<ICheckboxProps> = (props) => {
@@ -60,7 +60,7 @@ export const Checkbox: FC<ICheckboxProps> = (props) => {
     <Wrapper>
       <Input
         value={props.value}
-        checked={props.checked}
+        checked={props.isChecked}
         onChange={(e) => {
           props.onChange(e.target.value, e.target.checked);
         }}

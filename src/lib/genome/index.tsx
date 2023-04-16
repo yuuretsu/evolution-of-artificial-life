@@ -58,7 +58,7 @@ export class Genome {
         ? result.goto
         : this.pointer + 1;
       bot.lastActions.push(result.msg || gene.template.name);
-      if (result.completed) {
+      if (result.isCompleted) {
         return;
       }
     }
@@ -83,7 +83,7 @@ export class Genome {
 
     return (
       <FlexColumn gap={10}>
-        <Accordion name="Ген" small defaultOpened>
+        <Accordion name="Ген" isSmall isDefaultOpened>
           {selectedGene ? (
             <>
               <FlexColumn gap={5}>
@@ -163,7 +163,7 @@ export class Genome {
             <span>Кликните по круглому гену на вкладке ниже, чтобы увидеть информацию о нём.</span>
           )}
         </Accordion>
-        <Accordion name="Геном" small defaultOpened>
+        <Accordion name="Геном" isSmall isDefaultOpened>
           <FlexColumn gap={10}>
             <SubBlock>Позиция указателя: {this.pointer}</SubBlock>
             <GenomeVisualizer

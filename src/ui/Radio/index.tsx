@@ -28,7 +28,7 @@ export const Radio: FC<RadioProps> = (props) => {
             key={variant.value}
             name={props.name}
             title={variant.title}
-            checked={variant.value == props.checked}
+            isChecked={variant.value == props.checked}
             value={variant.value}
             onChange={props.onChange}
           />

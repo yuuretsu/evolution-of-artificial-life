@@ -16,20 +16,20 @@ export class ValueStore<T> {
 }
 
 export class ToggleStore {
-  private _state: boolean;
+  private isEnabled: boolean;
 
   constructor(state: boolean) {
-    this._state = state;
+    this.isEnabled = state;
     makeAutoObservable(this);
   }
 
   get state() {
-    return this._state;
+    return this.isEnabled;
   }
 
-  setTrue = () => this._state = true;
-  setFalse = () => this._state = false;
-  toggle = () => this._state = !this._state;
+  setTrue = () => this.isEnabled = true;
+  setFalse = () => this.isEnabled = false;
+  toggle = () => this.isEnabled = !this.isEnabled;
 }
 
 export class FormStore<T extends Record<string, unknown>> {

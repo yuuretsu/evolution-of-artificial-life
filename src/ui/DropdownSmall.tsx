@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import styled, { keyframes } from 'styled-components';
 
-import type { FC} from 'react';
+import type { FC } from 'react';
 
 const Wrapper = styled.div`
   position: relative;
@@ -10,7 +10,7 @@ const Wrapper = styled.div`
 `;
 
 interface IHeader {
-  opened?: boolean;
+  isOpen?: boolean;
 }
 
 const Header = styled.div<IHeader>`
@@ -20,14 +20,14 @@ const Header = styled.div<IHeader>`
   align-items: center;
   width: 100%;
   cursor: pointer;
-  border-radius: ${(props) => (props.opened ? '5px 5px 0 0' : '2px')};
-  padding: ${(props) => (props.opened ? '10px' : 'none')};
+  border-radius: ${(props) => (props.isOpen ? '5px 5px 0 0' : '2px')};
+  padding: ${(props) => (props.isOpen ? '10px' : 'none')};
   background-color: ${(props) =>
-    props.opened ? 'rgba(255, 255, 255, 0.05)' : 'transparent'};
+    props.isOpen ? 'rgba(255, 255, 255, 0.05)' : 'transparent'};
   transition-duration: 0.2s;
   &:hover {
     background-color: rgba(255, 255, 255, 0.05);
-    padding-left: ${(props) => (props.opened ? '10px' : '5px')};
+    padding-left: ${(props) => (props.isOpen ? '10px' : '5px')};
   }
   &:focus {
     background-color: rgba(255, 255, 255, 0.1);
@@ -75,21 +75,21 @@ export interface IDropdownSmallProps {
 }
 
 export const DropdownSmall: FC<IDropdownSmallProps> = (props) => {
-  const [opened, setOpened] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <Wrapper>
-      <Header onClick={() => setOpened(!opened)} opened={opened}>
+      <Header onClick={() => setIsOpen(!isOpen)} isOpen={isOpen}>
         {props.name}
         <IconArrow />
       </Header>
-      {opened && (
+      {isOpen && (
         <Body>
           {props.list.map((value) => {
             return (
               <Select
                 key={value.value}
                 onClick={() => {
-                  setOpened(false);
+                  setIsOpen(false);
                   props.onChange(value.value);
                 }}
               >

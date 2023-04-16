@@ -7,7 +7,7 @@ import { FlexColumn } from './FlexColumn';
 import type { FC, ReactNode } from 'react';
 
 interface IHeadWrapper {
-  readonly small: boolean | undefined,
+  readonly isSmall: boolean | undefined,
   readonly color?: string,
 }
 
@@ -16,9 +16,9 @@ const HeadWrapper = styled.div<IHeadWrapper>`
   display: flex;
   align-items: center;
   width: 100%;
-  text-transform: ${props => props.small ? 'none' : 'uppercase'};
-  font-weight: ${props => props.small ? 'normal' : 'bold'};
-  font-size: ${props => props.small ? 'inherit' : '1.25em'};
+  text-transform: ${props => props.isSmall ? 'none' : 'uppercase'};
+  font-weight: ${props => props.isSmall ? 'normal' : 'bold'};
+  font-size: ${props => props.isSmall ? 'inherit' : '1.25em'};
   border-left: 5px solid ${props => props.color ? props.color : 'rgb(80, 80, 80)'};
   padding-left: 10px;
   justify-content: space-between;
@@ -49,17 +49,17 @@ const BodyWrapper = styled.div`
 type AccordionProps = {
   name: string;
   children?: ReactNode,
-  defaultOpened?: boolean,
-  small?: boolean
+  isDefaultOpened?: boolean,
+  isSmall?: boolean
   color?: string,
 };
 
 export const Accordion: FC<AccordionProps> = (props) => {
-  const [opened, setOpened] = useState(props.defaultOpened);
+  const [isOpen, setIsOpen] = useState(props.isDefaultOpened);
   return (
-    <FlexColumn gap={props.small ? 5 : 10}>
+    <FlexColumn gap={props.isSmall ? 5 : 10}>
       <HeadWrapper
-        onClick={() => setOpened(!opened)} small={props.small}
+        onClick={() => setIsOpen(!isOpen)} isSmall={props.isSmall}
         color={props.color}
       >
         <span>
@@ -67,15 +67,15 @@ export const Accordion: FC<AccordionProps> = (props) => {
         </span>
         <MdKeyboardArrowDown
           style={{
-            transform: opened ? 'none' : 'rotate(-90deg)',
+            transform: isOpen ? 'none' : 'rotate(-90deg)',
             transitionDuration: '0.2s',
-            minWidth: props.small ? '20px' : '25px',
-            minHeight: props.small ? '20px' : '25px',
-            marginLeft: props.small ? '10px' : '20px'
+            minWidth: props.isSmall ? '20px' : '25px',
+            minHeight: props.isSmall ? '20px' : '25px',
+            marginLeft: props.isSmall ? '10px' : '20px'
           }}
         />
       </HeadWrapper>
-      {opened && <BodyWrapper>{props.children}</BodyWrapper>}
+      {isOpen && <BodyWrapper>{props.children}</BodyWrapper>}
     </FlexColumn>
   );
 };

@@ -53,7 +53,7 @@ type RadioElementProps = {
   name: string;
   value: string;
   onChange: (value: string) => void;
-  checked?: boolean;
+  isChecked?: boolean;
 };
 
 export const RadioElement: FC<RadioElementProps> = (props) => {
@@ -62,7 +62,7 @@ export const RadioElement: FC<RadioElementProps> = (props) => {
       <Input
         name={props.name}
         value={props.value}
-        checked={props.checked}
+        checked={props.isChecked}
         onChange={() => props.onChange(props.value)}
       />
       {props.title}

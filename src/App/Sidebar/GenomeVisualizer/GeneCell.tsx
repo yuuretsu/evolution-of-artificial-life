@@ -17,7 +17,7 @@ type GeneCellProps = {
   state: null | 'activeLast' | 'active';
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   children?: React.ReactNode;
-  selected?: boolean;
+  isSelected?: boolean;
 };
 
 const transitionVariants: GeneCellProps['state'][] = ['active', 'activeLast'];
@@ -43,7 +43,7 @@ export const GeneCell = (props: GeneCellProps) => {
   const transition = transitionVariants.includes(props.state)
     ? 'box-shadow 0.5s'
     : 'background-color 0.2s, transform 0.5s, min-width 0.2s, min-height 0.2s, box-shadow 0.5s';
-  const boxShadow = props.selected ? '0 0 10px 0 white' : 'none';
+  const boxShadow = props.isSelected ? '0 0 10px 0 white' : 'none';
   const zIndex = props.state === 'active' ? 1 : 0;
   return (
     <GeneCellWrapper>

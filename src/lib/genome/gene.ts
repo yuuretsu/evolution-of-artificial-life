@@ -43,7 +43,7 @@ export const NULL_GENE_TEMPLATE: GeneTemplate = {
   color: new Rgba(127, 127, 127, 255),
   colorInfluence: 0.01,
   action: () => {
-    return { completed: true, msg: 'Бездействие' };
+    return { isCompleted: true, msg: 'Бездействие' };
   }
 };
 

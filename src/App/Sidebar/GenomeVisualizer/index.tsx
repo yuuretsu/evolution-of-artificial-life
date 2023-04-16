@@ -33,7 +33,7 @@ export const GenomeVisualizer: React.FC<IGenomeVisualizerProps> = (props) => {
         return (
           <GeneCell
             key={i}
-            selected={props.selectedGene?.id === i}
+            isSelected={props.selectedGene?.id === i}
             gene={gene}
             state={state}
             onClick={() =>
