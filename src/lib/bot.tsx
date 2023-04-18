@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { MAX_BOT_AGE } from 'settings';
 import styled from 'styled-components';
-import { SubBlock } from 'ui';
+import { FlexRow, SubBlock } from 'ui';
 import { Accordion, InputNumberSmall } from 'ui';
 
 import { Rgba } from './color';
@@ -173,7 +173,10 @@ export class Bot implements WorldBlockDynamic {
     return (
       <>
         <SubBlock>
-          <b>Бот</b>
+          <FlexRow alignItems='center' gap={10}>
+            <Avatar style={{ backgroundColor: this.color.toString() }} />
+            <b>Бот</b>
+          </FlexRow>
         </SubBlock>
         <SubBlock>
           {this.isAlive ? (
@@ -272,3 +275,8 @@ const LastActionsWrapper = styled.div`
     overflow-y: auto;
 `;
 
+const Avatar = styled.div`
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+`;

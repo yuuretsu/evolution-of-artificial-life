@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import styled, { keyframes } from 'styled-components';
-
-import { FlexColumn } from './FlexColumn';
+import { FlexColumn } from 'ui';
 
 import type { FC, ReactNode } from 'react';
 

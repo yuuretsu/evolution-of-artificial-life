@@ -1,4 +1,4 @@
-import { FlexColumn } from './FlexColumn';
+import { FlexColumn } from 'ui';
 
 import type { FC, ReactNode } from 'react';
 
