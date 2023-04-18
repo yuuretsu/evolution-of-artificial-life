@@ -25,7 +25,7 @@ const transitionVariants: GeneCellProps['state'][] = ['active', 'activeLast'];
 export const GeneCell = (props: GeneCellProps) => {
   const backgroundColor = props.gene.template.color
     ? props.gene.template.color
-      .interpolate(
+      .lerp(
         props.state === 'active'
           ? props.gene.template.color
           : new Rgba(50, 50, 50, 127),

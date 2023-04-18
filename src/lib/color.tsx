@@ -1,4 +1,4 @@
-import { interpolate, limit, randFloat, randInt } from './helpers';
+import { lerp, limit, randFloat, randInt } from './helpers';
 
 export class Rgba {
   private static readonly MAX_DIF = 255 * 4;
@@ -18,12 +18,12 @@ export class Rgba {
       255
     );
   }
-  interpolate(other: Rgba, t: number): Rgba {
+  lerp(other: Rgba, t: number): Rgba {
     return new Rgba(
-      interpolate(this.red, other.red, t),
-      interpolate(this.green, other.green, t),
-      interpolate(this.blue, other.blue, t),
-      interpolate(this.alpha, other.alpha, t)
+      lerp(this.red, other.red, t),
+      lerp(this.green, other.green, t),
+      lerp(this.blue, other.blue, t),
+      lerp(this.alpha, other.alpha, t)
     );
   }
   normalise(): Rgba {

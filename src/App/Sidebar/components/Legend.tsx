@@ -15,7 +15,7 @@ export const Legend: FC = observer(() => {
             <Accordion
               key={key}
               name={geneTemplate.name}
-              color={geneTemplate.color?.interpolate(new Rgba(127, 127, 127, 255), 0.5).toString()}
+              color={geneTemplate.color?.lerp(new Rgba(127, 127, 127, 255), 0.5).toString()}
               isSmall
             >
               {geneTemplate.description}

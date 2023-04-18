@@ -52,7 +52,7 @@ export class Genome {
         .action({ bot, x, y, world, property: gene.property });
       this.recentlyUsedGenes.push(gene);
       if ('colorInfluence' in gene.template) {
-        bot.color = bot.color.interpolate(gene.template.color, gene.template.colorInfluence);
+        bot.color = bot.color.lerp(gene.template.color, gene.template.colorInfluence);
       }
       this.pointer = typeof result.goto !== 'undefined'
         ? result.goto

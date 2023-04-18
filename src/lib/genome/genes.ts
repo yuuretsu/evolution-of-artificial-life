@@ -1,5 +1,5 @@
 import { Rgba } from 'lib/color';
-import { interpolate } from 'lib/helpers';
+import { lerp } from 'lib/helpers';
 
 import type { GenePool, GeneTemplate } from './types';
 
@@ -83,7 +83,7 @@ export const GENES: Record<string, GeneTemplate> = {
         ...world.narrowToCoords(x, y, bot.narrow, 1)
       );
       if (!F_BLOCK) return { isCompleted: true, msg: 'Атака не удалась' };
-      const value = interpolate(0, 5, property.option) * bot.abilities.attack ** 2;
+      const value = lerp(0, 5, property.option) * bot.abilities.attack ** 2;
       const result = F_BLOCK.onAttack(value);
       bot.energy += result;
       bot.increaseAbility('attack');

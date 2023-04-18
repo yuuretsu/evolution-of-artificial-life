@@ -37,7 +37,7 @@ export function limit(
   return Math.max(Math.min(number, max), min);
 }
 
-export function interpolate(
+export function lerp(
   a: number,
   b: number,
   t: number

@@ -50,7 +50,7 @@ export const VIEW_MODES: Record<string, ViewMode> = {
       return (
         block
           .getLastActionColor(params)
-          ?.interpolate(new Rgba(127, 127, 127, 255), 0.25) || null
+          ?.lerp(new Rgba(127, 127, 127, 255), 0.25) || null
       );
     },
   },

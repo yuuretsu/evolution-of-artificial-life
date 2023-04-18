@@ -52,22 +52,22 @@ export class Bot implements WorldBlockDynamic {
   }
   getInformativeColor(): Rgba {
     return this.color
-      .interpolate(new Rgba(50, 50, 50, 255), Math.max(0, 1 - (this.energy / 10) ** (1 / 3)))
-      .interpolate(this.getFamilyColor(), 0.25);
+      .lerp(new Rgba(50, 50, 50, 255), Math.max(0, 1 - (this.energy / 10) ** (1 / 3)))
+      .lerp(this.getFamilyColor(), 0.25);
   }
   getFamilyColor(): Rgba {
     return this.familyColor;
   }
   getEnergyColor(params: VisualiserParams): Rgba {
     return new Rgba(0, 0, 100, 255)
-      .interpolate(
+      .lerp(
         new Rgba(255, 255, 0, 255),
         this.energy / params.energyDivider
       );
   }
   getAgeColor(params: VisualiserParams): Rgba {
     return new Rgba(150, 255, 255, 255)
-      .interpolate(
+      .lerp(
         new Rgba(80, 80, 100, 255),
         this.age / params.ageDivider
       );
@@ -84,18 +84,18 @@ export class Bot implements WorldBlockDynamic {
   }
   getChildrenAmountColor(): Rgba | null {
     return new Rgba(20, 20, 150, 255)
-      .interpolate(
+      .lerp(
         new Rgba(255, 0, 0, 255),
         this.childrenAmount / 10
       );
   }
   getAbilityColor(): Rgba | null {
     return new Rgba(240, 20, 20, 255)
-      .interpolate(new Rgba(20, 240, 20, 255), this.abilities.photosynthesis);
+      .lerp(new Rgba(20, 240, 20, 255), this.abilities.photosynthesis);
   }
   getHealthColor(): Rgba {
     return new Rgba(100, 50, 50, 255)
-      .interpolate(new Rgba(150, 200, 255, 255), this.health);
+      .lerp(new Rgba(150, 200, 255, 255), this.health);
   }
   increaseAbility(ability: BotAbilityName) {
     for (const name in this.abilities) {
@@ -129,7 +129,7 @@ export class Bot implements WorldBlockDynamic {
     this.childrenAmount++;
     return new Bot(
       this.generation + 1,
-      this.color.interpolate(new Rgba(255, 255, 255, 255), 0.1),
+      this.color.lerp(new Rgba(255, 255, 255, 255), 0.1),
       this.familyColor.mutateRgb(5),
       energy,
       { ...this.abilities },
