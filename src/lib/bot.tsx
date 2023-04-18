@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { MAX_BOT_AGE } from 'settings';
 import styled from 'styled-components';
-import { FlexRow, SubBlock } from 'ui';
+import { FlexColumn, FlexRow, SubBlock } from 'ui';
 import { Accordion, InputNumberSmall } from 'ui';
 
 import { Rgba } from './color';
@@ -19,8 +19,8 @@ export class Bot implements WorldBlockDynamic {
   isAlive = true;
   lastActions: string[] = [];
   age = 0;
-  health = 0.5;
   childrenAmount = 0;
+  private _health = 0.5;
   private _narrow: number = randInt(0, 8) / 8 * Math.PI * 2;
 
   constructor(
@@ -38,8 +38,14 @@ export class Bot implements WorldBlockDynamic {
   get narrow(): number {
     return this._narrow;
   }
+  get health() {
+    return this._health;
+  }
   set narrow(n: number) {
     this._narrow = fixNumber(0, Math.PI * 2, n);
+  }
+  set health(health: number) {
+    this._health = limit(0, 1, health);
   }
   getJustColor(): Rgba {
     return this.color;
@@ -132,7 +138,7 @@ export class Bot implements WorldBlockDynamic {
   }
   live(x: number, y: number, world: World) {
     if (
-      this.age > MAX_BOT_AGE ||
+      this.age >= MAX_BOT_AGE ||
       this.energy <= 0 ||
       this.energy > 300 ||
       this.health <= 0
@@ -179,7 +185,7 @@ export class Bot implements WorldBlockDynamic {
           </FlexRow>
         </SubBlock>
         <SubBlock>
-          {this.isAlive ? (
+          <FlexColumn gap={10}>
             <div>
               <InputNumberSmall
                 name='Возраст'
@@ -232,21 +238,22 @@ export class Bot implements WorldBlockDynamic {
               </div>
               <div>Поколение: {this.generation}</div>
             </div>
-          ) : (
-            <div
-              style={{
-                color: 'red',
-                backgroundColor: 'rgba(255, 0, 0, 0.1)',
-                fontWeight: 'bold',
-                textAlign: 'center',
-                border: '2px solid red',
-                lineHeight: '50px',
-                borderRadius: '5px',
-              }}
-            >
-              Этот бот мёртв
-            </div>
-          )}
+            {!this.isAlive && (
+              <div
+                style={{
+                  color: 'red',
+                  backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  border: '2px solid red',
+                  lineHeight: '50px',
+                  borderRadius: '5px',
+                }}
+              >
+                Этот бот мёртв
+              </div>
+            )}
+          </FlexColumn>
         </SubBlock>
         <SubBlock>
           <this.genome.Render />
