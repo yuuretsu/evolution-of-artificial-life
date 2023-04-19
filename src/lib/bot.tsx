@@ -6,13 +6,38 @@ import { Accordion, InputNumberSmall } from 'ui';
 
 import { Rgba } from './color';
 import { fixNumber, limit, randInt } from './helpers';
+import { Genome } from './genome';
 
-import type { GenePool, Genome } from './genome';
+import type { GenePool } from './genome';
 import type { VisualiserParams } from './view-modes';
 import type { World } from './world';
 import type { WorldBlockDynamic } from 'types';
 
-export type BotAbilityName = keyof typeof Bot.prototype.abilities;
+type BotAbilityName = keyof typeof Bot.prototype.abilities;
+
+interface BotProps {
+  generation: number,
+  color: Rgba,
+  familyColor: Rgba,
+  energy: number,
+  abilities: {
+    photosynthesis: number,
+    attack: number
+  },
+  genome: Genome
+}
+
+const defaultProps: BotProps = {
+  generation: 0,
+  energy: 0,
+  color: new Rgba(0, 0, 0, 0),
+  familyColor: new Rgba(0, 0, 0, 0),
+  abilities: {
+    photosynthesis: 0.5,
+    attack: 0.5
+  },
+  genome: new Genome(0)
+};
 
 export class Bot implements WorldBlockDynamic {
   readonly isDynamic = true;
@@ -20,20 +45,29 @@ export class Bot implements WorldBlockDynamic {
   lastActions: string[] = [];
   age = 0;
   childrenAmount = 0;
+  color: Rgba;
+  familyColor: Rgba;
+  abilities: {
+    photosynthesis: number,
+    attack: number
+  };
+  generation: number;
+  energy: number;
+  genome: Genome;
   private _health = 0.5;
   private _narrow: number = randInt(0, 8) / 8 * Math.PI * 2;
 
   constructor(
-    public generation: number,
-    public color: Rgba,
-    public familyColor: Rgba,
-    public energy: number,
-    public abilities: {
-      photosynthesis: number,
-      attack: number
-    },
-    public genome: Genome
+    props: Partial<BotProps>
   ) {
+    const p = { ...defaultProps, ...props };
+    this.color = p.color;
+    this.abilities = p.abilities;
+    this.familyColor = p.familyColor;
+    this.abilities = p.abilities;
+    this.generation = p.generation;
+    this.energy = p.energy;
+    this.genome = p.genome;
   }
   get narrow(): number {
     return this._narrow;
@@ -127,14 +161,14 @@ export class Bot implements WorldBlockDynamic {
     const energy = this.energy * energyCoef;
     this.energy -= energy;
     this.childrenAmount++;
-    return new Bot(
-      this.generation + 1,
-      this.color.lerp(new Rgba(255, 255, 255, 255), 0.1),
-      this.familyColor.mutateRgb(5),
+    return new Bot({
+      generation: this.generation + 1,
+      color: this.color.lerp(new Rgba(255, 255, 255, 255), 0.1),
+      familyColor: this.familyColor.mutateRgb(5),
       energy,
-      { ...this.abilities },
-      this.genome.replication(pool)
-    );
+      abilities: { ...this.abilities },
+      genome: this.genome.replication(pool),
+    });
   }
   live(x: number, y: number, world: World) {
     if (
@@ -275,11 +309,11 @@ export class Bot implements WorldBlockDynamic {
 }
 
 const LastActionsWrapper = styled.div`
-    aspect-ratio: 1;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #333;
-    overflow-y: auto;
+  aspect-ratio: 1;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #333;
+  overflow-y: auto;
 `;
 
 const Avatar = styled.div`
