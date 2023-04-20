@@ -26,7 +26,8 @@ export function normalizeNumber(
   max: number,
   number: number
 ): number {
-  return (number - min) / (max - min);
+  const dif = max - min;
+  return max - min === 0 ? min : (number - min) / dif;
 }
 
 export function limit(
@@ -61,6 +62,6 @@ export function numberToShortString(number: number, precision = 0) {
   } else if (number >= 1_000) {
     return (number / 1000).toFixed(precision) + ' тыс.';
   } else {
-    return number.toString();
+    return number.toFixed(precision);
   }
 }
