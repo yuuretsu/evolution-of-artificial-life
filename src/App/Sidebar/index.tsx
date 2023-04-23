@@ -64,7 +64,6 @@ type SidebarProps = {
   setVisualizerParams: (value: VisualiserParams) => void;
   newWorldProps: NewWorldProps,
   setNewWorldProps: (value: NewWorldProps) => void
-  onChangeWorld: (world: World) => void,
   world: World,
   worldInfo: WorldInfo,
   enabledGenes: Record<string, boolean>

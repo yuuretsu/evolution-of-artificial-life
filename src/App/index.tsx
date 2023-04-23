@@ -125,7 +125,6 @@ export const App: FC = observer(() => {
         setVisualizerParams={setVisualizerParams}
         newWorldProps={newWorldProps}
         setNewWorldProps={setNewWorldProps}
-        onChangeWorld={setWorld}
         world={world}
         worldInfo={worldInfo}
         enabledGenes={enabledGenes}
