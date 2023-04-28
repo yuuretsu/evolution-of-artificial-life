@@ -64,7 +64,7 @@ export const App: FC = observer(() => {
   const [worldInfo, setWorldInfo] = useState<WorldInfo>(initWorldInfo);
   const [enabledGenes, setEnabledGenes] = useState(initialEnabledGenes);
   const [selectedBlock, setSelectedBlock] = useState<WorldBlock | null>(null);
-  const [isClickable, setIsClickable] = useState(true);
+  const [isDrag, setIsDrag] = useState(true);
 
   const currentViewMode = VIEW_MODES[appStore.viewModeName.current]!;
 
@@ -74,6 +74,7 @@ export const App: FC = observer(() => {
   };
 
   const step = () => {
+    if (!isDrag) return;
     world.step();
     updateWorldView();
   };
@@ -106,9 +107,9 @@ export const App: FC = observer(() => {
   };
 
   const onClickPixel = useCallback((x: number, y: number) => {
-    if (!isClickable) return;
+    if (!isDrag) return;
     setSelectedBlock(world.get(x, y) || null);
-  }, [world, isClickable]);
+  }, [world, isDrag]);
 
   const onMoveImage = (x: number, y: number) => {
     appStore.imageOffset.set({ x, y });
@@ -119,8 +120,8 @@ export const App: FC = observer(() => {
       <Viewer
         position={appStore.imageOffset.current}
         onMove={onMoveImage}
-        onStart={() => setIsClickable(false)}
-        onCancel={() => setTimeout(() => setIsClickable(true))}
+        onStart={() => setIsDrag(false)}
+        onCancel={() => setTimeout(() => setIsDrag(true))}
       >
         <GameImage image={image} onClickPixel={onClickPixel} />
       </Viewer>
