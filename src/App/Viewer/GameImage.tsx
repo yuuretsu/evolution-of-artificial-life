@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { PIXEL_SIZE } from 'settings';
 import styled, { keyframes } from 'styled-components';
 
-import type { FC} from 'react';
+import type { FC } from 'react';
 
 const animation = keyframes`
   from {
@@ -26,23 +26,23 @@ type GameImageProps = {
 
 export const GameImage: FC<GameImageProps> = (props) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
+
+  const width = props.image.width * PIXEL_SIZE;
+  const height = props.image.height * PIXEL_SIZE;
 
   useEffect(() => {
-    if (canvasRef.current) setCtx(canvasRef.current.getContext('2d'));
-  }, [canvasRef]);
-
-  useEffect(() => {
-    if (canvasRef.current && ctx) {
-      canvasRef.current.width = props.image.width * PIXEL_SIZE;
-      canvasRef.current.height = props.image.height * PIXEL_SIZE;
-      ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(props.image, 0, 0, canvasRef.current.width, canvasRef.current.height);
-    }
-  }, [ctx, props.image]);
+    const cnv = canvasRef.current;
+    const ctx = cnv?.getContext('2d');
+    if (!cnv || !ctx) return;
+    cnv.width = width * devicePixelRatio;
+    cnv.height = height * devicePixelRatio;
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(props.image, 0, 0, cnv.width, cnv.height);
+  }, [props.image]);
 
   return (
     <Wrapper
+      style={{ width, height }}
       ref={canvasRef}
       onClick={(e) => {
         const rect = canvasRef.current!.getBoundingClientRect();
