@@ -483,7 +483,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   border: 2px solid rgb(20, 20, 20);
   border-radius: 5px;
   animation: ${AS} 0.2s ease;
-`,RS=e=>{const t=I.useRef(null),[n,r]=I.useState(null);return I.useEffect(()=>{t.current&&r(t.current.getContext("2d"))},[t]),I.useEffect(()=>{t.current&&n&&(t.current.width=e.image.width*kr,t.current.height=e.image.height*kr,n.imageSmoothingEnabled=!1,n.drawImage(e.image,0,0,t.current.width,t.current.height))},[n,e.image]),S(PS,{ref:t,onClick:i=>{const o=t.current.getBoundingClientRect(),l=Math.floor((i.clientX-o.left)/kr),a=Math.floor((i.clientY-o.top)/kr);e.onClickPixel(l,a)}})},$m=Ov(),TS=Cv($m),zm={width:Math.max(Math.floor((window.innerWidth-300)/kr)-6,50),height:Math.max(Math.floor(window.innerHeight/kr)-6,50),botsAmount:500,genePool:TS,genomeSize:32},Yc=new bv(zm),NS=Yc.getInfo(),$S=Yc.toImage(()=>null,Ev),zS=q.div`
+`,RS=e=>{const t=I.useRef(null),n=e.image.width*kr,r=e.image.height*kr;return I.useEffect(()=>{const i=t.current,o=i==null?void 0:i.getContext("2d");!i||!o||(i.width=n*devicePixelRatio,i.height=r*devicePixelRatio,o.imageSmoothingEnabled=!1,o.drawImage(e.image,0,0,i.width,i.height))},[e.image]),S(PS,{style:{width:n,height:r},ref:t,onClick:i=>{const o=t.current.getBoundingClientRect(),l=Math.floor((i.clientX-o.left)/kr),a=Math.floor((i.clientY-o.top)/kr);e.onClickPixel(l,a)}})},$m=Ov(),TS=Cv($m),zm={width:Math.max(Math.floor((window.innerWidth-300)/kr)-6,50),height:Math.max(Math.floor(window.innerHeight/kr)-6,50),botsAmount:500,genePool:TS,genomeSize:32},Yc=new bv(zm),NS=Yc.getInfo(),$S=Yc.toImage(()=>null,Ev),zS=q.div`
   display: flex;
   background-color: black;
   overflow: hidden;
