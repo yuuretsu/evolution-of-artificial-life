@@ -20,7 +20,7 @@ const Wrapper = styled.canvas`
 
 
 type GameImageProps = {
-  image: HTMLCanvasElement,
+  image: Exclude<CanvasImageSource, SVGImageElement>,
   onClickPixel: (x: number, y: number) => void;
 };
 
