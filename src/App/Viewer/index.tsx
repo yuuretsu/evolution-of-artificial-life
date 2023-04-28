@@ -27,6 +27,8 @@ export interface IVec2 {
 export interface IViewerProps {
   position: IVec2;
   onMove: (x: number, y: number) => void;
+  onStart?: () => void;
+  onCancel?: () => void;
   children: React.ReactNode;
 };
 
@@ -37,16 +39,17 @@ export const Viewer: React.FC<IViewerProps> = observer(props => {
   const [initialBodyUserSelect, setInitialBodyUserSelect] = useState(document.body.style.userSelect);
   const imageOffset = props.position;
 
-  const onCancel = () => {
-    setIsDraggingActive(false);
-    document.body.style.userSelect = initialBodyUserSelect;
-    setIsDraggingNow(false);
-  };
-
-  const onStart = () => {
+  const start = () => {
+    setIsDraggingActive(true);
     setInitialBodyUserSelect(document.body.style.userSelect);
     document.body.style.userSelect = 'none';
-    setIsDraggingActive(true);
+  };
+
+  const cancel = () => {
+    setIsDraggingActive(false);
+    setIsDraggingNow(false);
+    props.onCancel?.();
+    document.body.style.userSelect = initialBodyUserSelect;
   };
 
   useEventListener('mousemove', (e) => {
@@ -54,16 +57,19 @@ export const Viewer: React.FC<IViewerProps> = observer(props => {
     e.preventDefault();
     props.onMove(e.clientX - initPos.x, e.clientY - initPos.y);
     setIsDraggingNow(true);
+    props.onStart?.();
   });
 
   useEventListener('touchmove', (e) => {
     if (!isDraggingActive) return;
     e.preventDefault();
     props.onMove(e.touches[0]!.clientX - initPos.x, e.touches[0]!.clientY - initPos.y);
+    setIsDraggingNow(true);
+    props.onStart?.();
   });
 
-  useEventListener('mouseup', onCancel);
-  useEventListener('touchend', onCancel);
+  useEventListener('mouseup', cancel);
+  useEventListener('touchend', cancel);
 
   return (
     <Wrapper
@@ -71,14 +77,14 @@ export const Viewer: React.FC<IViewerProps> = observer(props => {
       isSidebarOpen={sidebarStore.isOpen}
       onMouseDown={e => {
         setInitPos({ x: e.clientX - imageOffset.x, y: e.clientY - imageOffset.y });
-        onStart();
+        start();
       }}
       onTouchStart={e => {
         setInitPos({
           x: e.touches[0]!.clientX - imageOffset.x,
           y: e.touches[0]!.clientY - imageOffset.y
         });
-        onStart();
+        start();
       }}
     >
       <div style={{ transform: `translate(${imageOffset.x}px, ${imageOffset.y}px)` }}>

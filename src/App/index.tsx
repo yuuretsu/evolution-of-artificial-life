@@ -64,6 +64,7 @@ export const App: FC = observer(() => {
   const [worldInfo, setWorldInfo] = useState<WorldInfo>(initWorldInfo);
   const [enabledGenes, setEnabledGenes] = useState(initialEnabledGenes);
   const [selectedBlock, setSelectedBlock] = useState<WorldBlock | null>(null);
+  const [isClickable, setIsClickable] = useState(true);
 
   const currentViewMode = VIEW_MODES[appStore.viewModeName.current]!;
 
@@ -105,18 +106,23 @@ export const App: FC = observer(() => {
   };
 
   const onClickPixel = useCallback((x: number, y: number) => {
+    if (!isClickable) return;
     setSelectedBlock(world.get(x, y) || null);
-  }, [world]);
+  }, [world, isClickable]);
 
   const onMoveImage = (x: number, y: number) => {
     appStore.imageOffset.set({ x, y });
   };
+
+  useEffect(() => console.log(isClickable), [isClickable]);
 
   return (
     <Wrapper ref={appRef} style={{ height: `${appHeight}px` }}>
       <Viewer
         position={appStore.imageOffset.current}
         onMove={onMoveImage}
+        onStart={() => setIsClickable(false)}
+        onCancel={() => setTimeout(() => setIsClickable(true))}
       >
         <GameImage image={image} onClickPixel={onClickPixel} />
       </Viewer>
