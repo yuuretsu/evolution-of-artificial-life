@@ -114,8 +114,6 @@ export const App: FC = observer(() => {
     appStore.imageOffset.set({ x, y });
   };
 
-  useEffect(() => console.log(isClickable), [isClickable]);
-
   return (
     <Wrapper ref={appRef} style={{ height: `${appHeight}px` }}>
       <Viewer
