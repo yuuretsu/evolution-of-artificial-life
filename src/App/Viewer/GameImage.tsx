@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { PIXEL_SIZE } from 'settings';
 import styled, { keyframes } from 'styled-components';
 
@@ -24,7 +24,7 @@ type GameImageProps = {
   onClickPixel: (x: number, y: number) => void;
 };
 
-export const GameImage: FC<GameImageProps> = (props) => {
+export const GameImage: FC<GameImageProps> = memo((props) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const width = props.image.width * PIXEL_SIZE;
@@ -52,4 +52,4 @@ export const GameImage: FC<GameImageProps> = (props) => {
       }}
     />
   );
-};
+});

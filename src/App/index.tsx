@@ -10,7 +10,7 @@ import {
   SquareWorld
 } from 'lib/world';
 import { observer } from 'mobx-react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { PIXEL_SIZE } from 'settings';
 import { appStore } from 'stores/app';
 import styled from 'styled-components';
@@ -104,9 +104,9 @@ export const App: FC = observer(() => {
     appStore.imageOffset.set({ x: 0, y: 0 });
   };
 
-  const onClickPixel = (x: number, y: number) => {
+  const onClickPixel = useCallback((x: number, y: number) => {
     setSelectedBlock(world.get(x, y) || null);
-  };
+  }, [world]);
 
   const onMoveImage = (x: number, y: number) => {
     appStore.imageOffset.set({ x, y });
