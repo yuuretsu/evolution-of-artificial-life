@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/evolution-of-artificial-life/sw.js', { scope: '/evolution-of-artificial-life/' })})}
