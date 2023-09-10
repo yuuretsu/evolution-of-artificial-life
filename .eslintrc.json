@@ -8,18 +8,14 @@
   "parserOptions": {
     "ecmaVersion": 5,
     "sourceType": "module",
-    "project": "./tsconfig.json"
+    "project": ["./tsconfig.json", "./tsconfig.node.json"]
   },
   "settings": {
     "react": {
       "version": "detect"
     }
   },
-  "plugins": [
-    "react",
-    "@typescript-eslint",
-    "import"
-  ],
+  "plugins": ["react", "@typescript-eslint", "import"],
   "rules": {
     "indent": [
       "warn",
@@ -28,18 +24,9 @@
         "SwitchCase": 1
       }
     ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "quotes": [
-      "warn",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["warn", "single"],
+    "semi": ["error", "always"],
     "prefer-const": "error",
     "no-restricted-syntax": [
       "error",
@@ -52,11 +39,7 @@
     "no-restricted-imports": [
       "warn",
       {
-        "patterns": [
-          "./../**",
-          "../**",
-          "ui/**"
-        ]
+        "patterns": ["./../**", "../**", "ui/**"]
       }
     ],
     "@typescript-eslint/ban-types": "error",
@@ -69,20 +52,9 @@
       "error",
       {
         "selector": "property",
-        "types": [
-          "boolean"
-        ],
-        "format": [
-          "PascalCase"
-        ],
-        "prefix": [
-          "is",
-          "should",
-          "has",
-          "can",
-          "did",
-          "will"
-        ]
+        "types": ["boolean"],
+        "format": ["PascalCase"],
+        "prefix": ["is", "should", "has", "can", "did", "will"]
       }
     ],
     "react/hook-use-state": "warn",
