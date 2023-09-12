@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "evolution simulator",
   "scripts": {
-    "dev": "vite --force",
+    "dev": "vite --force --host",
     "build": "tsc && vite build --base=/evolution-of-artificial-life/",
     "preview": "vite preview",
     "eslint": "eslint --ext .tsx,.ts ./src",

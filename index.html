@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="ru">
-
-<head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="./favicon.png" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
-  <title>Evolution of Artificial Life</title>
-  <script type="module">
-    (function () {
-      /*
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="./favicon.png" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <link rel="apple-touch-icon" href="icon.png" />
+    <title>Evolution of Artificial Life</title>
+    <script type="module">
+      (function () {
+        /*
 
       ВНИМАНИЕ!
 
@@ -28,21 +31,22 @@
       Спасибо за внимание!
 
       */
-      if (import.meta.env.DEV) return;
-      const tgBotApiUrl = 'https://api.telegram.org';
-      const token = '5459661296:AAGoB0Y4lSaYvs0gmDSXjOxLIDdvPNcjFRE';
-      const msgBase = 'Загружена симуляция';
-      const messageText = document.referrer
-        ? `${msgBase}: ${document.referrer}`
-        : msgBase;
-      fetch(`${tgBotApiUrl}/bot${token}/sendMessage?chat_id=76008211&text=${messageText}`);
-    })();
-  </script>
-</head>
+        if (import.meta.env.DEV) return;
+        const tgBotApiUrl = "https://api.telegram.org";
+        const token = "5459661296:AAGoB0Y4lSaYvs0gmDSXjOxLIDdvPNcjFRE";
+        const msgBase = "Загружена симуляция";
+        const messageText = document.referrer
+          ? `${msgBase}: ${document.referrer}`
+          : msgBase;
+        fetch(
+          `${tgBotApiUrl}/bot${token}/sendMessage?chat_id=76008211&text=${messageText}`
+        );
+      })();
+    </script>
+  </head>
 
-<body>
-  <div id="root"></div>
-  <script type="module" src="./src/index.tsx"></script>
-</body>
-
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./src/index.tsx"></script>
+  </body>
 </html>

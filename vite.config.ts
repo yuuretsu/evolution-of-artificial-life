@@ -21,16 +21,16 @@ export default defineConfig({
         orientation: 'any',
         icons: [
           {
+            src: '512x512@2x.png',
+            sizes: '1024x1024',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
             src: 'icon.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable',
-          },
-          {
-            src: '512x512@2x.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any',
           },
         ],
       },
