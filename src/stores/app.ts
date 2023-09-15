@@ -3,7 +3,8 @@ import { makeAutoObservable } from 'mobx';
 import { ValueStore } from 'stores';
 
 class AppStore {
-  isPaused = false;
+  // Defaulting to paused if in development mode
+  isPaused = import.meta.env.DEV;
 
   timeBetweenSteps = new ValueStore(0);
 
