@@ -36,7 +36,7 @@ const initialEnabledGenes = getInitiallyEnabledGenesNames();
 const initialGenePool = enabledGenesToPool(initialEnabledGenes);
 
 const INIT_WORLD_PROPS: NewWorldProps = {
-  width: Math.max(Math.floor((window.innerWidth - 300) / PIXEL_SIZE) - 6, 50),
+  width: Math.max(Math.floor(window.innerWidth / PIXEL_SIZE) - 6, 50),
   height: Math.max(Math.floor(window.innerHeight / PIXEL_SIZE) - 6, 50),
   botsAmount: 500,
   genePool: initialGenePool,

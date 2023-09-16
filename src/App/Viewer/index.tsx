@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import { useState } from 'react';
-import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_WIDTH } from 'settings';
+import { SIDEBAR_ANIMATION_SPEED } from 'settings';
 import { sidebarStore } from 'stores/sidebar';
 import styled from 'styled-components';
 import { useEventListener } from 'usehooks-ts';
@@ -14,7 +14,6 @@ const Wrapper = styled.div<{ isSidebarOpen: boolean, isDragging: boolean }>`
   height: 100%;
   width: 100%;
   overflow: hidden;
-  margin-left: ${props => props.isSidebarOpen ? SIDEBAR_WIDTH : '0px'};
   cursor: ${props => props.isDragging ? 'grabbing' : 'default'};
   transition-duration: ${SIDEBAR_ANIMATION_SPEED};
 `;

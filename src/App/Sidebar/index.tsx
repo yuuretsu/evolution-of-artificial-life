@@ -24,18 +24,18 @@ interface ISidebarProps {
 };
 
 const Wrapper = styled.div<ISidebarProps>`
+  --padding-bottom: calc(${SIDEBAR_PADDING} * 2 + 55px + env(safe-area-inset-bottom));
   position: fixed;
-  left: ${props => props.isOpen ? 0 : `-${SIDEBAR_WIDTH}`};
+  left: ${props => props.isOpen ? 0 : `calc(-${SIDEBAR_WIDTH} - ${SIDEBAR_PADDING} * 2 - env(safe-area-inset-left))`};
   box-sizing: content-box;
   width: ${SIDEBAR_WIDTH};
   min-width: ${SIDEBAR_WIDTH};
-  --padding-bottom: calc(${SIDEBAR_PADDING} * 2 + 55px + env(safe-area-inset-bottom));
   height: calc(100% - var(--padding-bottom) - ${SIDEBAR_PADDING});
   overflow-y: auto;
   padding-top: ${SIDEBAR_PADDING};
   padding-right: ${SIDEBAR_PADDING};
   padding-bottom: var(--padding-bottom);
-  padding-left: ${SIDEBAR_PADDING};
+  padding-left: calc(${SIDEBAR_PADDING} + env(safe-area-inset-left));
   background-color: rgba(20, 20, 20, 0.99);
   color: whitesmoke;
   box-shadow: ${props => props.isOpen ? '0 0 10px 0 rgba(0, 0, 0, 1)' : 'none'};
