@@ -14,6 +14,7 @@ const Wrapper = styled.div<{ isSidebarOpen: boolean, isDragging: boolean }>`
   height: 100%;
   width: 100%;
   overflow: hidden;
+  margin-left: env(safe-area-inset-left);
   cursor: ${props => props.isDragging ? 'grabbing' : 'default'};
   transition-duration: ${SIDEBAR_ANIMATION_SPEED};
 `;
