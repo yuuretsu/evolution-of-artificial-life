@@ -26,14 +26,15 @@ interface ISidebarProps {
 const Wrapper = styled.div<ISidebarProps>`
   position: fixed;
   left: ${props => props.isOpen ? 0 : `-${SIDEBAR_WIDTH}`};
-  box-sizing: border-box;
+  box-sizing: content-box;
   width: ${SIDEBAR_WIDTH};
   min-width: ${SIDEBAR_WIDTH};
-  height: 100%;
+  --padding-bottom: calc(${SIDEBAR_PADDING} * 2 + 55px + env(safe-area-inset-bottom));
+  height: calc(100% - var(--padding-bottom) - ${SIDEBAR_PADDING});
   overflow-y: auto;
   padding-top: ${SIDEBAR_PADDING};
   padding-right: ${SIDEBAR_PADDING};
-  padding-bottom: calc(${SIDEBAR_PADDING} * 2 + 55px + env(safe-area-inset-bottom));
+  padding-bottom: var(--padding-bottom);
   padding-left: ${SIDEBAR_PADDING};
   background-color: rgba(20, 20, 20, 0.99);
   color: whitesmoke;
