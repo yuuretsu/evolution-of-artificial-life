@@ -62,6 +62,6 @@ export function numberToShortString(number: number, precision = 0) {
   } else if (number >= 1_000) {
     return (number / 1000).toFixed(precision) + ' тыс.';
   } else {
-    return number.toFixed(precision);
+    return parseFloat(number.toFixed(precision)).toString();
   }
 }
