@@ -421,7 +421,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   padding: 10px;
   border-radius: 100px;
   box-shadow: 0 0 10px 0 black;
-  top: 20px;
+  bottom: 20px;
   left: 20px;
   & > *:not(:last-child) {
     margin-right: 10px;
@@ -435,32 +435,18 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   min-width: ${rl};
   height: 100%;
   overflow-y: auto;
-  padding: calc(${Lo} * 2 + 55px) ${Lo} 0 ${Lo};
+  padding: ${Lo} ${Lo} calc(${Lo} * 2 + 55px) ${Lo};
   background-color: rgba(20, 20, 20, 0.99);
   color: whitesmoke;
   box-shadow: ${e=>e.isOpen?"0 0 10px 0 rgba(0, 0, 0, 1)":"none"};
   transition-duration: ${av};
-  &::after {
-    content: "";
-    display: block;
-    padding-bottom: ${Lo};
-  }
-  /* &::-webkit-scrollbar {
-    width: 6px;
-    background-color: rgb(15, 15, 15);
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: rgb(50, 50, 50);
-    border-radius: 3px;
-  }
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(80, 80, 80);
-  } */
+  
+  /* Hide the scrollbar */
   &::-webkit-scrollbar {
     display: none;
   }
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `,bS=fn(e=>{const t=()=>e.setSelectedBlock(null);return S(OS,{isOpen:Kl.isOpen,children:U(we,{gap:20,children:[S(xS,{}),S(ES,{cycle:e.worldInfo.cycle,botsAmount:e.worldInfo.dynamicBlocks,stepTime:e.worldInfo.stepTime}),S(Wt,{name:"Инфо о блоке",isDefaultOpened:!0,children:e.selectedBlock?U(we,{gap:10,children:[S(tr,{onClick:t,children:"Снять выделение"}),S(e.selectedBlock.Render,{})]}):S("span",{children:"Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём."})}),S(CS,{visualizerParams:e.visualizerParams,setVisualizerParams:e.setVisualizerParams}),S(SS,{enabledGenes:e.enabledGenes,onChangeEnabledGenes:e.setEnabledGenes}),S(kS,{newWorldProps:e.newWorldProps,maxBotsAmount:e.world.width*e.world.height,setNewWorldProps:e.setNewWorldProps,onClickRestart:e.onClickRestart})]})})}),AS=J.div`
   touch-action: none;
   display: flex;
