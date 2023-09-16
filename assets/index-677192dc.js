@@ -421,7 +421,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   padding: 10px;
   border-radius: 100px;
   box-shadow: 0 0 10px 0 black;
-  bottom: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom));
   left: 20px;
   & > *:not(:last-child) {
     margin-right: 10px;
@@ -435,7 +435,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   min-width: ${rl};
   height: 100%;
   overflow-y: auto;
-  padding: ${Lo} ${Lo} calc(${Lo} * 2 + 55px) ${Lo};
+  padding-top: ${Lo};
+  padding-right: ${Lo};
+  padding-bottom: calc(${Lo} * 2 + 55px + env(safe-area-inset-bottom));
+  padding-left: ${Lo};
   background-color: rgba(20, 20, 20, 0.99);
   color: whitesmoke;
   box-shadow: ${e=>e.isOpen?"0 0 10px 0 rgba(0, 0, 0, 1)":"none"};
