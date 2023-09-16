@@ -15,8 +15,8 @@ export const WorldInformation: FC<IWorldInformationProps> = observer((props) => 
     <Accordion name='Инфо о мире' isDefaultOpened>
       <FlexColumn>
         <span>Возраст: {numberToShortString(props.cycle, 2)} кадров</span>
-        <span>Ботов: {props.botsAmount}</span>
-        <span>Время обработки: {props.stepTime.toFixed(1)} мс.</span>
+        <span>Ботов: {numberToShortString(props.botsAmount, 2)}</span>
+        <span>Время обработки: {numberToShortString(props.stepTime, 2)} мс.</span>
       </FlexColumn>
     </Accordion>
   );
