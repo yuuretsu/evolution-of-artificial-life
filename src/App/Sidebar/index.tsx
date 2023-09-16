@@ -31,7 +31,10 @@ const Wrapper = styled.div<ISidebarProps>`
   min-width: ${SIDEBAR_WIDTH};
   height: 100%;
   overflow-y: auto;
-  padding: ${SIDEBAR_PADDING} ${SIDEBAR_PADDING} calc(${SIDEBAR_PADDING} * 2 + 55px) ${SIDEBAR_PADDING};
+  padding-top: ${SIDEBAR_PADDING};
+  padding-right: ${SIDEBAR_PADDING};
+  padding-bottom: calc(${SIDEBAR_PADDING} * 2 + 55px + env(safe-area-inset-bottom));
+  padding-left: ${SIDEBAR_PADDING};
   background-color: rgba(20, 20, 20, 0.99);
   color: whitesmoke;
   box-shadow: ${props => props.isOpen ? '0 0 10px 0 rgba(0, 0, 0, 1)' : 'none'};

@@ -23,7 +23,7 @@ const Wrapper = styled.div`
   padding: 10px;
   border-radius: 100px;
   box-shadow: 0 0 10px 0 black;
-  bottom: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom));
   left: 20px;
   & > *:not(:last-child) {
     margin-right: 10px;
