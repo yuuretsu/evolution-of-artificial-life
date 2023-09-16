@@ -4,7 +4,7 @@ const SIDEBAR_PADDING_PX = 20;
 export const SIDEBAR_ANIMATION_SPEED = '0.2s';
 
 // VIEW
-export const PIXEL_SIZE = 8;
+export const PIXEL_SIZE = 10;
 
 // GENOME VIEW
 const GENOME_VIEW_BORDER_PX = 2;

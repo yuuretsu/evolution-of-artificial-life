@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   background-color: #282828;
   padding: 10px;
   border-radius: 100px;
-  box-shadow: 0 0 10px 0 black;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
   bottom: calc(20px + env(safe-area-inset-bottom));
   left: 20px;
   & > *:not(:last-child) {

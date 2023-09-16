@@ -21,6 +21,6 @@ export const InputNumber = styled.input.attrs({
     appearance: none;
   }
   &:focus {
-    box-shadow: 0 0 0 2px rgba(50, 50, 50);
+    box-shadow: 0 0 0 2px rgba(80, 80, 80);
   }
 `;

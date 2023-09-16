@@ -10,6 +10,7 @@ const GenomeWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   border: 2px solid #505050;
+  background-color: rgba(0, 0, 0, 0.25);
   border-radius: ${GENE_CELL_SIZE_PX / 2 + 3}px;
 `;
 
