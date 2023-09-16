@@ -460,6 +460,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   height: 100%;
   width: 100%;
   overflow: hidden;
+  margin-left: env(safe-area-inset-left);
   cursor: ${e=>e.isDragging?"grabbing":"default"};
   transition-duration: ${av};
 `,PS=fn(e=>{const[t,n]=z.useState({x:0,y:0}),[r,i]=z.useState(!1),[o,l]=z.useState(r),[a,s]=z.useState(document.body.style.userSelect),u=e.position,c=()=>{i(!0),s(document.body.style.userSelect),document.body.style.userSelect="none"},v=()=>{var h;i(!1),l(!1),(h=e.onCancel)==null||h.call(e),document.body.style.userSelect=a};return Si("mousemove",h=>{var y;r&&(h.preventDefault(),e.onMove(h.clientX-t.x,h.clientY-t.y),l(!0),(y=e.onStart)==null||y.call(e))}),Si("touchmove",h=>{var y;r&&(h.preventDefault(),e.onMove(h.touches[0].clientX-t.x,h.touches[0].clientY-t.y),l(!0),(y=e.onStart)==null||y.call(e))}),Si("mouseup",v),Si("touchend",v),S(AS,{isDragging:o,isSidebarOpen:Gl.isOpen,onMouseDown:h=>{n({x:h.clientX-u.x,y:h.clientY-u.y}),c()},onTouchStart:h=>{n({x:h.touches[0].clientX-u.x,y:h.touches[0].clientY-u.y}),c()},children:S("div",{style:{transform:`translate(${u.x}px, ${u.y}px)`},children:e.children})})}),RS=fo`
@@ -472,7 +473,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   border: 2px solid rgb(20, 20, 20);
   border-radius: 5px;
   animation: ${RS} 0.2s ease;
-`,TS=z.memo(e=>{const t=z.useRef(null),n=e.image.width*Cr,r=e.image.height*Cr;return z.useEffect(()=>{const i=t.current,o=i==null?void 0:i.getContext("2d");!i||!o||(i.width=n*devicePixelRatio,i.height=r*devicePixelRatio,o.imageSmoothingEnabled=!1,o.drawImage(e.image,0,0,i.width,i.height))},[e.image]),S(NS,{style:{width:n,height:r},ref:t,onClick:i=>{const o=t.current.getBoundingClientRect(),l=Math.floor((i.clientX-o.left)/Cr),a=Math.floor((i.clientY-o.top)/Cr);e.onClickPixel(l,a)}})}),jm=Tv(),$S=Nv(jm),Fm={width:Math.max(Math.floor(window.innerWidth/Cr)-6,50),height:Math.max(Math.floor(window.innerHeight/Cr)-6,50),botsAmount:500,genePool:$S,genomeSize:32},Kc=new Iv(Fm),IS=Kc.getInfo(),zS=Kc.toImage(()=>null,$v),DS=J.div`
+`,TS=z.memo(e=>{const t=z.useRef(null),n=e.image.width*Cr,r=e.image.height*Cr;return z.useEffect(()=>{const i=t.current,o=i==null?void 0:i.getContext("2d");!i||!o||(i.width=n*devicePixelRatio,i.height=r*devicePixelRatio,o.imageSmoothingEnabled=!1,o.drawImage(e.image,0,0,i.width,i.height))},[e.image]),S(NS,{style:{width:n,height:r},ref:t,onClick:i=>{const o=t.current.getBoundingClientRect(),l=Math.floor((i.clientX-o.left)/Cr),a=Math.floor((i.clientY-o.top)/Cr);e.onClickPixel(l,a)}})}),jm=Tv(),$S=Nv(jm),Fm={width:Math.max(Math.floor(window.innerWidth/Cr)-6,10),height:Math.max(Math.floor(window.innerHeight/Cr)-6,10),botsAmount:500,genePool:$S,genomeSize:32},Kc=new Iv(Fm),IS=Kc.getInfo(),zS=Kc.toImage(()=>null,$v),DS=J.div`
   display: flex;
   background-color: black;
   overflow: hidden;
