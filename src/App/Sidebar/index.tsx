@@ -4,6 +4,7 @@ import { sidebarStore } from 'stores/sidebar';
 import styled from 'styled-components';
 import {
   Accordion,
+  Br,
   FlexColumn,
   WideButton
 } from 'ui';
@@ -13,6 +14,7 @@ import { Legend } from './components/Legend';
 import { NewWorldForm } from './components/NewWorldForm';
 import { ViewSettings } from './components/ViewSettings';
 import { WorldInformation } from './components/WorldInfo';
+import { Links } from './components/Links';
 
 import type { VisualiserParams } from 'lib/view-modes';
 import type { NewWorldProps, World, WorldInfo } from 'lib/world';
@@ -100,6 +102,8 @@ export const Sidebar: FC<SidebarProps> = observer((props) => {
           setNewWorldProps={props.setNewWorldProps}
           onClickRestart={props.onClickRestart}
         />
+        <Br />
+        <Links />
       </FlexColumn>
     </Wrapper>
   );

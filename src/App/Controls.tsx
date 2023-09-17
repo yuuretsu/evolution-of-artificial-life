@@ -13,6 +13,7 @@ import { appStore } from 'stores/app';
 import { sidebarStore } from 'stores/sidebar';
 import styled from 'styled-components';
 import { CircleButton, CIRCLE_BUTTON_ICON_STYLE } from 'ui';
+import { SIDEBAR_PADDING } from 'settings';
 
 import type { FC } from 'react';
 
@@ -23,8 +24,8 @@ const Wrapper = styled.div`
   padding: 10px;
   border-radius: 100px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
-  bottom: calc(20px + env(safe-area-inset-bottom));
-  left: 20px;
+  bottom: calc(${SIDEBAR_PADDING} + env(safe-area-inset-bottom));
+  left: ${SIDEBAR_PADDING};
   & > *:not(:last-child) {
     margin-right: 10px;
   }
