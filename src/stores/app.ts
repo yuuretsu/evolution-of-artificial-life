@@ -6,6 +6,8 @@ class AppStore {
   // Defaulting to paused if in development mode
   isPaused = import.meta.env.DEV;
 
+  isShowUpdateBtn = new ValueStore(false);
+
   timeBetweenSteps = new ValueStore(0);
 
   viewModeName = new ValueStore<string>(Object.keys(VIEW_MODES)[0] || '');

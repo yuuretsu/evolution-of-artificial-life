@@ -20,6 +20,7 @@ import { Controls } from './Controls';
 import { Sidebar } from './Sidebar';
 import { Viewer } from './Viewer';
 import { GameImage } from './Viewer/GameImage';
+import { PwaUpdateButton } from './PwaUpdateButton';
 
 import type {
   VisualiserParams
@@ -145,6 +146,7 @@ export const App: FC = observer(() => {
           fullscreenElement={appRef.current}
         />
       )}
+      <PwaUpdateButton />
     </Wrapper>
   );
 });

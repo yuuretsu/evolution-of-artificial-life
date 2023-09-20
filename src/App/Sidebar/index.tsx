@@ -38,7 +38,7 @@ const Wrapper = styled.div<ISidebarProps>`
   padding-right: ${SIDEBAR_PADDING};
   padding-bottom: var(--padding-bottom);
   padding-left: calc(${SIDEBAR_PADDING} + env(safe-area-inset-left));
-  background-color: rgba(20, 20, 20, 0.9);
+  background-color: rgba(20, 20, 20, 0.75);
   backdrop-filter: blur(20px);
   color: whitesmoke;
   box-shadow: ${props => props.isOpen ? '0 0 10px 0 rgba(0, 0, 0, 1)' : 'none'};

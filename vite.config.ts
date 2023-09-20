@@ -34,6 +34,9 @@ export default defineConfig({
           },
         ],
       },
+      workbox: {
+        cleanupOutdatedCaches: false
+      },
       devOptions: {
         enabled: true,
       },

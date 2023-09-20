@@ -7,7 +7,7 @@ import {
   MdSkipNext,
   MdReplay,
   MdFullscreen,
-  MdFullscreenExit
+  MdFullscreenExit,
 } from 'react-icons/md';
 import { appStore } from 'stores/app';
 import { sidebarStore } from 'stores/sidebar';
