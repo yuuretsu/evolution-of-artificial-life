@@ -57,6 +57,7 @@ const Wrapper = styled.div`
 export const App: FC = observer(() => {
   const appRef = useRef<HTMLDivElement>(null);
   const [appHeight, setAppHeight] = useState(window.innerHeight);
+  const updateAppHeight = () => setAppHeight(window.innerHeight);
   const [visualizerParams, setVisualizerParams] = useState<VisualiserParams>(initVisualizerParams);
   const [newWorldProps, setNewWorldProps] = useState<NewWorldProps>(INIT_WORLD_PROPS);
   const [world, setWorld] = useState<World>(initWorld);
@@ -79,7 +80,8 @@ export const App: FC = observer(() => {
     updateWorldView();
   };
 
-  useEventListener('resize', () => setAppHeight(window.innerHeight));
+  useEventListener('resize', updateAppHeight);
+  useEventListener('orientationchange', updateAppHeight);
 
   useEffect(updateWorldView, [currentViewMode.blockToColor, world, visualizerParams]);
 
