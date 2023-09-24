@@ -74,14 +74,16 @@ const pick = <T extends object, K extends keyof T>(obj: T, keys: K[]): Pick<T, K
   return picked as Pick<T, K>;
 };
 
-const getTimeZone = () => new Date().toString();
-
 export const getUserInfo = () => {
   return {
     ...pick(navigator, ['userAgent', 'language', 'maxTouchPoints', 'platform']),
-    timeZone: getTimeZone(),
+    timeZone: new Date().toString(),
     screenSize: `${screen.width}x${screen.height}`,
     windowSize: `${innerWidth}x${innerHeight}`,
     referrer: document.referrer
   };
+};
+
+export const strJoin = (separator: string) => (input: (string | null | void | boolean)[]) => {
+  return input.filter(Boolean).join(separator);
 };
