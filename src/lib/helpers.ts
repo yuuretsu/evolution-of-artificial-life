@@ -55,15 +55,19 @@ export function shuffle<T>(array: T[]) {
 }
 
 export function numberToShortString(number: number, precision = 0) {
-  if (number >= 1_000_000_000) {
-    return (number / 1_000_000_000).toFixed(precision) + ' млрд.';
-  } else if (number >= 1_000_000) {
-    return (number / 1000000).toFixed(precision) + ' млн.';
-  } else if (number >= 1_000) {
-    return (number / 1000).toFixed(precision) + ' тыс.';
-  } else {
-    return parseFloat(number.toFixed(precision)).toString();
+  const numericSuffixPairs: [number, string][] = [
+    [1_000_000_000, 'млрд.'],
+    [1_000_000, 'млн.'],
+    [1_000, 'тыс.']
+  ];
+
+  const formatNumber = (value: number) => parseFloat(value.toFixed(precision)).toString();
+
+  for (const [divisor, postfix] of numericSuffixPairs) {
+    if (number >= divisor) return `${formatNumber(number / +divisor)} ${postfix}`;
   }
+
+  return formatNumber(number);
 }
 
 export const pick = <T extends object, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> => {
