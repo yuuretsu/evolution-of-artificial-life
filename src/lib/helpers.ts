@@ -82,6 +82,6 @@ export const getUserInfo = () => {
     timeZone: getTimeZone(),
     screenSize: `${screen.width}x${screen.height}`,
     windowSize: `${innerWidth}x${innerHeight}`,
-    referrer: 'https://vk.com'
+    referrer: document.referrer
   };
 };
