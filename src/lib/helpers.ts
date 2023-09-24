@@ -66,7 +66,7 @@ export function numberToShortString(number: number, precision = 0) {
   }
 }
 
-const pick = <T extends object, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> => {
+export const pick = <T extends object, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> => {
   const picked: Partial<Pick<T, K>> = {};
   keys.forEach(key => {
     picked[key] = obj[key];

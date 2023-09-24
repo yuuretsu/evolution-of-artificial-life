@@ -1,6 +1,6 @@
 import { test, expect } from 'vitest';
 
-import { fixNumber, lerp, limit, normalizeNumber, numberToShortString } from './helpers';
+import { fixNumber, lerp, limit, normalizeNumber, numberToShortString, pick, strJoin } from './helpers';
 
 test('fixNumber', () => {
   expect(fixNumber(0, 10, 5)).toEqual(5);
@@ -39,4 +39,15 @@ test('numberToShortString', () => {
   expect(numberToShortString(1234, 1)).toEqual('1.2 тыс.');
   expect(numberToShortString(103131444.5, 3)).toEqual('103.131 млн.');
   expect(numberToShortString(1.523432, 2)).toEqual('1.52');
+  expect(numberToShortString(1.001, 2)).toEqual('1');
+  expect(numberToShortString(-0.001, 2)).toEqual('0');
+});
+
+test('pick', () => {
+  expect(pick({ fieldA: 'value a', fieldB: 'value b' }, ['fieldA'])).toEqual({ fieldA: 'value a' });
+});
+
+test('strJoin', () => {
+  expect(strJoin('+')(['a', 'b', 'c'])).toEqual('a+b+c');
+  expect(strJoin('+')(['a', false && 'b', 'c'])).toEqual('a+c');
 });
