@@ -11,6 +11,7 @@ export const sendUserInfoToTelegram = async () => {
   const messageText = joinWith2NewLines([
     tag('b', info.timeZone),
     info.referrer && `Источник: <a href="${info.referrer}">` + info.referrer + '</a>',
+    info.userAgent,
     tag('code',
       table([
         ['Язык:', info.language],
