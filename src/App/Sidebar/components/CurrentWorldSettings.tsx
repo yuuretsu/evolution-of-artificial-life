@@ -1,6 +1,6 @@
 import { GENES, getInitiallyEnabledGenesNames } from 'lib/genome';
 import { observer } from 'mobx-react';
-import { Accordion, Checkbox, FlexColumn, SubBlock, WideButton } from 'ui';
+import { Accordion, Checkbox, FlexColumn, FlexRow, SubBlock, WideButton } from 'ui';
 
 import type { FC } from 'react';
 
@@ -39,14 +39,14 @@ export const CurrentWorldSettings: FC<ICurrentWorldSettingsProps> = observer((pr
               );
             })}
           </FlexColumn>
-          <FlexColumn gap={5}>
+          <FlexRow gap={5}>
             <WideButton onClick={enableDefaultGenes}>
-              Вернуть стандартные
+              Стандартные
             </WideButton>
             <WideButton onClick={disableAllGenes}>
-              Выключить все
+              Все
             </WideButton>
-          </FlexColumn>
+          </FlexRow>
         </FlexColumn>
       </SubBlock>
     </Accordion>
