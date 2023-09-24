@@ -65,3 +65,23 @@ export function numberToShortString(number: number, precision = 0) {
     return parseFloat(number.toFixed(precision)).toString();
   }
 }
+
+const pick = <T extends object, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> => {
+  const picked: Partial<Pick<T, K>> = {};
+  keys.forEach(key => {
+    picked[key] = obj[key];
+  });
+  return picked as Pick<T, K>;
+};
+
+const getTimeZone = () => new Date().toString();
+
+export const getUserInfo = () => {
+  return {
+    ...pick(navigator, ['userAgent', 'language', 'maxTouchPoints', 'platform']),
+    timeZone: getTimeZone(),
+    screenSize: `${screen.width}x${screen.height}`,
+    windowSize: `${innerWidth}x${innerHeight}`,
+    referrer: 'https://vk.com'
+  };
+};

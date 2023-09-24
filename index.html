@@ -10,39 +10,6 @@
     />
     <link rel="apple-touch-icon" href="icon.png" />
     <title>Evolution of Artificial Life</title>
-    <script type="module">
-      (function () {
-        /*
-
-      ВНИМАНИЕ!
-
-      Я чисто по приколу вставил на эту страницу
-      простейшую и тупейшую "аналитику".
-      При загрузке страницы
-      мне в телеграм приходит сообщение.
-      Всё, что я получаю -- это только ссылку,
-      откуда пришел пользователь.
-      По идее вы можете украсть токен моего бота
-      и использовать в своих целях (но зачем? да и я этого не боюсь).
-      Ну а вообще, можете чисто по приколу отправить мне сообщение с этого бота,
-      я наверное даже немного обрадусь. :)
-      Такая вот пасхалочка.
-
-      Спасибо за внимание!
-
-      */
-        if (import.meta.env.DEV) return;
-        const tgBotApiUrl = "https://api.telegram.org";
-        const token = "5459661296:AAGoB0Y4lSaYvs0gmDSXjOxLIDdvPNcjFRE";
-        const msgBase = "Загружена симуляция";
-        const messageText = document.referrer
-          ? `${msgBase}: ${document.referrer}`
-          : msgBase;
-        fetch(
-          `${tgBotApiUrl}/bot${token}/sendMessage?chat_id=76008211&text=${messageText}`
-        );
-      })();
-    </script>
   </head>
 
   <body>
