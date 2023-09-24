@@ -20,6 +20,7 @@ import { Controls } from './Controls';
 import { Sidebar } from './Sidebar';
 import { Viewer } from './Viewer';
 import { GameImage } from './Viewer/GameImage';
+import { SafeAreaBottom } from './SafeAreaBottom';
 
 import type {
   VisualiserParams
@@ -118,35 +119,38 @@ export const App: FC = observer(() => {
   };
 
   return (
-    <Wrapper ref={appRef} style={{ height: `${appHeight}px` }}>
-      <Viewer
-        position={appStore.imageOffset.current}
-        onMove={onMoveImage}
-        onStart={() => setIsDrag(false)}
-        onCancel={() => setTimeout(() => setIsDrag(true))}
-      >
-        <GameImage image={image} onClickPixel={onClickPixel} />
-      </Viewer>
-      <Sidebar
-        visualizerParams={visualizerParams}
-        setVisualizerParams={setVisualizerParams}
-        newWorldProps={newWorldProps}
-        setNewWorldProps={setNewWorldProps}
-        world={world}
-        worldInfo={worldInfo}
-        enabledGenes={enabledGenes}
-        setEnabledGenes={setEnabledGenes}
-        selectedBlock={selectedBlock}
-        setSelectedBlock={setSelectedBlock}
-        onClickRestart={restart}
-      />
-      {!!appRef.current && (
-        <Controls
-          onClickStep={onClickStep}
+    <>
+      <SafeAreaBottom />
+      <Wrapper ref={appRef} style={{ height: `${appHeight}px` }}>
+        <Viewer
+          position={appStore.imageOffset.current}
+          onMove={onMoveImage}
+          onStart={() => setIsDrag(false)}
+          onCancel={() => setTimeout(() => setIsDrag(true))}
+        >
+          <GameImage image={image} onClickPixel={onClickPixel} />
+        </Viewer>
+        <Sidebar
+          visualizerParams={visualizerParams}
+          setVisualizerParams={setVisualizerParams}
+          newWorldProps={newWorldProps}
+          setNewWorldProps={setNewWorldProps}
+          world={world}
+          worldInfo={worldInfo}
+          enabledGenes={enabledGenes}
+          setEnabledGenes={setEnabledGenes}
+          selectedBlock={selectedBlock}
+          setSelectedBlock={setSelectedBlock}
           onClickRestart={restart}
-          fullscreenElement={appRef.current}
         />
-      )}
-    </Wrapper>
+        {!!appRef.current && (
+          <Controls
+            onClickStep={onClickStep}
+            onClickRestart={restart}
+            fullscreenElement={appRef.current}
+          />
+        )}
+      </Wrapper>
+    </>
   );
 });
