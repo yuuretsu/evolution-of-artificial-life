@@ -8,7 +8,7 @@ export const sendUserInfoToTelegram = async () => {
 
   const messageText =
     tag('b', info.timeZone) + '\n\n' +
-    `Источник: <a href="${'vk.com'}">` + info.referrer + '</a>\n\n' +
+    `Источник: <a href="${info.referrer}">` + info.referrer + '</a>\n\n' +
     tag('code', table([
       ['Язык:', info.language],
       ['Платформа:', info.platform],
