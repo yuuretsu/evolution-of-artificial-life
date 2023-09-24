@@ -44,7 +44,7 @@ export const CurrentWorldSettings: FC<ICurrentWorldSettingsProps> = observer((pr
               Стандартные
             </WideButton>
             <WideButton onClick={disableAllGenes}>
-              Все
+              Выключить все
             </WideButton>
           </FlexRow>
         </FlexColumn>
