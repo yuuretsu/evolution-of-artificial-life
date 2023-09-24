@@ -1,7 +1,9 @@
 import { viewModesList } from 'lib/view-modes';
 import { observer } from 'mobx-react';
 import { appStore } from 'stores/app';
-import { Accordion, Checkbox, FlexColumn, InputRange, OptionalBlock, Radio, SubBlock, WideButton } from 'ui';
+import { Accordion, Checkbox, FlexColumn, FlexRow, InputRange, OptionalBlock, Radio, SubBlock, WideButton } from 'ui';
+import { MdCancel, MdChecklist } from 'react-icons/md';
+import { IconContext } from 'react-icons';
 
 import type { VisualiserParams } from 'lib/view-modes';
 import type { FC } from 'react';
@@ -98,14 +100,20 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
                     })}
                 </FlexColumn>
               </SubBlock>
-              <FlexColumn gap={5}>
-                <WideButton onClick={enableAllActions}>
-                  Включить все
-                </WideButton>
-                <WideButton onClick={disableAllActions}>
-                  Выключить все
-                </WideButton>
-              </FlexColumn>
+              <IconContext.Provider value={{ size: '20', style: { flex: '0 0 auto' } }}>
+                <FlexRow gap={5} style={{ whiteSpace: 'nowrap' }}>
+                  <WideButton onClick={enableAllActions}>
+                    <FlexRow gap={5} alignItems='center' justifyContent='center'>
+                      <MdChecklist color='rgb(100, 200, 100)' /> Все
+                    </FlexRow>
+                  </WideButton>
+                  <WideButton onClick={disableAllActions}>
+                    <FlexRow gap={5} alignItems='center' justifyContent='center'>
+                      <MdCancel color='rgb(200, 100, 100)' /> Откл. все
+                    </FlexRow>
+                  </WideButton>
+                </FlexRow>
+              </IconContext.Provider>
             </FlexColumn>
           </OptionalBlock>
         )}

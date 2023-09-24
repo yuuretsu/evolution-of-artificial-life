@@ -1,6 +1,8 @@
 import { GENES, getInitiallyEnabledGenesNames } from 'lib/genome';
 import { observer } from 'mobx-react';
+import { MdReplayCircleFilled, MdCancel } from 'react-icons/md';
 import { Accordion, Checkbox, FlexColumn, FlexRow, SubBlock, WideButton } from 'ui';
+import { IconContext } from 'react-icons';
 
 import type { FC } from 'react';
 
@@ -39,14 +41,22 @@ export const CurrentWorldSettings: FC<ICurrentWorldSettingsProps> = observer((pr
               );
             })}
           </FlexColumn>
-          <FlexRow gap={5}>
-            <WideButton onClick={enableDefaultGenes}>
-              Стандартные
-            </WideButton>
-            <WideButton onClick={disableAllGenes}>
-              Выключить все
-            </WideButton>
-          </FlexRow>
+          <IconContext.Provider value={{ size: '20', style: { flex: '0 0 auto' } }}>
+            <FlexRow gap={5}>
+              <WideButton onClick={enableDefaultGenes}>
+                <FlexRow gap={5} alignItems='center' justifyContent='center'>
+                  <MdReplayCircleFilled />
+                  Стандартные
+                </FlexRow>
+              </WideButton>
+              <WideButton onClick={disableAllGenes}>
+                <FlexRow gap={5} alignItems='center' justifyContent='center'>
+                  <MdCancel color='rgb(200, 100, 100)' />
+                  Откл. все
+                </FlexRow>
+              </WideButton>
+            </FlexRow>
+          </IconContext.Provider>
         </FlexColumn>
       </SubBlock>
     </Accordion>
