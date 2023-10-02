@@ -1,4 +1,4 @@
-/.vscode
+/.vscode/settings.json
 /node_modules
 /dist
 /dev-dist

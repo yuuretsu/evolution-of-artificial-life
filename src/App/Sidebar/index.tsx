@@ -28,7 +28,7 @@ interface ISidebarProps {
 const Wrapper = styled.div<ISidebarProps>`
   --padding-bottom: calc(${SIDEBAR_PADDING} * 2 + 55px + env(safe-area-inset-bottom));
   position: fixed;
-  left: ${props => props.isOpen ? 0 : `calc(-${SIDEBAR_WIDTH} - ${SIDEBAR_PADDING} * 2 - env(safe-area-inset-left))`};
+  right: ${props => props.isOpen ? 0 : `calc(-${SIDEBAR_WIDTH} - ${SIDEBAR_PADDING} * 2 - env(safe-area-inset-left))`};
   box-sizing: content-box;
   width: ${SIDEBAR_WIDTH};
   min-width: ${SIDEBAR_WIDTH};
