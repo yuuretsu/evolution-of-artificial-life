@@ -35,9 +35,9 @@ const Wrapper = styled.div<ISidebarProps>`
   height: calc(100% - var(--padding-bottom) - ${SIDEBAR_PADDING});
   overflow-y: auto;
   padding-top: ${SIDEBAR_PADDING};
-  padding-right: ${SIDEBAR_PADDING};
+  padding-right: calc(${SIDEBAR_PADDING} + env(safe-area-inset-right));
   padding-bottom: var(--padding-bottom);
-  padding-left: calc(${SIDEBAR_PADDING} + env(safe-area-inset-left));
+  padding-left: ${SIDEBAR_PADDING};
   background-color: rgba(20, 20, 20, 0.9);
   backdrop-filter: blur(20px);
   color: whitesmoke;

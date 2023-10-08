@@ -25,7 +25,7 @@ const Wrapper = styled.div`
   border-radius: 100px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
   bottom: calc(${SIDEBAR_PADDING} + env(safe-area-inset-bottom));
-  right: ${SIDEBAR_PADDING};
+  right: calc(${SIDEBAR_PADDING} + env(safe-area-inset-right));
   & > *:not(:last-child) {
     margin-right: 10px;
   }
