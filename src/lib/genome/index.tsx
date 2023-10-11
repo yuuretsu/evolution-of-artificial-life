@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { MAX_ACTIONS } from 'settings';
 import { FlexColumn, SubBlock } from 'ui';
 import { Accordion, DropdownSmall, InputNumberSmall, WideButton } from 'ui';
-import { fixNumber, limit } from 'lib/helpers';
+import { cycleNumber, limit } from 'lib/helpers';
 
 import { Gene, NULL_GENE, NULL_GENE_TEMPLATE } from './gene';
 import { GENES } from './genes';
@@ -29,7 +29,7 @@ export class Genome {
     return this._pointer;
   }
   set pointer(n: number) {
-    this._pointer = fixNumber(0, this.genes.length, n);
+    this._pointer = cycleNumber(0, this.genes.length, n);
   }
   fillRandom(pool: GenePool): this {
     this.genes = this.genes.map(() => Gene.random(pool, this.genes.length));
@@ -136,7 +136,7 @@ export class Genome {
                           onBlur={e => {
                             const value = e.target.value;
                             if (value.length > 0) {
-                              selectedGene.gene.property.branches[i] = fixNumber(
+                              selectedGene.gene.property.branches[i] = cycleNumber(
                                 0,
                                 this.genes.length,
                                 parseInt(value)

@@ -5,7 +5,7 @@ import { FlexColumn, FlexRow, SubBlock } from 'ui';
 import { Accordion, InputNumberSmall } from 'ui';
 
 import { Rgba } from './color';
-import { fixNumber, limit, randInt } from './helpers';
+import { cycleNumber, limit, randInt } from './helpers';
 import { Genome } from './genome';
 
 import type { GenePool } from './genome';
@@ -76,7 +76,7 @@ export class Bot implements WorldBlockDynamic {
     return this._health;
   }
   set narrow(n: number) {
-    this._narrow = fixNumber(0, Math.PI * 2, n);
+    this._narrow = cycleNumber(0, Math.PI * 2, n);
   }
   set health(health: number) {
     this._health = limit(0, 1, health);

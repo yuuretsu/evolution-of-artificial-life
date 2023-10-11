@@ -72,7 +72,7 @@ export class SquareWorld extends World {
       Math.sin(angle) * length + y
     ].map(Math.round);
 
-    return this.fixCoords(x2!, y2!);
+    return this.cycleCoords(x2!, y2!);
   }
   getInfo() {
     return { ...this.info };

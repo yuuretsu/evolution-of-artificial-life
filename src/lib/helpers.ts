@@ -16,7 +16,7 @@ export function randChoice<T>(arr: T[]) {
   return arr[randInt(0, arr.length)];
 }
 
-export function fixNumber(min: number, max: number, number: number) {
+export function cycleNumber(min: number, max: number, number: number) {
   const range = max - min;
   return (((number - min) % range) + range) % range + min;
 }

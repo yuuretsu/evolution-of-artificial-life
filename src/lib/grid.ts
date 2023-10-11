@@ -1,4 +1,4 @@
-import { fixNumber, randInt } from './helpers';
+import { cycleNumber, randInt } from './helpers';
 
 export type Coords = [number, number];
 
@@ -13,10 +13,10 @@ export class Grid<T> {
       this.cells[x] = new Array(height).fill(undefined);
     }
   }
-  fixCoords(x: number, y: number): Coords {
+  cycleCoords(x: number, y: number): Coords {
     return [
-      fixNumber(0, this.width, x),
-      fixNumber(0, this.height, y),
+      cycleNumber(0, this.width, x),
+      cycleNumber(0, this.height, y),
     ];
   }
   randCoords(): [number, number] {
