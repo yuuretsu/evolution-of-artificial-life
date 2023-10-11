@@ -16,9 +16,10 @@ export function randChoice<T>(arr: T[]) {
   return arr[randInt(0, arr.length)];
 }
 
-export function cycleNumber(min: number, max: number, number: number) {
+export function cycleNumber(min: number, max: number, num: number): number {
   const range = max - min;
-  return (((number - min) % range) + range) % range + min;
+  const normalizedNum = (num - min) % range;
+  return normalizedNum >= 0 ? normalizedNum + min : normalizedNum + max;
 }
 
 export function normalizeNumber(
