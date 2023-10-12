@@ -1,3 +1,5 @@
+import { PixelsCanvas } from '@yuuretsu/pixels-canvas';
+
 import { Bot } from './bot';
 import { Rgba } from './color';
 import { Genome } from './genome';
@@ -100,28 +102,25 @@ export class SquareWorld extends World {
   }
   toImage(visualizer: BlockVisualiser, params: VisualiserParams) {
     const canvas = document.createElement('canvas');
-    canvas.width = this.width;
-    canvas.height = this.height;
-    const ctx = canvas.getContext('2d');
-    if (ctx instanceof CanvasRenderingContext2D) {
-      const data = ctx.createImageData(this.width, this.height);
+    const pix = new PixelsCanvas({
+      width: this.width,
+      height: this.height,
+      pixelSize: 1,
+      canvas
+    });
+
+    const colTransparent = new Rgba(0, 0, 0, 255);
+    const pixels = pix.getPixels();
+    for (let y = 0; y < this.height; y++) {
+      const r = pixels[y]!;
       for (let x = 0; x < this.width; x++) {
-        for (let y = 0; y < this.height; y++) {
-          const obj = this.get(x, y);
-          const color = obj ? visualizer(obj, params) : null;
-          if (color) {
-            const POINTER = (y * this.width + x) * 4;
-            data.data[POINTER] = color.red;
-            data.data[POINTER + 1] = color.green;
-            data.data[POINTER + 2] = color.blue;
-            data.data[POINTER + 3] = color.alpha;
-          }
-        }
+        const obj = this.get(x, y);
+        const color = obj ? visualizer(obj, params) || colTransparent : colTransparent;
+        r[x] = color.toArray();
       }
-      ctx.putImageData(data, 0, 0);
-      return canvas;
-    } else {
-      throw 'Не удалось получить контекст из канваса';
     }
+
+    pix.setPixels(pixels, 0, 0);
+    return pix.canvas;
   }
 }

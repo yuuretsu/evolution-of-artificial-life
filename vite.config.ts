@@ -7,6 +7,9 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 // eslint-disable-next-line no-restricted-syntax
 export default defineConfig({
+  server: {
+    port: 7654
+  },
   plugins: [
     // eslint-disable-next-line @typescript-eslint/naming-convention
     tsconfigPaths({ parseNative: true }),
