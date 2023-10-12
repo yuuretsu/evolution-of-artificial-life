@@ -8,6 +8,7 @@ import {
   FlexColumn,
   WideButton
 } from 'ui';
+import { useEffect, type FC, useState, useId } from 'react';
 
 import { CurrentWorldSettings } from './components/CurrentWorldSettings';
 import { Legend } from './components/Legend';
@@ -18,7 +19,6 @@ import { Links } from './components/Links';
 
 import type { VisualiserParams } from 'lib/view-modes';
 import type { NewWorldProps, World, WorldInfo } from 'lib/world';
-import type { FC } from 'react';
 import type { WorldBlock } from 'types';
 
 interface ISidebarProps {
@@ -69,6 +69,17 @@ type SidebarProps = {
 export const Sidebar: FC<SidebarProps> = observer((props) => {
   const deselectBlock = () => props.setSelectedBlock(null);
 
+  const [isBlockInfoOpen, setIsBlockInfoOpen] = useState(true);
+
+  const blockInfoId = useId();
+
+  useEffect(() => {
+    if (!props.selectedBlock) return;
+    document.getElementById(blockInfoId)!.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    setIsBlockInfoOpen(true);
+    sidebarStore.open();
+  }, [props.selectedBlock]);
+
   return (
     <Wrapper isOpen={sidebarStore.isOpen}>
       <FlexColumn gap={20}>
@@ -78,16 +89,18 @@ export const Sidebar: FC<SidebarProps> = observer((props) => {
           botsAmount={props.worldInfo.dynamicBlocks}
           stepTime={props.worldInfo.stepTime}
         />
-        <Accordion name='Инфо о блоке' isDefaultOpened>
-          {props.selectedBlock ? (
-            <FlexColumn gap={10}>
-              <WideButton onClick={deselectBlock}>Снять выделение</WideButton>
-              <props.selectedBlock.Render />
-            </FlexColumn>
-          ) : (
-            <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>
-          )}
-        </Accordion>
+        <div id={blockInfoId}>
+          <Accordion name='Инфо о блоке' isOpen={isBlockInfoOpen} onToggle={setIsBlockInfoOpen}>
+            {props.selectedBlock ? (
+              <FlexColumn gap={10}>
+                <WideButton onClick={deselectBlock}>Снять выделение</WideButton>
+                <props.selectedBlock.Render />
+              </FlexColumn>
+            ) : (
+              <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>
+            )}
+          </Accordion>
+        </div>
         <ViewSettings
           visualizerParams={props.visualizerParams}
           setVisualizerParams={props.setVisualizerParams}

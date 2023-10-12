@@ -14,7 +14,7 @@ export interface INewWorldProps {
 
 export const NewWorldForm: FC<INewWorldProps> = observer((props) => {
   return (
-    <Accordion name='Перезапуск' isDefaultOpened>
+    <Accordion name='Перезапуск' isOpen>
       <FlexColumn gap={10}>
         <SubBlock name="Размер мира">
           <FlexColumn gap={5}>

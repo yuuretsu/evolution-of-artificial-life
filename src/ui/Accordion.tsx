@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import styled, { keyframes } from 'styled-components';
 import { FlexColumn } from 'ui';
@@ -47,18 +47,35 @@ const BodyWrapper = styled.div`
 
 type AccordionProps = {
   name: string;
-  children?: ReactNode,
-  isDefaultOpened?: boolean,
-  isSmall?: boolean
-  color?: string,
+  children?: ReactNode;
+  isOpen?: boolean;
+  onToggle?: (isOpen: boolean) => void;
+  isSmall?: boolean;
+  color?: string;
 };
 
 export const Accordion: FC<AccordionProps> = (props) => {
-  const [isOpen, setIsOpen] = useState(props.isDefaultOpened);
+  const [localIsOpen, setLocalIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (props.isOpen === undefined) return;
+    setLocalIsOpen(props.isOpen);
+  }, [props.isOpen]);
+
+  const toggleAccordion = () => {
+    if (props.isOpen !== undefined && props.onToggle) {
+      props.onToggle(!localIsOpen);
+    } else {
+      setLocalIsOpen(!localIsOpen);
+    }
+  };
+
+  const isOpen = props.isOpen !== undefined ? props.isOpen : localIsOpen;
+
   return (
     <FlexColumn gap={props.isSmall ? 5 : 10}>
       <HeadWrapper
-        onClick={() => setIsOpen(!isOpen)} isSmall={props.isSmall}
+        onClick={toggleAccordion} isSmall={props.isSmall}
         color={props.color}
       >
         <span>

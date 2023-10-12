@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 
 class SidebarStore {
-  isOpen = true;
+  isOpen = false;
   constructor() {
     makeAutoObservable(this);
   }

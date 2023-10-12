@@ -83,7 +83,7 @@ export class Genome {
 
     return (
       <FlexColumn gap={10}>
-        <Accordion name="Ген" isSmall isDefaultOpened>
+        <Accordion name="Ген" isSmall isOpen>
           {selectedGene ? (
             <>
               <FlexColumn gap={5}>
@@ -163,7 +163,7 @@ export class Genome {
             <span>Кликните по круглому гену на вкладке ниже, чтобы увидеть информацию о нём.</span>
           )}
         </Accordion>
-        <Accordion name="Геном" isSmall isDefaultOpened>
+        <Accordion name="Геном" isSmall isOpen>
           <FlexColumn gap={10}>
             <SubBlock>Позиция указателя: {this.pointer}</SubBlock>
             <GenomeVisualizer

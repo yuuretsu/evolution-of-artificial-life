@@ -21,7 +21,7 @@ export const CurrentWorldSettings: FC<ICurrentWorldSettingsProps> = observer((pr
   };
 
   return (
-    <Accordion name='Настройки мира' isDefaultOpened>
+    <Accordion name='Настройки мира' isOpen>
       <SubBlock name="Генофонд">
         <FlexColumn gap={10}>
           <FlexColumn gap={5}>

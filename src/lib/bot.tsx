@@ -317,7 +317,10 @@ const LastActionsWrapper = styled.div`
 `;
 
 const Avatar = styled.div`
+  box-sizing: border-box;
   width: 20px;
   height: 20px;
-  border-radius: 2px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
 `;

@@ -30,7 +30,7 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
   };
 
   return (
-    <Accordion name='Настройки просмотра' isDefaultOpened>
+    <Accordion name='Настройки просмотра' isOpen>
       <FlexColumn gap={10}>
         <SubBlock name={'Время между обновлениями'}>
           <InputRange

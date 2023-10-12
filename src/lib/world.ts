@@ -81,7 +81,6 @@ export class SquareWorld extends World {
   }
   step() {
     const start = performance.now();
-    // this.info.dynamicBlocks = 0;
     const filtered: { pos: Coords; obj: WorldBlockDynamic }[] = [];
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
@@ -89,7 +88,6 @@ export class SquareWorld extends World {
         if (obj?.isDynamic) filtered.push({ pos: [x, y], obj });
       }
     }
-    // filtered.sort(() => Math.random() - 0.5);
     shuffle(filtered);
     for (const object of filtered) {
       object.obj.live(...object.pos, this);
