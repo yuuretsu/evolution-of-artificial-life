@@ -4,6 +4,7 @@
   "description": "evolution simulator",
   "scripts": {
     "dev": "vite --force --host",
+    "ts:watch": "tsc --noEmit -w",
     "build": "tsc && vite build --base=/evolution-of-artificial-life/",
     "preview": "vite preview",
     "eslint": "eslint --ext .tsx,.ts ./src",

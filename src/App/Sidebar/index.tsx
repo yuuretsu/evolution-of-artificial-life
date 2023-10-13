@@ -1,5 +1,7 @@
 import { observer } from 'mobx-react';
+import { useEffect, useRef } from 'react';
 import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_PADDING, SIDEBAR_WIDTH } from 'settings';
+import { accordionsStates } from 'stores/accordions';
 import { sidebarStore } from 'stores/sidebar';
 import styled from 'styled-components';
 import {
@@ -8,17 +10,17 @@ import {
   FlexColumn,
   WideButton
 } from 'ui';
-import { useEffect, type FC, useState, useId } from 'react';
 
 import { CurrentWorldSettings } from './components/CurrentWorldSettings';
 import { Legend } from './components/Legend';
+import { Links } from './components/Links';
 import { NewWorldForm } from './components/NewWorldForm';
 import { ViewSettings } from './components/ViewSettings';
 import { WorldInformation } from './components/WorldInfo';
-import { Links } from './components/Links';
 
 import type { VisualiserParams } from 'lib/view-modes';
 import type { NewWorldProps, World, WorldInfo } from 'lib/world';
+import type { FC } from 'react';
 import type { WorldBlock } from 'types';
 
 interface ISidebarProps {
@@ -69,14 +71,12 @@ type SidebarProps = {
 export const Sidebar: FC<SidebarProps> = observer((props) => {
   const deselectBlock = () => props.setSelectedBlock(null);
 
-  const [isBlockInfoOpen, setIsBlockInfoOpen] = useState(true);
-
-  const blockInfoId = useId();
+  const worldBlockInfoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!props.selectedBlock) return;
-    document.getElementById(blockInfoId)!.scrollIntoView({ block: 'center', behavior: 'smooth' });
-    setIsBlockInfoOpen(true);
+    if (!props.selectedBlock || !worldBlockInfoRef.current) return;
+    worldBlockInfoRef.current.scrollIntoView({ behavior: 'smooth' });
+    accordionsStates.states.worldBlockInfo.setTrue();
     sidebarStore.open();
   }, [props.selectedBlock]);
 
@@ -89,18 +89,21 @@ export const Sidebar: FC<SidebarProps> = observer((props) => {
           botsAmount={props.worldInfo.dynamicBlocks}
           stepTime={props.worldInfo.stepTime}
         />
-        <div id={blockInfoId}>
-          <Accordion name='Инфо о блоке' isOpen={isBlockInfoOpen} onToggle={setIsBlockInfoOpen}>
-            {props.selectedBlock ? (
-              <FlexColumn gap={10}>
-                <WideButton onClick={deselectBlock}>Снять выделение</WideButton>
-                <props.selectedBlock.Render />
-              </FlexColumn>
-            ) : (
-              <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>
-            )}
-          </Accordion>
-        </div>
+        <Accordion
+          name='Инфо о блоке'
+          ref={worldBlockInfoRef}
+          style={{ scrollMargin: SIDEBAR_PADDING }}
+          {...accordionsStates.getProps('worldBlockInfo')}
+        >
+          {props.selectedBlock ? (
+            <FlexColumn gap={10}>
+              <WideButton onClick={deselectBlock}>Снять выделение</WideButton>
+              <props.selectedBlock.Render />
+            </FlexColumn>
+          ) : (
+            <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>
+          )}
+        </Accordion>
         <ViewSettings
           visualizerParams={props.visualizerParams}
           setVisualizerParams={props.setVisualizerParams}

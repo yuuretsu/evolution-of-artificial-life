@@ -4,6 +4,7 @@ import { appStore } from 'stores/app';
 import { Accordion, Checkbox, FlexColumn, FlexRow, InputRange, OptionalBlock, Radio, SubBlock, WideButton } from 'ui';
 import { MdCancel, MdChecklist } from 'react-icons/md';
 import { IconContext } from 'react-icons';
+import { accordionsStates } from 'stores/accordions';
 
 import type { VisualiserParams } from 'lib/view-modes';
 import type { FC } from 'react';
@@ -30,7 +31,7 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
   };
 
   return (
-    <Accordion name='Настройки просмотра' isOpen>
+    <Accordion name='Настройки просмотра' {...accordionsStates.getProps('viewSettings')}>
       <FlexColumn gap={10}>
         <SubBlock name={'Время между обновлениями'}>
           <InputRange
@@ -85,14 +86,13 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
                       return (
                         <Checkbox
                           title={actionName}
-                          value={actionName}
                           key={actionName}
                           isChecked={props.visualizerParams.action[actionName]}
-                          onChange={(value, checked) => {
+                          onChange={(checked) => {
                             const newParams = {
                               ...props.visualizerParams,
                             };
-                            newParams.action[value] = checked;
+                            newParams.action[actionName] = checked;
                             props.setVisualizerParams(newParams);
                           }}
                         />

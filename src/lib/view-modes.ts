@@ -1,6 +1,7 @@
 import { Rgba } from './color';
 import { GENES } from './genome';
 
+import type { GeneName } from './genome/genes';
 import type { WorldBlock } from 'types';
 
 export type VisualiserParams = {
@@ -86,12 +87,11 @@ export const viewModesList = Object
 export const initVisualizerParams: VisualiserParams = {
   ageDivider: 1000,
   energyDivider: 100,
-  action: Object.keys(GENES).reduce((action, geneName) => {
-    return typeof GENES[geneName]?.color === 'undefined'
-      ? action
-      : {
-        ...action,
-        [GENES[geneName]!.name]: true
-      };
+  action: (Object.keys(GENES) as GeneName[]).reduce((action, geneName) => {
+    const gene = GENES[geneName];
+    return 'color' in gene ? {
+      ...action,
+      [GENES[geneName]!.name]: true
+    } : action;
   }, {})
 };

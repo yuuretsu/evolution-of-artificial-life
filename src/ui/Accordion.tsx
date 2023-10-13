@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { forwardRef } from 'react';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import styled, { keyframes } from 'styled-components';
 import { FlexColumn } from 'ui';
 
-import type { FC, ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 interface IHeadWrapper {
   readonly isSmall: boolean | undefined,
@@ -22,7 +22,7 @@ const HeadWrapper = styled.div<IHeadWrapper>`
   padding-left: 10px;
   justify-content: space-between;
   cursor: pointer;
-  /* align-items: center; */
+  align-items: center;
   user-select: none;
   transition-duration: 0.2s;
   &:active {
@@ -45,37 +45,22 @@ const BodyWrapper = styled.div`
   animation: ${anim} 0.5s;
 `;
 
-type AccordionProps = {
+export type AccordionProps = {
   name: string;
   children?: ReactNode;
-  isOpen?: boolean;
-  onToggle?: (isOpen: boolean) => void;
+  isOpen: boolean;
+  onToggle: (isOpen: boolean) => void;
   isSmall?: boolean;
   color?: string;
+  style?: CSSProperties;
 };
 
-export const Accordion: FC<AccordionProps> = (props) => {
-  const [localIsOpen, setLocalIsOpen] = useState(false);
-
-  useEffect(() => {
-    if (props.isOpen === undefined) return;
-    setLocalIsOpen(props.isOpen);
-  }, [props.isOpen]);
-
-  const toggleAccordion = () => {
-    if (props.isOpen !== undefined && props.onToggle) {
-      props.onToggle(!localIsOpen);
-    } else {
-      setLocalIsOpen(!localIsOpen);
-    }
-  };
-
-  const isOpen = props.isOpen !== undefined ? props.isOpen : localIsOpen;
-
+export const Accordion = forwardRef<HTMLDivElement, AccordionProps>((props, ref) => {
+  const handleClickHead = () => props.onToggle(!props.isOpen);
   return (
-    <FlexColumn gap={props.isSmall ? 5 : 10}>
+    <FlexColumn gap={props.isSmall ? 5 : 10} ref={ref} style={props.style}>
       <HeadWrapper
-        onClick={toggleAccordion} isSmall={props.isSmall}
+        onClick={handleClickHead} isSmall={props.isSmall}
         color={props.color}
       >
         <span>
@@ -83,7 +68,7 @@ export const Accordion: FC<AccordionProps> = (props) => {
         </span>
         <MdKeyboardArrowDown
           style={{
-            transform: isOpen ? 'none' : 'rotate(-90deg)',
+            transform: props.isOpen ? 'none' : 'rotate(-90deg)',
             transitionDuration: '0.2s',
             minWidth: props.isSmall ? '20px' : '25px',
             minHeight: props.isSmall ? '20px' : '25px',
@@ -91,7 +76,7 @@ export const Accordion: FC<AccordionProps> = (props) => {
           }}
         />
       </HeadWrapper>
-      {isOpen && <BodyWrapper>{props.children}</BodyWrapper>}
+      {props.isOpen && <BodyWrapper>{props.children}</BodyWrapper>}
     </FlexColumn>
   );
-};
+});

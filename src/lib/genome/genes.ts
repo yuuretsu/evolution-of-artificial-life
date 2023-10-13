@@ -3,22 +3,22 @@ import { lerp } from 'lib/helpers';
 
 import type { GenePool, GeneTemplate } from './types';
 
-export function enabledGenesToPool(genes: Record<string, boolean>): GenePool {
+export function enabledGenesToPool(genes: Record<GeneName, boolean>): GenePool {
   return namesToGenePool(
-    Object
-      .keys(genes)
+    (Object
+      .keys(genes) as GeneName[])
       .filter(key => genes[key])
   );
 }
 
-function namesToGenePool(names: string[]): GenePool {
+function namesToGenePool(names: GeneName[]): GenePool {
   return names.reduce<GenePool>((pool, name) => {
     const gene = GENES[name];
     return gene ? [...pool, gene] : pool;
   }, []);
 }
 
-export const GENES: Record<string, GeneTemplate> = {
+export const GENES = {
   doNothing: {
     name: 'Отдых',
     description: 'Прибавляет 0,1 к здоровью',
@@ -98,7 +98,7 @@ export const GENES: Record<string, GeneTemplate> = {
     color: new Rgba(255, 50, 255, 255),
     colorInfluence: 0.05,
     action: ({ bot, x, y, world }) => {
-      bot.health -= 0.1;
+      bot.health -= 0.99;
       bot.energy -= 0.1;
       const F_BLOCK = world.get(
         ...world.narrowToCoords(x, y, bot.narrow, 1)
@@ -225,4 +225,8 @@ export const GENES: Record<string, GeneTemplate> = {
       return { goto, msg };
     }
   }
-};
+} satisfies Record<string, GeneTemplate>;
+
+export type GeneName = keyof typeof GENES;
+
+export const GENES_NAMES = Object.keys(GENES);

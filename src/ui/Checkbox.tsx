@@ -50,8 +50,7 @@ const Input = styled.input.attrs({
 
 export interface ICheckboxProps {
   title: string;
-  value: string;
-  onChange: (value: string, checked: boolean) => void;
+  onChange: (checked: boolean) => void;
   isChecked?: boolean;
 }
 
@@ -59,10 +58,9 @@ export const Checkbox: FC<ICheckboxProps> = (props) => {
   return (
     <Wrapper>
       <Input
-        value={props.value}
         checked={props.isChecked}
         onChange={(e) => {
-          props.onChange(e.target.value, e.target.checked);
+          props.onChange(e.target.checked);
         }}
       />
       {props.title}

@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import styled, { keyframes } from 'styled-components';
 
-import type { FC } from 'react';
-
 const Wrapper = styled.div`
   position: relative;
   user-select: none;
@@ -68,13 +66,13 @@ const IconArrow = styled(MdKeyboardArrowDown)`
   margin-left: 5px;
 `;
 
-export interface IDropdownSmallProps {
+export interface IDropdownSmallProps<T extends string> {
   name: string;
-  list: { value: string; title: string }[];
-  onChange: (value: string) => void;
+  list: { value: T; title: string }[];
+  onChange: (value: T) => void;
 }
 
-export const DropdownSmall: FC<IDropdownSmallProps> = (props) => {
+export const DropdownSmall = <T extends string,>(props: IDropdownSmallProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <Wrapper>

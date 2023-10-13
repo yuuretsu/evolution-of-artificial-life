@@ -1,16 +1,18 @@
 import { GenomeVisualizer } from 'App/Sidebar/GenomeVisualizer';
+import { cycleNumber, limit } from 'lib/helpers';
 import { useEffect, useState } from 'react';
 import { MAX_ACTIONS } from 'settings';
-import { FlexColumn, SubBlock } from 'ui';
-import { Accordion, DropdownSmall, InputNumberSmall, WideButton } from 'ui';
-import { cycleNumber, limit } from 'lib/helpers';
+import { accordionsStates } from 'stores/accordions';
+import { Accordion, DropdownSmall, FlexColumn, InputNumberSmall, SubBlock, WideButton } from 'ui';
+import { useForceRender } from 'hooks';
 
 import { Gene, NULL_GENE, NULL_GENE_TEMPLATE } from './gene';
 import { GENES } from './genes';
 
-import type { GenePool } from './types';
 import type { Bot } from 'lib/bot';
 import type { World } from 'lib/world';
+import type { GeneName } from './genes';
+import type { GenePool } from './types';
 
 export class Genome {
   recentlyUsedGenes: Gene[] = [];
@@ -66,6 +68,7 @@ export class Genome {
   }
 
   Render = () => {
+    const rerender = useForceRender();
     const [genes, setGenes] = useState(this.genes);
     const [selectedGene, setSelectedGene] = useState<{ id: number, gene: Gene } | null>(null);
     const [option, setOption] = useState<number | string>(0);
@@ -83,14 +86,18 @@ export class Genome {
 
     return (
       <FlexColumn gap={10}>
-        <Accordion name="Ген" isSmall isOpen>
+        <Accordion
+          name="Ген"
+          isSmall
+          {...accordionsStates.getProps('gene', { onToggle: rerender })}
+        >
           {selectedGene ? (
             <>
               <FlexColumn gap={5}>
                 <div>
                   <DropdownSmall
                     name={selectedGene.gene.template.name}
-                    list={Object.keys(GENES).map(key => {
+                    list={(Object.keys(GENES) as GeneName[]).map(key => {
                       return { value: key, title: GENES[key]?.name || NULL_GENE_TEMPLATE.name };
                     })}
                     onChange={value => {
@@ -121,7 +128,7 @@ export class Genome {
                     .gene
                     .property
                     .branches
-                    .map((value, i) => {
+                    .map((_value, i) => {
                       return (
                         <InputNumberSmall
                           name={`Ветка ${i + 1}`}
@@ -163,7 +170,11 @@ export class Genome {
             <span>Кликните по круглому гену на вкладке ниже, чтобы увидеть информацию о нём.</span>
           )}
         </Accordion>
-        <Accordion name="Геном" isSmall isOpen>
+        <Accordion
+          name="Геном"
+          isSmall
+          {...accordionsStates.getProps('genome', { onToggle: rerender })}
+        >
           <FlexColumn gap={10}>
             <SubBlock>Позиция указателя: {this.pointer}</SubBlock>
             <GenomeVisualizer
@@ -182,10 +193,10 @@ export const getInitiallyEnabledGenesNames = () => Object
   .entries(GENES)
   .reduce<Record<string, boolean>>((acc, [name, template]) => ({
     ...acc,
-    [name]: !template.isDefaultDisabled
+    [name]: 'isDefaultDisabled' in template ? !template.isDefaultDisabled : true,
   }), {});
 
 export { enabledGenesToPool } from './genes';
-export type { GenePool };
 export { GENES, Gene };
+export type { GeneName, GenePool };
 

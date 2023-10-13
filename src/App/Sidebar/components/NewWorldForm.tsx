@@ -1,6 +1,7 @@
 import { limit } from 'lib/helpers';
 import { observer } from 'mobx-react';
 import { Accordion, FlexColumn, InputNumber, SubBlock, WideButton } from 'ui';
+import { accordionsStates } from 'stores/accordions';
 
 import type { NewWorldProps } from 'lib/world';
 import type { FC } from 'react';
@@ -14,7 +15,7 @@ export interface INewWorldProps {
 
 export const NewWorldForm: FC<INewWorldProps> = observer((props) => {
   return (
-    <Accordion name='Перезапуск' isOpen>
+    <Accordion name='Перезапуск' {...accordionsStates.getProps('restartWorld')}>
       <FlexColumn gap={10}>
         <SubBlock name="Размер мира">
           <FlexColumn gap={5}>

@@ -1,17 +1,18 @@
+import { useForceRender } from 'hooks';
 import { useEffect, useState } from 'react';
 import { MAX_BOT_AGE } from 'settings';
+import { accordionsStates } from 'stores/accordions';
 import styled from 'styled-components';
-import { FlexColumn, FlexRow, SubBlock } from 'ui';
-import { Accordion, InputNumberSmall } from 'ui';
+import { Accordion, FlexColumn, FlexRow, InputNumberSmall, SubBlock } from 'ui';
 
 import { Rgba } from './color';
-import { cycleNumber, limit, randInt } from './helpers';
 import { Genome } from './genome';
+import { cycleNumber, limit, randInt } from './helpers';
 
+import type { WorldBlockDynamic } from 'types';
 import type { GenePool } from './genome';
 import type { VisualiserParams } from './view-modes';
 import type { World } from './world';
-import type { WorldBlockDynamic } from 'types';
 
 type BotAbilityName = keyof typeof Bot.prototype.abilities;
 
@@ -189,6 +190,7 @@ export class Bot implements WorldBlockDynamic {
     this.health = Math.min(1, this.health + 0.01);
   }
   Render = () => {
+    const rerender = useForceRender();
     const [age, setAge] = useState<number | string>(this.age);
     const [energy, setEnergy] = useState<number | string>(this.energy.toFixed(2));
     const [health, setHealth] = useState<number | string>(this.health.toFixed(2));
@@ -275,12 +277,13 @@ export class Bot implements WorldBlockDynamic {
             {!this.isAlive && (
               <div
                 style={{
-                  color: 'red',
-                  backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                  color: `rgb(${channels})`,
+                  backgroundColor: `rgba(${channels}, 0.1)`,
                   fontWeight: 'bold',
                   textAlign: 'center',
-                  border: '2px solid red',
-                  lineHeight: '50px',
+                  border: `2px solid rgb(${channels})`,
+                  // lineHeight: '50px',
+                  padding: '10px 0',
                   borderRadius: '5px',
                 }}
               >
@@ -292,7 +295,11 @@ export class Bot implements WorldBlockDynamic {
         <SubBlock>
           <this.genome.Render />
         </SubBlock>
-        <Accordion name='Последние действия' isSmall>
+        <Accordion
+          name='Последние действия'
+          isSmall
+          {...accordionsStates.getProps('lastActions', { onToggle: rerender })}
+        >
           <LastActionsWrapper>
             {this.lastActions.map((action, i) => {
               return (
@@ -307,6 +314,8 @@ export class Bot implements WorldBlockDynamic {
     );
   };
 }
+
+const channels = '255, 200, 0';
 
 const LastActionsWrapper = styled.div`
   aspect-ratio: 1;
