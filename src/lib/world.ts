@@ -65,7 +65,6 @@ export class SquareWorld extends World {
           genome: new Genome(props.genomeSize).fillRandom(props.genePool)
         })
       );
-      this.info.dynamicBlocks++;
     }
   }
   narrowToCoords(x: number, y: number, angle: number, length: number) {
@@ -82,11 +81,9 @@ export class SquareWorld extends World {
   step() {
     const start = performance.now();
     const filtered: { pos: Coords; obj: WorldBlockDynamic }[] = [];
-    for (let x = 0; x < this.width; x++) {
-      for (let y = 0; y < this.height; y++) {
-        const obj = this.get(x, y);
-        if (obj?.isDynamic) filtered.push({ pos: [x, y], obj });
-      }
+    for (const [x, y] of this.getAllCoords()) {
+      const obj = this.get(x, y);
+      if (obj?.isDynamic) filtered.push({ pos: [x, y], obj });
     }
     shuffle(filtered);
     for (const object of filtered) {
@@ -109,13 +106,10 @@ export class SquareWorld extends World {
 
     const colTransparent = new Rgba(0, 0, 0, 255);
     const pixels = pix.getPixels();
-    for (let y = 0; y < this.height; y++) {
-      const r = pixels[y]!;
-      for (let x = 0; x < this.width; x++) {
-        const obj = this.get(x, y);
-        const color = obj ? visualizer(obj, params) || colTransparent : colTransparent;
-        r[x] = color.toArray();
-      }
+    for (const [x, y] of this.getAllCoords()) {
+      const obj = this.get(x, y);
+      const color = obj ? visualizer(obj, params) || colTransparent : colTransparent;
+      pixels[y]![x] = color.toArray();
     }
 
     pix.setPixels(pixels, 0, 0);

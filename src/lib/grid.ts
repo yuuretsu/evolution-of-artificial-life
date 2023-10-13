@@ -54,4 +54,11 @@ export class Grid<T> {
   flat(): (T | undefined)[] {
     return Array.prototype.concat.apply([], this.cells);
   }
+  *getAllCoords() {
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+        yield [x, y] as const;
+      }
+    }
+  }
 }
