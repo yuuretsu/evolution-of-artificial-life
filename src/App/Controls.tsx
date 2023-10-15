@@ -9,18 +9,24 @@ import {
   MdFullscreen,
   MdFullscreenExit
 } from 'react-icons/md';
+import { IconContext } from 'react-icons';
 import { appStore } from 'stores/app';
 import { sidebarStore } from 'stores/sidebar';
-import styled from 'styled-components';
-import { CircleButton, CIRCLE_BUTTON_ICON_STYLE } from 'ui';
+import styled, { css } from 'styled-components';
+import { CircleButton } from 'ui';
 import { SIDEBAR_PADDING } from 'settings';
 
 import type { FC } from 'react';
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ isTransparent: boolean }>`
   position: fixed;
   display: flex;
-  background-color: #282828;
+  ${({ isTransparent }) => {
+    return css`
+      background-color: ${isTransparent ? 'rgba(40, 40, 40, 0.8)' : 'rgb(40, 40, 40)'};
+      backdrop-filter: blur(20px);
+    `;
+  }}
   padding: 10px;
   border-radius: 100px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
@@ -60,42 +66,45 @@ export const Controls: FC<IControlsProps> = observer((props) => {
   const FullscreenIcon = isInfullscreen ? MdFullscreenExit : MdFullscreen;
 
   return (
-    <Wrapper>
-      <CircleButton
-        title={appStore.isPaused ? 'Продолжить' : 'Пауза'}
-        onClick={appStore.toggleIsPaused}
-      >
-        <PlayPauseIcon style={CIRCLE_BUTTON_ICON_STYLE} />
-      </CircleButton>
-      <CircleButton
-        title="Шаг симуляции"
-        onClick={props.onClickStep}
-      >
-        <MdSkipNext style={CIRCLE_BUTTON_ICON_STYLE} />
-      </CircleButton>
-      <CircleButton
-        title="Рестарт"
-        onClick={props.onClickRestart}
-      >
-        <MdReplay style={CIRCLE_BUTTON_ICON_STYLE} />
-      </CircleButton>
-      {isCanFullscreen && (
-        <>
-          <Divider />
-          <CircleButton
-            title="Fullscreen"
-            onClick={onClickFullscreen}
-          >
-            <FullscreenIcon style={CIRCLE_BUTTON_ICON_STYLE} />
-          </CircleButton>
-        </>
-      )}
-      <Divider />
-      <CircleButton title="Настройки" onClick={sidebarStore.toggle}>
-        {sidebarStore.isOpen
-          ? <MdClose style={CIRCLE_BUTTON_ICON_STYLE} />
-          : <MdMenu style={CIRCLE_BUTTON_ICON_STYLE} />}
-      </CircleButton>
-    </Wrapper>
+    <IconContext.Provider value={{ size: '25px', color: 'whitesmoke' }}>
+
+      <Wrapper isTransparent={!sidebarStore.isOpen}>
+        <CircleButton
+          title={appStore.isPaused ? 'Продолжить' : 'Пауза'}
+          onClick={appStore.toggleIsPaused}
+        >
+          <PlayPauseIcon />
+        </CircleButton>
+        <CircleButton
+          title="Шаг симуляции"
+          onClick={props.onClickStep}
+        >
+          <MdSkipNext />
+        </CircleButton>
+        <CircleButton
+          title="Рестарт"
+          onClick={props.onClickRestart}
+        >
+          <MdReplay />
+        </CircleButton>
+        {isCanFullscreen && (
+          <>
+            <Divider />
+            <CircleButton
+              title="Fullscreen"
+              onClick={onClickFullscreen}
+            >
+              <FullscreenIcon />
+            </CircleButton>
+          </>
+        )}
+        <Divider />
+        <CircleButton title="Настройки" onClick={sidebarStore.toggle}>
+          {sidebarStore.isOpen
+            ? <MdClose />
+            : <MdMenu />}
+        </CircleButton>
+      </Wrapper>
+    </IconContext.Provider>
   );
 });
