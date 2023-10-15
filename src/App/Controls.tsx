@@ -32,6 +32,14 @@ const Wrapper = styled.div`
   transition-duration: 0.2s;
 `;
 
+const Divider = styled.div`
+  background-color: rgb(80, 80, 80);
+  width: 2.5px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border-radius: 2px;
+`;
+
 export interface IControlsProps {
   onClickStep: () => void;
   onClickRestart: () => void;
@@ -53,11 +61,6 @@ export const Controls: FC<IControlsProps> = observer((props) => {
 
   return (
     <Wrapper>
-      <CircleButton title="Настройки" onClick={sidebarStore.toggle}>
-        {sidebarStore.isOpen
-          ? <MdClose style={CIRCLE_BUTTON_ICON_STYLE} />
-          : <MdMenu style={CIRCLE_BUTTON_ICON_STYLE} />}
-      </CircleButton>
       <CircleButton
         title={appStore.isPaused ? 'Продолжить' : 'Пауза'}
         onClick={appStore.toggleIsPaused}
@@ -77,13 +80,22 @@ export const Controls: FC<IControlsProps> = observer((props) => {
         <MdReplay style={CIRCLE_BUTTON_ICON_STYLE} />
       </CircleButton>
       {isCanFullscreen && (
-        <CircleButton
-          title="Fullscreen"
-          onClick={onClickFullscreen}
-        >
-          <FullscreenIcon style={CIRCLE_BUTTON_ICON_STYLE} />
-        </CircleButton>
+        <>
+          <Divider />
+          <CircleButton
+            title="Fullscreen"
+            onClick={onClickFullscreen}
+          >
+            <FullscreenIcon style={CIRCLE_BUTTON_ICON_STYLE} />
+          </CircleButton>
+        </>
       )}
+      <Divider />
+      <CircleButton title="Настройки" onClick={sidebarStore.toggle}>
+        {sidebarStore.isOpen
+          ? <MdClose style={CIRCLE_BUTTON_ICON_STYLE} />
+          : <MdMenu style={CIRCLE_BUTTON_ICON_STYLE} />}
+      </CircleButton>
     </Wrapper>
   );
 });
