@@ -1,23 +1,14 @@
 import { observer } from 'mobx-react';
-import {
-  MdClose,
-  MdMenu,
-  MdPause,
-  MdPlayArrow,
-  MdSkipNext,
-  MdReplay,
-  MdFullscreen,
-  MdFullscreenExit
-} from 'react-icons/md';
-import { IconContext } from 'react-icons';
-import { appStore } from 'stores/app';
 import { sidebarStore } from 'stores/sidebar';
 import styled, { css } from 'styled-components';
-import { CircleButton, FlexColumn, FlexRow } from 'ui';
+import { FlexColumn } from 'ui';
 import { SIDEBAR_PADDING } from 'settings';
 import { type FC } from 'react';
 
 import { SimulationSpeedRange } from './SimulationSpeedRange';
+import { ControlsButtons } from './ControlsButtons';
+
+import type { IControlsButtonsProps } from './ControlsButtons';
 
 const Wrapper = styled.div<{ isTransparent: boolean }>`
   position: fixed;
@@ -39,77 +30,21 @@ const Wrapper = styled.div<{ isTransparent: boolean }>`
   transition-duration: 0.2s;
 `;
 
-const Divider = styled.div`
-  background-color: rgb(80, 80, 80);
-  width: 2.5px;
-  margin-top: 8px;
-  margin-bottom: 8px;
-  border-radius: 2px;
-`;
-
 export interface IControlsProps {
-  onClickStep: () => void;
-  onClickRestart: () => void;
-  fullscreenElement?: HTMLElement | null;
+  controlsButtonsProps: IControlsButtonsProps;
 }
 
-export const Controls: FC<IControlsProps> = observer((props) => {
-  const IconPlayPause = appStore.isPaused ? MdPlayArrow : MdPause;
-  const IconSidebarOpenClose = sidebarStore.isOpen ? MdClose : MdMenu;
-
-  const { fullscreenElement } = props;
-  const isCanFullscreen = !!fullscreenElement?.requestFullscreen;
-  const isInFullscreen = document.fullscreenElement === fullscreenElement;
-
-  const onClickFullscreen = () => isInFullscreen
-    ? document.exitFullscreen()
-    : fullscreenElement?.requestFullscreen?.();
-
-  const IconFullscreen = isInFullscreen ? MdFullscreenExit : MdFullscreen;
-
+export const Controls: FC<IControlsProps> = observer(({ controlsButtonsProps }) => {
   return (
     <Wrapper isTransparent={!sidebarStore.isOpen}>
       <FlexColumn gap={10}>
         <SimulationSpeedRange />
 
-        <FlexRow gap={10}>
-          <IconContext.Provider value={{ size: '25px', color: 'whitesmoke' }}>
-
-            <CircleButton
-              title={appStore.isPaused ? 'Продолжить' : 'Пауза'}
-              onClick={appStore.toggleIsPaused}
-            >
-              <IconPlayPause />
-            </CircleButton>
-            <CircleButton
-              title="Шаг симуляции"
-              onClick={props.onClickStep}
-            >
-              <MdSkipNext />
-            </CircleButton>
-            <CircleButton
-              title="Рестарт"
-              onClick={props.onClickRestart}
-            >
-              <MdReplay />
-            </CircleButton>
-            {isCanFullscreen && (
-              <>
-                <Divider />
-                <CircleButton
-                  title="Fullscreen"
-                  onClick={onClickFullscreen}
-                >
-                  <IconFullscreen />
-                </CircleButton>
-              </>
-            )}
-            <Divider />
-            <CircleButton title="Настройки" onClick={sidebarStore.toggle}>
-              <IconSidebarOpenClose />
-            </CircleButton>
-          </IconContext.Provider>
-        </FlexRow>
+        <ControlsButtons
+          onClickStep={controlsButtonsProps.onClickStep}
+          onClickRestart={controlsButtonsProps.onClickRestart}
+          fullscreenElement={controlsButtonsProps.fullscreenElement}
+        />
       </FlexColumn>
     </Wrapper>
   );

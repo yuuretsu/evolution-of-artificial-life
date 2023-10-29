@@ -147,9 +147,11 @@ export const App: FC = observer(() => {
         />
         {!!appRef.current && (
           <Controls
-            onClickStep={onClickStep}
-            onClickRestart={restart}
-            fullscreenElement={appRef.current}
+            controlsButtonsProps={{
+              onClickStep,
+              onClickRestart: restart,
+              fullscreenElement: appRef.current,
+            }}
           />
         )}
       </Wrapper>
