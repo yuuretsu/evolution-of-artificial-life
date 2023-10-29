@@ -21,6 +21,7 @@ import { Sidebar } from './Sidebar';
 import { Viewer } from './Viewer';
 import { GameImage } from './Viewer/GameImage';
 import { SafeAreaBottom } from './SafeAreaBottom';
+import { GlobalStyles } from './app.css';
 
 import type {
   VisualiserParams
@@ -120,6 +121,7 @@ export const App: FC = observer(() => {
 
   return (
     <>
+      <GlobalStyles />
       <SafeAreaBottom />
       <Wrapper ref={appRef} style={{ height: `${appHeight}px` }}>
         <Viewer
