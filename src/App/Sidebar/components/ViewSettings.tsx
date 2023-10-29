@@ -33,14 +33,6 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
   return (
     <Accordion name='Настройки просмотра' {...accordionsStates.getProps('viewSettings')}>
       <FlexColumn gap={10}>
-        <SubBlock name={'Время между обновлениями'}>
-          <InputRange
-            min={1}
-            max={200}
-            value={appStore.timeBetweenSteps.current}
-            onChange={e => appStore.timeBetweenSteps.set(+e.target.value)}
-          />
-        </SubBlock>
         <SubBlock name="Режим отображения">
           <Radio
             name='view-mode'
