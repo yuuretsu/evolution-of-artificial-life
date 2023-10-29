@@ -88,6 +88,7 @@ export const Sidebar: FC<SidebarProps> = observer((props) => {
           cycle={props.worldInfo.cycle}
           botsAmount={props.worldInfo.dynamicBlocks}
           stepTime={props.worldInfo.stepTime}
+          averageAge={props.worldInfo.averageAge}
         />
         <Accordion
           name='Инфо о блоке'

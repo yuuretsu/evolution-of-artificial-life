@@ -23,6 +23,7 @@ export type WorldInfo = {
   cycle: number;
   dynamicBlocks: number;
   stepTime: number;
+  averageAge: number;
 };
 
 export abstract class World extends Grid<WorldBlock> {
@@ -30,7 +31,8 @@ export abstract class World extends Grid<WorldBlock> {
   protected info: WorldInfo = {
     cycle: 0,
     dynamicBlocks: 0,
-    stepTime: 0
+    stepTime: 0,
+    averageAge: 0
   };
   constructor(props: NewWorldProps) {
     super(props.width, props.height);
@@ -75,7 +77,7 @@ export class SquareWorld extends World {
 
     return this.cycleCoords(x2!, y2!);
   }
-  getInfo() {
+  getInfo(): WorldInfo {
     return { ...this.info };
   }
   step() {
@@ -89,11 +91,16 @@ export class SquareWorld extends World {
     for (const object of filtered) {
       object.obj.live(...object.pos, this);
     }
+    const bots = filtered
+      .map(({ obj }) => obj)
+      .filter((obj): obj is Bot => obj instanceof Bot);
+    const averageAge = bots.map(({ age }) => age).reduce((a, b) => a + b) / bots.length;
     this.info.dynamicBlocks = this.flat().filter(
       (value) => value?.isDynamic
     ).length;
     this.info.cycle++;
     this.info.stepTime = performance.now() - start;
+    this.info.averageAge = averageAge;
   }
   toImage(visualizer: BlockVisualiser, params: VisualiserParams) {
     const canvas = document.createElement('canvas');
