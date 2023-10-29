@@ -13,9 +13,11 @@ import { IconContext } from 'react-icons';
 import { appStore } from 'stores/app';
 import { sidebarStore } from 'stores/sidebar';
 import styled, { css } from 'styled-components';
-import { CircleButton, FlexColumn, FlexRow, InputRange } from 'ui';
+import { CircleButton, FlexColumn, FlexRow } from 'ui';
 import { SIDEBAR_PADDING } from 'settings';
-import { type ChangeEventHandler, type FC } from 'react';
+import { type FC } from 'react';
+
+import { SimulationSpeedRange } from './SimulationSpeedRange';
 
 const Wrapper = styled.div<{ isTransparent: boolean }>`
   position: fixed;
@@ -28,7 +30,7 @@ const Wrapper = styled.div<{ isTransparent: boolean }>`
   }}
   padding: 10px;
   border-radius: 20px;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 50px 0 rgba(0, 0, 0, 1);
   bottom: calc(${SIDEBAR_PADDING} + env(safe-area-inset-bottom));
   right: calc(${SIDEBAR_PADDING} + env(safe-area-inset-right));
   & > *:not(:last-child) {
@@ -65,23 +67,10 @@ export const Controls: FC<IControlsProps> = observer((props) => {
 
   const IconFullscreen = isInfullscreen ? MdFullscreenExit : MdFullscreen;
 
-
-  const MAX_STEP_TIME = 200;
-
-  const handleChangeSpeed: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const newValue = MAX_STEP_TIME - +e.target.value;
-    appStore.timeBetweenSteps.set(newValue);
-  };
-
   return (
     <Wrapper isTransparent={!sidebarStore.isOpen}>
-      <FlexColumn gap={5}>
-        <InputRange
-          min={1}
-          max={MAX_STEP_TIME}
-          value={MAX_STEP_TIME - appStore.timeBetweenSteps.current}
-          onChange={handleChangeSpeed}
-        />
+      <FlexColumn gap={10}>
+        <SimulationSpeedRange />
 
         <FlexRow gap={10}>
           <IconContext.Provider value={{ size: '25px', color: 'whitesmoke' }}>
