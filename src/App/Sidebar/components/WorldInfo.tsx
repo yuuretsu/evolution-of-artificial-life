@@ -15,7 +15,7 @@ export interface IWorldInformationProps {
 }
 
 export const WorldInformation: FC<IWorldInformationProps> = observer((props) => {
-  const throttledInfo = useThrottle({ ...props }, 100);
+  const throttledInfo = useThrottle(props, 100);
   return (
     <Accordion name='Инфо о мире' {...accordionsStates.getProps('worldInfo')}>
       <Table>
