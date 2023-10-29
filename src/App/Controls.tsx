@@ -52,7 +52,8 @@ export interface IControlsProps {
 }
 
 export const Controls: FC<IControlsProps> = observer((props) => {
-  const PlayPauseIcon = appStore.isPaused ? MdPlayArrow : MdPause;
+  const IconPlayPause = appStore.isPaused ? MdPlayArrow : MdPause;
+  const IconSidebarOpenClose = sidebarStore.isOpen ? MdClose : MdMenu;
 
   const { fullscreenElement: fullscreen } = props;
   const isCanFullscreen = !!fullscreen?.requestFullscreen;
@@ -62,7 +63,7 @@ export const Controls: FC<IControlsProps> = observer((props) => {
     ? document.exitFullscreen()
     : fullscreen?.requestFullscreen?.();
 
-  const FullscreenIcon = isInfullscreen ? MdFullscreenExit : MdFullscreen;
+  const IconFullscreen = isInfullscreen ? MdFullscreenExit : MdFullscreen;
 
 
   const MAX_STEP_TIME = 200;
@@ -89,7 +90,7 @@ export const Controls: FC<IControlsProps> = observer((props) => {
               title={appStore.isPaused ? 'Продолжить' : 'Пауза'}
               onClick={appStore.toggleIsPaused}
             >
-              <PlayPauseIcon />
+              <IconPlayPause />
             </CircleButton>
             <CircleButton
               title="Шаг симуляции"
@@ -110,15 +111,13 @@ export const Controls: FC<IControlsProps> = observer((props) => {
                   title="Fullscreen"
                   onClick={onClickFullscreen}
                 >
-                  <FullscreenIcon />
+                  <IconFullscreen />
                 </CircleButton>
               </>
             )}
             <Divider />
             <CircleButton title="Настройки" onClick={sidebarStore.toggle}>
-              {sidebarStore.isOpen
-                ? <MdClose />
-                : <MdMenu />}
+              <IconSidebarOpenClose />
             </CircleButton>
           </IconContext.Provider>
         </FlexRow>
