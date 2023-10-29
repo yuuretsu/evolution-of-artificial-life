@@ -1,14 +1,20 @@
 import { makeAutoObservable } from 'mobx';
+import { ToggleStore } from 'stores';
 
 class SidebarStore {
-  isOpen = false;
+  isOpenStore = new ToggleStore(false);
+
   constructor() {
     makeAutoObservable(this);
   }
 
-  open = () => this.isOpen = true;
-  close = () => this.isOpen = false;
-  toggle = () => this.isOpen = !this.isOpen;
+  get isOpen() {
+    return this.isOpenStore.state;
+  }
+
+  open = this.isOpenStore.setTrue;
+  close = this.isOpenStore.setFalse;
+  toggle = this.isOpenStore.toggle;
 }
 
 export const sidebarStore = new SidebarStore();
