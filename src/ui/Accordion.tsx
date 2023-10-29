@@ -1,7 +1,6 @@
 import { forwardRef } from 'react';
 import { MdKeyboardArrowDown } from 'react-icons/md';
-import styled, { keyframes } from 'styled-components';
-import { FlexColumn } from 'ui';
+import styled from 'styled-components';
 
 import type { CSSProperties, ReactNode } from 'react';
 
@@ -30,19 +29,11 @@ const HeadWrapper = styled.div<IHeadWrapper>`
   }
 `;
 
-const anim = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-`;
-
-const BodyWrapper = styled.div`
-  animation: ${anim} 0.5s;
+const BodyWrapper = styled.div<{ isOpen: boolean }>`
+  display: grid;
+  grid-template-rows: ${({ isOpen }) => isOpen ? '1fr' : '0fr'};
+  overflow: hidden;
+  transition-duration: 0.2s;
 `;
 
 export type AccordionProps = {
@@ -58,7 +49,7 @@ export type AccordionProps = {
 export const Accordion = forwardRef<HTMLDivElement, AccordionProps>((props, ref) => {
   const handleClickHead = () => props.onToggle(!props.isOpen);
   return (
-    <FlexColumn gap={props.isSmall ? 5 : 10} ref={ref} style={props.style}>
+    <div ref={ref} style={props.style}>
       <HeadWrapper
         onClick={handleClickHead} isSmall={props.isSmall}
         color={props.color}
@@ -76,7 +67,13 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>((props, ref)
           }}
         />
       </HeadWrapper>
-      {props.isOpen && <BodyWrapper>{props.children}</BodyWrapper>}
-    </FlexColumn>
+      <BodyWrapper isOpen={props.isOpen}>
+        <div style={{ minHeight: 0 }}>
+          <div style={{ paddingTop: props.isSmall ? 5 : 10 }}>
+            {props.children}
+          </div>
+        </div>
+      </BodyWrapper>
+    </div>
   );
 });
