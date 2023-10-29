@@ -57,15 +57,15 @@ export const Controls: FC<IControlsProps> = observer((props) => {
   const IconPlayPause = appStore.isPaused ? MdPlayArrow : MdPause;
   const IconSidebarOpenClose = sidebarStore.isOpen ? MdClose : MdMenu;
 
-  const { fullscreenElement: fullscreen } = props;
-  const isCanFullscreen = !!fullscreen?.requestFullscreen;
-  const isInfullscreen = document.fullscreenElement === fullscreen;
+  const { fullscreenElement } = props;
+  const isCanFullscreen = !!fullscreenElement?.requestFullscreen;
+  const isInFullscreen = document.fullscreenElement === fullscreenElement;
 
-  const onClickFullscreen = () => isInfullscreen
+  const onClickFullscreen = () => isInFullscreen
     ? document.exitFullscreen()
-    : fullscreen?.requestFullscreen?.();
+    : fullscreenElement?.requestFullscreen?.();
 
-  const IconFullscreen = isInfullscreen ? MdFullscreenExit : MdFullscreen;
+  const IconFullscreen = isInFullscreen ? MdFullscreenExit : MdFullscreen;
 
   return (
     <Wrapper isTransparent={!sidebarStore.isOpen}>
