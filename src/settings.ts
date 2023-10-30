@@ -5,7 +5,7 @@ export const SIDEBAR_ANIMATION_SPEED = '0.2s';
 
 // VIEW
 export const PIXEL_SIZE = 10;
-export const MAX_STEP_TIME_MS = 1000;
+export const MAX_STEP_TIME_MS = 200;
 
 // GENOME VIEW
 const GENOME_VIEW_BORDER_PX = 2;
