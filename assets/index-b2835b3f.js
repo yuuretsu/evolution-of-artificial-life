@@ -81,11 +81,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   font-weight: ${e=>e.isSmall?"normal":"bold"};
   font-size: ${e=>e.isSmall?"inherit":"1.25em"};
   border-left: 5px solid ${e=>e.color?e.color:"rgb(80, 80, 80)"};
+  padding: ${({isSmall:e})=>e?"3px":"5px"};
+  padding-right: 5px;
   padding-left: 10px;
+  border-radius: 2px;
   justify-content: space-between;
   cursor: pointer;
   align-items: center;
   user-select: none;
+  background-color: rgba(80, 80, 80, 0.25);
   transition-duration: 0.2s;
   &:active {
     background-color: rgba(255, 255, 255, 0.1);
