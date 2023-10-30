@@ -114,7 +114,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   position: relative;
   appearance: none;
   margin: 0;
-  margin-right: 5px;
+  margin-right: 8px;
   outline: none;
   border: none;
   &:checked::after {
@@ -343,7 +343,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   position: relative;
   appearance: none;
   margin: 0;
-  margin-right: 5px;
+  margin-right: 8px;
   outline: none;
   border: none;
   &:checked::after {
