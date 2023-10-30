@@ -19,11 +19,15 @@ const HeadWrapper = styled.div<IHeadWrapper>`
   font-weight: ${props => props.isSmall ? 'normal' : 'bold'};
   font-size: ${props => props.isSmall ? 'inherit' : '1.25em'};
   border-left: 5px solid ${props => props.color ? props.color : 'rgb(80, 80, 80)'};
+  padding: ${({ isSmall }) => isSmall ? '3px' : '5px'};
+  padding-right: 5px;
   padding-left: 10px;
+  border-radius: 2px;
   justify-content: space-between;
   cursor: pointer;
   align-items: center;
   user-select: none;
+  background-color: rgba(80, 80, 80, 0.25);
   transition-duration: 0.2s;
   &:active {
     background-color: rgba(255, 255, 255, 0.1);
