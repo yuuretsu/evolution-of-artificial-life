@@ -3,9 +3,8 @@ import { Accordion } from 'ui';
 import { numberToShortString } from 'lib/helpers';
 import { accordionsStates } from 'stores/accordions';
 import styled from 'styled-components';
-import { useThrottle } from '@uidotdev/usehooks';
-
-import type { FC } from 'react';
+import { type FC } from 'react';
+import { useThrottle } from 'hooks';
 
 export interface IWorldInformationProps {
   cycle: number;
@@ -15,26 +14,28 @@ export interface IWorldInformationProps {
 }
 
 export const WorldInformation: FC<IWorldInformationProps> = observer((props) => {
-  const throttledInfo = useThrottle(props, 100);
+
+  const { cycle, botsAmount, averageAge, stepTime } = useThrottle(props, 100);
+
   return (
     <Accordion name='Инфо о мире' {...accordionsStates.getProps('worldInfo')}>
       <Table>
         <tbody>
           <tr>
             <Td>Возраст (кадров):</Td>
-            <Td>{numberToShortString(throttledInfo.cycle, 2)}</Td>
+            <Td>{numberToShortString(cycle, 2)}</Td>
           </tr>
           <tr>
             <Td>Ботов:</Td>
-            <Td>{numberToShortString(throttledInfo.botsAmount, 2)}</Td>
+            <Td>{numberToShortString(botsAmount, 2)}</Td>
           </tr>
           <tr>
             <Td>Ср. возраст ботов:</Td>
-            <Td>{numberToShortString(throttledInfo.averageAge, 2)}</Td>
+            <Td>{numberToShortString(averageAge, 2)}</Td>
           </tr>
           <tr>
             <Td>Время обработки:</Td>
-            <Td>{numberToShortString(throttledInfo.stepTime, 2)} мс.</Td>
+            <Td>{numberToShortString(stepTime, 2)} мс.</Td>
           </tr>
         </tbody>
       </Table>
