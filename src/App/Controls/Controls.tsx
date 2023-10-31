@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import { sidebarStore } from 'stores/sidebar';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { FlexColumn } from 'ui';
 import { SIDEBAR_PADDING } from 'settings';
 import { type FC } from 'react';
@@ -13,12 +13,8 @@ import type { IControlsButtonsProps } from './ControlsButtons';
 const Wrapper = styled.div<{ isTransparent: boolean }>`
   position: fixed;
   display: flex;
-  ${({ isTransparent }) => {
-    return css`
-      background-color: ${isTransparent ? 'rgba(40, 40, 40, 0.8)' : 'rgb(40, 40, 40)'};
-      backdrop-filter: blur(20px);
-    `;
-  }}
+  background-color: rgba(40, 40, 40, 0.8);
+  backdrop-filter: blur(20px);
   padding: 10px;
   border-radius: 20px;
   box-shadow: 0 0 50px 0 rgba(0, 0, 0, 1);
