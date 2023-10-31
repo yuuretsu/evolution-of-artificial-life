@@ -94,7 +94,7 @@ export class SquareWorld extends World {
     const bots = filtered
       .map(({ obj }) => obj)
       .filter((obj): obj is Bot => obj instanceof Bot);
-    const averageAge = bots.map(({ age }) => age).reduce((a, b) => a + b) / bots.length;
+    const averageAge = bots.map(({ age }) => age).reduce((a, b) => a + b, 0) / bots.length || 0;
     this.info.dynamicBlocks = this.flat().filter(
       (value) => value?.isDynamic
     ).length;
