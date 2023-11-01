@@ -24,6 +24,7 @@ export type WorldInfo = {
   dynamicBlocks: number;
   stepTime: number;
   averageAge: number;
+  maxGeneration: number;
 };
 
 export abstract class World extends Grid<WorldBlock> {
@@ -32,7 +33,8 @@ export abstract class World extends Grid<WorldBlock> {
     cycle: 0,
     dynamicBlocks: 0,
     stepTime: 0,
-    averageAge: 0
+    averageAge: 0,
+    maxGeneration: 0,
   };
   constructor(props: NewWorldProps) {
     super(props.width, props.height);
@@ -95,12 +97,14 @@ export class SquareWorld extends World {
       .map(({ obj }) => obj)
       .filter((obj): obj is Bot => obj instanceof Bot);
     const averageAge = bots.map(({ age }) => age).reduce((a, b) => a + b, 0) / bots.length || 0;
+    const maxGeneration = bots.map(({ generation }) => generation).reduce((a, b) => Math.max(a, b), 0);
     this.info.dynamicBlocks = this.flat().filter(
       (value) => value?.isDynamic
     ).length;
     this.info.cycle++;
     this.info.stepTime = performance.now() - start;
     this.info.averageAge = averageAge;
+    this.info.maxGeneration = Math.max(this.info.maxGeneration, maxGeneration);
   }
   toImage(visualizer: BlockVisualiser, params: VisualiserParams) {
     const canvas = document.createElement('canvas');

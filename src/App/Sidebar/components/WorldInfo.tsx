@@ -11,11 +11,12 @@ export interface IWorldInformationProps {
   botsAmount: number;
   stepTime: number;
   averageAge: number;
+  maxGeneration: number;
 }
 
 export const WorldInformation: FC<IWorldInformationProps> = observer((props) => {
 
-  const { cycle, botsAmount, averageAge, stepTime } = useThrottle(props, 100);
+  const { cycle, botsAmount, averageAge, stepTime, maxGeneration } = useThrottle(props, 100);
 
   return (
     <Accordion name='Инфо о мире' {...accordionsStates.getProps('worldInfo')}>
@@ -28,6 +29,10 @@ export const WorldInformation: FC<IWorldInformationProps> = observer((props) => 
           <tr>
             <Td>Ботов:</Td>
             <Td>{numberToShortString(botsAmount, 2)}</Td>
+          </tr>
+          <tr>
+            <Td>Поколение:</Td>
+            <Td>{maxGeneration + 1}</Td>
           </tr>
           <tr>
             <Td>Ср. возраст ботов:</Td>
