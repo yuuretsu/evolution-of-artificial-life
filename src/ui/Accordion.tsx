@@ -3,7 +3,7 @@ import { MdKeyboardArrowDown } from 'react-icons/md';
 import styled, { keyframes } from 'styled-components';
 import { FlexColumn } from 'ui';
 
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, FC, ReactNode } from 'react';
 
 interface IHeadWrapper {
   readonly isSmall: boolean | undefined,
@@ -49,6 +49,30 @@ const BodyWrapper = styled.div`
   animation: ${anim} 0.5s;
 `;
 
+interface IArrowProps {
+  isOpen?: boolean;
+  isSmall?: boolean;
+}
+
+const Arrow: FC<IArrowProps> = ({ isOpen, isSmall }) => {
+
+  const [size, marginLeft] = isSmall
+    ? ['20px', '10px']
+    : ['25px', '20px'];
+
+  return (
+    <MdKeyboardArrowDown
+      style={{
+        transform: isOpen ? 'none' : 'rotate(-90deg)',
+        transitionDuration: '0.2s',
+        minWidth: size,
+        minHeight: size,
+        marginLeft,
+      }}
+    />
+  );
+};
+
 export type AccordionProps = {
   name: string;
   children?: ReactNode;
@@ -61,8 +85,9 @@ export type AccordionProps = {
 
 export const Accordion = forwardRef<HTMLDivElement, AccordionProps>((props, ref) => {
   const handleClickHead = () => props.onToggle(!props.isOpen);
+  const gap = props.isSmall ? 5 : 10;
   return (
-    <FlexColumn gap={props.isSmall ? 5 : 10} ref={ref} style={props.style}>
+    <FlexColumn gap={gap} ref={ref} style={props.style}>
       <HeadWrapper
         onClick={handleClickHead} isSmall={props.isSmall}
         color={props.color}
@@ -70,14 +95,9 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>((props, ref)
         <span>
           {props.name}
         </span>
-        <MdKeyboardArrowDown
-          style={{
-            transform: props.isOpen ? 'none' : 'rotate(-90deg)',
-            transitionDuration: '0.2s',
-            minWidth: props.isSmall ? '20px' : '25px',
-            minHeight: props.isSmall ? '20px' : '25px',
-            marginLeft: props.isSmall ? '10px' : '20px'
-          }}
+        <Arrow
+          isOpen={props.isOpen}
+          isSmall={props.isSmall}
         />
       </HeadWrapper>
       {props.isOpen && <BodyWrapper>{props.children}</BodyWrapper>}
