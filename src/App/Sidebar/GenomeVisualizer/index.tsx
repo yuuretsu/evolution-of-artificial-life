@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { GeneCell } from './GeneCell';
 
+import type { GeneCellState } from './types';
 import type { Gene, Genome } from 'lib/genome';
 
 const GenomeWrapper = styled.div`
@@ -25,12 +26,12 @@ export const GenomeVisualizer: React.FC<IGenomeVisualizerProps> = (props) => {
   return (
     <GenomeWrapper>
       {props.genome.genes.map((gene, i) => {
-        const state =
+        const state: GeneCellState =
           activeGene === gene
             ? 'active'
             : props.genome.recentlyUsedGenes.includes(gene)
-              ? 'activeLast'
-              : null;
+              ? 'recentlyUsed'
+              : 'notActive';
         return (
           <GeneCell
             key={i}
