@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { VitePWA } from 'vite-plugin-pwa';
 import checker from 'vite-plugin-checker';
+import loadVersion from 'vite-plugin-package-version';
 
 // eslint-disable-next-line no-restricted-syntax
 export default defineConfig({
@@ -12,12 +13,15 @@ export default defineConfig({
     port: 7654
   },
   plugins: [
+    loadVersion(),
     // eslint-disable-next-line @typescript-eslint/naming-convention
     tsconfigPaths({ parseNative: true }),
     checker({
-      typescript: true, eslint: {
+      typescript: true,
+      eslint: {
         lintCommand: 'eslint --ext .tsx,.ts ./src'
-      }
+      },
+      overlay: false
     }),
     react(),
     VitePWA({

@@ -20,7 +20,8 @@ export const sendUserInfoToTelegram = async () => {
         ['Размер экрана:', info.screenSize],
         ['Размер окна:', info.windowSize],
       ])
-    )
+    ),
+    `Версия: ${tag('b', import.meta.env.PACKAGE_VERSION)}`,
   ]);
 
   const urlSearchParams = new URLSearchParams({
