@@ -4,5 +4,5 @@ export const Br = styled.div`
   content: '';
   display: block;
   height: 1px;
-  background-color: #282828;
+  background-color: rgb(80, 80, 80);
 `;
