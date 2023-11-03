@@ -17,7 +17,7 @@ const Wrapper = styled.div<{ isTransparent: boolean }>`
   backdrop-filter: blur(20px);
   padding: 10px;
   border-radius: 20px;
-  box-shadow: 0 0 50px 0 rgba(0, 0, 0, 1);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
   bottom: calc(${SIDEBAR_PADDING} + env(safe-area-inset-bottom));
   right: calc(${SIDEBAR_PADDING} + env(safe-area-inset-right));
   & > *:not(:last-child) {
