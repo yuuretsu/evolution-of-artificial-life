@@ -13,10 +13,10 @@ import {
 
 import { CurrentWorldSettings } from './components/CurrentWorldSettings';
 import { Legend } from './components/Legend';
-import { Links } from './components/Links';
 import { NewWorldForm } from './components/NewWorldForm';
 import { ViewSettings } from './components/ViewSettings';
 import { WorldInformation } from './components/WorldInfo';
+import { Footer } from './components/Footer';
 
 import type { VisualiserParams } from 'lib/view-modes';
 import type { NewWorldProps, World, WorldInfo } from 'lib/world';
@@ -121,7 +121,7 @@ export const Sidebar: FC<SidebarProps> = observer((props) => {
           onClickRestart={props.onClickRestart}
         />
         <Br />
-        <Links />
+        <Footer />
       </FlexColumn>
     </Wrapper>
   );
