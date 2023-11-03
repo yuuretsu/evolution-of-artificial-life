@@ -13,7 +13,7 @@ import type { IControlsButtonsProps } from './ControlsButtons';
 const Wrapper = styled.div<{ isTransparent: boolean }>`
   position: fixed;
   display: flex;
-  background-color: rgba(40, 40, 40, 0.8);
+  background-color: rgba(20, 20, 20, 0.8);
   backdrop-filter: blur(20px);
   padding: 10px;
   border-radius: 20px;

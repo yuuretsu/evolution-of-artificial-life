@@ -6,7 +6,7 @@ export const SafeAreaBottomWrapper = styled.div`
   left: 0;
   right: 0;
   height: env(safe-area-inset-bottom);
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(20, 20, 20, 0.8);
   backdrop-filter: blur(20px);
   z-index: 9999;
 `;
