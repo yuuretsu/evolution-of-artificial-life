@@ -216,7 +216,7 @@ export class Bot implements WorldBlockDynamic {
       <>
         <SubBlock>
           <FlexRow alignItems='center' gap={10}>
-            <Avatar style={{ backgroundColor: this.color.toString() }} />
+            <Avatar style={{ backgroundColor: this.getInformativeColor()?.toString() }} />
             <b>Бот</b>
           </FlexRow>
         </SubBlock>
