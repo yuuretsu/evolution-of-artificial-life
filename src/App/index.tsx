@@ -15,6 +15,7 @@ import { PIXEL_SIZE } from 'settings';
 import { appStore } from 'stores/app';
 import styled from 'styled-components';
 import { useEventListener, useInterval } from 'usehooks-ts';
+import { throttle } from 'lib/helpers';
 
 import { Controls } from './Controls';
 import { Sidebar } from './Sidebar';
@@ -71,16 +72,21 @@ export const App: FC = observer(() => {
 
   const currentViewMode = VIEW_MODES[appStore.viewModeName.current]!;
 
-  const updateWorldView = () => {
-    setImage(world.toImage(currentViewMode.blockToColor, visualizerParams));
-    setWorldInfo(world.getInfo());
-  };
+
+  const updateWorldView = useCallback(
+    throttle(() => {
+      setImage(world.toImage(currentViewMode.blockToColor, visualizerParams));
+      setWorldInfo(world.getInfo());
+    }, 1000 / 60),
+    [world, currentViewMode.blockToColor, visualizerParams]
+  );
 
   const step = () => {
     if (!isDrag) return;
     world.step();
     updateWorldView();
   };
+
 
   useEventListener('resize', updateAppHeight);
   useEventListener('orientationchange', updateAppHeight);
