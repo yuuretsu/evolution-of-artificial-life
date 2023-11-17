@@ -2,6 +2,7 @@ import {
   enabledGenesToPool,
   getInitiallyEnabledGenesNames
 } from 'lib/genome';
+import { throttle } from 'lib/helpers';
 import {
   VIEW_MODES,
   initVisualizerParams
@@ -15,13 +16,13 @@ import { PIXEL_SIZE } from 'settings';
 import { appStore } from 'stores/app';
 import styled from 'styled-components';
 import { useEventListener, useInterval } from 'usehooks-ts';
-import { throttle } from 'lib/helpers';
+import { FlexColumn, WideButton, Window } from 'ui';
 
 import { Controls } from './Controls';
+import { SafeAreaBottom } from './SafeAreaBottom';
 import { Sidebar } from './Sidebar';
 import { Viewer } from './Viewer';
 import { GameImage } from './Viewer/GameImage';
-import { SafeAreaBottom } from './SafeAreaBottom';
 import { GlobalStyles } from './app.css';
 
 import type {
@@ -167,6 +168,16 @@ export const App: FC = observer(() => {
             }}
           />
         )}
+        <Window title='Инфо о блоке'>
+          {selectedBlock ? (
+            <FlexColumn gap={10}>
+              <WideButton onClick={() => setSelectedBlock(null)}>Снять выделение</WideButton>
+              <selectedBlock.Render />
+            </FlexColumn>
+          ) : (
+            <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>
+          )}
+        </Window>
       </Wrapper>
     </>
   );
