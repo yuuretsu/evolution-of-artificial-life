@@ -21,13 +21,13 @@ export type ViewMode = {
 };
 
 export const VIEW_MODES: Record<string, ViewMode> = {
-  normal: {
-    name: 'Обычный',
-    blockToColor: (block) => block.getJustColor(),
-  },
   informative: {
     name: 'Информативный',
     blockToColor: (block) => block.getInformativeColor(),
+  },
+  normal: {
+    name: 'Простой',
+    blockToColor: (block) => block.getJustColor(),
   },
   family: {
     name: 'Семейства',
