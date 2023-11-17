@@ -8,9 +8,11 @@ import {
   Accordion,
   Br,
   FlexColumn,
+  FlexRow,
   WideButton
 } from 'ui';
 import { appStore } from 'stores/app';
+import { MdOpenInNew } from 'react-icons/md';
 
 import { CurrentWorldSettings } from './components/CurrentWorldSettings';
 import { Legend } from './components/Legend';
@@ -22,6 +24,7 @@ import { Footer } from './components/Footer';
 import type { VisualiserParams } from 'lib/view-modes';
 import type { NewWorldProps, World, WorldInfo } from 'lib/world';
 import type { FC } from 'react';
+
 
 interface ISidebarProps {
   readonly isOpen: boolean,
@@ -72,7 +75,7 @@ export const Sidebar: FC<SidebarProps> = observer((props) => {
   const worldBlockInfoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!appStore.selectedBlock.current || !worldBlockInfoRef.current) return;
+    if (!appStore.selectedBlock.current || !worldBlockInfoRef.current || appStore.isSelectedBlockInFloatingWindow.state) return;
     worldBlockInfoRef.current.scrollIntoView({ behavior: 'smooth' });
     accordionsStates.states.worldBlockInfo.setTrue();
     sidebarStore.open();
@@ -91,18 +94,27 @@ export const Sidebar: FC<SidebarProps> = observer((props) => {
         />
         <Accordion
           name='Инфо о блоке'
+          additionalButtonsSlot={
+            <FlexRow>
+              <MdOpenInNew onClick={e => (e.stopPropagation(), appStore.isSelectedBlockInFloatingWindow.toggle())} />
+            </FlexRow>
+          }
           ref={worldBlockInfoRef}
           style={{ scrollMargin: SIDEBAR_PADDING }}
           {...accordionsStates.getProps('worldBlockInfo')}
         >
-          {appStore.selectedBlock.current ? (
-            <FlexColumn gap={10}>
-              <WideButton onClick={deselectBlock}>Снять выделение</WideButton>
-              <appStore.selectedBlock.current.Render />
-            </FlexColumn>
-          ) : (
-            <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>
-          )}
+          {
+            !appStore.isSelectedBlockInFloatingWindow.state ?
+              <>
+                {appStore.selectedBlock.current ? (
+                  <FlexColumn gap={10}>
+                    <WideButton onClick={deselectBlock}>Снять выделение</WideButton>
+                    <appStore.selectedBlock.current.Render />
+                  </FlexColumn>
+                ) : (
+                  <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>)}
+              </> : <div>Окно в плавающем режиме</div>
+          }
         </Accordion>
         <ViewSettings
           visualizerParams={props.visualizerParams}

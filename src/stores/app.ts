@@ -12,6 +12,8 @@ class AppStore {
   imageOffset = new ValueStore({ x: 0, y: 0 });
   selectedBlock = new ValueStore<WorldBlock | null>(null);
 
+  isSelectedBlockInFloatingWindow = new ToggleStore(false);
+
   constructor() {
     makeAutoObservable(this);
   }

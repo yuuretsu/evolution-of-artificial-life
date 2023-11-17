@@ -1,3 +1,4 @@
+export * from './Flex';
 export * from './Accordion';
 export * from './Block';
 export * from './Checkbox';
@@ -10,6 +11,5 @@ export * from './OptionalBlock';
 export * from './Radio';
 export * from './SubBlock';
 export * from './WideButton';
-export * from './Flex';
 export * from './Br';
 export * from './Window';

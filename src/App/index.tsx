@@ -155,6 +155,16 @@ export const App: FC = observer(() => {
           setEnabledGenes={setEnabledGenes}
           onClickRestart={restart}
         />
+        {appStore.isSelectedBlockInFloatingWindow.state && <Window title='Инфо о блоке'>
+          {appStore.selectedBlock.current ? (
+            <FlexColumn gap={10}>
+              <WideButton onClick={() => appStore.selectedBlock.set(null)}>Снять выделение</WideButton>
+              <appStore.selectedBlock.current.Render />
+            </FlexColumn>
+          ) : (
+            <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>
+          )}
+        </Window>}
         {!!appRef.current && (
           <Controls
             controlsButtonsProps={{
@@ -164,16 +174,6 @@ export const App: FC = observer(() => {
             }}
           />
         )}
-        <Window title='Инфо о блоке'>
-          {appStore.selectedBlock.current ? (
-            <FlexColumn gap={10}>
-              <WideButton onClick={() => appStore.selectedBlock.set(null)}>Снять выделение</WideButton>
-              <appStore.selectedBlock.current.Render />
-            </FlexColumn>
-          ) : (
-            <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>
-          )}
-        </Window>
       </Wrapper>
     </>
   );

@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import styled, { keyframes } from 'styled-components';
-import { FlexColumn } from 'ui';
+import { FlexColumn, FlexRow } from 'ui';
 
 import type { CSSProperties, FC, ReactNode } from 'react';
 
@@ -56,9 +56,9 @@ interface IArrowProps {
 
 const Arrow: FC<IArrowProps> = ({ isOpen, isSmall }) => {
 
-  const [size, marginLeft] = isSmall
-    ? ['20px', '10px']
-    : ['25px', '20px'];
+  const size = isSmall
+    ? '20px'
+    : '25px';
 
   return (
     <MdKeyboardArrowDown
@@ -67,14 +67,18 @@ const Arrow: FC<IArrowProps> = ({ isOpen, isSmall }) => {
         transitionDuration: '0.2s',
         minWidth: size,
         minHeight: size,
-        marginLeft,
       }}
     />
   );
 };
 
+const Controls = styled(FlexRow) <{ isSmall?: boolean }>`
+  margin-left: ${({ isSmall }) => isSmall ? '10px' : '20px'};
+`;
+
 export type AccordionProps = {
-  name: string;
+  name: ReactNode;
+  additionalButtonsSlot?: ReactNode;
   children?: ReactNode;
   isOpen: boolean;
   onToggle: (isOpen: boolean) => void;
@@ -92,13 +96,14 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>((props, ref)
         onClick={handleClickHead} isSmall={props.isSmall}
         color={props.color}
       >
-        <span>
-          {props.name}
-        </span>
-        <Arrow
-          isOpen={props.isOpen}
-          isSmall={props.isSmall}
-        />
+        {props.name}
+        <Controls alignItems='center'>
+          {props.additionalButtonsSlot}
+          <Arrow
+            isOpen={props.isOpen}
+            isSmall={props.isSmall}
+          />
+        </Controls>
       </HeadWrapper>
       {props.isOpen && <BodyWrapper>{props.children}</BodyWrapper>}
     </FlexColumn>
