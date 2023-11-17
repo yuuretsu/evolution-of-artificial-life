@@ -38,10 +38,13 @@ const initialEnabledGenes = getInitiallyEnabledGenesNames();
 
 const initialGenePool = enabledGenesToPool(initialEnabledGenes);
 
+const initWidth = Math.max(Math.floor(window.innerWidth / PIXEL_SIZE) + 2, 10);
+const initHeight = Math.max(Math.floor(window.innerHeight / PIXEL_SIZE) + 2, 10);
+
 const INIT_WORLD_PROPS: NewWorldProps = {
-  width: Math.max(Math.floor(window.innerWidth / PIXEL_SIZE) + 2, 10),
-  height: Math.max(Math.floor(window.innerHeight / PIXEL_SIZE) + 2, 10),
-  botsAmount: 500,
+  width: initWidth,
+  height: initHeight,
+  botsAmount: initWidth * initHeight,
   genePool: initialGenePool,
   genomeSize: 32,
 };
