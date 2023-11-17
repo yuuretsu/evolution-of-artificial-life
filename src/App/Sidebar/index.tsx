@@ -10,6 +10,7 @@ import {
   FlexColumn,
   WideButton
 } from 'ui';
+import { appStore } from 'stores/app';
 
 import { CurrentWorldSettings } from './components/CurrentWorldSettings';
 import { Legend } from './components/Legend';
@@ -21,7 +22,6 @@ import { Footer } from './components/Footer';
 import type { VisualiserParams } from 'lib/view-modes';
 import type { NewWorldProps, World, WorldInfo } from 'lib/world';
 import type { FC } from 'react';
-import type { WorldBlock } from 'types';
 
 interface ISidebarProps {
   readonly isOpen: boolean,
@@ -63,22 +63,20 @@ type SidebarProps = {
   worldInfo: WorldInfo,
   enabledGenes: Record<string, boolean>
   setEnabledGenes: (value: Record<string, boolean>) => void;
-  selectedBlock: WorldBlock | null;
-  setSelectedBlock: (block: WorldBlock | null) => void;
   onClickRestart: () => void;
 };
 
 export const Sidebar: FC<SidebarProps> = observer((props) => {
-  const deselectBlock = () => props.setSelectedBlock(null);
+  const deselectBlock = () => appStore.selectedBlock.set(null);
 
   const worldBlockInfoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!props.selectedBlock || !worldBlockInfoRef.current) return;
+    if (!appStore.selectedBlock.current || !worldBlockInfoRef.current) return;
     worldBlockInfoRef.current.scrollIntoView({ behavior: 'smooth' });
     accordionsStates.states.worldBlockInfo.setTrue();
     sidebarStore.open();
-  }, [props.selectedBlock]);
+  }, [appStore.selectedBlock.current]);
 
   return (
     <Wrapper isOpen={sidebarStore.isOpen}>
@@ -97,10 +95,10 @@ export const Sidebar: FC<SidebarProps> = observer((props) => {
           style={{ scrollMargin: SIDEBAR_PADDING }}
           {...accordionsStates.getProps('worldBlockInfo')}
         >
-          {props.selectedBlock ? (
+          {appStore.selectedBlock.current ? (
             <FlexColumn gap={10}>
               <WideButton onClick={deselectBlock}>Снять выделение</WideButton>
-              <props.selectedBlock.Render />
+              <appStore.selectedBlock.current.Render />
             </FlexColumn>
           ) : (
             <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>

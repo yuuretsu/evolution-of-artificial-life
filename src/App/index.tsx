@@ -33,7 +33,6 @@ import type {
   World, WorldInfo
 } from 'lib/world';
 import type { FC } from 'react';
-import type { WorldBlock } from 'types';
 
 const initialEnabledGenes = getInitiallyEnabledGenesNames();
 
@@ -71,7 +70,6 @@ export const App: FC = observer(() => {
   const [image, setImage] = useState<HTMLCanvasElement>(initWorldImage);
   const [worldInfo, setWorldInfo] = useState<WorldInfo>(initWorldInfo);
   const [enabledGenes, setEnabledGenes] = useState(initialEnabledGenes);
-  const [selectedBlock, setSelectedBlock] = useState<WorldBlock | null>(null);
   const [isDrag, setIsDrag] = useState(true);
 
   const currentViewMode = VIEW_MODES[appStore.viewModeName.current]!;
@@ -116,13 +114,13 @@ export const App: FC = observer(() => {
 
   const restart = () => {
     setWorld(new SquareWorld(newWorldProps));
-    setSelectedBlock(null);
+    appStore.selectedBlock.set(null);
     appStore.imageOffset.set({ x: 0, y: 0 });
   };
 
   const onClickPixel = useCallback((x: number, y: number) => {
     if (!isDrag) return;
-    setSelectedBlock(world.get(x, y) || null);
+    appStore.selectedBlock.set(world.get(x, y) || null);
   }, [world, isDrag]);
 
   const onMoveImage = (x: number, y: number) => {
@@ -155,8 +153,6 @@ export const App: FC = observer(() => {
           worldInfo={worldInfo}
           enabledGenes={enabledGenes}
           setEnabledGenes={setEnabledGenes}
-          selectedBlock={selectedBlock}
-          setSelectedBlock={setSelectedBlock}
           onClickRestart={restart}
         />
         {!!appRef.current && (
@@ -169,10 +165,10 @@ export const App: FC = observer(() => {
           />
         )}
         <Window title='Инфо о блоке'>
-          {selectedBlock ? (
+          {appStore.selectedBlock.current ? (
             <FlexColumn gap={10}>
-              <WideButton onClick={() => setSelectedBlock(null)}>Снять выделение</WideButton>
-              <selectedBlock.Render />
+              <WideButton onClick={() => appStore.selectedBlock.set(null)}>Снять выделение</WideButton>
+              <appStore.selectedBlock.current.Render />
             </FlexColumn>
           ) : (
             <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>
