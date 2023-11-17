@@ -125,6 +125,10 @@ export const App: FC = observer(() => {
     appStore.imageOffset.set({ x, y });
   };
 
+  const handleCancelImageMove = useCallback(() => {
+    setTimeout(() => setIsDrag(true));
+  }, []);
+
   return (
     <>
       <GlobalStyles />
@@ -134,7 +138,7 @@ export const App: FC = observer(() => {
           position={appStore.imageOffset.current}
           onMove={onMoveImage}
           onStart={() => setIsDrag(false)}
-          onCancel={() => setTimeout(() => setIsDrag(true))}
+          onCancel={handleCancelImageMove}
         >
           <GameImage image={image} onClickPixel={onClickPixel} />
         </Viewer>

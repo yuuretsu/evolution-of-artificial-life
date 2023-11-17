@@ -1,5 +1,6 @@
+import { debounce } from 'lib/helpers';
 import { observer } from 'mobx-react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { SIDEBAR_ANIMATION_SPEED } from 'settings';
 import { sidebarStore } from 'stores/sidebar';
 import styled from 'styled-components';
@@ -71,6 +72,8 @@ export const Viewer: React.FC<IViewerProps> = observer(props => {
   useEventListener('mouseup', cancel);
   useEventListener('touchend', cancel);
 
+  const onCancelDebounced = useCallback(debounce(props.onCancel, 100), [props.onCancel]);
+
   return (
     <Wrapper
       isDragging={isDraggingNow}
@@ -85,6 +88,11 @@ export const Viewer: React.FC<IViewerProps> = observer(props => {
           y: e.touches[0]!.clientY - imageOffset.y
         });
         start();
+      }}
+      onWheel={e => {
+        props.onStart?.();
+        props.onMove(imageOffset.x - e.deltaX, imageOffset.y - e.deltaY);
+        onCancelDebounced();
       }}
     >
       <div style={{ transform: `translate(${imageOffset.x}px, ${imageOffset.y}px)` }}>
