@@ -79,6 +79,7 @@ export const Viewer: React.FC<IViewerProps> = observer(props => {
       isDragging={isDraggingNow}
       isSidebarOpen={sidebarStore.isOpen}
       onMouseDown={e => {
+        if (e.button !== 1) return;
         setInitPos({ x: e.clientX - imageOffset.x, y: e.clientY - imageOffset.y });
         start();
       }}
