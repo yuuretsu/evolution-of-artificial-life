@@ -9,9 +9,6 @@ export const InputRange = styled.input.attrs({
   appearance: none;
   background-color: transparent;
   margin: 0;
-  &:not(:last-child) {
-    margin-bottom: 5px;
-  }
   &::-webkit-slider-runnable-track {
     width: 100%;
     height: 15px;
