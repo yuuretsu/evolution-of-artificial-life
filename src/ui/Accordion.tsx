@@ -22,7 +22,7 @@ const HeadWrapper = styled.div<IHeadWrapper>`
   padding: ${({ isSmall }) => isSmall ? '3px' : '5px'};
   padding-right: 5px;
   padding-left: 10px;
-  border-radius: 2px;
+  border-radius: 5px;
   justify-content: space-between;
   cursor: pointer;
   align-items: center;
