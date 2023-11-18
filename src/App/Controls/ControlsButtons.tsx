@@ -2,7 +2,7 @@ import { observer } from 'mobx-react';
 import { IconContext } from 'react-icons';
 import { appStore } from 'stores/app';
 import { sidebarStore } from 'stores/sidebar';
-import { CircleButton, FlexRow } from 'ui';
+import { FlexRow } from 'ui';
 import {
   MdClose,
   MdMenu,
@@ -14,6 +14,8 @@ import {
   MdFullscreenExit
 } from 'react-icons/md';
 import styled from 'styled-components';
+
+import { RoundedButton } from './RoundedButton';
 
 import type { FC } from 'react';
 
@@ -38,30 +40,30 @@ export const ControlsButtons: FC<IControlsButtonsProps> = observer(({ onClickSte
   return (
     <FlexRow gap={10}>
       <IconContext.Provider value={{ size: '25px', color: 'whitesmoke' }}>
-        <CircleButton
+        <RoundedButton
           title={appStore.isPaused ? 'Продолжить' : 'Пауза'}
           onClick={appStore.toggleIsPaused}
         >
           <IconPlayPause />
-        </CircleButton>
-        <CircleButton title="Шаг симуляции" onClick={onClickStep}>
+        </RoundedButton>
+        <RoundedButton title="Шаг симуляции" onClick={onClickStep}>
           <MdSkipNext />
-        </CircleButton>
-        <CircleButton title="Рестарт" onClick={onClickRestart}>
+        </RoundedButton>
+        <RoundedButton title="Рестарт" onClick={onClickRestart}>
           <MdReplay />
-        </CircleButton>
+        </RoundedButton>
         {isCanFullscreen && (
           <>
             <Divider />
-            <CircleButton title="Fullscreen" onClick={onClickFullscreen}>
+            <RoundedButton title="Fullscreen" onClick={onClickFullscreen}>
               <IconFullscreen />
-            </CircleButton>
+            </RoundedButton>
           </>
         )}
         <Divider />
-        <CircleButton title="Настройки" onClick={sidebarStore.toggle}>
+        <RoundedButton title="Настройки" onClick={sidebarStore.toggle}>
           <IconSidebarOpenClose />
-        </CircleButton>
+        </RoundedButton>
       </IconContext.Provider>
     </FlexRow>
   );

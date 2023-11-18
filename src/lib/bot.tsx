@@ -14,17 +14,12 @@ import type { GenePool } from './genome';
 import type { VisualiserParams } from './view-modes';
 import type { World } from './world';
 
-type BotAbilityName = keyof typeof Bot.prototype.abilities;
-
 interface BotProps {
   generation: number,
   color: Rgba,
   familyColor: Rgba,
   energy: number,
-  abilities: {
-    photosynthesis: number,
-    attack: number
-  },
+  hungerFactor: number,
   genome: Genome
 }
 
@@ -33,10 +28,7 @@ const defaultProps: BotProps = {
   energy: 0,
   color: new Rgba(0, 0, 0, 0),
   familyColor: new Rgba(0, 0, 0, 0),
-  abilities: {
-    photosynthesis: 0.5,
-    attack: 0.5
-  },
+  hungerFactor: 0.5,
   genome: new Genome(0)
 };
 
@@ -48,10 +40,7 @@ export class Bot implements WorldBlockDynamic {
   childrenAmount = 0;
   color: Rgba;
   familyColor: Rgba;
-  abilities: {
-    photosynthesis: number,
-    attack: number
-  };
+  hungerFactor: number;
   generation: number;
   energy: number;
   genome: Genome;
@@ -63,9 +52,8 @@ export class Bot implements WorldBlockDynamic {
   ) {
     const p = { ...defaultProps, ...props };
     this.color = p.color;
-    this.abilities = p.abilities;
+    this.hungerFactor = p.hungerFactor;
     this.familyColor = p.familyColor;
-    this.abilities = p.abilities;
     this.generation = p.generation;
     this.energy = p.energy;
     this.genome = p.genome;
@@ -126,25 +114,14 @@ export class Bot implements WorldBlockDynamic {
   }
   getAbilityColor(): Rgba | null {
     return new Rgba(240, 20, 20, 255)
-      .lerp(new Rgba(20, 240, 20, 255), this.abilities.photosynthesis);
+      .lerp(new Rgba(20, 240, 20, 255), 1 - this.hungerFactor);
   }
   getHealthColor(): Rgba {
     return new Rgba(100, 50, 50, 255)
       .lerp(new Rgba(150, 200, 255, 255), this.health);
   }
-  increaseAbility(ability: BotAbilityName) {
-    for (const name in this.abilities) {
-      if (Object.prototype.hasOwnProperty.call(this.abilities, name)) {
-        this.abilities[name as BotAbilityName] = limit(
-          0,
-          1,
-          this.abilities[name as BotAbilityName] + (name === ability
-            ? 0.01
-            : -0.01
-          )
-        );
-      }
-    }
+  increaseHunterFactor(value: number) {
+    this.hungerFactor = limit(0, 1, this.hungerFactor + value);
   }
   onAttack(value: number) {
     const REAL_VALUE = Math.min(this.energy, value);
@@ -167,7 +144,7 @@ export class Bot implements WorldBlockDynamic {
       color: this.color.lerp(new Rgba(255, 255, 255, 255), 0.1),
       familyColor: this.familyColor.mutateRgb(5),
       energy,
-      abilities: { ...this.abilities },
+      hungerFactor: this.hungerFactor,
       genome: this.genome.replication(pool),
     });
   }
@@ -216,7 +193,7 @@ export class Bot implements WorldBlockDynamic {
       <>
         <SubBlock>
           <FlexRow alignItems='center' gap={10}>
-            <Avatar style={{ backgroundColor: this.color.toString() }} />
+            <Avatar style={{ backgroundColor: this.getInformativeColor()?.toString() }} />
             <b>Бот</b>
           </FlexRow>
         </SubBlock>
