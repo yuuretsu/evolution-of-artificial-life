@@ -19,7 +19,7 @@ interface BotProps {
   color: Rgba,
   familyColor: Rgba,
   energy: number,
-  hungerFactor: number,
+  hunterFactor: number,
   genome: Genome
 }
 
@@ -28,7 +28,7 @@ const defaultProps: BotProps = {
   energy: 0,
   color: new Rgba(0, 0, 0, 0),
   familyColor: new Rgba(0, 0, 0, 0),
-  hungerFactor: 0.5,
+  hunterFactor: 0,
   genome: new Genome(0)
 };
 
@@ -40,7 +40,7 @@ export class Bot implements WorldBlockDynamic {
   childrenAmount = 0;
   color: Rgba;
   familyColor: Rgba;
-  hungerFactor: number;
+  hunterFactor: number;
   generation: number;
   energy: number;
   genome: Genome;
@@ -52,7 +52,7 @@ export class Bot implements WorldBlockDynamic {
   ) {
     const p = { ...defaultProps, ...props };
     this.color = p.color;
-    this.hungerFactor = p.hungerFactor;
+    this.hunterFactor = p.hunterFactor;
     this.familyColor = p.familyColor;
     this.generation = p.generation;
     this.energy = p.energy;
@@ -114,14 +114,14 @@ export class Bot implements WorldBlockDynamic {
   }
   getAbilityColor(): Rgba | null {
     return new Rgba(240, 20, 20, 255)
-      .lerp(new Rgba(20, 240, 20, 255), 1 - this.hungerFactor);
+      .lerp(new Rgba(20, 240, 20, 255), 1 - this.hunterFactor);
   }
   getHealthColor(): Rgba {
     return new Rgba(100, 50, 50, 255)
       .lerp(new Rgba(150, 200, 255, 255), this.health);
   }
   increaseHunterFactor(value: number) {
-    this.hungerFactor = limit(0, 1, this.hungerFactor + value);
+    this.hunterFactor = limit(0, 1, this.hunterFactor + value);
   }
   onAttack(value: number) {
     const REAL_VALUE = Math.min(this.energy, value);
@@ -144,7 +144,7 @@ export class Bot implements WorldBlockDynamic {
       color: this.color.lerp(new Rgba(255, 255, 255, 255), 0.1),
       familyColor: this.familyColor.mutateRgb(5),
       energy,
-      hungerFactor: this.hungerFactor,
+      hunterFactor: this.hunterFactor,
       genome: this.genome.replication(pool),
     });
   }
