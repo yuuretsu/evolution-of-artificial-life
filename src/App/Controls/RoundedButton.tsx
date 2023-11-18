@@ -10,9 +10,9 @@ const animation = keyframes`
   }
 `;
 
-export const CircleButton = styled.button`
+export const RoundedButton = styled.button`
   background-color: rgb(80, 80, 80);
-  border-radius: 100px;
+  border-radius: 15px;
   border: none;
   outline: none;
   margin: 0;

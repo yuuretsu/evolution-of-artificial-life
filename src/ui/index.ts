@@ -1,7 +1,6 @@
 export * from './Accordion';
 export * from './Block';
 export * from './Checkbox';
-export * from './CircleButton';
 export * from './DropdownSmall';
 export * from './InputNumber';
 export * from './InputNumberSmall';
