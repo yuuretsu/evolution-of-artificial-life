@@ -65,9 +65,9 @@ export const GENES = {
     color: new Rgba(0, 255, 0, 255),
     colorInfluence: 0.01,
     action: ({ bot }) => {
-      const energy = 1 * bot.abilities.photosynthesis ** 2;
+      const energy = 1 * (1 - bot.hungerFactor) ** 2;
       bot.energy += energy;
-      bot.increaseAbility('photosynthesis');
+      bot.increaseHunterFactor(-0.01);
       bot.health = Math.min(1, bot.health + 0.01);
       return { isCompleted: true, msg: `Фототсинтез: +${energy.toFixed(2)} энергии` };
     }
@@ -83,10 +83,10 @@ export const GENES = {
         ...world.narrowToCoords(x, y, bot.narrow, 1)
       );
       if (!F_BLOCK) return { isCompleted: true, msg: 'Атака не удалась' };
-      const value = lerp(0, 5, property.option) * bot.abilities.attack ** 2;
+      const value = lerp(0, 5, property.option) * bot.hungerFactor ** 2;
       const result = F_BLOCK.onAttack(value);
       bot.energy += result;
-      bot.increaseAbility('attack');
+      bot.increaseHunterFactor(0.01);
       bot.health = Math.min(1, bot.health + 0.01);
       return { isCompleted: true, msg: `Атака: +${result.toFixed(2)} энергии` };
     }
