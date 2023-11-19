@@ -20,6 +20,7 @@ import { NewWorldForm } from './components/NewWorldForm';
 import { ViewSettings } from './components/ViewSettings';
 import { WorldInformation } from './components/WorldInfo';
 import { Footer } from './components/Footer';
+import { WindowInFloatingMode } from './components/WindowInFloatingMode';
 
 import type { VisualiserParams } from 'lib/view-modes';
 import type { NewWorldProps, World, WorldInfo } from 'lib/world';
@@ -93,28 +94,35 @@ export const Sidebar: FC<SidebarProps> = observer((props) => {
           maxGeneration={props.worldInfo.maxGeneration}
         />
         <Accordion
-          name='Инфо о блоке'
+          name="Инфо о блоке"
           additionalButtonsSlot={
             <FlexRow>
-              <MdOpenInNew onClick={e => (e.stopPropagation(), appStore.isSelectedBlockInFloatingWindow.toggle())} />
+              <MdOpenInNew
+                onClick={(e) => (
+                  e.stopPropagation(),
+                  appStore.isSelectedBlockInFloatingWindow.toggle()
+                )}
+              />
             </FlexRow>
           }
           ref={worldBlockInfoRef}
           style={{ scrollMargin: SIDEBAR_PADDING }}
           {...accordionsStates.getProps('worldBlockInfo')}
         >
-          {
-            !appStore.isSelectedBlockInFloatingWindow.state ?
-              <>
-                {appStore.selectedBlock.current ? (
-                  <FlexColumn gap={10}>
-                    <WideButton onClick={deselectBlock}>Снять выделение</WideButton>
-                    <appStore.selectedBlock.current.Render />
-                  </FlexColumn>
-                ) : (
-                  <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>)}
-              </> : <div>Окно в плавающем режиме</div>
-          }
+          {!appStore.isSelectedBlockInFloatingWindow.state ? (
+            appStore.selectedBlock.current ? (
+              <FlexColumn gap={10}>
+                <WideButton onClick={deselectBlock}>Снять выделение</WideButton>
+                <appStore.selectedBlock.current.Render />
+              </FlexColumn>
+            ) : (
+              <span>
+                Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.
+              </span>
+            )
+          ) : (
+            <WindowInFloatingMode />
+          )}
         </Accordion>
         <ViewSettings
           visualizerParams={props.visualizerParams}
