@@ -1,6 +1,6 @@
 import type { ComponentType, FC } from 'react';
 
-export const bindReactProps = <OriginalProps, PartialProps extends Partial<OriginalProps>>(
+export const bindProps = <OriginalProps, PartialProps extends Partial<OriginalProps>>(
   Component: ComponentType<OriginalProps>,
   partialProps: PartialProps
 ) => {
