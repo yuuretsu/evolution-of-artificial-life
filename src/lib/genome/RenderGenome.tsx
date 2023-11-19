@@ -1,4 +1,3 @@
-import { GenomeVisualizer } from 'App/Sidebar/GenomeVisualizer';
 import { useForceRender } from 'hooks';
 import { limit, cycleNumber } from 'lib/helpers';
 import { useState, useEffect } from 'react';
@@ -7,6 +6,7 @@ import { FlexColumn, Accordion, DropdownSmall, InputNumberSmall, WideButton, Sub
 
 import { Gene, NULL_GENE_TEMPLATE } from './gene';
 import { GENES } from './genes';
+import { GenomeVisualizer } from './GenomeVisualizer';
 
 import type { Genome } from '.';
 import type { FC } from 'react';
