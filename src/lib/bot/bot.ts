@@ -1,15 +1,15 @@
 import { MAX_BOT_AGE } from 'settings';
 import { bindProps } from 'hoc';
+import { Rgba } from 'lib/color';
+import { Genome } from 'lib/genome';
+import { cycleNumber, limit, randInt } from 'lib/helpers';
 
-import { Rgba } from './color';
-import { Genome } from './genome';
-import { cycleNumber, limit, randInt } from './helpers';
 import { RenderBot } from './RenderBot';
 
 import type { WorldBlockDynamic } from 'types';
-import type { GenePool } from './genome';
-import type { VisualiserParams } from './view-modes';
-import type { World } from './world';
+import type { GenePool } from 'lib/genome';
+import type { VisualiserParams } from 'lib/view-modes';
+import type { World } from 'lib/world';
 
 interface BotProps {
   generation: number,
