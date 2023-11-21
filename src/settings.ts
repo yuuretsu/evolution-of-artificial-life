@@ -8,7 +8,7 @@ export const PIXEL_SIZE = 10;
 export const MAX_STEP_TIME_MS = 200;
 
 // GENOME VIEW
-const GENOME_VIEW_BORDER_PX = 2;
+export const GENOME_VIEW_BORDER_PX = 2;
 const GENOME_VIEW_GENES_IN_ROW = 8;
 
 // BOT
