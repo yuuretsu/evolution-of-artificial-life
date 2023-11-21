@@ -65,7 +65,7 @@ export class SquareWorld extends World {
           color: new Rgba(100, 100, 100, 255),
           familyColor: Rgba.randRgb(),
           energy: 100,
-          hunterFactor: 0,
+          hunterFactor: 0.5,
           genome: new Genome(props.genomeSize).fillRandom(props.genePool)
         })
       );
