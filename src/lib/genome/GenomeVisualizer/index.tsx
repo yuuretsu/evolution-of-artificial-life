@@ -1,4 +1,4 @@
-import { GENE_CELL_SIZE_PX } from 'settings';
+import { GENE_CELL_SIZE_PX, GENOME_VIEW_BORDER_PX } from 'settings';
 import styled from 'styled-components';
 
 import { GeneCell } from './GeneCell';
@@ -10,7 +10,7 @@ const GenomeWrapper = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
-  border: 2px solid #505050;
+  border: ${GENOME_VIEW_BORDER_PX}px solid #505050;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: ${GENE_CELL_SIZE_PX / 2 + 3}px;
 `;
