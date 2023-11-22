@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, css } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
   body {
@@ -9,4 +9,9 @@ export const GlobalStyles = createGlobalStyle`
     overflow: hidden;
     background-color: black;
   }
+`;
+
+export const panel = css`
+  background-color: rgba(20, 20, 20, 0.8);
+  backdrop-filter: blur(50px) saturate(2);
 `;

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { FlexColumn } from 'ui';
 import { SIDEBAR_PADDING } from 'settings';
 import { type FC } from 'react';
+import { panel } from 'App/app.css';
 
 import { SimulationSpeedRange } from './SimulationSpeedRange';
 import { ControlsButtons } from './ControlsButtons';
@@ -13,8 +14,7 @@ import type { IControlsButtonsProps } from './ControlsButtons';
 const Wrapper = styled.div<{ isTransparent: boolean }>`
   position: fixed;
   display: flex;
-  background-color: rgba(20, 20, 20, 0.8);
-  backdrop-filter: blur(20px);
+  ${panel}
   padding: 10px;
   border-radius: 20px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
