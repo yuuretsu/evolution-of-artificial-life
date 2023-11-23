@@ -10,7 +10,7 @@ import {
   FlexColumn,
   WideButton
 } from 'ui';
-import { panel } from 'App/app.css';
+import { hideScrollbar, panel } from 'App/app.css';
 
 import { CurrentWorldSettings } from './components/CurrentWorldSettings';
 import { Legend } from './components/Legend';
@@ -26,7 +26,7 @@ import type { WorldBlock } from 'types';
 
 interface ISidebarProps {
   readonly isOpen: boolean,
-};
+}
 
 const Wrapper = styled.div<ISidebarProps>`
   --padding-bottom: calc(${SIDEBAR_PADDING} * 2 + 80px + env(safe-area-inset-bottom));
@@ -41,17 +41,11 @@ const Wrapper = styled.div<ISidebarProps>`
   padding-right: calc(${SIDEBAR_PADDING} + env(safe-area-inset-right));
   padding-bottom: var(--padding-bottom);
   padding-left: ${SIDEBAR_PADDING};
-  ${panel}
   color: whitesmoke;
   box-shadow: ${props => props.isOpen ? '0 0 10px 0 rgba(0, 0, 0, 0.5)' : 'none'};
   transition-duration: ${SIDEBAR_ANIMATION_SPEED};
-  
-  /* Hide the scrollbar */
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  ${panel};
+  ${hideScrollbar};
 `;
 
 type SidebarProps = {
