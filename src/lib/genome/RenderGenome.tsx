@@ -1,4 +1,4 @@
-import { useForceRender } from 'hooks';
+import { useForceRender } from 'lib/hooks';
 import { limit, cycleNumber } from 'lib/helpers';
 import { useState, useEffect } from 'react';
 import { accordionsStates } from 'stores/accordions';

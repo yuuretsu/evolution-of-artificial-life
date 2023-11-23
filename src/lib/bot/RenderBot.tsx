@@ -1,4 +1,4 @@
-import { useForceRender } from 'hooks';
+import { useForceRender } from 'lib/hooks';
 import { useState, useEffect } from 'react';
 import { accordionsStates } from 'stores/accordions';
 import { SubBlock, FlexRow, FlexColumn, InputNumberSmall, Accordion } from 'ui';

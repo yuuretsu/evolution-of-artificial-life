@@ -4,7 +4,7 @@ import { numberToShortString } from 'lib/helpers';
 import { accordionsStates } from 'stores/accordions';
 import styled from 'styled-components';
 import { type FC } from 'react';
-import { useThrottle } from 'hooks';
+import { useThrottle } from 'lib/hooks';
 
 export interface IWorldInformationProps {
   cycle: number;
