@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { Gene, NULL_GENE_TEMPLATE } from './gene';
 import { GENES } from './genes';
 import { GenomeVisualizer } from './GenomeVisualizer';
+import { GenomeHistory } from './GenomeHistory';
 
 import type { Genome } from '.';
 import type { ChangeEventHandler, FC, FocusEventHandler, ReactNode } from 'react';
@@ -175,6 +176,7 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
             selectedGene={selectedGene}
             setSelectedGene={setSelectedGene}
           />
+          <GenomeHistory history={genome.genesHistory} />
         </FlexColumn>
       </Accordion>
     </FlexColumn>

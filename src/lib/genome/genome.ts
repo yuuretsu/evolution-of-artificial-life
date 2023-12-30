@@ -13,6 +13,7 @@ import type { GenePool } from './types';
 
 export class Genome {
   recentlyUsedGenes: Gene[] = [];
+  genesHistory: Gene[][] = [];
   genes: Gene[];
   private _pointer: number = 0;
 
@@ -58,10 +59,12 @@ export class Genome {
         : this.pointer + 1;
       bot.lastActions.push(result.msg || gene.template.name);
       if (result.isCompleted) {
+        this.genesHistory.push([...this.recentlyUsedGenes]);
         return;
       }
     }
     bot.energy -= 1;
+    this.genesHistory.push([...this.recentlyUsedGenes]);
   }
 
   Render = bindProps(RenderGenome, { genome: this });

@@ -1,5 +1,5 @@
 // SIDEBAR
-const SIDEBAR_WIDTH_PX = 260;
+export const SIDEBAR_WIDTH_PX = 260;
 export const SIDEBAR_PADDING_PX = 20;
 export const SIDEBAR_ANIMATION_SPEED = '0.2s';
 
