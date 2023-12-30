@@ -54,11 +54,13 @@ const Body = styled.div`
   animation: ${anim} 0.2s;
 `;
 
-const Select = styled.div`
+const Option = styled.div<{ isSelected?: boolean }> `
   padding: 5px 10px;
   cursor: pointer;
+  border-radius: 5px;
+  background-color: ${(props) => (props.isSelected ? 'rgb(80, 80, 80, 0.5)' : 'none')};
   &:hover {
-    background-color: #505050;
+    background-color: rgb(80, 80, 80);
   }
 `;
 
@@ -87,17 +89,19 @@ export const DropdownSmall = <T extends string,>(props: IDropdownSmallProps<T>) 
       </Header>
       {isOpen && (
         <Body>
-          {props.options.map((value) => {
+          {props.options.map((option) => {
+            const isSelected = option.value === props.value;
             return (
-              <Select
-                key={value.value}
+              <Option
+                key={option.value}
                 onClick={() => {
                   setIsOpen(false);
-                  props.onChange(value.value);
+                  props.onChange(option.value);
                 }}
+                isSelected={isSelected}
               >
-                {value.title}
-              </Select>
+                {option.title}
+              </Option>
             );
           })}
         </Body>
