@@ -118,9 +118,11 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
                 <Table2Cols
                   cells={[
                     [
-                      'Параметр',
+                      <LabelName isNamed={!!selectedGene.gene.template.translation?.option} key={0}>
+                        {selectedGene.gene.template.translation?.option || 'Параметр'}
+                      </LabelName>,
                       <InputNumberSmall
-                        key={'option'}
+                        key={1}
                         value={option.toString()}
                         onChange={e => setOption(e.target.value)}
                         onBlur={handleBlurParameter}
@@ -131,8 +133,11 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
                       .property
                       .branches
                       .map((_, i): [ReactNode, ReactNode] => {
+                        const name = selectedGene.gene.template.translation?.branches?.[i];
                         return [
-                          `Ветка ${i + 1}`,
+                          <LabelName isNamed={!!name} key={0}>
+                            {name || `${i + 1} ветка`}
+                          </LabelName>,
                           <InputNumberSmall
                             key={i}
                             value={branches[i]}
@@ -170,6 +175,10 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
     </FlexColumn>
   );
 };
+
+const LabelName = styled.span<{ isNamed: boolean }>`
+  opacity: ${props => props.isNamed ? 1 : 0.5};
+`;
 
 const SelectOptionGeneIcon = styled.div<{ color: string }>`
   width: 10px;

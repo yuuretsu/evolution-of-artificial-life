@@ -28,7 +28,7 @@ export const GENES = {
       const value = 0.1;
       bot.health = Math.min(1, bot.health + 0.1);
       return { isCompleted: true, msg: `Лечение +${value}` };
-    }
+    },
   },
   multiply: {
     name: 'Размножение',
@@ -44,7 +44,10 @@ export const GENES = {
       if (bot.age <= 10) return { isCompleted: true, msg: 'Размножение не удалось: бот слишком молод' };
       world.set(...F_COORDS, bot.multiply(world.genePool, property.option));
       return { isCompleted: true, msg: 'Размножение' };
-    }
+    },
+    translation: {
+      option: 'Передать энергии',
+    },
   },
   rotate: {
     name: 'Поворот',
@@ -57,6 +60,9 @@ export const GENES = {
         : -angle;
 
       return { msg: `Поворот ${property.option > 0.5 ? 'направо' : 'налево'}` };
+    },
+    translation: {
+      option: 'Направо/налево',
     }
   },
   photosynthesis: {
@@ -89,6 +95,9 @@ export const GENES = {
       bot.increaseHunterFactor(0.01);
       bot.health = Math.min(1, bot.health + 0.01);
       return { isCompleted: true, msg: `Атака: +${result.toFixed(2)} энергии` };
+    },
+    translation: {
+      option: 'Сила атаки',
     }
   },
   virus: {
@@ -157,6 +166,9 @@ export const GENES = {
       const goto = property.branches[0];
       const msg = `Перенос указателя → ${goto}`;
       return { goto, msg };
+    },
+    translation: {
+      branches: ['На индекс']
     }
   },
   checkHealth: {
@@ -171,6 +183,10 @@ export const GENES = {
       const goto = property.branches[1];
       const msg = `Проверка здоровья → ${goto}`;
       return { goto, msg };
+    },
+    translation: {
+      option: 'Порог',
+      branches: ['Если меньше', 'Если больше']
     }
   },
   checkEnergy: {
@@ -185,6 +201,10 @@ export const GENES = {
       const goto = property.branches[1];
       const msg = `Проверка энергии → ${goto}`;
       return { goto, msg };
+    },
+    translation: {
+      option: 'Порог',
+      branches: ['Если меньше', 'Если больше']
     }
   },
   forward: {
@@ -201,6 +221,9 @@ export const GENES = {
       const goto = property.branches[1];
       const msg = `Спереди нет блока → ${goto}`;
       return { goto, msg };
+    },
+    translation: {
+      branches: ['Если есть', 'Если нет']
     }
   },
   compareFamilies: {
@@ -223,6 +246,10 @@ export const GENES = {
       const goto = property.branches[1];
       const msg = `Спереди нет родственника → ${goto}`;
       return { goto, msg };
+    },
+    translation: {
+      option: 'Порог',
+      branches: ['Если есть', 'Если нет']
     }
   }
 } satisfies Record<string, GeneTemplate>;

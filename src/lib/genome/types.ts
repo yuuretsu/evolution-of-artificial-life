@@ -7,7 +7,11 @@ type GeneTemplateBase = {
   description?: string,
   color?: Rgba,
   isDefaultDisabled?: boolean,
-  action: (parameters: GeneParameters) => ActionResult
+  action: (parameters: GeneParameters) => ActionResult,
+  translation?: {
+    option?: string,
+    branches?: string[]
+  },
 }
 
 type GeneTemplateWithColorInfluence = GeneTemplateBase & {
