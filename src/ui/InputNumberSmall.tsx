@@ -23,15 +23,14 @@ const Input = styled.input.attrs({ type: 'number' })`
   &::-webkit-inner-spin-button {
     appearance: none;
   }
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    padding-left: 5px;
+  &:hover, &:focus {
+    background-color: rgb(80, 80, 80, 0.25);
     border-radius: 2px;
+    box-shadow: 0 0 0 2px rgb(80, 80, 80, 0.25);
+    z-index: 1;
   }
   &:focus {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding-left: 5px;
-    border-radius: 2px;
+    box-shadow: 0 0 0 5px rgb(80, 80, 80, 0.25);
     outline: none;
     border: none;
   }
