@@ -10,33 +10,31 @@ export const Table2Cols = ({ cells }: Table2ColsProps) => {
   return (
     <Table>
       <tbody>
-        {
-          cells.map(([left, right], i) => (
-            <tr key={i}>
-              <Td>{left}</Td>
-              <Td>{right}</Td>
-            </tr>
-          ))
-        }
+        {cells.map(([left, right], i) => (
+          <tr key={i}>
+            <TdLeft>{left}</TdLeft>
+            <TdRight>{right}</TdRight>
+          </tr>
+        ))}
       </tbody>
     </Table>
   );
 
 };
 
-const gap = '10px';
-
 const Table = styled.table`
-  width: calc(100% + ${gap} * 2);
-  border-spacing: ${gap} 0;
-  margin-left: -${gap};
-  margin-right: -${gap};
+  border-collapse: collapse;
+  width: 100%;
 `;
 
 const Td = styled.td`
-  white-space: nowrap;
+  line-height: 1.5;
+`;
 
-  &:nth-child(2) {
-    width: 100%;
-  }
+const TdLeft = styled(Td)`
+  width: 130px;
+`;
+
+const TdRight = styled(Td)`
+  padding-left: 10px;
 `;

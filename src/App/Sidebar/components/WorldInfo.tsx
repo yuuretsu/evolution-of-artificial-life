@@ -23,11 +23,11 @@ export const WorldInformation: FC<IWorldInformationProps> = observer(({
     <Accordion name='Инфо о мире' {...accordionsStates.getProps('worldInfo')}>
       <Table2Cols
         cells={[
-          ['Возраст (кадров):', numberToShortString(cycle, 2)],
-          ['Ботов:', numberToShortString(botsAmount, 2)],
-          ['Поколение:', maxGeneration + 1],
-          ['Ср. возраст ботов:', numberToShortString(averageAge, 2)],
-          ['Время обработки:', numberToShortString(stepTime, 2) + ' мс.'],
+          ['Возраст (кадров)', numberToShortString(cycle, 2)],
+          ['Ботов', numberToShortString(botsAmount, 2)],
+          ['Поколение', maxGeneration + 1],
+          ['Ср. возраст ботов', numberToShortString(averageAge, 2)],
+          ['Время обработки', numberToShortString(stepTime, 2) + ' мс.'],
         ]}
       />
     </Accordion>
