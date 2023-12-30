@@ -4,7 +4,6 @@ import { numberToShortString } from 'lib/helpers';
 import { accordionsStates } from 'stores/accordions';
 import styled from 'styled-components';
 import { type FC } from 'react';
-import { useThrottle } from 'lib/hooks';
 
 export interface IWorldInformationProps {
   cycle: number;
@@ -14,10 +13,13 @@ export interface IWorldInformationProps {
   maxGeneration: number;
 }
 
-export const WorldInformation: FC<IWorldInformationProps> = observer((props) => {
-
-  const { cycle, botsAmount, averageAge, stepTime, maxGeneration } = useThrottle(props, 100);
-
+export const WorldInformation: FC<IWorldInformationProps> = observer(({
+  cycle,
+  botsAmount,
+  maxGeneration,
+  averageAge,
+  stepTime
+}) => {
   return (
     <Accordion name='Инфо о мире' {...accordionsStates.getProps('worldInfo')}>
       <Table>

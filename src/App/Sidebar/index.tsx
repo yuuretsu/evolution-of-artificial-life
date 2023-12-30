@@ -11,6 +11,7 @@ import {
   WideButton
 } from 'ui';
 import { hideScrollbar, panel } from 'App/app.css';
+import { useThrottle } from 'lib/hooks';
 
 import { CurrentWorldSettings } from './components/CurrentWorldSettings';
 import { Legend } from './components/Legend';
@@ -74,17 +75,19 @@ export const Sidebar: FC<SidebarProps> = observer((props) => {
     sidebarStore.open();
   }, [props.selectedBlock]);
 
+  const worldInformationProps = useThrottle({
+    cycle: props.worldInfo.cycle,
+    botsAmount: props.worldInfo.dynamicBlocks,
+    averageAge: props.worldInfo.averageAge,
+    stepTime: props.worldInfo.stepTime,
+    maxGeneration: props.worldInfo.maxGeneration,
+  }, 100);
+
   return (
     <Wrapper isOpen={sidebarStore.isOpen}>
       <FlexColumn gap={20}>
         <Legend />
-        <WorldInformation
-          cycle={props.worldInfo.cycle}
-          botsAmount={props.worldInfo.dynamicBlocks}
-          stepTime={props.worldInfo.stepTime}
-          averageAge={props.worldInfo.averageAge}
-          maxGeneration={props.worldInfo.maxGeneration}
-        />
+        <WorldInformation {...worldInformationProps} />
         <Accordion
           name='Инфо о блоке'
           ref={worldBlockInfoRef}
