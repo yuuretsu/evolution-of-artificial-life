@@ -9,7 +9,7 @@ import { GENES } from './genes';
 import { GenomeVisualizer } from './GenomeVisualizer';
 
 import type { Genome } from '.';
-import type { FC, ReactNode } from 'react';
+import type { ChangeEventHandler, FC, FocusEventHandler, ReactNode } from 'react';
 import type { GeneName } from './genes';
 
 export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
@@ -29,6 +29,66 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
     setBranches(selectedGene?.gene.property.branches || [0, 0]);
   }, [selectedGene]);
 
+  const handleBlurParameter: FocusEventHandler<HTMLInputElement> = (e) => {
+    if (!selectedGene) return;
+    const value = e.target.value;
+    if (value.length > 0) {
+      selectedGene.gene.property.option = limit(
+        0,
+        1,
+        parseFloat(value)
+      );
+    }
+    setOption(selectedGene.gene.property.option);
+  };
+
+  const getBranchChangeHandler = (i: number): ChangeEventHandler<HTMLInputElement> => (e) => {
+    const value = e.target.value;
+    const newBranches = [...branches];
+    newBranches[i] = value;
+    setBranches(newBranches);
+  };
+
+  const getBranchBlurHandler = (i: number): FocusEventHandler<HTMLInputElement> => (e) => {
+    if (!selectedGene) return;
+    const value = e.target.value;
+    if (value.length > 0) {
+      selectedGene.gene.property.branches[i] = cycleNumber(
+        0,
+        genome.genes.length,
+        parseInt(value)
+      );
+    }
+    setBranches(selectedGene.gene.property.branches);
+  };
+
+  const geneValue = Object
+    .entries(GENES)
+    .find(([, value]) => value.name === selectedGene?.gene.template.name)
+    ?.[0] as GeneName;
+
+  const geneOptions = (Object.keys(GENES)).map(key => ({
+    value: key,
+    title: GENES[key]?.name || NULL_GENE_TEMPLATE.name
+  }));
+
+  const handleChangeGene = (value: GeneName) => {
+    if (!selectedGene) return;
+    selectedGene.gene.template = GENES[value] || NULL_GENE_TEMPLATE;
+    genome.genes = [...genes];
+    setGenes(genome.genes);
+  };
+
+  const handleClickMakeGeneIndividual = () => {
+    if (!selectedGene) return;
+    genome.genes[selectedGene.id] = new Gene(selectedGene.gene.template, {
+      ...selectedGene.gene.property,
+      branches: [...selectedGene.gene.property.branches]
+    });
+
+    setSelectedGene({ ...selectedGene, gene: genome.genes[selectedGene.id]! });
+  };
+
   return (
     <FlexColumn gap={10}>
       <Accordion
@@ -40,16 +100,10 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
           <>
             <FlexColumn gap={5}>
               <FlexColumn gap={5}>
-                <DropdownSmall
-                  name={selectedGene.gene.template.name}
-                  list={(Object.keys(GENES) as GeneName[]).map(key => {
-                    return { value: key, title: GENES[key]?.name || NULL_GENE_TEMPLATE.name };
-                  })}
-                  onChange={value => {
-                    selectedGene.gene.template = GENES[value] || NULL_GENE_TEMPLATE;
-                    genome.genes = [...genes];
-                    setGenes(genome.genes);
-                  }}
+                <DropdownSmall<GeneName>
+                  value={geneValue}
+                  options={geneOptions}
+                  onChange={handleChangeGene}
                 />
                 <Table2Cols
                   cells={[
@@ -58,20 +112,8 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
                       <InputNumberSmall
                         key={'option'}
                         value={option.toString()}
-                        onChange={e => {
-                          setOption(e.target.value);
-                        }}
-                        onBlur={e => {
-                          const value = e.target.value;
-                          if (value.length > 0) {
-                            selectedGene.gene.property.option = limit(
-                              0,
-                              1,
-                              parseFloat(value)
-                            );
-                          }
-                          setOption(selectedGene.gene.property.option);
-                        }}
+                        onChange={e => setOption(e.target.value)}
+                        onBlur={handleBlurParameter}
                       />
                     ],
                     ...selectedGene
@@ -84,38 +126,17 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
                           <InputNumberSmall
                             key={i}
                             value={branches[i]}
-                            onChange={e => {
-                              const value = e.target.value;
-                              const newBranches = [...branches];
-                              newBranches[i] = value;
-                              setBranches(newBranches);
-                            }}
-                            onBlur={e => {
-                              const value = e.target.value;
-                              if (value.length > 0) {
-                                selectedGene.gene.property.branches[i] = cycleNumber(
-                                  0,
-                                  genome.genes.length,
-                                  parseInt(value)
-                                );
-                              }
-                              setBranches(selectedGene.gene.property.branches);
-                            }}
+                            onChange={getBranchChangeHandler(i)}
+                            onBlur={getBranchBlurHandler(i)}
                           />
                         ];
                       })
                   ]}
                 />
               </FlexColumn>
-              <WideButton onClick={() => {
-                genome.genes[selectedGene.id] = new Gene(selectedGene.gene.template, {
-                  ...selectedGene.gene.property,
-                  branches: [...selectedGene.gene.property.branches]
-                });
-
-                setSelectedGene({ ...selectedGene, gene: genome.genes[selectedGene.id]! });
-              }}
-              >Сделать индивидуальным</WideButton>
+              <WideButton onClick={handleClickMakeGeneIndividual}>
+                Сделать индивидуальным
+              </WideButton>
             </FlexColumn>
           </>
         ) : (

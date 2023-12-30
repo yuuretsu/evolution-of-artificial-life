@@ -67,22 +67,25 @@ const IconArrow = styled(MdKeyboardArrowDown)`
 `;
 
 export interface IDropdownSmallProps<T extends string> {
-  name: string;
-  list: { value: T; title: string }[];
+  value: T;
+  options: { value: T; title: string }[];
   onChange: (value: T) => void;
 }
 
 export const DropdownSmall = <T extends string,>(props: IDropdownSmallProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const title = props.options.find((item) => item.value === props.value)?.title;
+
   return (
     <Wrapper>
       <Header onClick={() => setIsOpen(!isOpen)} isOpen={isOpen}>
-        {props.name}
+        {title}
         <IconArrow />
       </Header>
       {isOpen && (
         <Body>
-          {props.list.map((value) => {
+          {props.options.map((value) => {
             return (
               <Select
                 key={value.value}
