@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import styled from 'styled-components';
 
-import type { ChangeEventHandler, FC, FocusEventHandler} from 'react';
+import type { ChangeEventHandler, FC, FocusEventHandler } from 'react';
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,7 +38,7 @@ const Input = styled.input.attrs({ type: 'number' })`
 `;
 
 export interface IInputNumberSmallProps {
-  name: string;
+  name?: string;
   min?: string | number;
   max?: string | number;
   value?: string | number | readonly string[]
@@ -51,9 +51,9 @@ export const InputNumberSmall: FC<IInputNumberSmallProps> = (props) => {
   const onClickLabel = () => inputRef.current?.focus();
   return (
     <Wrapper>
-      <span style={{ whiteSpace: 'nowrap' }} onClick={onClickLabel}>
+      {props.name && <span style={{ whiteSpace: 'nowrap' }} onClick={onClickLabel}>
         {props.name}:&nbsp;
-      </span>
+      </span>}
       <Input ref={inputRef} {...props} />
     </Wrapper>
   );

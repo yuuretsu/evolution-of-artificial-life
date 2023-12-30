@@ -11,3 +11,4 @@ export * from './SubBlock';
 export * from './WideButton';
 export * from './Flex';
 export * from './Br';
+export * from './Table2Cols';

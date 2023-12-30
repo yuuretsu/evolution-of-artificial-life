@@ -1,7 +1,7 @@
 import { useForceRender } from 'lib/hooks';
 import { useState, useEffect } from 'react';
 import { accordionsStates } from 'stores/accordions';
-import { SubBlock, FlexRow, FlexColumn, InputNumberSmall, Accordion } from 'ui';
+import { SubBlock, FlexRow, FlexColumn, InputNumberSmall, Accordion, Table2Cols } from 'ui';
 import styled from 'styled-components';
 import { hideScrollbar } from 'App/app.css';
 
@@ -41,58 +41,76 @@ export const RenderBot: FC<{ bot: Bot }> = ({ bot }) => {
       </SubBlock>
       <SubBlock>
         <FlexColumn gap={10}>
-          <div>
-            <InputNumberSmall
-              name='Возраст'
-              value={age}
-              onChange={e => {
-                const age = e.target.value;
-                setAge(age);
-              }}
-              onBlur={e => {
-                const age = e.target.value;
-                if (age.length > 0) {
-                  bot.age = parseFloat(age);
-                }
-                setAge(bot.age);
-              }}
-            />
-            <InputNumberSmall
-              name='Здоровье'
-              value={health}
-              onChange={e => {
-                const health = e.target.value;
-                setHealth(health);
-              }}
-              onBlur={e => {
-                const health = e.target.value;
-                if (health.length > 0) {
-                  bot.health = parseFloat(health);
-                }
-                setHealth(bot.health);
-              }}
-            />
-            <InputNumberSmall
-              name='Энергия'
-              value={energy}
-              onChange={e => {
-                const energy = e.target.value;
-                setEnergy(energy);
-              }}
-              onBlur={e => {
-                const energy = e.target.value;
-                if (energy.length > 0) {
-                  bot.energy = parseFloat(energy);
-                }
-                setEnergy(bot.energy);
-              }}
-            />
-            <div>Потомков: {bot.childrenAmount}</div>
-            <div>
-              Направление: <div style={narrowArrowStyle}>→</div>
-            </div>
-            <div>Поколение: {bot.generation}</div>
-          </div>
+          <Table2Cols
+            cells={[
+              [
+                'Возраст',
+                <InputNumberSmall
+                  key={'age'}
+                  value={age}
+                  onChange={e => {
+                    const age = e.target.value;
+                    setAge(age);
+                  }}
+                  onBlur={e => {
+                    const age = e.target.value;
+                    if (age.length > 0) {
+                      bot.age = parseFloat(age);
+                    }
+                    setAge(bot.age);
+                  }}
+                />
+              ],
+              [
+                'Здоровье',
+                <InputNumberSmall
+                  key='health'
+                  value={health}
+                  onChange={e => {
+                    const health = e.target.value;
+                    setHealth(health);
+                  }}
+                  onBlur={e => {
+                    const health = e.target.value;
+                    if (health.length > 0) {
+                      bot.health = parseFloat(health);
+                    }
+                    setHealth(bot.health);
+                  }}
+                />
+              ],
+              [
+                'Энергия',
+                <InputNumberSmall
+                  key='energy'
+                  value={energy}
+                  onChange={e => {
+                    const energy = e.target.value;
+                    setEnergy(energy);
+                  }}
+                  onBlur={e => {
+                    const energy = e.target.value;
+                    if (energy.length > 0) {
+                      bot.energy = parseFloat(energy);
+                    }
+                    setEnergy(bot.energy);
+                  }}
+                />
+              ],
+              [
+                'Потомков',
+                bot.childrenAmount,
+              ],
+              [
+                'Направление',
+                <div key={'narrow'} style={narrowArrowStyle}>→</div>,
+              ],
+              [
+                'Поколение',
+                bot.generation
+              ]
+            ]}
+          />
           {!bot.isAlive && (
             <div
               style={{
