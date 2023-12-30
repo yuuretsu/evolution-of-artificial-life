@@ -29,6 +29,7 @@ const Table = styled.table`
 
 const Td = styled.td`
   line-height: 1.5;
+  padding: 0;
 `;
 
 const TdLeft = styled(Td)`

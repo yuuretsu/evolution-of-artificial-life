@@ -2,14 +2,14 @@ import { useForceRender } from 'lib/hooks';
 import { limit, cycleNumber } from 'lib/helpers';
 import { useState, useEffect } from 'react';
 import { accordionsStates } from 'stores/accordions';
-import { FlexColumn, Accordion, DropdownSmall, InputNumberSmall, WideButton, SubBlock } from 'ui';
+import { FlexColumn, Accordion, DropdownSmall, InputNumberSmall, WideButton, SubBlock, Table2Cols } from 'ui';
 
 import { Gene, NULL_GENE_TEMPLATE } from './gene';
 import { GENES } from './genes';
 import { GenomeVisualizer } from './GenomeVisualizer';
 
 import type { Genome } from '.';
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import type { GeneName } from './genes';
 
 export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
@@ -39,7 +39,7 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
         {selectedGene ? (
           <>
             <FlexColumn gap={5}>
-              <div>
+              <FlexColumn gap={5}>
                 <DropdownSmall
                   name={selectedGene.gene.template.name}
                   list={(Object.keys(GENES) as GeneName[]).map(key => {
@@ -51,55 +51,62 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
                     setGenes(genome.genes);
                   }}
                 />
-                <InputNumberSmall
-                  name={'Параметр'}
-                  value={option.toString()}
-                  onChange={e => {
-                    setOption(e.target.value);
-                  }}
-                  onBlur={e => {
-                    const value = e.target.value;
-                    if (value.length > 0) {
-                      selectedGene.gene.property.option = limit(
-                        0,
-                        1,
-                        parseFloat(value)
-                      );
-                    }
-                    setOption(selectedGene.gene.property.option);
-                  }}
-                />
-                {branches && selectedGene
-                  .gene
-                  .property
-                  .branches
-                  .map((_value, i) => {
-                    return (
+                <Table2Cols
+                  cells={[
+                    [
+                      'Параметр',
                       <InputNumberSmall
-                        name={`Ветка ${i + 1}`}
-                        key={i}
-                        value={branches[i]}
+                        key={'option'}
+                        value={option.toString()}
                         onChange={e => {
-                          const value = e.target.value;
-                          const newBranches = [...branches];
-                          newBranches[i] = value;
-                          setBranches(newBranches);
+                          setOption(e.target.value);
                         }}
                         onBlur={e => {
                           const value = e.target.value;
                           if (value.length > 0) {
-                            selectedGene.gene.property.branches[i] = cycleNumber(
+                            selectedGene.gene.property.option = limit(
                               0,
-                              genome.genes.length,
-                              parseInt(value)
+                              1,
+                              parseFloat(value)
                             );
                           }
-                          setBranches(selectedGene.gene.property.branches);
+                          setOption(selectedGene.gene.property.option);
                         }}
                       />
-                    );
-                  })}
-              </div>
+                    ],
+                    ...selectedGene
+                      .gene
+                      .property
+                      .branches
+                      .map((_, i): [ReactNode, ReactNode] => {
+                        return [
+                          `Ветка ${i + 1}`,
+                          <InputNumberSmall
+                            key={i}
+                            value={branches[i]}
+                            onChange={e => {
+                              const value = e.target.value;
+                              const newBranches = [...branches];
+                              newBranches[i] = value;
+                              setBranches(newBranches);
+                            }}
+                            onBlur={e => {
+                              const value = e.target.value;
+                              if (value.length > 0) {
+                                selectedGene.gene.property.branches[i] = cycleNumber(
+                                  0,
+                                  genome.genes.length,
+                                  parseInt(value)
+                                );
+                              }
+                              setBranches(selectedGene.gene.property.branches);
+                            }}
+                          />
+                        ];
+                      })
+                  ]}
+                />
+              </FlexColumn>
               <WideButton onClick={() => {
                 genome.genes[selectedGene.id] = new Gene(selectedGene.gene.template, {
                   ...selectedGene.gene.property,
