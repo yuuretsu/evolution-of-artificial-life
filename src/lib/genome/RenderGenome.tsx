@@ -2,7 +2,8 @@ import { useForceRender } from 'lib/hooks';
 import { limit, cycleNumber } from 'lib/helpers';
 import { useState, useEffect } from 'react';
 import { accordionsStates } from 'stores/accordions';
-import { FlexColumn, Accordion, DropdownSmall, InputNumberSmall, WideButton, SubBlock, Table2Cols } from 'ui';
+import { FlexColumn, Accordion, DropdownSmall, InputNumberSmall, WideButton, SubBlock, Table2Cols, FlexRow } from 'ui';
+import styled from 'styled-components';
 
 import { Gene, NULL_GENE_TEMPLATE } from './gene';
 import { GENES } from './genes';
@@ -67,10 +68,19 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
     .find(([, value]) => value.name === selectedGene?.gene.template.name)
     ?.[0] as GeneName;
 
-  const geneOptions = (Object.keys(GENES)).map(key => ({
-    value: key,
-    title: GENES[key]?.name || NULL_GENE_TEMPLATE.name
-  }));
+  const geneOptions = (Object.keys(GENES)).map(key => {
+    const gene = GENES[key];
+    const color = 'color' in gene ? gene.color : undefined;
+    return {
+      value: key,
+      title: (
+        <FlexRow gap={5} alignItems='center'>
+          <SelectOptionGeneIcon color={color?.toString() || 'rgb(127, 127, 127, 0.1)'} />
+          {GENES[key]?.name || NULL_GENE_TEMPLATE.name}
+        </FlexRow>
+      )
+    };
+  });
 
   const handleChangeGene = (value: GeneName) => {
     if (!selectedGene) return;
@@ -160,3 +170,11 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
     </FlexColumn>
   );
 };
+
+const SelectOptionGeneIcon = styled.div<{ color: string }>`
+  width: 10px;
+  height: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  background-color: ${props => props.color};
+`;

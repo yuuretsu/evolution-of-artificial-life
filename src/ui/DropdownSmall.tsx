@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import styled, { keyframes } from 'styled-components';
 
+import type { ReactNode } from 'react';
+
 const Wrapper = styled.div`
   position: relative;
   user-select: none;
@@ -68,7 +70,7 @@ const IconArrow = styled(MdKeyboardArrowDown)`
 
 export interface IDropdownSmallProps<T extends string> {
   value: T;
-  options: { value: T; title: string }[];
+  options: { value: T; title: ReactNode }[];
   onChange: (value: T) => void;
 }
 
