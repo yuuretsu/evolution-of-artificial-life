@@ -2,7 +2,7 @@ import { useForceRender } from 'lib/hooks';
 import { limit, cycleNumber } from 'lib/helpers';
 import { useState, useEffect } from 'react';
 import { accordionsStates } from 'stores/accordions';
-import { FlexColumn, Accordion, DropdownSmall, InputNumberSmall, WideButton, SubBlock, Table2Cols, FlexRow } from 'ui';
+import { FlexColumn, Accordion, DropdownSmall, InputNumberSmall, WideButton, SubBlock, Table2Cols, FlexRow, OptionalBlock } from 'ui';
 import styled from 'styled-components';
 
 import { Gene, NULL_GENE_TEMPLATE } from './gene';
@@ -115,6 +115,11 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
                   options={geneOptions}
                   onChange={handleChangeGene}
                 />
+                {selectedGene.gene.template.description && (
+                  <OptionalBlock>
+                    {selectedGene.gene.template.description}
+                  </OptionalBlock>
+                )}
                 <Table2Cols
                   cells={[
                     [

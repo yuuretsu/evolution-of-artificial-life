@@ -14,15 +14,12 @@ const anim = keyframes`
 `;
 
 const Wrapper = styled.div`
-  background-color: rgb(40, 40, 40);
+  background-color: rgb(80, 80, 80, 0.25);
   border-left: 5px solid rgb(80, 80, 80);
   padding: 10px;
-  border-radius: 0 5px 5px 0;
+  border-radius: 5px;
   animation: ${anim} 0.2s ease;
   transform-origin: top;
-  &:not(:last-child) {
-    margin-bottom: 10px;
-  }
 `;
 
 const Title = styled.div`
