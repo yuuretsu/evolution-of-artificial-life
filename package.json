@@ -1,6 +1,6 @@
 {
   "name": "artificial-life",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "evolution simulator",
   "scripts": {
     "dev": "vite --force --host",
