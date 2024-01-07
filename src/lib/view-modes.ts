@@ -1,13 +1,12 @@
 import { Rgba } from './color';
-import { GENES } from './genome';
+import { GENES_ARR } from './genome/genes';
 
-import type { GeneName } from './genome/genes';
 import type { WorldBlock } from 'types';
 
 export type VisualiserParams = {
   ageDivider: number;
   energyDivider: number;
-  action: Record<string, boolean>;
+  action: string[];
 };
 
 export type BlockVisualiser = (
@@ -84,14 +83,10 @@ export const viewModesList = Object
     };
   });
 
+export const VISIBLE_GENES = GENES_ARR.filter(gene => gene.color);
+
 export const initVisualizerParams: VisualiserParams = {
   ageDivider: 1000,
   energyDivider: 100,
-  action: (Object.keys(GENES) as GeneName[]).reduce((action, geneName) => {
-    const gene = GENES[geneName];
-    return 'color' in gene ? {
-      ...action,
-      [GENES[geneName]!.name]: true
-    } : action;
-  }, {})
+  action: VISIBLE_GENES.map(({ id }) => id),
 };

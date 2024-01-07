@@ -70,7 +70,7 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
     ?.[0] as GeneName;
 
   const geneOptions = (Object.keys(GENES)).map(key => {
-    const gene = GENES[key];
+    const gene = GENES[key]!;
     const color = 'color' in gene ? gene.color : undefined;
     return {
       value: key,
@@ -83,7 +83,7 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
     };
   });
 
-  const handleChangeGene = (value: GeneName) => {
+  const handleChangeGene = (value: string) => {
     if (!selectedGene) return;
     selectedGene.gene.template = GENES[value] || NULL_GENE_TEMPLATE;
     genome.genes = [...genes];
@@ -111,7 +111,7 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
           <>
             <FlexColumn gap={5}>
               <FlexColumn gap={5}>
-                <DropdownSmall<GeneName>
+                <DropdownSmall
                   value={geneValue}
                   options={geneOptions}
                   onChange={handleChangeGene}

@@ -29,7 +29,7 @@ const Input = styled.input.attrs({
     width: 15px;
     height: 15px;
     border-radius: 2px;
-    background-color: rgb(80, 80, 80);
+    background-color: ${props => props.color || 'rgb(80, 80, 80)'};
     transition-duration: 0.2s;
   }
   &::after {
@@ -52,6 +52,7 @@ export interface ICheckboxProps {
   title: string;
   onChange: (checked: boolean) => void;
   isChecked?: boolean;
+  color?: string;
 }
 
 export const Checkbox: FC<ICheckboxProps> = (props) => {
@@ -59,6 +60,7 @@ export const Checkbox: FC<ICheckboxProps> = (props) => {
     <Wrapper>
       <Input
         checked={props.isChecked}
+        color={props.color}
         onChange={(e) => {
           props.onChange(e.target.checked);
         }}

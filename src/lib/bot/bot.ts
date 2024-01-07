@@ -1,7 +1,7 @@
 import { MAX_BOT_AGE } from 'settings';
 import { bindProps } from 'hoc';
 import { Rgba } from 'lib/color';
-import { Genome } from 'lib/genome';
+import { GENES, Genome } from 'lib/genome';
 import { cycleNumber, limit, randInt } from 'lib/helpers';
 
 import { RenderBot } from './RenderBot';
@@ -94,13 +94,12 @@ export class Bot implements WorldBlockDynamic {
   }
   getLastActionColor(params: VisualiserParams): Rgba | null {
     if (this.genome.activeGene === null) return new Rgba(20, 20, 20, 255);
-    if (!params.action[this.genome.activeGene.template.name]) {
+    const actionsSet = new Set(params.action);
+    const key = Object.entries(GENES).find(([, template]) => template.name === this.genome.activeGene!.template.name)![0];
+    if (!actionsSet.has(key)) {
       return new Rgba(20, 20, 20, 255);
     }
-    const maybeColor = this.genome.activeGene.template.color;
-    return maybeColor
-      ? maybeColor
-      : new Rgba(20, 20, 20, 255);
+    return this.genome.activeGene.template.color || new Rgba(20, 20, 20, 255);
   }
   getChildrenAmountColor(): Rgba | null {
     return new Rgba(20, 20, 150, 255)

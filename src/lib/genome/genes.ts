@@ -18,8 +18,9 @@ function namesToGenePool(names: GeneName[]): GenePool {
   }, []);
 }
 
-export const GENES = {
-  doNothing: {
+export const GENES_ARR = [
+  {
+    id: 'doNothing',
     name: 'Отдых',
     description: 'Прибавляет 0,1 к здоровью',
     color: new Rgba(100, 100, 0, 255),
@@ -29,8 +30,9 @@ export const GENES = {
       bot.health = Math.min(1, bot.health + 0.1);
       return { isCompleted: true, msg: `Лечение +${value}` };
     },
-  },
-  multiply: {
+  } as const,
+  {
+    id: 'multiply',
     name: 'Размножение',
     description: 'Бот теряет 1/10 энергии на попытку размножения. Если клетка перед ним пуста, энергии больше 5 единиц, а возраст больше 10 кадров, бот размножается. Потомку передается количество энергии, равное параметру гена, такое же количество вычитается из собственной энергии.',
     color: new Rgba(255, 255, 200, 255),
@@ -48,8 +50,9 @@ export const GENES = {
     translation: {
       option: 'Передать энергии',
     },
-  },
-  rotate: {
+  } as const,
+  {
+    id: 'rotate',
     name: 'Поворот',
     description: 'Бот поворачивается по часовой стрелке, если параметр гена > 0,5, иначе против часовой стрелки',
     action: ({ bot, property }) => {
@@ -64,8 +67,9 @@ export const GENES = {
     translation: {
       option: 'Направо/налево',
     }
-  },
-  photosynthesis: {
+  } as const,
+  {
+    id: 'photosynthesis',
     name: 'Фотосинтез',
     description: 'Бот получает энергию путем фотосинтеза. При этом эффективность его фотосинтеза возрастает, а эффективность атак — падает. Восстанавливает своё здоровье на 0,01.',
     color: new Rgba(0, 255, 0, 255),
@@ -77,8 +81,9 @@ export const GENES = {
       bot.health = Math.min(1, bot.health + 0.01);
       return { isCompleted: true, msg: `Фототсинтез: +${energy.toFixed(2)} энергии` };
     }
-  },
-  attack: {
+  } as const,
+  {
+    id: 'attack',
     name: 'Атака',
     description: 'Бот атакует блок перед собой, забирая себе часть его энергии.Повышает здоровье на 0,01.',
     color: new Rgba(255, 0, 0, 255),
@@ -99,8 +104,9 @@ export const GENES = {
     translation: {
       option: 'Сила атаки',
     }
-  },
-  virus: {
+  } as const,
+  {
+    id: 'virus',
     name: 'Заразить геном',
     description: 'Бот копирует с свой геном в бота напротив, при этом есть шанс мутации. Расходует 0,1 здоровья и 0,1 энергии.',
     isDefaultDisabled: true,
@@ -117,8 +123,9 @@ export const GENES = {
       F_BLOCK.onVirus(genome, bot.familyColor.mutateRgb(5));
       return { isCompleted: true, msg: 'Заражение другого бота' };
     }
-  },
-  moveForward: {
+  } as const,
+  {
+    id: 'moveForward',
     name: 'Двигаться вперед',
     description: 'Бот перемещется в клетку перед собой, если она пустая. Расходует 0,5 энергии.',
     color: new Rgba(200, 200, 200, 255),
@@ -130,8 +137,9 @@ export const GENES = {
       world.swap(x, y, ...F_COORDS);
       return { isCompleted: true, msg: 'Передвижение' };
     }
-  },
-  push: {
+  } as const,
+  {
+    id: 'push',
     name: 'Толкнуть',
     description: 'Бот отталкивает блок перед собой на одну клетку, если клетка за ним пуста. Расходует 0,5 энергии.',
     color: new Rgba(0, 0, 255, 255),
@@ -146,8 +154,9 @@ export const GENES = {
       world.swap(...F_COORDS, ...O_COORDS);
       return { isCompleted: true, msg: 'Толкнул другой объект' };
     }
-  },
-  swap: {
+  } as const,
+  {
+    id: 'swap',
     name: 'Меняться местами',
     description: 'Бот меняется местами с клеткой перед собой, расходуя при этом 1 энергии.',
     isDefaultDisabled: true,
@@ -158,8 +167,9 @@ export const GENES = {
       world.swap(...F_COORDS, x, y);
       return { isCompleted: true, msg: 'Поменялся местами с другой клеткой' };
     }
-  },
-  movePointer: {
+  } as const,
+  {
+    id: 'goto',
     name: 'Переместить указатель',
     description: 'Следующая команда генома будет той, которая указана в ветке 1 текущего гена.',
     action: ({ property }) => {
@@ -170,8 +180,9 @@ export const GENES = {
     translation: {
       branches: ['На индекс']
     }
-  },
-  checkHealth: {
+  } as const,
+  {
+    id: 'checkHealth',
     name: 'Проверить здоровье',
     description: 'Следующая команда генома будет той, на которую указывает ветка 1 текущего гена, если здоровье бота меньше, чем параметр текущего гена.Иначе следующая команда берется из ветки 2.',
     action: ({ bot, property }) => {
@@ -188,8 +199,9 @@ export const GENES = {
       option: 'Порог',
       branches: ['Если меньше', 'Если больше']
     }
-  },
-  checkEnergy: {
+  } as const,
+  {
+    id: 'checkEnergy',
     name: 'Проверить энергию',
     description: 'Следующая команда генома будет той, на которую указывает ветка 1 текущего гена, если энергия бота меньше, чем параметр текущего гена, умноженный на 300. Иначе следующая команда берется из ветки 2.',
     action: ({ bot, property }) => {
@@ -206,8 +218,9 @@ export const GENES = {
       option: 'Порог',
       branches: ['Если меньше', 'Если больше']
     }
-  },
-  forward: {
+  } as const,
+  {
+    id: 'forward',
     name: 'Спереди блок?',
     description: 'Следующая команда генома будет той, на которую указывает ветка 1 текущего гена, если перед ботом есть пустая клетка.Иначе следующая команда берется из ветки 2.',
     action: ({ bot, x, y, world, property }) => {
@@ -225,8 +238,9 @@ export const GENES = {
     translation: {
       branches: ['Если есть', 'Если нет']
     }
-  },
-  compareFamilies: {
+  } as const,
+  {
+    id: 'compareFamilies',
     name: 'Спереди родственник?',
     description: 'Следующая команда генома будет той, на которую указывает ветка 1 текущего гена, если перед ботом находится родственник. Иначе следующая команда берется из ветки 2.',
     action: ({ bot, x, y, world, property }) => {
@@ -251,9 +265,11 @@ export const GENES = {
       option: 'Порог',
       branches: ['Если есть', 'Если нет']
     }
-  }
-} satisfies Record<string, GeneTemplate>;
+  } as const,
+] satisfies (GeneTemplate & { id: string })[];
 
-export type GeneName = keyof typeof GENES;
+export const GENES: Record<string, GeneTemplate> = GENES_ARR.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {});
+
+export type GeneName = (typeof GENES_ARR)[number]['id'];
 
 export const GENES_NAMES = Object.keys(GENES);

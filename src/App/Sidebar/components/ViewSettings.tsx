@@ -1,10 +1,11 @@
-import { viewModesList } from 'lib/view-modes';
+import { VISIBLE_GENES, viewModesList } from 'lib/view-modes';
 import { observer } from 'mobx-react';
 import { appStore } from 'stores/app';
 import { Accordion, Checkbox, FlexColumn, FlexRow, InputRange, OptionalBlock, Radio, SubBlock, WideButton } from 'ui';
 import { MdCancel, MdChecklist } from 'react-icons/md';
 import { IconContext } from 'react-icons';
 import { accordionsStates } from 'stores/accordions';
+import { GENES } from 'lib/genome';
 
 import type { VisualiserParams } from 'lib/view-modes';
 import type { FC } from 'react';
@@ -17,17 +18,11 @@ export interface IViewSettingsProps {
 export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
 
   const enableAllActions = () => {
-    const action = Object
-      .entries(props.visualizerParams.action)
-      .reduce((acc, [name]) => ({ ...acc, [name]: true }), {});
-    props.setVisualizerParams({ ...props.visualizerParams, action });
+    props.setVisualizerParams({ ...props.visualizerParams, action: VISIBLE_GENES.map(({ id }) => id) });
   };
 
   const disableAllActions = () => {
-    const action = Object
-      .entries(props.visualizerParams.action)
-      .reduce((acc, [name]) => ({ ...acc, [name]: false }), {});
-    props.setVisualizerParams({ ...props.visualizerParams, action });
+    props.setVisualizerParams({ ...props.visualizerParams, action: [] });
   };
 
   return (
@@ -72,24 +67,24 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
             <FlexColumn gap={10}>
               <SubBlock name="Отображение отдельных действий">
                 <FlexColumn gap={5}>
-                  {Object
-                    .keys(props.visualizerParams.action)
-                    .map(actionName => {
+                  {
+                    Object.entries(GENES).filter(([, gene]) => 'color' in gene).map(([key, gene]) => {
                       return (
                         <Checkbox
-                          title={actionName}
-                          key={actionName}
-                          isChecked={props.visualizerParams.action[actionName]}
+                          key={key}
+                          title={gene.name}
+                          isChecked={props.visualizerParams.action.includes(key)}
                           onChange={(checked) => {
-                            const newParams = {
-                              ...props.visualizerParams,
-                            };
-                            newParams.action[actionName] = checked;
-                            props.setVisualizerParams(newParams);
+                            if (checked) {
+                              props.setVisualizerParams({ ...props.visualizerParams, action: [...props.visualizerParams.action, key] });
+                            } else {
+                              props.setVisualizerParams({ ...props.visualizerParams, action: props.visualizerParams.action.filter((action) => action !== key) });
+                            }
                           }}
                         />
                       );
-                    })}
+                    })
+                  }
                 </FlexColumn>
               </SubBlock>
               <IconContext.Provider value={{ size: '20', style: { flex: '0 0 auto' } }}>
