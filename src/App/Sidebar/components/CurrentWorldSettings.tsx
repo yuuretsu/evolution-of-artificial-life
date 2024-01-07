@@ -4,6 +4,7 @@ import { MdReplayCircleFilled, MdCancel } from 'react-icons/md';
 import { Accordion, Checkbox, FlexColumn, FlexRow, SubBlock, WideButton } from 'ui';
 import { IconContext } from 'react-icons';
 import { accordionsStates } from 'stores/accordions';
+import { Rgba } from 'lib/color';
 
 import type { GeneName } from 'lib/genome/genes';
 import type { FC } from 'react';
@@ -31,8 +32,9 @@ export const CurrentWorldSettings: FC<ICurrentWorldSettingsProps> = observer((pr
             {(Object.keys(props.enabledGenes)).map(key => {
               return (
                 <Checkbox
-                  title={GENES[key]!.name}
                   key={key}
+                  color={GENES[key]!.color?.lerp(new Rgba(80, 80, 80, 255), 0.75).toString()}
+                  title={GENES[key]!.name}
                   isChecked={props.enabledGenes[key]}
                   onChange={(checked) => {
                     const newEnabledGenes = { ...props.enabledGenes };

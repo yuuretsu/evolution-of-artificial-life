@@ -5,7 +5,7 @@ import { Accordion, Checkbox, FlexColumn, FlexRow, InputRange, OptionalBlock, Ra
 import { MdCancel, MdChecklist } from 'react-icons/md';
 import { IconContext } from 'react-icons';
 import { accordionsStates } from 'stores/accordions';
-import { GENES } from 'lib/genome';
+import { Rgba } from 'lib/color';
 
 import type { VisualiserParams } from 'lib/view-modes';
 import type { FC } from 'react';
@@ -67,24 +67,29 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
             <FlexColumn gap={10}>
               <SubBlock name="Отображение отдельных действий">
                 <FlexColumn gap={5}>
-                  {
-                    Object.entries(GENES).filter(([, gene]) => 'color' in gene).map(([key, gene]) => {
-                      return (
-                        <Checkbox
-                          key={key}
-                          title={gene.name}
-                          isChecked={props.visualizerParams.action.includes(key)}
-                          onChange={(checked) => {
-                            if (checked) {
-                              props.setVisualizerParams({ ...props.visualizerParams, action: [...props.visualizerParams.action, key] });
-                            } else {
-                              props.setVisualizerParams({ ...props.visualizerParams, action: props.visualizerParams.action.filter((action) => action !== key) });
-                            }
-                          }}
-                        />
-                      );
-                    })
-                  }
+                  {VISIBLE_GENES.map((gene) => {
+                    return (
+                      <Checkbox
+                        key={gene.id}
+                        title={gene.name}
+                        isChecked={props.visualizerParams.action.includes(gene.id)}
+                        color={gene.color?.lerp(new Rgba(80, 80, 80, 255), 0.75).toString()}
+                        onChange={(checked) => {
+                          if (checked) {
+                            props.setVisualizerParams({
+                              ...props.visualizerParams,
+                              action: [...props.visualizerParams.action, gene.id]
+                            });
+                          } else {
+                            props.setVisualizerParams({
+                              ...props.visualizerParams,
+                              action: props.visualizerParams.action.filter((action) => action !== gene.id)
+                            });
+                          }
+                        }}
+                      />
+                    );
+                  })}
                 </FlexColumn>
               </SubBlock>
               <IconContext.Provider value={{ size: '20', style: { flex: '0 0 auto' } }}>
