@@ -18,7 +18,7 @@ export const Legend: FC = observer(() => {
             const color = 'color' in geneTemplate
               ? geneTemplate
                 .color
-                .toString()
+                ?.toString()
               : undefined;
             return (
               <Accordion

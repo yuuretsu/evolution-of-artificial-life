@@ -10,7 +10,9 @@ type GeneTemplateBase = {
   action: (parameters: GeneParameters) => ActionResult,
   translation?: {
     option?: string,
-    branches?: string[]
+    branches?:
+    | readonly [string, string]
+    | readonly [string]
   },
 }
 
