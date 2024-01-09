@@ -95,8 +95,8 @@ export class Bot implements WorldBlockDynamic {
   getLastActionColor(params: VisualiserParams): Rgba | null {
     if (this.genome.activeGene === null) return new Rgba(20, 20, 20, 255);
     const actionsSet = new Set(params.action);
-    const key = Object.entries(GENES).find(([, template]) => template.name === this.genome.activeGene!.template.name)![0];
-    if (!actionsSet.has(key)) {
+    const key = Object.entries(GENES).find(([, template]) => template.name === this.genome.activeGene!.template.name)?.[0];
+    if (!key || !actionsSet.has(key)) {
       return new Rgba(20, 20, 20, 255);
     }
     return this.genome.activeGene.template.color || new Rgba(20, 20, 20, 255);
