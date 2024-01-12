@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { accordionsStates } from 'stores/accordions';
 import { FlexColumn, Accordion, DropdownSmall, InputNumberSmall, WideButton, SubBlock, Table2Cols, FlexRow, OptionalBlock } from 'ui';
 import styled from 'styled-components';
+import { hideScrollbar } from 'App/app.css';
 
 import { Gene, NULL_GENE_TEMPLATE } from './gene';
 import { GENES } from './genes';
@@ -179,6 +180,21 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
           <GenomeHistory history={genome.genesHistory} />
         </FlexColumn>
       </Accordion>
+      <Accordion
+        name='Последние действия'
+        isSmall
+        {...accordionsStates.getProps('lastActions', { onToggle: rerender })}
+      >
+        <LastActionsWrapper>
+          {genome.lastActions.map((action, i) => {
+            return (
+              <div key={i} style={{ fontSize: '80%' }}>
+                - {action}
+              </div>
+            );
+          })}
+        </LastActionsWrapper>
+      </Accordion>
     </FlexColumn>
   );
 };
@@ -193,4 +209,13 @@ const SelectOptionGeneIcon = styled.div<{ color: string }>`
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 10px;
   background-color: ${props => props.color};
+`;
+
+const LastActionsWrapper = styled.div`
+  aspect-ratio: 2;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #333;
+  overflow-y: auto;
+  ${hideScrollbar}
 `;

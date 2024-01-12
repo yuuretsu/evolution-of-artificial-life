@@ -32,7 +32,6 @@ const defaultProps: BotProps = {
 export class Bot implements WorldBlockDynamic {
   readonly isDynamic = true;
   isAlive = true;
-  lastActions: string[] = [];
   age = 0;
   childrenAmount = 0;
   color: Rgba;
@@ -154,10 +153,8 @@ export class Bot implements WorldBlockDynamic {
       this.isAlive = false;
       world.remove(x, y);
       // world.set(x, y, new Block(this.color.interpolate(new Rgba(0, 0, 0, 255), 0.5)));
-      this.lastActions.push('Смерть');
       return;
     }
-    this.lastActions = [];
     this.genome.doAction(this, x, y, world);
     this.age++;
     this.health = Math.min(1, this.health + 0.01);

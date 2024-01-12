@@ -15,6 +15,7 @@ export class Genome {
   recentlyUsedGenes: Gene[] = [];
   genesHistory: Gene[][] = [];
   genes: Gene[];
+  private _lastActions: string[] = [];
   private _pointer: number = 0;
 
   constructor(length: number) {
@@ -31,6 +32,9 @@ export class Genome {
   set pointer(n: number) {
     this._pointer = cycleNumber(0, this.genes.length, n);
   }
+  get lastActions() {
+    return this._lastActions;
+  }
   fillRandom(pool: GenePool): this {
     this.genes = this.genes.map(() => Gene.random(pool, this.genes.length));
     return this;
@@ -44,6 +48,7 @@ export class Genome {
   }
   doAction(bot: Bot, x: number, y: number, world: World) {
     this.recentlyUsedGenes = [];
+    this._lastActions = [];
     for (let i = 0; i < MAX_ACTIONS; i++) {
       const gene = this.genes[this.pointer];
       if (!gene) continue;
@@ -57,7 +62,7 @@ export class Genome {
       this.pointer = typeof result.goto !== 'undefined'
         ? result.goto
         : this.pointer + 1;
-      bot.lastActions.push(result.msg || gene.template.name);
+      this._lastActions.push(result.msg || gene.template.name);
       if (result.isCompleted) {
         this.genesHistory.push([...this.recentlyUsedGenes]);
         return;

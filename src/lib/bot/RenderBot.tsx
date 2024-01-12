@@ -1,15 +1,11 @@
-import { useForceRender } from 'lib/hooks';
 import { useState, useEffect } from 'react';
-import { accordionsStates } from 'stores/accordions';
-import { SubBlock, FlexRow, FlexColumn, InputNumberSmall, Accordion, Table2Cols } from 'ui';
+import { SubBlock, FlexRow, FlexColumn, InputNumberSmall, Table2Cols } from 'ui';
 import styled from 'styled-components';
-import { hideScrollbar } from 'App/app.css';
 
 import type { FC } from 'react';
 import type { Bot } from './bot';
 
 export const RenderBot: FC<{ bot: Bot }> = ({ bot }) => {
-  const rerender = useForceRender();
   const [age, setAge] = useState<number | string>(bot.age);
   const [energy, setEnergy] = useState<number | string>(bot.energy.toFixed(2));
   const [health, setHealth] = useState<number | string>(bot.health.toFixed(2));
@@ -132,35 +128,11 @@ export const RenderBot: FC<{ bot: Bot }> = ({ bot }) => {
       <SubBlock>
         <bot.genome.Render />
       </SubBlock>
-      <Accordion
-        name='Последние действия'
-        isSmall
-        {...accordionsStates.getProps('lastActions', { onToggle: rerender })}
-      >
-        <LastActionsWrapper>
-          {bot.lastActions.map((action, i) => {
-            return (
-              <div key={i} style={{ fontSize: '80%' }}>
-                - {action}
-              </div>
-            );
-          })}
-        </LastActionsWrapper>
-      </Accordion>
     </>
   );
 };
 
 const channels = '255, 200, 0';
-
-const LastActionsWrapper = styled.div`
-  aspect-ratio: 2;
-  padding: 5px;
-  border-radius: 5px;
-  background-color: #333;
-  overflow-y: auto;
-  ${hideScrollbar}
-`;
 
 const Avatar = styled.div`
   box-sizing: border-box;
