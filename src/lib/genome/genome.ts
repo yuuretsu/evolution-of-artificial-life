@@ -70,7 +70,6 @@ export class Genome {
         return;
       }
     }
-    bot.energy -= 1;
     this.genesHistory.push([...recentlyUsedGenes]);
   }
 
