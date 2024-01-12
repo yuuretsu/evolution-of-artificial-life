@@ -9,12 +9,12 @@ import { RenderGenome } from './RenderGenome';
 import type { Bot } from 'lib/bot';
 import type { World } from 'lib/world';
 import type { GeneName } from './genes';
-import type { GenePool } from './types';
+import type { ActionResult, GenePool, GeneTemplate } from './types';
 
 export class Genome {
   genesHistory: Gene[][] = [];
   genes: Gene[];
-  private _lastActions: string[] = [];
+  private _lastActions: { template: GeneTemplate, result: ActionResult }[] = [];
   private _pointer: number = 0;
 
   constructor(length: number) {
@@ -64,7 +64,7 @@ export class Genome {
       this.pointer = typeof result.goto !== 'undefined'
         ? result.goto
         : this.pointer + 1;
-      this._lastActions.push(result.msg || gene.template.name);
+      this._lastActions.push({ template: gene.template, result });
       if (result.isCompleted) {
         this.genesHistory.push([...recentlyUsedGenes]);
         return;

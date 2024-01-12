@@ -178,22 +178,22 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
             setSelectedGene={setSelectedGene}
           />
           <GenomeHistory history={genome.genesHistory} />
+          <Accordion
+            name='Последние действия'
+            isSmall
+            {...accordionsStates.getProps('lastActions', { onToggle: rerender })}
+          >
+            <LastActionsWrapper>
+              {genome.lastActions.map(({ template, result }, i) => {
+                return (
+                  <div key={i} style={{ fontSize: '80%' }}>
+                    - {result.msg || template.name}
+                  </div>
+                );
+              })}
+            </LastActionsWrapper>
+          </Accordion>
         </FlexColumn>
-      </Accordion>
-      <Accordion
-        name='Последние действия'
-        isSmall
-        {...accordionsStates.getProps('lastActions', { onToggle: rerender })}
-      >
-        <LastActionsWrapper>
-          {genome.lastActions.map((action, i) => {
-            return (
-              <div key={i} style={{ fontSize: '80%' }}>
-                - {action}
-              </div>
-            );
-          })}
-        </LastActionsWrapper>
       </Accordion>
     </FlexColumn>
   );
