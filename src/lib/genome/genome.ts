@@ -12,7 +12,6 @@ import type { GeneName } from './genes';
 import type { GenePool } from './types';
 
 export class Genome {
-  recentlyUsedGenes: Gene[] = [];
   genesHistory: Gene[][] = [];
   genes: Gene[];
   private _lastActions: string[] = [];
@@ -23,6 +22,9 @@ export class Genome {
       .fill(new Gene(NULL_GENE_TEMPLATE, { option: 0, branches: [0, 0] }));
   }
 
+  get recentlyUsedGenes() {
+    return this.genesHistory.at(-1) || [];
+  }
   get activeGene() {
     return this.recentlyUsedGenes.at(-1) || null;
   }
@@ -47,7 +49,7 @@ export class Genome {
     return genome;
   }
   doAction(bot: Bot, x: number, y: number, world: World) {
-    this.recentlyUsedGenes = [];
+    const recentlyUsedGenes = [];
     this._lastActions = [];
     for (let i = 0; i < MAX_ACTIONS; i++) {
       const gene = this.genes[this.pointer];
@@ -55,7 +57,7 @@ export class Genome {
       const result = gene
         .template
         .action({ bot, x, y, world, property: gene.property });
-      this.recentlyUsedGenes.push(gene);
+      recentlyUsedGenes.push(gene);
       if ('colorInfluence' in gene.template) {
         bot.color = bot.color.lerp(gene.template.color, gene.template.colorInfluence);
       }
@@ -64,12 +66,12 @@ export class Genome {
         : this.pointer + 1;
       this._lastActions.push(result.msg || gene.template.name);
       if (result.isCompleted) {
-        this.genesHistory.push([...this.recentlyUsedGenes]);
+        this.genesHistory.push([...recentlyUsedGenes]);
         return;
       }
     }
     bot.energy -= 1;
-    this.genesHistory.push([...this.recentlyUsedGenes]);
+    this.genesHistory.push([...recentlyUsedGenes]);
   }
 
   Render = bindProps(RenderGenome, { genome: this });
