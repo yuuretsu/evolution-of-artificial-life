@@ -156,7 +156,6 @@ export class Bot implements WorldBlockDynamic {
       return;
     }
     this.genome.doAction(this, x, y, world);
-    this.energy -= 1;
     this.age++;
     this.health = Math.min(1, this.health + 0.01);
   }
