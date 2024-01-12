@@ -104,68 +104,6 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
   return (
     <FlexColumn gap={10}>
       <Accordion
-        name="Ген"
-        isSmall
-        {...accordionsStates.getProps('gene', { onToggle: rerender })}
-      >
-        {selectedGene ? (
-          <>
-            <FlexColumn gap={5}>
-              <FlexColumn gap={5}>
-                <DropdownSmall
-                  value={geneValue}
-                  options={geneOptions}
-                  onChange={handleChangeGene}
-                />
-                {selectedGene.gene.template.description && (
-                  <OptionalBlock>
-                    {selectedGene.gene.template.description}
-                  </OptionalBlock>
-                )}
-                <Table2Cols
-                  cells={[
-                    [
-                      <LabelName isNamed={!!selectedGene.gene.template.translation?.option} key={0}>
-                        {selectedGene.gene.template.translation?.option || 'Параметр'}
-                      </LabelName>,
-                      <InputNumberSmall
-                        key={1}
-                        value={option.toString()}
-                        onChange={e => setOption(e.target.value)}
-                        onBlur={handleBlurParameter}
-                      />
-                    ],
-                    ...selectedGene
-                      .gene
-                      .property
-                      .branches
-                      .map((_, i): [ReactNode, ReactNode] => {
-                        const name = selectedGene.gene.template.translation?.branches?.[i];
-                        return [
-                          <LabelName isNamed={!!name} key={0}>
-                            {name || `${i + 1} ветка`}
-                          </LabelName>,
-                          <InputNumberSmall
-                            key={i}
-                            value={branches[i]}
-                            onChange={getBranchChangeHandler(i)}
-                            onBlur={getBranchBlurHandler(i)}
-                          />
-                        ];
-                      })
-                  ]}
-                />
-              </FlexColumn>
-              <WideButton onClick={handleClickMakeGeneIndividual}>
-                Сделать индивидуальным
-              </WideButton>
-            </FlexColumn>
-          </>
-        ) : (
-          <span>Кликните по круглому гену на вкладке ниже, чтобы увидеть информацию о нём.</span>
-        )}
-      </Accordion>
-      <Accordion
         name="Геном"
         isSmall
         {...accordionsStates.getProps('genome', { onToggle: rerender })}
@@ -177,6 +115,68 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
             selectedGene={selectedGene}
             setSelectedGene={setSelectedGene}
           />
+          <Accordion
+            name="Ген"
+            isSmall
+            {...accordionsStates.getProps('gene', { onToggle: rerender })}
+          >
+            {selectedGene ? (
+              <>
+                <FlexColumn gap={5}>
+                  <FlexColumn gap={5}>
+                    <DropdownSmall
+                      value={geneValue}
+                      options={geneOptions}
+                      onChange={handleChangeGene}
+                    />
+                    {selectedGene.gene.template.description && (
+                      <OptionalBlock>
+                        {selectedGene.gene.template.description}
+                      </OptionalBlock>
+                    )}
+                    <Table2Cols
+                      cells={[
+                        [
+                          <LabelName isNamed={!!selectedGene.gene.template.translation?.option} key={0}>
+                            {selectedGene.gene.template.translation?.option || 'Параметр'}
+                          </LabelName>,
+                          <InputNumberSmall
+                            key={1}
+                            value={option.toString()}
+                            onChange={e => setOption(e.target.value)}
+                            onBlur={handleBlurParameter}
+                          />
+                        ],
+                        ...selectedGene
+                          .gene
+                          .property
+                          .branches
+                          .map((_, i): [ReactNode, ReactNode] => {
+                            const name = selectedGene.gene.template.translation?.branches?.[i];
+                            return [
+                              <LabelName isNamed={!!name} key={0}>
+                                {name || `${i + 1} ветка`}
+                              </LabelName>,
+                              <InputNumberSmall
+                                key={i}
+                                value={branches[i]}
+                                onChange={getBranchChangeHandler(i)}
+                                onBlur={getBranchBlurHandler(i)}
+                              />
+                            ];
+                          })
+                      ]}
+                    />
+                  </FlexColumn>
+                  <WideButton onClick={handleClickMakeGeneIndividual}>
+                    Сделать индивидуальным
+                  </WideButton>
+                </FlexColumn>
+              </>
+            ) : (
+              <span>Кликните по круглому гену на вкладке ниже, чтобы увидеть информацию о нём.</span>
+            )}
+          </Accordion>
           <GenomeHistory history={genome.genesHistory} />
           <Accordion
             name='Последние действия'
