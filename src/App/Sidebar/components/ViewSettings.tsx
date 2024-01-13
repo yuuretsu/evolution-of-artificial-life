@@ -73,7 +73,7 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
                         key={gene.id}
                         title={gene.name}
                         isChecked={props.visualizerParams.action.includes(gene.id)}
-                        color={gene.color?.lerp(new Rgba(80, 80, 80, 255), 0.75).toString()}
+                        color={gene.color?.lerp(new Rgba(80, 80, 80), 0.75).toString()}
                         onChange={(checked) => {
                           if (checked) {
                             props.setVisualizerParams({

@@ -33,7 +33,7 @@ export const CurrentWorldSettings: FC<ICurrentWorldSettingsProps> = observer((pr
               return (
                 <Checkbox
                   key={key}
-                  color={GENES[key]!.color?.lerp(new Rgba(80, 80, 80, 255), 0.75).toString()}
+                  color={GENES[key]!.color?.lerp(new Rgba(80, 80, 80), 0.75).toString()}
                   title={GENES[key]!.name}
                   isChecked={props.enabledGenes[key]}
                   onChange={(checked) => {

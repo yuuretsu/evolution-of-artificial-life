@@ -40,7 +40,7 @@ export const NULL_GENE_TEMPLATE: GeneTemplate = {
   name: 'Пустой ген',
   description: 'Ничего не происходит',
   isDefaultDisabled: true,
-  color: new Rgba(127, 127, 127, 255),
+  color: new Rgba(127, 127, 127),
   colorInfluence: 0.01,
   action: () => {
     return { isCompleted: true, msg: 'Бездействие' };

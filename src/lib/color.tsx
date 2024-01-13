@@ -7,7 +7,7 @@ export class Rgba {
     readonly red: number,
     readonly green: number,
     readonly blue: number,
-    readonly alpha: number
+    readonly alpha: number = 255
   ) { }
 
   static randRgb() {

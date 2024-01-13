@@ -23,7 +23,7 @@ export const GENES_ARR = [
     id: 'doNothing',
     name: 'Отдых',
     description: 'Прибавляет 0,1 к здоровью',
-    color: new Rgba(100, 100, 0, 255),
+    color: new Rgba(100, 100, 0),
     colorInfluence: 0.01,
     action: ({ bot }) => {
       const value = 0.1;
@@ -35,7 +35,7 @@ export const GENES_ARR = [
     id: 'multiply',
     name: 'Размножение',
     description: 'Бот теряет 1/10 энергии на попытку размножения. Если клетка перед ним пуста, энергии больше 5 единиц, а возраст больше 10 кадров, бот размножается. Потомку передается количество энергии, равное параметру гена, такое же количество вычитается из собственной энергии.',
-    color: new Rgba(255, 255, 200, 255),
+    color: new Rgba(255, 255, 200),
     colorInfluence: 0.01,
     action: ({ bot, x, y, world, property }) => {
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
@@ -72,7 +72,7 @@ export const GENES_ARR = [
     id: 'photosynthesis',
     name: 'Фотосинтез',
     description: 'Бот получает энергию путем фотосинтеза. При этом эффективность его фотосинтеза возрастает, а эффективность атак — падает. Восстанавливает своё здоровье на 0,01.',
-    color: new Rgba(0, 255, 0, 255),
+    color: new Rgba(0, 255, 0),
     colorInfluence: 0.01,
     action: ({ bot }) => {
       const energy = 1 * (1 - bot.hunterFactor) ** 2;
@@ -86,7 +86,7 @@ export const GENES_ARR = [
     id: 'attack',
     name: 'Атака',
     description: 'Бот атакует блок перед собой, забирая себе часть его энергии.Повышает здоровье на 0,01.',
-    color: new Rgba(255, 0, 0, 255),
+    color: new Rgba(255, 0, 0),
     colorInfluence: 0.01,
     action: ({ bot, x, y, world, property }) => {
       bot.energy -= 0.5;
@@ -110,7 +110,7 @@ export const GENES_ARR = [
     name: 'Заразить геном',
     description: 'Бот копирует с свой геном в бота напротив, при этом есть шанс мутации. Расходует 0,1 здоровья и 0,1 энергии.',
     isDefaultDisabled: true,
-    color: new Rgba(255, 50, 255, 255),
+    color: new Rgba(255, 50, 255),
     colorInfluence: 0.05,
     action: ({ bot, x, y, world }) => {
       bot.health -= 0.99;
@@ -128,7 +128,7 @@ export const GENES_ARR = [
     id: 'moveForward',
     name: 'Двигаться вперед',
     description: 'Бот перемещется в клетку перед собой, если она пустая. Расходует 0,5 энергии.',
-    color: new Rgba(200, 200, 200, 255),
+    color: new Rgba(200, 200, 200),
     action: ({ bot, x, y, world }) => {
       bot.energy -= 0.5;
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);
@@ -142,7 +142,7 @@ export const GENES_ARR = [
     id: 'push',
     name: 'Толкнуть',
     description: 'Бот отталкивает блок перед собой на одну клетку, если клетка за ним пуста. Расходует 0,5 энергии.',
-    color: new Rgba(0, 0, 255, 255),
+    color: new Rgba(0, 0, 255),
     colorInfluence: 0.01,
     action: ({ bot, x, y, world, property }) => {
       bot.energy -= 0.5 * property.option;
@@ -160,7 +160,7 @@ export const GENES_ARR = [
     name: 'Меняться местами',
     description: 'Бот меняется местами с клеткой перед собой, расходуя при этом 1 энергии.',
     isDefaultDisabled: true,
-    color: new Rgba(255, 255, 255, 255),
+    color: new Rgba(255, 255, 255),
     action: ({ bot, x, y, world }) => {
       bot.energy -= 1;
       const F_COORDS = world.narrowToCoords(x, y, bot.narrow, 1);

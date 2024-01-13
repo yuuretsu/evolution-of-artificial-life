@@ -62,7 +62,7 @@ export class SquareWorld extends World {
       this.set(
         ...this.randEmpty(),
         new Bot({
-          color: new Rgba(100, 100, 100, 255),
+          color: new Rgba(100, 100, 100),
           familyColor: Rgba.randRgb(),
           energy: 100,
           hunterFactor: 0.5,
@@ -115,7 +115,7 @@ export class SquareWorld extends World {
       canvas
     });
 
-    const colTransparent = new Rgba(0, 0, 0, 255);
+    const colTransparent = new Rgba(0, 0, 0);
     const pixels = pix.getPixels();
     for (const [x, y] of this.getAllCoords()) {
       const obj = this.get(x, y);
