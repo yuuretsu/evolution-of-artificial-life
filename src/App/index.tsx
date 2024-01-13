@@ -1,8 +1,4 @@
 import {
-  enabledGenesToPool,
-  getInitiallyEnabledGenesNames
-} from 'lib/genome';
-import {
   VIEW_MODES,
   initVisualizerParams
 } from 'lib/view-modes';
@@ -16,6 +12,7 @@ import { appStore } from 'stores/app';
 import styled from 'styled-components';
 import { useEventListener, useInterval } from 'usehooks-ts';
 import { throttle } from 'lib/helpers';
+import { INITIALLY_ENABLED_GENES_NAMES } from 'lib/genome/genes';
 
 import { Controls } from './Controls';
 import { Sidebar } from './Sidebar';
@@ -34,9 +31,6 @@ import type {
 import type { FC } from 'react';
 import type { WorldBlock } from 'types';
 
-const initialEnabledGenes = getInitiallyEnabledGenesNames();
-
-const initialGenePool = enabledGenesToPool(initialEnabledGenes);
 
 const initWidth = Math.max(Math.floor(window.innerWidth / PIXEL_SIZE) + 2, 10);
 const initHeight = Math.max(Math.floor(window.innerHeight / PIXEL_SIZE) + 2, 10);
@@ -45,7 +39,7 @@ const INIT_WORLD_PROPS: NewWorldProps = {
   width: initWidth,
   height: initHeight,
   botsAmount: initWidth * initHeight,
-  genePool: initialGenePool,
+  genePool: INITIALLY_ENABLED_GENES_NAMES,
   genomeSize: 32,
 };
 
@@ -69,7 +63,7 @@ export const App: FC = observer(() => {
   const [world, setWorld] = useState<World>(initWorld);
   const [image, setImage] = useState<HTMLCanvasElement>(initWorldImage);
   const [worldInfo, setWorldInfo] = useState<WorldInfo>(initWorldInfo);
-  const [enabledGenes, setEnabledGenes] = useState(initialEnabledGenes);
+  const [enabledGenes, setEnabledGenes] = useState(INITIALLY_ENABLED_GENES_NAMES);
   const [selectedBlock, setSelectedBlock] = useState<WorldBlock | null>(null);
   const [isDrag, setIsDrag] = useState(true);
 
@@ -97,12 +91,11 @@ export const App: FC = observer(() => {
   useEffect(updateWorldView, [currentViewMode.blockToColor, world, visualizerParams]);
 
   useEffect(() => {
-    const newGenePool = enabledGenesToPool(enabledGenes);
     setNewWorldProps({
       ...newWorldProps,
-      ...{ genePool: newGenePool }
+      ...{ genePool: enabledGenes }
     });
-    world.genePool = newGenePool;
+    world.genePool = enabledGenes;
   }, [enabledGenes]);
 
   useInterval(step, appStore.isPaused ? null : appStore.timeBetweenSteps.current);

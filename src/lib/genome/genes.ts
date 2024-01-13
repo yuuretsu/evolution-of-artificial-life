@@ -1,22 +1,7 @@
 import { Rgba } from 'lib/color';
 import { lerp } from 'lib/helpers';
 
-import type { GenePool, GeneTemplate } from './types';
-
-export function enabledGenesToPool(genes: Record<GeneName, boolean>): GenePool {
-  return namesToGenePool(
-    (Object
-      .keys(genes) as GeneName[])
-      .filter(key => genes[key])
-  );
-}
-
-function namesToGenePool(names: GeneName[]): GenePool {
-  return names.reduce<GenePool>((pool, name) => {
-    const gene = GENES[name];
-    return gene ? [...pool, gene] : pool;
-  }, []);
-}
+import type { GeneTemplate } from './types';
 
 export const GENES_ARR = [
   {
@@ -44,7 +29,7 @@ export const GENES_ARR = [
       if (frontBlock) return { isCompleted: true, msg: 'Размножение не удалось: спереди блок' };
       if (bot.energy <= 5) return { isCompleted: true, msg: 'Размножение не удалось: мало энергии' };
       if (bot.age <= 10) return { isCompleted: true, msg: 'Размножение не удалось: бот слишком молод' };
-      world.set(...frontCoords, bot.multiply(world.genePool, property.option));
+      world.set(...frontCoords, bot.multiply(world.genePool.map(geneNameToGene), property.option));
       return { isCompleted: true, msg: 'Размножение' };
     },
     translation: {
@@ -119,7 +104,7 @@ export const GENES_ARR = [
         ...world.narrowToCoords(x, y, bot.narrow, 1)
       );
       if (!frontBlock) return { isCompleted: true, msg: 'Заражение не удалось' };
-      const genome = bot.genome.replication(world.genePool);
+      const genome = bot.genome.replication(world.genePool.map(geneNameToGene));
       frontBlock.onVirus(genome, bot.familyColor.mutateRgb(5));
       return { isCompleted: true, msg: 'Заражение другого бота' };
     }
@@ -272,4 +257,8 @@ export const GENES: Record<string, GeneTemplate> = GENES_ARR.reduce((acc, cur) =
 
 export type GeneName = (typeof GENES_ARR)[number]['id'];
 
-export const GENES_NAMES = Object.keys(GENES);
+export const GENES_NAMES = Object.keys(GENES) as GeneName[];
+
+export const geneNameToGene = (name: GeneName) => GENES[name]!;
+
+export const INITIALLY_ENABLED_GENES_NAMES = GENES_ARR.filter(gene => !gene.isDefaultDisabled).map(gene => gene.id);

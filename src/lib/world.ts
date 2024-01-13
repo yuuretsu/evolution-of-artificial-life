@@ -5,8 +5,9 @@ import { Rgba } from './color';
 import { Genome } from './genome';
 import { Grid } from './grid';
 import { limit, shuffle } from './helpers';
+import { geneNameToGene } from './genome/genes';
 
-import type { GenePool } from './genome';
+import type { GeneName } from './genome';
 import type { Coords } from './grid';
 import type { BlockVisualiser, VisualiserParams } from './view-modes';
 import type { WorldBlock, WorldBlockDynamic } from 'types';
@@ -15,7 +16,7 @@ export type NewWorldProps = {
   width: number;
   height: number;
   botsAmount: number;
-  genePool: GenePool;
+  genePool: GeneName[];
   genomeSize: number;
 };
 
@@ -28,7 +29,7 @@ export type WorldInfo = {
 };
 
 export abstract class World extends Grid<WorldBlock> {
-  genePool: GenePool;
+  genePool: GeneName[];
   protected info: WorldInfo = {
     cycle: 0,
     dynamicBlocks: 0,
@@ -66,7 +67,7 @@ export class SquareWorld extends World {
           familyColor: Rgba.randRgb(),
           energy: 100,
           hunterFactor: 0.5,
-          genome: new Genome(props.genomeSize).fillRandom(props.genePool)
+          genome: new Genome(props.genomeSize).fillRandom(props.genePool.map(geneNameToGene))
         })
       );
     }

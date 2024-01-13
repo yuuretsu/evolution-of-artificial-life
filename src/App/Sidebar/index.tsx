@@ -13,6 +13,7 @@ import {
 import { hideScrollbar, panel } from 'App/app.css';
 import { useThrottle } from 'lib/hooks';
 
+
 import { CurrentWorldSettings } from './components/CurrentWorldSettings';
 import { Legend } from './components/Legend';
 import { NewWorldForm } from './components/NewWorldForm';
@@ -20,6 +21,7 @@ import { ViewSettings } from './components/ViewSettings';
 import { WorldInformation } from './components/WorldInfo';
 import { Footer } from './components/Footer';
 
+import type { GeneName } from 'lib/genome';
 import type { VisualiserParams } from 'lib/view-modes';
 import type { NewWorldProps, World, WorldInfo } from 'lib/world';
 import type { FC } from 'react';
@@ -56,8 +58,8 @@ type SidebarProps = {
   setNewWorldProps: (value: NewWorldProps) => void
   world: World,
   worldInfo: WorldInfo,
-  enabledGenes: Record<string, boolean>
-  setEnabledGenes: (value: Record<string, boolean>) => void;
+  enabledGenes: GeneName[],
+  setEnabledGenes: (value: GeneName[]) => void;
   selectedBlock: WorldBlock | null;
   setSelectedBlock: (block: WorldBlock | null) => void;
   onClickRestart: () => void;

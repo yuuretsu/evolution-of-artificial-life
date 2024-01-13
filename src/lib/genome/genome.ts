@@ -76,14 +76,6 @@ export class Genome {
   Render = bindProps(RenderGenome, { genome: this });
 }
 
-export const getInitiallyEnabledGenesNames = () => Object
-  .entries(GENES)
-  .reduce<Record<string, boolean>>((acc, [name, template]) => ({
-    ...acc,
-    [name]: 'isDefaultDisabled' in template ? !template.isDefaultDisabled : true,
-  }), {});
-
-export { enabledGenesToPool } from './genes';
 export { GENES, Gene };
 export type { GeneName, GenePool };
 
