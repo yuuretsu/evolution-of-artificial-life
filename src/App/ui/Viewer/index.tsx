@@ -41,7 +41,8 @@ export const Viewer: React.FC<IViewerProps> = (props => {
   const [isDraggingNow, setIsDraggingNow] = useState(isDraggingActive);
   const [initialBodyUserSelect, setInitialBodyUserSelect] = useState(document.body.style.userSelect);
 
-  const start = () => {
+  const start = ({ x, y }: IVec2) => {
+    setInitPos({ x, y });
     setIsDraggingActive(true);
     setInitialBodyUserSelect(document.body.style.userSelect);
     document.body.style.userSelect = 'none';
@@ -78,15 +79,10 @@ export const Viewer: React.FC<IViewerProps> = (props => {
       isDragging={isDraggingNow}
       onMouseDown={e => {
         if (e.button !== 1) return;
-        setInitPos({ x: e.clientX - imageOffset.x, y: e.clientY - imageOffset.y });
-        start();
+        start({ x: e.clientX - imageOffset.x, y: e.clientY - imageOffset.y });
       }}
       onTouchStart={e => {
-        setInitPos({
-          x: e.touches[0]!.clientX - imageOffset.x,
-          y: e.touches[0]!.clientY - imageOffset.y
-        });
-        start();
+        start(getMiddlePoint(Array.from(e.touches).map(x => ({ x: x!.clientX, y: x!.clientY }))));
       }}
       onWheel={e => {
         props.onStart?.();
