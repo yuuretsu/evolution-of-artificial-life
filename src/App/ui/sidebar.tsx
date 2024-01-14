@@ -135,7 +135,7 @@ export const Sidebar: FC = () => {
 };
 
 const worldBlockInfoAccordionState = createToggleStore(true);
-const currentWorldSettingsAccordionState = createToggleStore(false);
-const restartWorldAccordionState = createToggleStore(false);
+const currentWorldSettingsAccordionState = createToggleStore(true);
+const restartWorldAccordionState = createToggleStore(true);
 const worldInfoAccordionState = createToggleStore(true);
 const viewSettingsAccordionState = createToggleStore(true);
