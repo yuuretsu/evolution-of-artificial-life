@@ -3,8 +3,7 @@ import { bindProps } from 'shared/lib/hoc';
 import { Rgba } from 'shared/lib/color';
 import { GENES, Genome } from 'shared/lib/genome';
 import { cycleNumber, limit, randInt } from 'shared/lib/helpers';
-
-import { RenderBot } from './RenderBot';
+import { BotInfo } from 'widgets/bot-profile';
 
 import type { WorldBlockDynamic } from 'shared/types';
 import type { GenePool } from 'shared/lib/genome';
@@ -159,5 +158,5 @@ export class Bot implements WorldBlockDynamic {
     this.age++;
     this.health = Math.min(1, this.health + 0.01);
   }
-  Render = bindProps(RenderBot, { bot: this });
+  Render = bindProps(BotInfo, { bot: this });
 }
