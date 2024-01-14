@@ -29,10 +29,11 @@ export const BotGenome: FC<{ genome: Genome }> = ({ genome }) => {
     lastActionsAccordionState.toggle
   );
 
-  const [selectedGene, setSelectedGene] = useState<{ id: number, gene: Gene } | null>(null);
+  const [selectedGeneIndex, setSelectedGeneIndex] = useState<number | null>(null);
+  const selectedGene = selectedGeneIndex ? genome.genes[selectedGeneIndex] || null : null;
 
   useEffect(() => {
-    setSelectedGene(null);
+    setSelectedGeneIndex(null);
   }, [genome]);
 
   useEffect(() => {
@@ -40,13 +41,13 @@ export const BotGenome: FC<{ genome: Genome }> = ({ genome }) => {
   }, [selectedGene]);
 
   const handleClickMakeGeneIndividual = () => {
-    if (!selectedGene) return;
-    genome.genes[selectedGene.id] = new Gene(selectedGene.gene.template, {
-      ...selectedGene.gene.property,
-      branches: [...selectedGene.gene.property.branches]
+    if (!selectedGene || !selectedGeneIndex) return;
+    genome.genes[selectedGeneIndex] = new Gene(selectedGene.template, {
+      ...selectedGene.property,
+      branches: [...selectedGene.property.branches]
     });
 
-    setSelectedGene({ ...selectedGene, gene: genome.genes[selectedGene.id]! });
+    rerender();
   };
 
   return (
@@ -61,7 +62,7 @@ export const BotGenome: FC<{ genome: Genome }> = ({ genome }) => {
           <GenomeGrid
             genome={genome}
             selectedGene={selectedGene}
-            setSelectedGene={setSelectedGene}
+            onClickGene={setSelectedGeneIndex}
           />
           <Accordion
             name="Ген"
@@ -70,7 +71,7 @@ export const BotGenome: FC<{ genome: Genome }> = ({ genome }) => {
           >
             {selectedGene ? (
               <FlexColumn gap={5}>
-                <EditGene gene={selectedGene.gene} genomeLength={genome.genes.length} onChange={rerender} />
+                <EditGene gene={selectedGene} genomeLength={genome.genes.length} onChange={rerender} />
                 <WideButton onClick={handleClickMakeGeneIndividual}>
                   Сделать индивидуальным
                 </WideButton>

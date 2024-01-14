@@ -17,8 +17,8 @@ const GenomeWrapper = styled.div`
 
 export interface GenomeGridProps {
   genome: Genome;
-  selectedGene: { id: number, gene: Gene } | null;
-  setSelectedGene: (value: { id: number, gene: Gene } | null) => void;
+  selectedGene: Gene | null;
+  onClickGene: (index: number) => void;
 }
 
 export const GenomeGrid: React.FC<GenomeGridProps> = (props) => {
@@ -35,16 +35,10 @@ export const GenomeGrid: React.FC<GenomeGridProps> = (props) => {
         return (
           <GenomeGridCell
             key={i}
-            isSelected={props.selectedGene?.id === i}
+            isSelected={props.selectedGene === gene}
             gene={gene}
             state={state}
-            onClick={() =>
-              props.setSelectedGene(
-                props.selectedGene?.id === i
-                  ? null
-                  : { id: i, gene }
-              )
-            }
+            onClick={() => props.onClickGene(i)}
           />
         );
       })}
