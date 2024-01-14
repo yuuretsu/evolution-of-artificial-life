@@ -1,10 +1,10 @@
-import { GENE_CELL_SIZE_PX } from 'settings';
+import { GENE_CELL_SIZE_PX } from 'shared/settings';
 import styled from 'styled-components';
 
 import { getBackgroundColor, getBorderColor, getSize } from './helpers';
 
 import type { GeneCellState } from './types';
-import type { Gene } from 'lib/genome';
+import type { Gene } from 'shared/lib/genome';
 
 const GeneCellWrapper = styled.div`
   display: flex;

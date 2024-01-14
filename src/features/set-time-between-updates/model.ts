@@ -1,5 +1,5 @@
-import { MAX_STEP_TIME_MS } from 'settings';
-import { connectForm } from 'lib/helpers';
+import { MAX_STEP_TIME_MS } from 'shared/settings';
+import { connectForm } from 'shared/lib/helpers';
 import { $minTimeBetweenUpdates } from 'entities/min-time-between-updates/model';
 
 export const formMinTimeBetweenUpdates = connectForm(

@@ -1,5 +1,5 @@
-import { Rgba } from 'lib/color';
-import { lerp } from 'lib/helpers';
+import { Rgba } from 'shared/lib/color';
+import { lerp } from 'shared/lib/helpers';
 
 import type { GeneTemplate } from './types';
 

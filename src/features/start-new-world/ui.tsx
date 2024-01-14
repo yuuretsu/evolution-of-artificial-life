@@ -1,4 +1,4 @@
-import { FlexColumn, InputNumber, SubBlock, WideButton } from 'ui';
+import { FlexColumn, InputNumber, SubBlock, WideButton } from 'shared/ui';
 import { useUnit } from 'effector-react';
 
 import {

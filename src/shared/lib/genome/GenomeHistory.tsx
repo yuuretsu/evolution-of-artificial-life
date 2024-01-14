@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { SIDEBAR_WIDTH_PX } from 'settings';
+import { SIDEBAR_WIDTH_PX } from 'shared/settings';
 
 import type { Gene } from './gene';
 

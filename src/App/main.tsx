@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client';
-import { sendUserInfoToTelegram } from 'analytics';
+
+import { sendUserInfoToTelegram } from './model/analytics';
 
 import { App } from '.';
 

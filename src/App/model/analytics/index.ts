@@ -1,4 +1,4 @@
-import { getUserInfo, strJoin } from 'lib/helpers';
+import { getUserInfo, strJoin } from 'shared/lib/helpers';
 
 import { table, tag } from './helpers';
 

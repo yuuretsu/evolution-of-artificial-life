@@ -1,5 +1,5 @@
 import { IconContext } from 'react-icons';
-import { FlexRow } from 'ui';
+import { FlexRow } from 'shared/ui';
 import {
   MdClose,
   MdMenu,

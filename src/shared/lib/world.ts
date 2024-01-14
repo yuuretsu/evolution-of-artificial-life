@@ -10,7 +10,7 @@ import { geneNameToGene } from './genome/genes';
 import type { GeneName } from './genome';
 import type { Coords } from './grid';
 import type { BlockVisualiser, VisualiserParams } from './view-modes';
-import type { WorldBlock, WorldBlockDynamic } from 'types';
+import type { WorldBlock, WorldBlockDynamic } from 'shared/types';
 
 export type NewWorldProps = {
   width: number;

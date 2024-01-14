@@ -1,4 +1,4 @@
-import { FlexColumn } from 'ui';
+import { FlexColumn } from 'shared/ui';
 
 import type { FC, ReactNode } from 'react';
 

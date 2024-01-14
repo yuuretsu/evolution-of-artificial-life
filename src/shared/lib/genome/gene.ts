@@ -1,5 +1,5 @@
-import { Rgba } from 'lib/color';
-import { limit, randChoice, randFloat, randInt } from 'lib/helpers';
+import { Rgba } from 'shared/lib/color';
+import { limit, randChoice, randFloat, randInt } from 'shared/lib/helpers';
 
 import type { GenePool, GeneProperty, GeneTemplate } from './types';
 

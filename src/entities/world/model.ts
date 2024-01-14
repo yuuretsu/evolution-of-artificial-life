@@ -1,9 +1,9 @@
 import { createEvent, createStore, sample } from 'effector';
-import { INITIALLY_ENABLED_GENES_NAMES } from 'lib/genome/genes';
-import { PIXEL_SIZE } from 'settings';
-import { SquareWorld, type NewWorldProps, type World } from 'lib/world';
+import { INITIALLY_ENABLED_GENES_NAMES } from 'shared/lib/genome/genes';
+import { PIXEL_SIZE } from 'shared/settings';
+import { SquareWorld, type NewWorldProps, type World } from 'shared/lib/world';
 
-import type { WorldInfo } from 'lib/world';
+import type { WorldInfo } from 'shared/lib/world';
 
 
 const initWidth = Math.max(Math.floor(window.innerWidth / PIXEL_SIZE) + 2, 10);

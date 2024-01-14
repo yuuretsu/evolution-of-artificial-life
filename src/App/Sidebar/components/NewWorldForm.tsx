@@ -1,7 +1,7 @@
-import { Accordion } from 'ui';
+import { Accordion } from 'shared/ui';
 import { StartNewWorld } from 'features/start-new-world/ui';
-import { createToggleStore } from 'lib/helpers';
-import { useAccordionToggle } from 'lib/hooks';
+import { createToggleStore } from 'shared/lib/helpers';
+import { useAccordionToggle } from 'shared/lib/hooks';
 
 import type { FC } from 'react';
 

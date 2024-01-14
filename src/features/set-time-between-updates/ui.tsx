@@ -1,5 +1,5 @@
-import { MAX_STEP_TIME_MS } from 'settings';
-import { FlexRow, InputRange } from 'ui';
+import { MAX_STEP_TIME_MS } from 'shared/settings';
+import { FlexRow, InputRange } from 'shared/ui';
 
 import { formMinTimeBetweenUpdates } from './model';
 

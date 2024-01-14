@@ -1,21 +1,21 @@
 import { useEffect, useRef } from 'react';
-import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_PADDING, SIDEBAR_WIDTH } from 'settings';
+import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_PADDING, SIDEBAR_WIDTH } from 'shared/settings';
 import styled from 'styled-components';
 import {
   Accordion,
   Br,
   FlexColumn,
   WideButton
-} from 'ui';
-import { hideScrollbar, panel } from 'app/app.css';
-import { useAccordionToggle, useThrottle } from 'lib/hooks';
+} from 'shared/ui';
+import { useAccordionToggle, useThrottle } from 'shared/lib/hooks';
 import { useUnit } from 'effector-react';
 import { selectWorldBlock } from 'features/select-world-block';
 import { $selectedBlock } from 'entities/selected-block';
 import { $isSidebarOpen } from 'entities/sidebar';
 import { setSidebarIsOpen } from 'features/set-sidebar-is-open';
 import { $worldInfo } from 'entities/world';
-import { createToggleStore } from 'lib/helpers';
+import { createToggleStore } from 'shared/lib/helpers';
+import { hideScrollbar, panel } from 'shared/styles';
 
 import { CurrentWorldSettings } from './components/CurrentWorldSettings';
 import { Legend } from './components/Legend';
@@ -24,7 +24,7 @@ import { ViewSettings } from './components/ViewSettings';
 import { WorldInformation } from './components/WorldInfo';
 import { Footer } from './components/Footer';
 
-import type { VisualiserParams } from 'lib/view-modes';
+import type { VisualiserParams } from 'shared/lib/view-modes';
 import type { FC } from 'react';
 
 interface ISidebarProps {

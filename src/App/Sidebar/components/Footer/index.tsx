@@ -1,4 +1,4 @@
-import { FlexColumn, FlexRow } from 'ui';
+import { FlexColumn, FlexRow } from 'shared/ui';
 import styled from 'styled-components';
 
 import { Links } from './Links';

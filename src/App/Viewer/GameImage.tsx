@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef } from 'react';
-import { PIXEL_SIZE } from 'settings';
+import { PIXEL_SIZE } from 'shared/settings';
 import styled, { keyframes } from 'styled-components';
 
 import type { FC } from 'react';

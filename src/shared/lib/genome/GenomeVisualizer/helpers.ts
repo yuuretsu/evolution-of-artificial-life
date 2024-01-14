@@ -1,5 +1,5 @@
-import { GENE_CELL_SIZE_PX } from 'settings';
-import { Rgba } from 'lib/color';
+import { GENE_CELL_SIZE_PX } from 'shared/settings';
+import { Rgba } from 'shared/lib/color';
 
 import type { GeneCellState } from './types';
 

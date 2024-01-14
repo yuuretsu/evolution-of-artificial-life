@@ -1,10 +1,10 @@
-import { GENE_CELL_SIZE_PX, GENOME_VIEW_BORDER_PX } from 'settings';
+import { GENE_CELL_SIZE_PX, GENOME_VIEW_BORDER_PX } from 'shared/settings';
 import styled from 'styled-components';
 
 import { GeneCell } from './GeneCell';
 
 import type { GeneCellState } from './types';
-import type { Gene, Genome } from 'lib/genome';
+import type { Gene, Genome } from 'shared/lib/genome';
 
 const GenomeWrapper = styled.div`
   box-sizing: border-box;

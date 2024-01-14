@@ -1,13 +1,13 @@
-import { cycleNumber } from 'lib/helpers';
-import { MAX_ACTIONS } from 'settings';
-import { bindProps } from 'hoc';
+import { cycleNumber } from 'shared/lib/helpers';
+import { MAX_ACTIONS } from 'shared/settings';
+import { bindProps } from 'shared/lib/hoc';
 
 import { Gene, NULL_GENE, NULL_GENE_TEMPLATE } from './gene';
 import { GENES } from './genes';
 import { RenderGenome } from './RenderGenome';
 
-import type { Bot } from 'lib/bot';
-import type { World } from 'lib/world';
+import type { Bot } from 'shared/lib/bot';
+import type { World } from 'shared/lib/world';
 import type { GeneName } from './genes';
 import type { ActionResult, GenePool, GeneTemplate } from './types';
 

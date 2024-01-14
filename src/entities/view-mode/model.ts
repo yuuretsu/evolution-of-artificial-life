@@ -1,5 +1,5 @@
 import { createEvent, createStore } from 'effector';
-import { VIEW_MODES } from 'lib/view-modes';
+import { VIEW_MODES } from 'shared/lib/view-modes';
 
 
 export const setViewMode = createEvent<string>();

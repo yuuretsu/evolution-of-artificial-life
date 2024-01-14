@@ -1,8 +1,8 @@
 import { useUnit } from 'effector-react';
 import { $imageOffset, setImageOffset } from 'entities/image-offset';
-import { debounce } from 'lib/helpers';
+import { debounce } from 'shared/lib/helpers';
 import { useCallback, useState } from 'react';
-import { SIDEBAR_ANIMATION_SPEED } from 'settings';
+import { SIDEBAR_ANIMATION_SPEED } from 'shared/settings';
 import styled from 'styled-components';
 import { useEventListener } from 'usehooks-ts';
 

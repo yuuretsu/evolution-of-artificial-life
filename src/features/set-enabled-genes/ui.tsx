@@ -1,8 +1,8 @@
 import { useUnit } from 'effector-react';
 import { $enabledGenes } from 'entities/enabled-genes';
-import { Rgba } from 'lib/color';
-import { GENES, GENES_NAMES } from 'lib/genome/genes';
-import { Checkbox, FlexColumn, FlexRow, SubBlock, WideButton } from 'ui';
+import { Rgba } from 'shared/lib/color';
+import { GENES, GENES_NAMES } from 'shared/lib/genome/genes';
+import { Checkbox, FlexColumn, FlexRow, SubBlock, WideButton } from 'shared/ui';
 import { IconContext } from 'react-icons';
 import { MdCancel, MdReplayCircleFilled } from 'react-icons/md';
 

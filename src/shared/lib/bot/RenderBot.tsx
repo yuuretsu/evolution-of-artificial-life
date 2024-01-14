@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { SubBlock, FlexRow, FlexColumn, InputNumberSmall, Table2Cols } from 'ui';
+import { SubBlock, FlexRow, FlexColumn, InputNumberSmall, Table2Cols } from 'shared/ui';
 import styled from 'styled-components';
 
 import type { FC } from 'react';

@@ -5,15 +5,15 @@ import { $selectedBlock } from 'entities/selected-block';
 import { $world, $worldInfo, updateWorldInfo } from 'entities/world';
 import { pause } from 'features/play-pause';
 import { selectWorldBlock } from 'features/select-world-block';
-import { throttle } from 'lib/helpers';
+import { throttle } from 'shared/lib/helpers';
 import {
   VIEW_MODES,
   initVisualizerParams
-} from 'lib/view-modes';
+} from 'shared/lib/view-modes';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useInterval } from 'usehooks-ts';
-import { useWindowInnerHeight } from 'lib/hooks';
+import { useWindowInnerHeight } from 'shared/lib/hooks';
 import { $viewMode } from 'entities/view-mode';
 import { $minTimeBetweenUpdates } from 'entities/min-time-between-updates/model';
 import { Controls } from 'widgets/controls';
@@ -26,7 +26,7 @@ import { GlobalStyles } from './app.css';
 
 import type {
   VisualiserParams
-} from 'lib/view-modes';
+} from 'shared/lib/view-modes';
 import type { FC } from 'react';
 
 

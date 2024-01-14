@@ -1,7 +1,7 @@
-import { Accordion, Table2Cols } from 'ui';
-import { createToggleStore, numberToShortString } from 'lib/helpers';
+import { Accordion, Table2Cols } from 'shared/ui';
+import { createToggleStore, numberToShortString } from 'shared/lib/helpers';
 import { type FC } from 'react';
-import { useAccordionToggle } from 'lib/hooks';
+import { useAccordionToggle } from 'shared/lib/hooks';
 
 export interface IWorldInformationProps {
   cycle: number;

@@ -1,14 +1,14 @@
 import { useUnit } from 'effector-react';
 import { $viewMode, setViewMode } from 'entities/view-mode';
-import { Rgba } from 'lib/color';
-import { createToggleStore } from 'lib/helpers';
-import { useAccordionToggle } from 'lib/hooks';
-import { VISIBLE_GENES, viewModesList } from 'lib/view-modes';
+import { Rgba } from 'shared/lib/color';
+import { createToggleStore } from 'shared/lib/helpers';
+import { useAccordionToggle } from 'shared/lib/hooks';
+import { VISIBLE_GENES, viewModesList } from 'shared/lib/view-modes';
 import { IconContext } from 'react-icons';
 import { MdCancel, MdChecklist } from 'react-icons/md';
-import { Accordion, Checkbox, FlexColumn, FlexRow, InputRange, OptionalBlock, Radio, SubBlock, WideButton } from 'ui';
+import { Accordion, Checkbox, FlexColumn, FlexRow, InputRange, OptionalBlock, Radio, SubBlock, WideButton } from 'shared/ui';
 
-import type { VisualiserParams } from 'lib/view-modes';
+import type { VisualiserParams } from 'shared/lib/view-modes';
 import type { FC } from 'react';
 
 export interface IViewSettingsProps {

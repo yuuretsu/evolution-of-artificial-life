@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { FlexColumn } from 'ui';
-import { SIDEBAR_PADDING } from 'settings';
+import { FlexColumn } from 'shared/ui';
+import { SIDEBAR_PADDING } from 'shared/settings';
 import { type FC } from 'react';
-import { panel } from 'app/app.css';
 import { TimeBetweenUpdatesRange } from 'features/set-time-between-updates';
+import { panel } from 'shared/styles';
 
 import { ControlsButtons } from './buttons';
 

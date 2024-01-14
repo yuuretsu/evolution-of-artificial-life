@@ -1,7 +1,7 @@
-import { Accordion } from 'ui';
+import { Accordion } from 'shared/ui';
 import { SetEnabledGenes } from 'features/set-enabled-genes';
-import { useAccordionToggle } from 'lib/hooks';
-import { createToggleStore } from 'lib/helpers';
+import { useAccordionToggle } from 'shared/lib/hooks';
+import { createToggleStore } from 'shared/lib/helpers';
 
 import type { FC } from 'react';
 

@@ -1,4 +1,4 @@
-import { FlexRow } from 'ui';
+import { FlexRow } from 'shared/ui';
 import { IconContext } from 'react-icons';
 import { AiFillGithub } from 'react-icons/ai';
 import styled from 'styled-components';

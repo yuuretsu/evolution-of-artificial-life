@@ -2,7 +2,7 @@ import { createEffect, createEvent } from 'effector';
 import { $enabledGenes } from 'entities/enabled-genes';
 import { $world } from 'entities/world';
 
-import type { GeneName } from 'lib/genome';
+import type { GeneName } from 'shared/lib/genome';
 
 // export const setEnabledGenes = createEvent<GeneName[]>();
 export const setEnabledGenes = createEffect((genesNames: GeneName[]) => {

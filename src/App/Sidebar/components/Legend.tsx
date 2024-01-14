@@ -1,10 +1,10 @@
-import { GENES } from 'lib/genome';
-import { Accordion, FlexColumn } from 'ui';
-import { GENES_NAMES, type GeneName } from 'lib/genome/genes';
-import { createToggleStore } from 'lib/helpers';
-import { useAccordionToggle } from 'lib/hooks';
+import { GENES } from 'shared/lib/genome';
+import { Accordion, FlexColumn } from 'shared/ui';
+import { GENES_NAMES, type GeneName } from 'shared/lib/genome/genes';
+import { createToggleStore } from 'shared/lib/helpers';
+import { useAccordionToggle } from 'shared/lib/hooks';
 
-import type { ToggleStore } from 'lib/helpers';
+import type { ToggleStore } from 'shared/lib/helpers';
 import type { FC } from 'react';
 
 export const Legend: FC = () => {

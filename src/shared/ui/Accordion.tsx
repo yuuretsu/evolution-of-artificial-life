@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import styled, { keyframes } from 'styled-components';
-import { FlexColumn } from 'ui';
+import { FlexColumn } from 'shared/ui';
 
 import type { CSSProperties, FC, ReactNode } from 'react';
 

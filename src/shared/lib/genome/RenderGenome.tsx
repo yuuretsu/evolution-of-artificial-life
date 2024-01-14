@@ -1,9 +1,9 @@
-import { useAccordionToggle } from 'lib/hooks';
-import { limit, cycleNumber, createToggleStore } from 'lib/helpers';
+import { useAccordionToggle } from 'shared/lib/hooks';
+import { limit, cycleNumber, createToggleStore } from 'shared/lib/helpers';
 import { useState, useEffect } from 'react';
-import { FlexColumn, Accordion, DropdownSmall, InputNumberSmall, WideButton, SubBlock, Table2Cols, FlexRow, OptionalBlock } from 'ui';
+import { FlexColumn, Accordion, DropdownSmall, InputNumberSmall, WideButton, SubBlock, Table2Cols, FlexRow, OptionalBlock } from 'shared/ui';
 import styled from 'styled-components';
-import { hideScrollbar } from 'app/app.css';
+import { hideScrollbar } from 'shared/styles';
 
 import { Gene, NULL_GENE_TEMPLATE } from './gene';
 import { GENES } from './genes';

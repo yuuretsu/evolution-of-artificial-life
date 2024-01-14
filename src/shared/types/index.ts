@@ -1,6 +1,6 @@
 import type { CanGetColor } from './can-get-color';
 import type { CanInteract } from './can-interact';
-import type { World } from 'lib/world';
+import type { World } from 'shared/lib/world';
 import type { FC } from 'react';
 
 export interface BaseWorldBlock extends CanGetColor, CanInteract {

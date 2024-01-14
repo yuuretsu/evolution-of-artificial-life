@@ -1,6 +1,6 @@
-import type { Bot } from 'lib/bot';
-import type { Rgba } from 'lib/color';
-import type { World } from 'lib/world';
+import type { Bot } from 'shared/lib/bot';
+import type { Rgba } from 'shared/lib/color';
+import type { World } from 'shared/lib/world';
 
 type GeneTemplateBase = {
   name: string,
