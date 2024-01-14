@@ -1,51 +1,35 @@
+import { useUnit } from 'effector-react';
+import { $enabledGenes } from 'entities/enabled-genes';
+import { $isPaused } from 'entities/play-pause';
+import { $selectedBlock } from 'entities/selected-block';
+import { $world, $worldInfo, updateWorldInfo } from 'entities/world';
+import { pause } from 'features/play-pause';
+import { selectWorldBlock } from 'features/select-world-block';
+import { throttle } from 'lib/helpers';
 import {
   VIEW_MODES,
   initVisualizerParams
 } from 'lib/view-modes';
-import {
-  SquareWorld
-} from 'lib/world';
 import { observer } from 'mobx-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { PIXEL_SIZE } from 'settings';
-import { appStore } from 'stores/app';
 import styled from 'styled-components';
-import { useEventListener, useInterval } from 'usehooks-ts';
-import { throttle } from 'lib/helpers';
-import { INITIALLY_ENABLED_GENES_NAMES } from 'lib/genome/genes';
+import { useInterval } from 'usehooks-ts';
+import { useWindowInnerHeight } from 'lib/hooks';
+import { $viewMode } from 'entities/view-mode';
+import { $minTimeBetweenUpdates } from 'entities/min-time-between-updates/model';
 
 import { Controls } from './Controls';
+import { SafeAreaBottom } from './SafeAreaBottom';
 import { Sidebar } from './Sidebar';
 import { Viewer } from './Viewer';
 import { GameImage } from './Viewer/GameImage';
-import { SafeAreaBottom } from './SafeAreaBottom';
 import { GlobalStyles } from './app.css';
 
 import type {
   VisualiserParams
 } from 'lib/view-modes';
-import type {
-  NewWorldProps,
-  World, WorldInfo
-} from 'lib/world';
 import type { FC } from 'react';
-import type { WorldBlock } from 'types';
 
-
-const initWidth = Math.max(Math.floor(window.innerWidth / PIXEL_SIZE) + 2, 10);
-const initHeight = Math.max(Math.floor(window.innerHeight / PIXEL_SIZE) + 2, 10);
-
-const INIT_WORLD_PROPS: NewWorldProps = {
-  width: initWidth,
-  height: initHeight,
-  botsAmount: initWidth * initHeight,
-  genePool: INITIALLY_ENABLED_GENES_NAMES,
-  genomeSize: 32,
-};
-
-const initWorld = new SquareWorld(INIT_WORLD_PROPS);
-const initWorldInfo = initWorld.getInfo();
-const initWorldImage = initWorld.toImage(() => null, initVisualizerParams);
 
 const Wrapper = styled.div`
   display: flex;
@@ -56,70 +40,55 @@ const Wrapper = styled.div`
 
 export const App: FC = observer(() => {
   const appRef = useRef<HTMLDivElement>(null);
-  const [appHeight, setAppHeight] = useState(window.innerHeight);
-  const updateAppHeight = () => setAppHeight(window.innerHeight);
+
+  const u = useUnit({
+    minTimeBetweenUpdates: $minTimeBetweenUpdates,
+    isPaused: $isPaused,
+    world: $world,
+    enabledGenes: $enabledGenes,
+    selectWorldBlock,
+    selectedBlock: $selectedBlock,
+    worldInfo: $worldInfo,
+    updateWorldInfo,
+    viewModeName: $viewMode
+  });
+
+  const appHeight = useWindowInnerHeight();
   const [visualizerParams, setVisualizerParams] = useState<VisualiserParams>(initVisualizerParams);
-  const [newWorldProps, setNewWorldProps] = useState<NewWorldProps>(INIT_WORLD_PROPS);
-  const [world, setWorld] = useState<World>(initWorld);
-  const [image, setImage] = useState<HTMLCanvasElement>(initWorldImage);
-  const [worldInfo, setWorldInfo] = useState<WorldInfo>(initWorldInfo);
-  const [enabledGenes, setEnabledGenes] = useState(INITIALLY_ENABLED_GENES_NAMES);
-  const [selectedBlock, setSelectedBlock] = useState<WorldBlock | null>(null);
+  const [image, setImage] = useState<HTMLCanvasElement>(u.world.toImage(() => null, visualizerParams));
   const [isDrag, setIsDrag] = useState(true);
 
-  const currentViewMode = VIEW_MODES[appStore.viewModeName.current]!;
+  const currentViewMode = VIEW_MODES[u.viewModeName]!;
 
 
   const updateWorldView = useCallback(
     throttle(() => {
-      setImage(world.toImage(currentViewMode.blockToColor, visualizerParams));
-      setWorldInfo(world.getInfo());
+      setImage(u.world.toImage(currentViewMode.blockToColor, visualizerParams));
+      updateWorldInfo();
     }, 1000 / 60),
-    [world, currentViewMode.blockToColor, visualizerParams]
+    [u.world, currentViewMode.blockToColor, visualizerParams]
   );
 
   const step = () => {
     if (!isDrag) return;
-    world.step();
+    u.world.step();
     updateWorldView();
   };
 
+  useEffect(updateWorldView, [currentViewMode.blockToColor, u.world, visualizerParams]);
 
-  useEventListener('resize', updateAppHeight);
-  useEventListener('orientationchange', updateAppHeight);
-
-  useEffect(updateWorldView, [currentViewMode.blockToColor, world, visualizerParams]);
-
-  useEffect(() => {
-    setNewWorldProps({
-      ...newWorldProps,
-      ...{ genePool: enabledGenes }
-    });
-    world.genePool = enabledGenes;
-  }, [enabledGenes]);
-
-  useInterval(step, appStore.isPaused ? null : appStore.timeBetweenSteps.current);
+  useInterval(step, u.isPaused ? null : u.minTimeBetweenUpdates);
 
   const onClickStep = () => {
-    appStore.isPaused
+    u.isPaused
       ? step()
-      : appStore.pause();
-  };
-
-  const restart = () => {
-    setWorld(new SquareWorld(newWorldProps));
-    setSelectedBlock(null);
-    appStore.imageOffset.set({ x: 0, y: 0 });
+      : pause();
   };
 
   const onClickPixel = useCallback((x: number, y: number) => {
     if (!isDrag) return;
-    setSelectedBlock(world.get(x, y) || null);
-  }, [world, isDrag]);
-
-  const onMoveImage = (x: number, y: number) => {
-    appStore.imageOffset.set({ x, y });
-  };
+    u.selectWorldBlock(u.world.get(x, y) || null);
+  }, [u.world, isDrag]);
 
   const handleCancelImageMove = useCallback(() => {
     setTimeout(() => setIsDrag(true));
@@ -131,8 +100,6 @@ export const App: FC = observer(() => {
       <SafeAreaBottom />
       <Wrapper ref={appRef} style={{ height: `${appHeight}px` }}>
         <Viewer
-          position={appStore.imageOffset.current}
-          onMove={onMoveImage}
           onStart={() => setIsDrag(false)}
           onCancel={handleCancelImageMove}
         >
@@ -141,21 +108,11 @@ export const App: FC = observer(() => {
         <Sidebar
           visualizerParams={visualizerParams}
           setVisualizerParams={setVisualizerParams}
-          newWorldProps={newWorldProps}
-          setNewWorldProps={setNewWorldProps}
-          world={world}
-          worldInfo={worldInfo}
-          enabledGenes={enabledGenes}
-          setEnabledGenes={setEnabledGenes}
-          selectedBlock={selectedBlock}
-          setSelectedBlock={setSelectedBlock}
-          onClickRestart={restart}
         />
         {!!appRef.current && (
           <Controls
             controlsButtonsProps={{
               onClickStep,
-              onClickRestart: restart,
               fullscreenElement: appRef.current,
             }}
           />

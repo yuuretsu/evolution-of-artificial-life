@@ -1,0 +1,1 @@
+export { $isSidebarOpen } from './model';

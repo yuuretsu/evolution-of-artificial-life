@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react';
 import { Accordion, Table2Cols } from 'ui';
-import { numberToShortString } from 'lib/helpers';
-import { accordionsStates } from 'stores/accordions';
+import { createToggleStore, numberToShortString } from 'lib/helpers';
 import { type FC } from 'react';
+import { useAccordionToggle } from 'lib/hooks';
 
 export interface IWorldInformationProps {
   cycle: number;
@@ -19,8 +19,13 @@ export const WorldInformation: FC<IWorldInformationProps> = observer(({
   averageAge,
   stepTime
 }) => {
+  const worldInfoAccordionProps = useAccordionToggle(
+    worldInfoAccordionState.$isEnabled,
+    worldInfoAccordionState.toggle
+  );
+
   return (
-    <Accordion name='Инфо о мире' {...accordionsStates.getProps('worldInfo')}>
+    <Accordion name='Инфо о мире' {...worldInfoAccordionProps}>
       <Table2Cols
         cells={[
           ['Возраст (кадров)', numberToShortString(cycle, 2)],
@@ -33,3 +38,5 @@ export const WorldInformation: FC<IWorldInformationProps> = observer(({
     </Accordion>
   );
 });
+
+const worldInfoAccordionState = createToggleStore(false);

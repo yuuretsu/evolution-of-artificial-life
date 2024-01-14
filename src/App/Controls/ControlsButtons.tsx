@@ -1,7 +1,5 @@
 import { observer } from 'mobx-react';
 import { IconContext } from 'react-icons';
-import { appStore } from 'stores/app';
-import { sidebarStore } from 'stores/sidebar';
 import { FlexRow } from 'ui';
 import {
   MdClose,
@@ -14,6 +12,12 @@ import {
   MdFullscreenExit
 } from 'react-icons/md';
 import styled from 'styled-components';
+import { useUnit } from 'effector-react';
+import { startNewWorldWithCurrentParameters } from 'features/start-new-world';
+import { toggleIsPlaying } from 'features/play-pause';
+import { $isPaused } from 'entities/play-pause';
+import { $isSidebarOpen } from 'entities/sidebar';
+import { setSidebarIsOpen } from 'features/set-sidebar-is-open';
 
 import { RoundedButton } from './RoundedButton';
 
@@ -21,19 +25,26 @@ import type { FC } from 'react';
 
 export interface IControlsButtonsProps {
   onClickStep: () => void;
-  onClickRestart: () => void;
   fullscreenElement?: HTMLElement | null;
 }
 
-export const ControlsButtons: FC<IControlsButtonsProps> = observer(({ onClickStep, onClickRestart, fullscreenElement }) => {
+export const ControlsButtons: FC<IControlsButtonsProps> = observer(({ onClickStep, fullscreenElement }) => {
+  const u = useUnit({
+    isSidebarOpen: $isSidebarOpen,
+    setSidebarIsOpen,
+    isPaused: $isPaused,
+    startNewWorldWithCurrentParameters,
+    toggleIsPlaying
+  });
+
   const isCanFullscreen = !!fullscreenElement?.requestFullscreen;
   const isInFullscreen = document.fullscreenElement === fullscreenElement;
   const onClickFullscreen = () => isInFullscreen
     ? document.exitFullscreen()
     : fullscreenElement?.requestFullscreen?.();
 
-  const IconPlayPause = appStore.isPaused ? MdPlayArrow : MdPause;
-  const IconSidebarOpenClose = sidebarStore.isOpen ? MdClose : MdMenu;
+  const IconPlayPause = u.isPaused ? MdPlayArrow : MdPause;
+  const IconSidebarOpenClose = u.isSidebarOpen ? MdClose : MdMenu;
 
   const IconFullscreen = isInFullscreen ? MdFullscreenExit : MdFullscreen;
 
@@ -41,15 +52,15 @@ export const ControlsButtons: FC<IControlsButtonsProps> = observer(({ onClickSte
     <FlexRow gap={10}>
       <IconContext.Provider value={{ size: '25px', color: 'whitesmoke' }}>
         <RoundedButton
-          title={appStore.isPaused ? 'Продолжить' : 'Пауза'}
-          onClick={appStore.toggleIsPaused}
+          title={u.isPaused ? 'Продолжить' : 'Пауза'}
+          onClick={u.toggleIsPlaying}
         >
           <IconPlayPause />
         </RoundedButton>
         <RoundedButton title="Шаг симуляции" onClick={onClickStep}>
           <MdSkipNext />
         </RoundedButton>
-        <RoundedButton title="Рестарт" onClick={onClickRestart}>
+        <RoundedButton title="Рестарт" onClick={u.startNewWorldWithCurrentParameters}>
           <MdReplay />
         </RoundedButton>
         {isCanFullscreen && (
@@ -61,7 +72,7 @@ export const ControlsButtons: FC<IControlsButtonsProps> = observer(({ onClickSte
           </>
         )}
         <Divider />
-        <RoundedButton title="Настройки" onClick={sidebarStore.toggle}>
+        <RoundedButton title="Настройки" onClick={() => u.setSidebarIsOpen(!u.isSidebarOpen)}>
           <IconSidebarOpenClose />
         </RoundedButton>
       </IconContext.Provider>

@@ -1,17 +1,16 @@
 import { observer } from 'mobx-react';
-import { sidebarStore } from 'stores/sidebar';
 import styled from 'styled-components';
 import { FlexColumn } from 'ui';
 import { SIDEBAR_PADDING } from 'settings';
 import { type FC } from 'react';
 import { panel } from 'App/app.css';
+import { TimeBetweenUpdatesRange } from 'features/set-time-between-updates';
 
-import { SimulationSpeedRange } from './SimulationSpeedRange';
 import { ControlsButtons } from './ControlsButtons';
 
 import type { IControlsButtonsProps } from './ControlsButtons';
 
-const Wrapper = styled.div<{ isTransparent: boolean }>`
+const Wrapper = styled.div`
   position: fixed;
   display: flex;
   ${panel}
@@ -32,13 +31,12 @@ export interface IControlsProps {
 
 export const Controls: FC<IControlsProps> = observer(({ controlsButtonsProps }) => {
   return (
-    <Wrapper isTransparent={!sidebarStore.isOpen}>
+    <Wrapper>
       <FlexColumn gap={10}>
-        <SimulationSpeedRange />
+        <TimeBetweenUpdatesRange />
 
         <ControlsButtons
           onClickStep={controlsButtonsProps.onClickStep}
-          onClickRestart={controlsButtonsProps.onClickRestart}
           fullscreenElement={controlsButtonsProps.fullscreenElement}
         />
       </FlexColumn>

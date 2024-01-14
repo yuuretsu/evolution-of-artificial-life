@@ -1,3 +1,9 @@
+import { createEvent, createStore } from 'effector';
+import { useUnit } from 'effector-react';
+
+import type { EventCallable, StoreWritable } from 'effector';
+import type { ChangeEvent } from 'react';
+
 export function* range(from: number, to: number) {
   while (from < to) {
     yield from++;
@@ -123,5 +129,46 @@ export const debounce = <T extends (...args: any[]) => any>(
     timeoutId = setTimeout(() => {
       func?.(...args);
     }, delay);
+  };
+};
+
+export const connectForm = <T>($s: StoreWritable<T>, toString: (t: T) => string, fromString: (s: string) => T | undefined) => {
+  const set = createEvent<string>();
+  const $value = $s.map(x => toString(x));
+
+  $s.on(set, (_, s) => fromString(s));
+
+  const use = () => {
+    return useUnit({
+      value: $value,
+      onChange: set.prepend<ChangeEvent<{ value: string }>>((e) => e.target.value)
+    });
+  };
+
+  return {
+    set,
+    $value,
+    use
+  };
+};
+
+export interface ToggleStore {
+  $isEnabled: StoreWritable<boolean>;
+  toggle: EventCallable<void>;
+  open: EventCallable<void>;
+  close: EventCallable<void>;
+}
+
+export const createToggleStore = (initial: boolean): ToggleStore => {
+  const toggle = createEvent();
+  const open = toggle.prepend(() => true);
+  const close = toggle.prepend(() => false);
+  const $isEnabled = createStore(initial).on(toggle, state => !state);
+
+  return {
+    $isEnabled,
+    toggle,
+    open,
+    close
   };
 };

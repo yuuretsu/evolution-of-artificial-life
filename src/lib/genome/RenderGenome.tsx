@@ -1,7 +1,6 @@
-import { useForceRender } from 'lib/hooks';
-import { limit, cycleNumber } from 'lib/helpers';
+import { useAccordionToggle } from 'lib/hooks';
+import { limit, cycleNumber, createToggleStore } from 'lib/helpers';
 import { useState, useEffect } from 'react';
-import { accordionsStates } from 'stores/accordions';
 import { FlexColumn, Accordion, DropdownSmall, InputNumberSmall, WideButton, SubBlock, Table2Cols, FlexRow, OptionalBlock } from 'ui';
 import styled from 'styled-components';
 import { hideScrollbar } from 'App/app.css';
@@ -16,7 +15,21 @@ import type { ChangeEventHandler, FC, FocusEventHandler, ReactNode } from 'react
 import type { GeneName } from './genes';
 
 export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
-  const rerender = useForceRender();
+  const genomeAccordionProps = useAccordionToggle(
+    genomeAccordionState.$isEnabled,
+    genomeAccordionState.toggle
+  );
+
+  const geneAccordionProps = useAccordionToggle(
+    geneAccordionState.$isEnabled,
+    geneAccordionState.toggle
+  );
+
+  const lastActionsAccordionProps = useAccordionToggle(
+    lastActionsAccordionState.$isEnabled,
+    lastActionsAccordionState.toggle
+  );
+
   const [genes, setGenes] = useState(genome.genes);
   const [selectedGene, setSelectedGene] = useState<{ id: number, gene: Gene } | null>(null);
   const [option, setOption] = useState<number | string>(0);
@@ -106,7 +119,7 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
       <Accordion
         name="Геном"
         isSmall
-        {...accordionsStates.getProps('genome', { onToggle: rerender })}
+        {...genomeAccordionProps}
       >
         <FlexColumn gap={10}>
           <SubBlock>Позиция указателя: {genome.pointer}</SubBlock>
@@ -118,7 +131,7 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
           <Accordion
             name="Ген"
             isSmall
-            {...accordionsStates.getProps('gene', { onToggle: rerender })}
+            {...geneAccordionProps}
           >
             {selectedGene ? (
               <>
@@ -181,7 +194,7 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
           <Accordion
             name='Последние действия'
             isSmall
-            {...accordionsStates.getProps('lastActions', { onToggle: rerender })}
+            {...lastActionsAccordionProps}
           >
             <LastActionsWrapper>
               {genome.lastActions.map(({ template, result }, i) => {
@@ -198,6 +211,10 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
     </FlexColumn>
   );
 };
+
+const genomeAccordionState = createToggleStore(true);
+const geneAccordionState = createToggleStore(false);
+const lastActionsAccordionState = createToggleStore(true);
 
 const LabelName = styled.span<{ isNamed: boolean }>`
   opacity: ${props => props.isNamed ? 1 : 0.5};

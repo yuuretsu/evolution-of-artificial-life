@@ -1,0 +1,1 @@
+export { setSidebarIsOpen } from './model';

@@ -1,11 +1,13 @@
+import { useUnit } from 'effector-react';
+import { $viewMode, setViewMode } from 'entities/view-mode';
+import { Rgba } from 'lib/color';
+import { createToggleStore } from 'lib/helpers';
+import { useAccordionToggle } from 'lib/hooks';
 import { VISIBLE_GENES, viewModesList } from 'lib/view-modes';
 import { observer } from 'mobx-react';
-import { appStore } from 'stores/app';
-import { Accordion, Checkbox, FlexColumn, FlexRow, InputRange, OptionalBlock, Radio, SubBlock, WideButton } from 'ui';
-import { MdCancel, MdChecklist } from 'react-icons/md';
 import { IconContext } from 'react-icons';
-import { accordionsStates } from 'stores/accordions';
-import { Rgba } from 'lib/color';
+import { MdCancel, MdChecklist } from 'react-icons/md';
+import { Accordion, Checkbox, FlexColumn, FlexRow, InputRange, OptionalBlock, Radio, SubBlock, WideButton } from 'ui';
 
 import type { VisualiserParams } from 'lib/view-modes';
 import type { FC } from 'react';
@@ -17,6 +19,16 @@ export interface IViewSettingsProps {
 
 export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
 
+  const u = useUnit({
+    viewModeName: $viewMode,
+    setViewMode
+  });
+
+  const viewSettingsAccordionProps = useAccordionToggle(
+    viewSettingsAccordionState.$isEnabled,
+    viewSettingsAccordionState.toggle
+  );
+
   const enableAllActions = () => {
     props.setVisualizerParams({ ...props.visualizerParams, action: VISIBLE_GENES.map(({ id }) => id) });
   };
@@ -26,17 +38,17 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
   };
 
   return (
-    <Accordion name='Настройки просмотра' {...accordionsStates.getProps('viewSettings')}>
+    <Accordion name='Настройки просмотра' {...viewSettingsAccordionProps}>
       <FlexColumn gap={10}>
         <SubBlock name="Режим отображения">
           <Radio
             name='view-mode'
             list={viewModesList}
-            checked={appStore.viewModeName.current}
-            onChange={appStore.viewModeName.set}
+            checked={u.viewModeName}
+            onChange={u.setViewMode}
           />
         </SubBlock>
-        {appStore.viewModeName.current === 'age' && <OptionalBlock>
+        {u.viewModeName === 'age' && <OptionalBlock>
           <SubBlock name="Делитель возраста">
             <InputRange
               min={10}
@@ -49,7 +61,7 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
             />
           </SubBlock>
         </OptionalBlock>}
-        {appStore.viewModeName.current === 'energy' && <OptionalBlock>
+        {u.viewModeName === 'energy' && <OptionalBlock>
           <SubBlock name="Делитель энергии">
             <InputRange
               min={1}
@@ -62,7 +74,7 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
             />
           </SubBlock>
         </OptionalBlock>}
-        {appStore.viewModeName.current === 'lastAction' && (
+        {u.viewModeName === 'lastAction' && (
           <OptionalBlock>
             <FlexColumn gap={10}>
               <SubBlock name="Отображение отдельных действий">
@@ -113,3 +125,5 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
     </Accordion>
   );
 });
+
+const viewSettingsAccordionState = createToggleStore(false);

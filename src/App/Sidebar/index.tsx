@@ -1,8 +1,6 @@
 import { observer } from 'mobx-react';
 import { useEffect, useRef } from 'react';
 import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_PADDING, SIDEBAR_WIDTH } from 'settings';
-import { accordionsStates } from 'stores/accordions';
-import { sidebarStore } from 'stores/sidebar';
 import styled from 'styled-components';
 import {
   Accordion,
@@ -11,8 +9,14 @@ import {
   WideButton
 } from 'ui';
 import { hideScrollbar, panel } from 'App/app.css';
-import { useThrottle } from 'lib/hooks';
-
+import { useAccordionToggle, useThrottle } from 'lib/hooks';
+import { useUnit } from 'effector-react';
+import { selectWorldBlock } from 'features/select-world-block';
+import { $selectedBlock } from 'entities/selected-block';
+import { $isSidebarOpen } from 'entities/sidebar';
+import { setSidebarIsOpen } from 'features/set-sidebar-is-open';
+import { $worldInfo } from 'entities/world';
+import { createToggleStore } from 'lib/helpers';
 
 import { CurrentWorldSettings } from './components/CurrentWorldSettings';
 import { Legend } from './components/Legend';
@@ -21,11 +25,8 @@ import { ViewSettings } from './components/ViewSettings';
 import { WorldInformation } from './components/WorldInfo';
 import { Footer } from './components/Footer';
 
-import type { GeneName } from 'lib/genome';
 import type { VisualiserParams } from 'lib/view-modes';
-import type { NewWorldProps, World, WorldInfo } from 'lib/world';
 import type { FC } from 'react';
-import type { WorldBlock } from 'types';
 
 interface ISidebarProps {
   readonly isOpen: boolean,
@@ -54,39 +55,43 @@ const Wrapper = styled.div<ISidebarProps>`
 type SidebarProps = {
   visualizerParams: VisualiserParams,
   setVisualizerParams: (value: VisualiserParams) => void;
-  newWorldProps: NewWorldProps,
-  setNewWorldProps: (value: NewWorldProps) => void
-  world: World,
-  worldInfo: WorldInfo,
-  enabledGenes: GeneName[],
-  setEnabledGenes: (value: GeneName[]) => void;
-  selectedBlock: WorldBlock | null;
-  setSelectedBlock: (block: WorldBlock | null) => void;
-  onClickRestart: () => void;
 };
 
 export const Sidebar: FC<SidebarProps> = observer((props) => {
-  const deselectBlock = () => props.setSelectedBlock(null);
+  const u = useUnit({
+    isSidebarOpen: $isSidebarOpen,
+    setSidebarIsOpen,
+    selectWorldBlock,
+    selectedBlock: $selectedBlock,
+    worldInfo: $worldInfo
+  });
+
+  const worldBlockInfoAccordionProps = useAccordionToggle(
+    worldBlockInfoAccordionState.$isEnabled,
+    worldBlockInfoAccordionState.toggle
+  );
+
+  const deselectBlock = () => u.selectWorldBlock(null);
 
   const worldBlockInfoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!props.selectedBlock || !worldBlockInfoRef.current) return;
+    if (!u.selectedBlock || !worldBlockInfoRef.current) return;
     worldBlockInfoRef.current.scrollIntoView({ behavior: 'smooth' });
-    accordionsStates.states.worldBlockInfo.setTrue();
-    sidebarStore.open();
-  }, [props.selectedBlock]);
+    worldBlockInfoAccordionState.open();
+    setSidebarIsOpen(true);
+  }, [u.selectedBlock]);
 
   const worldInformationProps = useThrottle({
-    cycle: props.worldInfo.cycle,
-    botsAmount: props.worldInfo.dynamicBlocks,
-    averageAge: props.worldInfo.averageAge,
-    stepTime: props.worldInfo.stepTime,
-    maxGeneration: props.worldInfo.maxGeneration,
+    cycle: u.worldInfo.cycle,
+    botsAmount: u.worldInfo.dynamicBlocks,
+    averageAge: u.worldInfo.averageAge,
+    stepTime: u.worldInfo.stepTime,
+    maxGeneration: u.worldInfo.maxGeneration,
   }, 100);
 
   return (
-    <Wrapper isOpen={sidebarStore.isOpen}>
+    <Wrapper isOpen={u.isSidebarOpen}>
       <FlexColumn gap={20}>
         <Legend />
         <WorldInformation {...worldInformationProps} />
@@ -94,12 +99,12 @@ export const Sidebar: FC<SidebarProps> = observer((props) => {
           name='Инфо о блоке'
           ref={worldBlockInfoRef}
           style={{ scrollMargin: SIDEBAR_PADDING }}
-          {...accordionsStates.getProps('worldBlockInfo')}
+          {...worldBlockInfoAccordionProps}
         >
-          {props.selectedBlock ? (
+          {u.selectedBlock ? (
             <FlexColumn gap={10}>
               <WideButton onClick={deselectBlock}>Снять выделение</WideButton>
-              <props.selectedBlock.Render />
+              <u.selectedBlock.Render />
             </FlexColumn>
           ) : (
             <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>
@@ -109,19 +114,13 @@ export const Sidebar: FC<SidebarProps> = observer((props) => {
           visualizerParams={props.visualizerParams}
           setVisualizerParams={props.setVisualizerParams}
         />
-        <CurrentWorldSettings
-          enabledGenes={props.enabledGenes}
-          onChangeEnabledGenes={props.setEnabledGenes}
-        />
-        <NewWorldForm
-          newWorldProps={props.newWorldProps}
-          maxBotsAmount={props.world.width * props.world.height}
-          setNewWorldProps={props.setNewWorldProps}
-          onClickRestart={props.onClickRestart}
-        />
+        <CurrentWorldSettings />
+        <NewWorldForm />
         <Br />
         <Footer />
       </FlexColumn>
     </Wrapper>
   );
 });
+
+const worldBlockInfoAccordionState = createToggleStore(false);

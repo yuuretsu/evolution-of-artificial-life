@@ -1,12 +1,13 @@
+import { useUnit } from 'effector-react';
+import { $imageOffset, setImageOffset } from 'entities/image-offset';
 import { debounce } from 'lib/helpers';
 import { observer } from 'mobx-react';
 import { useCallback, useState } from 'react';
 import { SIDEBAR_ANIMATION_SPEED } from 'settings';
-import { sidebarStore } from 'stores/sidebar';
 import styled from 'styled-components';
 import { useEventListener } from 'usehooks-ts';
 
-const Wrapper = styled.div<{ isSidebarOpen: boolean, isDragging: boolean }>`
+const Wrapper = styled.div<{ isDragging: boolean }>`
   touch-action: none;
   display: flex;
   top: 0;
@@ -26,19 +27,20 @@ export interface IVec2 {
 }
 
 export interface IViewerProps {
-  position: IVec2;
-  onMove: (x: number, y: number) => void;
   onStart?: () => void;
   onCancel?: () => void;
   children: React.ReactNode;
 };
 
 export const Viewer: React.FC<IViewerProps> = observer(props => {
+  const { imageOffset } = useUnit({
+    imageOffset: $imageOffset,
+  });
+
   const [initPos, setInitPos] = useState({ x: 0, y: 0 });
   const [isDraggingActive, setIsDraggingActive] = useState(false);
   const [isDraggingNow, setIsDraggingNow] = useState(isDraggingActive);
   const [initialBodyUserSelect, setInitialBodyUserSelect] = useState(document.body.style.userSelect);
-  const imageOffset = props.position;
 
   const start = () => {
     setIsDraggingActive(true);
@@ -56,7 +58,7 @@ export const Viewer: React.FC<IViewerProps> = observer(props => {
   useEventListener('mousemove', (e) => {
     if (!isDraggingActive) return;
     e.preventDefault();
-    props.onMove(e.clientX - initPos.x, e.clientY - initPos.y);
+    setImageOffset({ x: e.clientX - initPos.x, y: e.clientY - initPos.y });
     setIsDraggingNow(true);
     props.onStart?.();
   });
@@ -64,7 +66,7 @@ export const Viewer: React.FC<IViewerProps> = observer(props => {
   useEventListener('touchmove', (e) => {
     if (!isDraggingActive) return;
     e.preventDefault();
-    props.onMove(e.touches[0]!.clientX - initPos.x, e.touches[0]!.clientY - initPos.y);
+    setImageOffset({ x: e.touches[0]!.clientX - initPos.x, y: e.touches[0]!.clientY - initPos.y });
     setIsDraggingNow(true);
     props.onStart?.();
   });
@@ -77,7 +79,6 @@ export const Viewer: React.FC<IViewerProps> = observer(props => {
   return (
     <Wrapper
       isDragging={isDraggingNow}
-      isSidebarOpen={sidebarStore.isOpen}
       onMouseDown={e => {
         if (e.button !== 1) return;
         setInitPos({ x: e.clientX - imageOffset.x, y: e.clientY - imageOffset.y });
@@ -92,7 +93,7 @@ export const Viewer: React.FC<IViewerProps> = observer(props => {
       }}
       onWheel={e => {
         props.onStart?.();
-        props.onMove(imageOffset.x - e.deltaX, imageOffset.y - e.deltaY);
+        setImageOffset({ x: imageOffset.x - e.deltaX, y: imageOffset.y - e.deltaY });
         onCancelDebounced();
       }}
     >
