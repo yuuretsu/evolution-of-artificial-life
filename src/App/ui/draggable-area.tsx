@@ -20,18 +20,19 @@ const Wrapper = styled.div<{ isDragging: boolean }>`
   transition-duration: ${SIDEBAR_ANIMATION_SPEED};
 `;
 
+
 export interface IVec2 {
   x: number;
   y: number;
 }
 
-export interface IViewerProps {
+export interface DraggableAreaProps {
   onStart?: () => void;
   onCancel?: () => void;
   children: React.ReactNode;
 };
 
-export const Viewer: React.FC<IViewerProps> = (props => {
+export const DraggableArea: React.FC<DraggableAreaProps> = (props => {
   const { imageOffset } = useUnit({
     imageOffset: $imageOffset,
   });
@@ -67,7 +68,7 @@ export const Viewer: React.FC<IViewerProps> = (props => {
   };
 
   useEventListener('mousemove', createMoveHandler(e => [{ x: e.clientX, y: e.clientY }]));
-  useEventListener('touchmove', createMoveHandler(e => [...e.touches].map(x => ({ x: x!.clientX, y: x!.clientY }))));
+  useEventListener('touchmove', createMoveHandler(e => Array.from(e.touches).map(x => ({ x: x.clientX, y: x.clientY }))));
 
   useEventListener('mouseup', cancel);
   useEventListener('touchend', cancel);
@@ -82,7 +83,7 @@ export const Viewer: React.FC<IViewerProps> = (props => {
         start({ x: e.clientX - imageOffset.x, y: e.clientY - imageOffset.y });
       }}
       onTouchStart={e => {
-        start(getMiddlePoint(Array.from(e.touches).map(x => ({ x: x!.clientX, y: x!.clientY }))));
+        start(getMiddlePoint(Array.from(e.touches).map(x => ({ x: x.clientX, y: x.clientY }))));
       }}
       onWheel={e => {
         props.onStart?.();

@@ -2,7 +2,7 @@ import { useUnit } from 'effector-react';
 import { $enabledGenes } from 'entities/enabled-genes';
 import { $isPaused } from 'entities/play-pause';
 import { $selectedBlock } from 'entities/selected-block';
-import { $world, $worldInfo, updateWorldInfo } from 'entities/world';
+import { $world, $worldInfo, WorldImage, updateWorldInfo } from 'entities/world';
 import { pause } from 'features/play-pause';
 import { selectWorldBlock } from 'features/select-world-block';
 import { $minTimeBetweenUpdates } from 'features/set-time-between-updates';
@@ -11,15 +11,12 @@ import { $visualizerParams } from 'features/set-view-options/model';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { throttle } from 'shared/lib/helpers';
 import { useWindowInnerHeight } from 'shared/lib/hooks';
-import {
-  VIEW_MODES,
-} from 'shared/lib/view-modes';
+import { VIEW_MODES } from 'shared/lib/view-modes';
 import styled from 'styled-components';
 import { useInterval } from 'usehooks-ts';
 import { Controls } from 'widgets/controls';
 
-import { Viewer } from './Viewer';
-import { GameImage } from './Viewer/GameImage';
+import { DraggableArea } from './draggable-area';
 import { GlobalStyles } from './global-styles';
 import { SafeAreaBottom } from './safe-area-bottom';
 import { Sidebar } from './sidebar';
@@ -95,12 +92,12 @@ export const App: FC = () => {
       <GlobalStyles />
       <SafeAreaBottom />
       <Wrapper ref={appRef} style={{ height: `${appHeight}px` }}>
-        <Viewer
+        <DraggableArea
           onStart={() => setIsDrag(false)}
           onCancel={handleCancelImageMove}
         >
-          <GameImage image={image} onClickPixel={onClickPixel} />
-        </Viewer>
+          <WorldImage image={image} onClickPixel={onClickPixel} />
+        </DraggableArea>
         <Sidebar />
         {!!appRef.current && (
           <Controls

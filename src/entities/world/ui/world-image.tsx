@@ -19,12 +19,12 @@ const Wrapper = styled.canvas`
 `;
 
 
-type GameImageProps = {
+type WorldImageProps = {
   image: CanvasImageSource & { width: number, height: number },
   onClickPixel: (x: number, y: number) => void;
 };
 
-export const GameImage: FC<GameImageProps> = memo((props) => {
+export const WorldImage: FC<WorldImageProps> = memo((props) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const width = props.image.width * PIXEL_SIZE;
