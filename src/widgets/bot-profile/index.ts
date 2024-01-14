@@ -1,1 +1,1 @@
-export { BotProfile as BotInfo } from './ui/bot-profile';
+export { BotProfile } from './ui/bot-profile';
