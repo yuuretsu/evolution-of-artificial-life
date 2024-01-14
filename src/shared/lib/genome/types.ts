@@ -3,6 +3,7 @@ import type { Rgba } from 'shared/lib/color';
 import type { World } from 'shared/lib/world';
 
 type GeneTemplateBase = {
+  id: string,
   name: string,
   description?: string,
   color?: Rgba,

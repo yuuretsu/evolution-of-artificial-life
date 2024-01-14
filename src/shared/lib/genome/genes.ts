@@ -251,7 +251,7 @@ export const GENES_ARR = [
       branches: ['Если есть', 'Если нет']
     }
   } as const,
-] satisfies (GeneTemplate & { id: string })[];
+] satisfies GeneTemplate[];
 
 export const GENES: Record<string, GeneTemplate> = GENES_ARR.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {});
 

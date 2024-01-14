@@ -37,6 +37,7 @@ function randGeneProperty(genomeLength: number): GeneProperty {
 }
 
 export const NULL_GENE_TEMPLATE: GeneTemplate = {
+  id: 'null',
   name: 'Пустой ген',
   description: 'Ничего не происходит',
   isDefaultDisabled: true,

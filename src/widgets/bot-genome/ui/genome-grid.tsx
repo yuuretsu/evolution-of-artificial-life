@@ -1,9 +1,9 @@
 import { GENE_CELL_SIZE_PX, GENOME_VIEW_BORDER_PX } from 'shared/settings';
 import styled from 'styled-components';
 
-import { GeneCell } from './GeneCell';
+import { GenomeGridCell } from './genome-grid-cell';
 
-import type { GeneCellState } from './types';
+import type { GeneCellState } from '../types';
 import type { Gene, Genome } from 'shared/lib/genome';
 
 const GenomeWrapper = styled.div`
@@ -15,13 +15,13 @@ const GenomeWrapper = styled.div`
   border-radius: ${GENE_CELL_SIZE_PX / 2 + 3}px;
 `;
 
-export interface IGenomeVisualizerProps {
+export interface GenomeGridProps {
   genome: Genome;
   selectedGene: { id: number, gene: Gene } | null;
   setSelectedGene: (value: { id: number, gene: Gene } | null) => void;
 }
 
-export const GenomeVisualizer: React.FC<IGenomeVisualizerProps> = (props) => {
+export const GenomeGrid: React.FC<GenomeGridProps> = (props) => {
   const activeGene = props.genome.recentlyUsedGenes[props.genome.recentlyUsedGenes.length - 1];
   return (
     <GenomeWrapper>
@@ -33,7 +33,7 @@ export const GenomeVisualizer: React.FC<IGenomeVisualizerProps> = (props) => {
               ? 'recentlyUsed'
               : 'notActive';
         return (
-          <GeneCell
+          <GenomeGridCell
             key={i}
             isSelected={props.selectedGene?.id === i}
             gene={gene}
