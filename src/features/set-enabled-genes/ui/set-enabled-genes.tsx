@@ -2,11 +2,13 @@ import { useUnit } from 'effector-react';
 import { $enabledGenes } from 'entities/enabled-genes';
 import { Rgba } from 'shared/lib/color';
 import { GENES, GENES_NAMES } from 'shared/lib/genome/genes';
-import { Checkbox, FlexColumn, FlexRow, SubBlock, WideButton } from 'shared/ui';
+import { Checkbox, FlexColumn, FlexRow, SubBlock } from 'shared/ui';
 import { IconContext } from 'react-icons';
-import { MdCancel, MdReplayCircleFilled } from 'react-icons/md';
 
-import { disableAllGenes, resetEnabledGenes, addGene, removeGene } from './model';
+import { disableAllGenes, resetEnabledGenes, addGene, removeGene } from '../model';
+
+import { ResetEnabledGenes } from './reset-enabled-genes';
+import { DisableAllGenes } from './disable-all-genes';
 
 export const SetEnabledGenes = () => {
   const u = useUnit({
@@ -41,18 +43,8 @@ export const SetEnabledGenes = () => {
           value={{ size: '20', style: { flex: '0 0 auto' } }}
         >
           <FlexRow gap={5}>
-            <WideButton onClick={u.resetEnabledGenes}>
-              <FlexRow gap={5} alignItems="center" justifyContent="center">
-                <MdReplayCircleFilled />
-                Стандартные
-              </FlexRow>
-            </WideButton>
-            <WideButton onClick={u.disableAllGenes}>
-              <FlexRow gap={5} alignItems="center" justifyContent="center">
-                <MdCancel color="rgb(200, 100, 100)" />
-                Откл. все
-              </FlexRow>
-            </WideButton>
+            <ResetEnabledGenes />
+            <DisableAllGenes />
           </FlexRow>
         </IconContext.Provider>
       </FlexColumn>

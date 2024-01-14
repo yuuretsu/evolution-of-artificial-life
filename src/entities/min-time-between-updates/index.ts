@@ -1,1 +1,0 @@
-export { setMinTimeBetweenUpdates } from './model';

@@ -54,21 +54,19 @@ export const Viewer: React.FC<IViewerProps> = (props => {
     document.body.style.userSelect = initialBodyUserSelect;
   };
 
-  useEventListener('mousemove', (e) => {
-    if (!isDraggingActive) return;
-    e.preventDefault();
-    setImageOffset({ x: e.clientX - initPos.x, y: e.clientY - initPos.y });
-    setIsDraggingNow(true);
-    props.onStart?.();
-  });
+  const createMoveHandler = <T extends Event,>(getPointsFromEvent: (e: T) => IVec2[]) => {
+    return (e: T) => {
+      if (!isDraggingActive) return;
+      e.preventDefault();
+      const { x: cx, y: cy } = getMiddlePoint(getPointsFromEvent(e));
+      setImageOffset({ x: cx - initPos.x, y: cy - initPos.y });
+      setIsDraggingNow(true);
+      props.onStart?.();
+    };
+  };
 
-  useEventListener('touchmove', (e) => {
-    if (!isDraggingActive) return;
-    e.preventDefault();
-    setImageOffset({ x: e.touches[0]!.clientX - initPos.x, y: e.touches[0]!.clientY - initPos.y });
-    setIsDraggingNow(true);
-    props.onStart?.();
-  });
+  useEventListener('mousemove', createMoveHandler(e => [{ x: e.clientX, y: e.clientY }]));
+  useEventListener('touchmove', createMoveHandler(e => [...e.touches].map(x => ({ x: x!.clientX, y: x!.clientY }))));
 
   useEventListener('mouseup', cancel);
   useEventListener('touchend', cancel);
@@ -102,3 +100,8 @@ export const Viewer: React.FC<IViewerProps> = (props => {
     </Wrapper>
   );
 });
+
+const getMiddlePoint = (points: IVec2[]): IVec2 => {
+  const { x, y } = points.reduce((a, b) => ({ x: a.x + b.x, y: a.y + b.y }), { x: 0, y: 0 });
+  return { x: x / points.length, y: y / points.length };
+};

@@ -36,12 +36,12 @@
       }
     ],
     "camelcase": "warn",
-    "no-restricted-imports": [
-      "warn",
-      {
-        "patterns": ["./../**", "../**", "ui/**"]
-      }
-    ],
+    // "no-restricted-imports": [
+    //   "warn",
+    //   {
+    //     "patterns": ["./../**", "../**", "ui/**"]
+    //   }
+    // ],
     "@typescript-eslint/ban-types": "error",
     "@typescript-eslint/consistent-indexed-object-style": "warn",
     "@typescript-eslint/no-unused-vars": "warn",

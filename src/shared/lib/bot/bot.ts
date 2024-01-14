@@ -1,4 +1,4 @@
-import { MAX_BOT_AGE } from 'shared/settings';
+import { MAX_BOT_AGE, MAX_BOT_ENERGY } from 'shared/settings';
 import { bindProps } from 'shared/lib/hoc';
 import { Rgba } from 'shared/lib/color';
 import { GENES, Genome } from 'shared/lib/genome';
@@ -147,7 +147,7 @@ export class Bot implements WorldBlockDynamic {
     if (
       this.age >= MAX_BOT_AGE ||
       this.energy <= 0 ||
-      this.energy > 300 ||
+      this.energy > MAX_BOT_ENERGY ||
       this.health <= 0
     ) {
       this.isAlive = false;

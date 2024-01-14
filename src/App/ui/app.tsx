@@ -5,28 +5,25 @@ import { $selectedBlock } from 'entities/selected-block';
 import { $world, $worldInfo, updateWorldInfo } from 'entities/world';
 import { pause } from 'features/play-pause';
 import { selectWorldBlock } from 'features/select-world-block';
+import { $minTimeBetweenUpdates } from 'features/set-time-between-updates';
+import { $viewMode } from 'features/set-view-options';
+import { $visualizerParams } from 'features/set-view-options/model';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { throttle } from 'shared/lib/helpers';
+import { useWindowInnerHeight } from 'shared/lib/hooks';
 import {
   VIEW_MODES,
-  initVisualizerParams
 } from 'shared/lib/view-modes';
-import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useInterval } from 'usehooks-ts';
-import { useWindowInnerHeight } from 'shared/lib/hooks';
-import { $viewMode } from 'entities/view-mode';
-import { $minTimeBetweenUpdates } from 'entities/min-time-between-updates/model';
 import { Controls } from 'widgets/controls';
 
-import { SafeAreaBottom } from './SafeAreaBottom';
-import { Sidebar } from './Sidebar';
 import { Viewer } from './Viewer';
 import { GameImage } from './Viewer/GameImage';
-import { GlobalStyles } from './app.css';
+import { GlobalStyles } from './global-styles';
+import { SafeAreaBottom } from './safe-area-bottom';
+import { Sidebar } from './sidebar';
 
-import type {
-  VisualiserParams
-} from 'shared/lib/view-modes';
 import type { FC } from 'react';
 
 
@@ -49,12 +46,12 @@ export const App: FC = () => {
     selectedBlock: $selectedBlock,
     worldInfo: $worldInfo,
     updateWorldInfo,
-    viewModeName: $viewMode
+    viewModeName: $viewMode,
+    visualizerParams: $visualizerParams
   });
 
   const appHeight = useWindowInnerHeight();
-  const [visualizerParams, setVisualizerParams] = useState<VisualiserParams>(initVisualizerParams);
-  const [image, setImage] = useState<HTMLCanvasElement>(u.world.toImage(() => null, visualizerParams));
+  const [image, setImage] = useState<HTMLCanvasElement>(u.world.toImage(() => null, u.visualizerParams));
   const [isDrag, setIsDrag] = useState(true);
 
   const currentViewMode = VIEW_MODES[u.viewModeName]!;
@@ -62,10 +59,10 @@ export const App: FC = () => {
 
   const updateWorldView = useCallback(
     throttle(() => {
-      setImage(u.world.toImage(currentViewMode.blockToColor, visualizerParams));
+      setImage(u.world.toImage(currentViewMode.blockToColor, u.visualizerParams));
       updateWorldInfo();
     }, 1000 / 60),
-    [u.world, currentViewMode.blockToColor, visualizerParams]
+    [u.world, currentViewMode.blockToColor, u.visualizerParams]
   );
 
   const step = () => {
@@ -74,7 +71,7 @@ export const App: FC = () => {
     updateWorldView();
   };
 
-  useEffect(updateWorldView, [currentViewMode.blockToColor, u.world, visualizerParams]);
+  useEffect(updateWorldView, [currentViewMode.blockToColor, u.world, u.visualizerParams]);
 
   useInterval(step, u.isPaused ? null : u.minTimeBetweenUpdates);
 
@@ -104,10 +101,7 @@ export const App: FC = () => {
         >
           <GameImage image={image} onClickPixel={onClickPixel} />
         </Viewer>
-        <Sidebar
-          visualizerParams={visualizerParams}
-          setVisualizerParams={setVisualizerParams}
-        />
+        <Sidebar />
         {!!appRef.current && (
           <Controls
             controlsButtonsProps={{

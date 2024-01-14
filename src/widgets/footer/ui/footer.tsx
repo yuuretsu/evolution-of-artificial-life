@@ -1,7 +1,7 @@
 import { FlexColumn, FlexRow } from 'shared/ui';
 import styled from 'styled-components';
 
-import { Links } from './Links';
+import { Links } from './footer-links';
 
 export const Footer = () => {
   return (

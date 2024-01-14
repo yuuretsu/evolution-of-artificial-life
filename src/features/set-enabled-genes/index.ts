@@ -1,2 +1,2 @@
 export { setEnabledGenes } from './model';
-export { SetEnabledGenes } from './ui';
+export { SetEnabledGenes } from './ui/set-enabled-genes';

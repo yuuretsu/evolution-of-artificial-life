@@ -1,30 +1,27 @@
+import { useUnit } from 'effector-react';
+import { Legend } from 'widgets/legend';
+import { $selectedBlock } from 'entities/selected-block';
+import { $isSidebarOpen } from 'entities/sidebar';
+import { selectWorldBlock } from 'features/select-world-block';
+import { setSidebarIsOpen } from 'features/set-sidebar-is-open';
 import { useEffect, useRef } from 'react';
+import { createToggleStore } from 'shared/lib/helpers';
+import { useAccordionToggle } from 'shared/lib/hooks';
 import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_PADDING, SIDEBAR_WIDTH } from 'shared/settings';
-import styled from 'styled-components';
+import { hideScrollbar, panel } from 'shared/styles';
 import {
   Accordion,
   Br,
   FlexColumn,
   WideButton
 } from 'shared/ui';
-import { useAccordionToggle, useThrottle } from 'shared/lib/hooks';
-import { useUnit } from 'effector-react';
-import { selectWorldBlock } from 'features/select-world-block';
-import { $selectedBlock } from 'entities/selected-block';
-import { $isSidebarOpen } from 'entities/sidebar';
-import { setSidebarIsOpen } from 'features/set-sidebar-is-open';
-import { $worldInfo } from 'entities/world';
-import { createToggleStore } from 'shared/lib/helpers';
-import { hideScrollbar, panel } from 'shared/styles';
+import styled from 'styled-components';
+import { SetEnabledGenes } from 'features/set-enabled-genes';
+import { StartNewWorld } from 'features/start-new-world/ui';
+import { WorldInfo } from 'entities/world';
+import { Footer } from 'widgets/footer';
+import { SetViewOptions } from 'features/set-view-options';
 
-import { CurrentWorldSettings } from './components/CurrentWorldSettings';
-import { Legend } from './components/Legend';
-import { NewWorldForm } from './components/NewWorldForm';
-import { ViewSettings } from './components/ViewSettings';
-import { WorldInformation } from './components/WorldInfo';
-import { Footer } from './components/Footer';
-
-import type { VisualiserParams } from 'shared/lib/view-modes';
 import type { FC } from 'react';
 
 interface ISidebarProps {
@@ -51,23 +48,37 @@ const Wrapper = styled.div<ISidebarProps>`
   ${hideScrollbar};
 `;
 
-type SidebarProps = {
-  visualizerParams: VisualiserParams,
-  setVisualizerParams: (value: VisualiserParams) => void;
-};
-
-export const Sidebar: FC<SidebarProps> = (props) => {
+export const Sidebar: FC = () => {
   const u = useUnit({
     isSidebarOpen: $isSidebarOpen,
     setSidebarIsOpen,
     selectWorldBlock,
     selectedBlock: $selectedBlock,
-    worldInfo: $worldInfo
   });
 
   const worldBlockInfoAccordionProps = useAccordionToggle(
     worldBlockInfoAccordionState.$isEnabled,
     worldBlockInfoAccordionState.toggle
+  );
+
+  const currentWorldSettingsAccordionProps = useAccordionToggle(
+    currentWorldSettingsAccordionState.$isEnabled,
+    currentWorldSettingsAccordionState.toggle
+  );
+
+  const restartWorldAccordionProps = useAccordionToggle(
+    restartWorldAccordionState.$isEnabled,
+    restartWorldAccordionState.toggle
+  );
+
+  const worldInfoAccordionProps = useAccordionToggle(
+    worldInfoAccordionState.$isEnabled,
+    worldInfoAccordionState.toggle
+  );
+
+  const viewSettingsAccordionProps = useAccordionToggle(
+    viewSettingsAccordionState.$isEnabled,
+    viewSettingsAccordionState.toggle
   );
 
   const deselectBlock = () => u.selectWorldBlock(null);
@@ -81,19 +92,13 @@ export const Sidebar: FC<SidebarProps> = (props) => {
     setSidebarIsOpen(true);
   }, [u.selectedBlock]);
 
-  const worldInformationProps = useThrottle({
-    cycle: u.worldInfo.cycle,
-    botsAmount: u.worldInfo.dynamicBlocks,
-    averageAge: u.worldInfo.averageAge,
-    stepTime: u.worldInfo.stepTime,
-    maxGeneration: u.worldInfo.maxGeneration,
-  }, 100);
-
   return (
     <Wrapper isOpen={u.isSidebarOpen}>
       <FlexColumn gap={20}>
         <Legend />
-        <WorldInformation {...worldInformationProps} />
+        <Accordion name='Инфо о мире' {...worldInfoAccordionProps}>
+          <WorldInfo />
+        </Accordion>
         <Accordion
           name='Инфо о блоке'
           ref={worldBlockInfoRef}
@@ -109,12 +114,19 @@ export const Sidebar: FC<SidebarProps> = (props) => {
             <span>Кликните по пикселю на карте, чтобы увидеть здесь информацию о нём.</span>
           )}
         </Accordion>
-        <ViewSettings
+        {/* <ViewSettings
           visualizerParams={props.visualizerParams}
           setVisualizerParams={props.setVisualizerParams}
-        />
-        <CurrentWorldSettings />
-        <NewWorldForm />
+        /> */}
+        <Accordion name='Настройки просмотра' {...viewSettingsAccordionProps}>
+          <SetViewOptions />
+        </Accordion>
+        <Accordion name='Настройки мира' {...currentWorldSettingsAccordionProps}>
+          <SetEnabledGenes />
+        </Accordion>
+        <Accordion name='Перезапуск' {...restartWorldAccordionProps}>
+          <StartNewWorld />
+        </Accordion>
         <Br />
         <Footer />
       </FlexColumn>
@@ -123,3 +135,7 @@ export const Sidebar: FC<SidebarProps> = (props) => {
 };
 
 const worldBlockInfoAccordionState = createToggleStore(true);
+const currentWorldSettingsAccordionState = createToggleStore(false);
+const restartWorldAccordionState = createToggleStore(false);
+const worldInfoAccordionState = createToggleStore(true);
+const viewSettingsAccordionState = createToggleStore(true);
