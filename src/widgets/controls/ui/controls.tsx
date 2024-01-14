@@ -1,14 +1,14 @@
-import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import { FlexColumn } from 'ui';
 import { SIDEBAR_PADDING } from 'settings';
 import { type FC } from 'react';
-import { panel } from 'App/app.css';
+import { panel } from 'app/app.css';
 import { TimeBetweenUpdatesRange } from 'features/set-time-between-updates';
 
-import { ControlsButtons } from './ControlsButtons';
+import { ControlsButtons } from './buttons';
 
-import type { IControlsButtonsProps } from './ControlsButtons';
+import type { IControlsButtonsProps } from './buttons';
+
 
 const Wrapper = styled.div`
   position: fixed;
@@ -29,7 +29,7 @@ export interface IControlsProps {
   controlsButtonsProps: IControlsButtonsProps;
 }
 
-export const Controls: FC<IControlsProps> = observer(({ controlsButtonsProps }) => {
+export const Controls: FC<IControlsProps> = ({ controlsButtonsProps }) => {
   return (
     <Wrapper>
       <FlexColumn gap={10}>
@@ -42,4 +42,4 @@ export const Controls: FC<IControlsProps> = observer(({ controlsButtonsProps }) 
       </FlexColumn>
     </Wrapper>
   );
-});
+};

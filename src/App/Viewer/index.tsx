@@ -1,7 +1,6 @@
 import { useUnit } from 'effector-react';
 import { $imageOffset, setImageOffset } from 'entities/image-offset';
 import { debounce } from 'lib/helpers';
-import { observer } from 'mobx-react';
 import { useCallback, useState } from 'react';
 import { SIDEBAR_ANIMATION_SPEED } from 'settings';
 import styled from 'styled-components';
@@ -32,7 +31,7 @@ export interface IViewerProps {
   children: React.ReactNode;
 };
 
-export const Viewer: React.FC<IViewerProps> = observer(props => {
+export const Viewer: React.FC<IViewerProps> = (props => {
   const { imageOffset } = useUnit({
     imageOffset: $imageOffset,
   });

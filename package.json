@@ -35,8 +35,6 @@
     "@yuuretsu/pixels-canvas": "^0.1.1",
     "effector": "^23.1.0",
     "effector-react": "^23.1.0",
-    "mobx": "^6.10.2",
-    "mobx-react": "^7.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",

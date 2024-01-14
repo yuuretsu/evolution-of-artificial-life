@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react';
 import { IconContext } from 'react-icons';
 import { FlexRow } from 'ui';
 import {
@@ -19,7 +18,8 @@ import { $isPaused } from 'entities/play-pause';
 import { $isSidebarOpen } from 'entities/sidebar';
 import { setSidebarIsOpen } from 'features/set-sidebar-is-open';
 
-import { RoundedButton } from './RoundedButton';
+
+import { RoundedButton } from './rounded-button';
 
 import type { FC } from 'react';
 
@@ -28,7 +28,7 @@ export interface IControlsButtonsProps {
   fullscreenElement?: HTMLElement | null;
 }
 
-export const ControlsButtons: FC<IControlsButtonsProps> = observer(({ onClickStep, fullscreenElement }) => {
+export const ControlsButtons: FC<IControlsButtonsProps> = ({ onClickStep, fullscreenElement }) => {
   const u = useUnit({
     isSidebarOpen: $isSidebarOpen,
     setSidebarIsOpen,
@@ -78,7 +78,7 @@ export const ControlsButtons: FC<IControlsButtonsProps> = observer(({ onClickSte
       </IconContext.Provider>
     </FlexRow>
   );
-});
+};
 
 const Divider = styled.div`
   background-color: rgb(80, 80, 80);

@@ -1,4 +1,4 @@
-import { createEvent, createStore } from 'effector';
+import { createEvent, createStore, sample } from 'effector';
 import { useUnit } from 'effector-react';
 
 import type { EventCallable, StoreWritable } from 'effector';
@@ -154,19 +154,31 @@ export const connectForm = <T>($s: StoreWritable<T>, toString: (t: T) => string,
 
 export interface ToggleStore {
   $isEnabled: StoreWritable<boolean>;
+  set: EventCallable<boolean>;
   toggle: EventCallable<void>;
   open: EventCallable<void>;
   close: EventCallable<void>;
 }
 
 export const createToggleStore = (initial: boolean): ToggleStore => {
+  const set = createEvent<boolean>();
   const toggle = createEvent();
-  const open = toggle.prepend(() => true);
-  const close = toggle.prepend(() => false);
-  const $isEnabled = createStore(initial).on(toggle, state => !state);
+  const open = set.prepend(() => true);
+  const close = set.prepend(() => false);
+
+  const $isEnabled = createStore(initial)
+    .on(set, (_, value) => value);
+
+  sample({
+    source: $isEnabled,
+    clock: toggle,
+    fn: (x) => !x,
+    target: set
+  });
 
   return {
     $isEnabled,
+    set,
     toggle,
     open,
     close

@@ -4,7 +4,6 @@ import { Rgba } from 'lib/color';
 import { createToggleStore } from 'lib/helpers';
 import { useAccordionToggle } from 'lib/hooks';
 import { VISIBLE_GENES, viewModesList } from 'lib/view-modes';
-import { observer } from 'mobx-react';
 import { IconContext } from 'react-icons';
 import { MdCancel, MdChecklist } from 'react-icons/md';
 import { Accordion, Checkbox, FlexColumn, FlexRow, InputRange, OptionalBlock, Radio, SubBlock, WideButton } from 'ui';
@@ -17,7 +16,7 @@ export interface IViewSettingsProps {
   setVisualizerParams: (value: VisualiserParams) => void;
 }
 
-export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
+export const ViewSettings: FC<IViewSettingsProps> = (props) => {
 
   const u = useUnit({
     viewModeName: $viewMode,
@@ -124,6 +123,6 @@ export const ViewSettings: FC<IViewSettingsProps> = observer((props) => {
       </FlexColumn>
     </Accordion>
   );
-});
+};
 
-const viewSettingsAccordionState = createToggleStore(false);
+const viewSettingsAccordionState = createToggleStore(true);

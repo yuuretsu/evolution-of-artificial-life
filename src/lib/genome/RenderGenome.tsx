@@ -3,7 +3,7 @@ import { limit, cycleNumber, createToggleStore } from 'lib/helpers';
 import { useState, useEffect } from 'react';
 import { FlexColumn, Accordion, DropdownSmall, InputNumberSmall, WideButton, SubBlock, Table2Cols, FlexRow, OptionalBlock } from 'ui';
 import styled from 'styled-components';
-import { hideScrollbar } from 'App/app.css';
+import { hideScrollbar } from 'app/app.css';
 
 import { Gene, NULL_GENE_TEMPLATE } from './gene';
 import { GENES } from './genes';
@@ -43,6 +43,7 @@ export const RenderGenome: FC<{ genome: Genome }> = ({ genome }) => {
   useEffect(() => {
     setOption(selectedGene?.gene.property.option.toFixed(2) || 0);
     setBranches(selectedGene?.gene.property.branches || [0, 0]);
+    geneAccordionState.open();
   }, [selectedGene]);
 
   const handleBlurParameter: FocusEventHandler<HTMLInputElement> = (e) => {

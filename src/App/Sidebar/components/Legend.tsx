@@ -1,5 +1,4 @@
 import { GENES } from 'lib/genome';
-import { observer } from 'mobx-react';
 import { Accordion, FlexColumn } from 'ui';
 import { GENES_NAMES, type GeneName } from 'lib/genome/genes';
 import { createToggleStore } from 'lib/helpers';
@@ -8,7 +7,7 @@ import { useAccordionToggle } from 'lib/hooks';
 import type { ToggleStore } from 'lib/helpers';
 import type { FC } from 'react';
 
-export const Legend: FC = observer(() => {
+export const Legend: FC = () => {
   const genesWithDescription = Object.entries(GENES)
     .filter(([, geneTemplate]) => typeof geneTemplate.description === 'string');
 
@@ -48,7 +47,7 @@ export const Legend: FC = observer(() => {
       </FlexColumn>
     </Accordion>
   );
-});
+};
 
 const legendAccordion = createToggleStore(false);
 

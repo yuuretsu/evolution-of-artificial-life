@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react';
 import { useEffect, useRef } from 'react';
 import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_PADDING, SIDEBAR_WIDTH } from 'settings';
 import styled from 'styled-components';
@@ -8,7 +7,7 @@ import {
   FlexColumn,
   WideButton
 } from 'ui';
-import { hideScrollbar, panel } from 'App/app.css';
+import { hideScrollbar, panel } from 'app/app.css';
 import { useAccordionToggle, useThrottle } from 'lib/hooks';
 import { useUnit } from 'effector-react';
 import { selectWorldBlock } from 'features/select-world-block';
@@ -57,7 +56,7 @@ type SidebarProps = {
   setVisualizerParams: (value: VisualiserParams) => void;
 };
 
-export const Sidebar: FC<SidebarProps> = observer((props) => {
+export const Sidebar: FC<SidebarProps> = (props) => {
   const u = useUnit({
     isSidebarOpen: $isSidebarOpen,
     setSidebarIsOpen,
@@ -121,6 +120,6 @@ export const Sidebar: FC<SidebarProps> = observer((props) => {
       </FlexColumn>
     </Wrapper>
   );
-});
+};
 
-const worldBlockInfoAccordionState = createToggleStore(false);
+const worldBlockInfoAccordionState = createToggleStore(true);

@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react';
 import { Accordion, Table2Cols } from 'ui';
 import { createToggleStore, numberToShortString } from 'lib/helpers';
 import { type FC } from 'react';
@@ -12,7 +11,7 @@ export interface IWorldInformationProps {
   maxGeneration: number;
 }
 
-export const WorldInformation: FC<IWorldInformationProps> = observer(({
+export const WorldInformation: FC<IWorldInformationProps> = ({
   cycle,
   botsAmount,
   maxGeneration,
@@ -37,6 +36,6 @@ export const WorldInformation: FC<IWorldInformationProps> = observer(({
       />
     </Accordion>
   );
-});
+};
 
-const worldInfoAccordionState = createToggleStore(false);
+const worldInfoAccordionState = createToggleStore(true);

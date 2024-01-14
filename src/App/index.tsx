@@ -10,15 +10,14 @@ import {
   VIEW_MODES,
   initVisualizerParams
 } from 'lib/view-modes';
-import { observer } from 'mobx-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useInterval } from 'usehooks-ts';
 import { useWindowInnerHeight } from 'lib/hooks';
 import { $viewMode } from 'entities/view-mode';
 import { $minTimeBetweenUpdates } from 'entities/min-time-between-updates/model';
+import { Controls } from 'widgets/controls';
 
-import { Controls } from './Controls';
 import { SafeAreaBottom } from './SafeAreaBottom';
 import { Sidebar } from './Sidebar';
 import { Viewer } from './Viewer';
@@ -38,7 +37,7 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
-export const App: FC = observer(() => {
+export const App: FC = () => {
   const appRef = useRef<HTMLDivElement>(null);
 
   const u = useUnit({
@@ -120,4 +119,4 @@ export const App: FC = observer(() => {
       </Wrapper>
     </>
   );
-});
+};
