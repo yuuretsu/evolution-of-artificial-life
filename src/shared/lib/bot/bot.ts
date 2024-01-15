@@ -3,8 +3,10 @@ import { bindProps } from 'shared/lib/hoc';
 import { Rgba } from 'shared/lib/color';
 import { GENES, Genome } from 'shared/lib/genome';
 import { cycleNumber, limit, randInt } from 'shared/lib/helpers';
-import { BotProfile } from 'widgets/bot-profile';
+import { createElement } from 'react';
+import { BotGenome } from 'widgets/bot-genome';
 
+import type { ComponentType } from 'react';
 import type { SquareWorld } from '../world/world';
 import type { WorldBlockDynamic } from 'shared/types';
 import type { GenePool } from 'shared/lib/genome';
@@ -16,7 +18,8 @@ interface BotProps {
   familyColor: Rgba,
   energy: number,
   hunterFactor: number,
-  genome: Genome
+  genome: Genome,
+  Component: ComponentType<{ bot: Bot }>
 }
 
 const defaultProps: BotProps = {
@@ -25,7 +28,8 @@ const defaultProps: BotProps = {
   color: new Rgba(0, 0, 0, 0),
   familyColor: new Rgba(0, 0, 0, 0),
   hunterFactor: 0,
-  genome: new Genome(0)
+  genome: new Genome(0, BotGenome),
+  Component: () => createElement('div')
 };
 
 export class Bot implements WorldBlockDynamic {
@@ -41,6 +45,8 @@ export class Bot implements WorldBlockDynamic {
   genome: Genome;
   private _health = 0.5;
   private _narrow: number = randInt(0, 8) / 8 * Math.PI * 2;
+  private _Component: ComponentType<{ bot: Bot; }>;
+  Render: ComponentType;
 
   constructor(
     props: Partial<BotProps>
@@ -52,6 +58,8 @@ export class Bot implements WorldBlockDynamic {
     this.generation = p.generation;
     this.energy = p.energy;
     this.genome = p.genome;
+    this._Component = p.Component;
+    this.Render = bindProps(this._Component, { bot: this });
   }
   get narrow(): number {
     return this._narrow;
@@ -140,6 +148,7 @@ export class Bot implements WorldBlockDynamic {
       energy,
       hunterFactor: this.hunterFactor,
       genome: this.genome.replication(pool),
+      Component: this._Component
     });
   }
   live(x: number, y: number, world: SquareWorld) {
@@ -158,5 +167,5 @@ export class Bot implements WorldBlockDynamic {
     this.age++;
     this.health = Math.min(1, this.health + 0.01);
   }
-  Render = bindProps(BotProfile, { bot: this });
+  // Render = bindProps(BotProfile, { bot: this });
 }

@@ -1,4 +1,6 @@
 import { PixelsCanvas } from '@yuuretsu/pixels-canvas';
+import { BotProfile } from 'widgets/bot-profile';
+import { BotGenome } from 'widgets/bot-genome';
 
 import { Bot } from '../bot';
 import { Rgba } from '../color';
@@ -42,16 +44,21 @@ export class SquareWorld extends Grid<WorldBlock> {
     this.genePool = props.genePool;
     const amount = limit(0, this.width * this.height, props.botsAmount);
     for (let i = 0; i < amount; i++) {
-      this.set(
-        ...this.randEmpty(),
-        new Bot({
-          color: new Rgba(100, 100, 100),
-          familyColor: Rgba.randRgb(),
-          energy: 100,
-          hunterFactor: 0.5,
-          genome: new Genome(props.genomeSize).fillRandom(props.genePool.map(geneNameToGene))
-        })
-      );
+      const [x, y] = this.randEmpty();
+
+      const genome = new Genome(props.genomeSize, BotGenome)
+        .fillRandom(props.genePool.map(geneNameToGene));
+
+      const bot = new Bot({
+        color: new Rgba(100, 100, 100),
+        familyColor: Rgba.randRgb(),
+        energy: 100,
+        hunterFactor: 0.5,
+        genome,
+        Component: BotProfile,
+      });
+
+      this.set(x, y, bot);
     }
   }
   narrowToCoords(x: number, y: number, angle: number, length: number) {

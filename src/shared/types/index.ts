@@ -1,11 +1,11 @@
 import type { SquareWorld } from 'shared/lib/world/world';
 import type { CanGetColor } from './can-get-color';
 import type { CanInteract } from './can-interact';
-import type { FC } from 'react';
+import type { ComponentType } from 'react';
 
 export interface BaseWorldBlock extends CanGetColor, CanInteract {
   age: number;
-  Render: FC;
+  Render: ComponentType;
 }
 
 export interface WorldBlockStatic extends BaseWorldBlock {

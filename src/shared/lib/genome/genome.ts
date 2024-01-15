@@ -1,12 +1,11 @@
 import { cycleNumber } from 'shared/lib/helpers';
 import { MAX_ACTIONS } from 'shared/settings';
 import { bindProps } from 'shared/lib/hoc';
-import { BotGenome } from 'widgets/bot-genome';
-
 
 import { Gene, NULL_GENE, NULL_GENE_TEMPLATE } from './gene';
 import { GENES } from './genes';
 
+import type { ComponentType } from 'react';
 import type { SquareWorld } from '../world/world';
 import type { Bot } from 'shared/lib/bot';
 import type { GeneName } from './genes';
@@ -17,8 +16,12 @@ export class Genome {
   genes: Gene[];
   private _lastActions: { template: GeneTemplate, result: ActionResult }[] = [];
   private _pointer: number = 0;
+  private _Component: ComponentType<{ genome: Genome; }>;
+  Render: ComponentType;
 
-  constructor(length: number) {
+  constructor(length: number, Component: ComponentType<{ genome: Genome }>) {
+    this._Component = Component;
+    this.Render = bindProps(this._Component, { genome: this });
     this.genes = new Array<Gene>(length)
       .fill(new Gene(NULL_GENE_TEMPLATE, { option: 0, branches: [0, 0] }));
   }
@@ -43,7 +46,7 @@ export class Genome {
     return this;
   }
   replication(pool: GenePool) {
-    const genome = new Genome(this.genes.length);
+    const genome = new Genome(this.genes.length, this._Component);
     genome.genes = this.genes.map(gene =>
       Math.random() > 0.995 ? gene.mutate(pool, this.genes.length) : gene || NULL_GENE
     );
@@ -73,8 +76,6 @@ export class Genome {
     }
     this.genesHistory.push([...recentlyUsedGenes]);
   }
-
-  Render = bindProps(BotGenome, { genome: this });
 }
 
 export { GENES, Gene };

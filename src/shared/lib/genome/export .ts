@@ -1,1 +1,0 @@
-export { Genome } from './genome';
