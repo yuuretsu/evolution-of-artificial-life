@@ -1,13 +1,13 @@
 import { combine, createEvent, createStore, sample } from 'effector';
 import { $world } from 'entities/world';
-import { SquareWorld } from 'shared/lib/world';
+import { SquareWorld } from 'shared/lib/world/world';
 import { $enabledGenes } from 'entities/enabled-genes';
 import { PIXEL_SIZE } from 'shared/settings';
 import { $selectedBlock } from 'entities/selected-block';
 import { resetImageOffset } from 'entities/image-offset';
 import { connectForm } from 'shared/lib/helpers';
 
-import type { NewWorldProps } from 'shared/lib/world';
+import type { NewWorldProps } from 'shared/lib/world/world';
 import type { Store } from 'effector';
 
 

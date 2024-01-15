@@ -3,11 +3,12 @@ import { MAX_ACTIONS } from 'shared/settings';
 import { bindProps } from 'shared/lib/hoc';
 import { BotGenome } from 'widgets/bot-genome';
 
+
 import { Gene, NULL_GENE, NULL_GENE_TEMPLATE } from './gene';
 import { GENES } from './genes';
 
+import type { SquareWorld } from '../world/world';
 import type { Bot } from 'shared/lib/bot';
-import type { World } from 'shared/lib/world';
 import type { GeneName } from './genes';
 import type { ActionResult, GenePool, GeneTemplate } from './types';
 
@@ -48,7 +49,7 @@ export class Genome {
     );
     return genome;
   }
-  doAction(bot: Bot, x: number, y: number, world: World) {
+  doAction(bot: Bot, x: number, y: number, world: SquareWorld) {
     const recentlyUsedGenes = [];
     this._lastActions = [];
     for (let i = 0; i < MAX_ACTIONS; i++) {

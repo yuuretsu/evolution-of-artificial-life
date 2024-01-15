@@ -5,10 +5,10 @@ import { GENES, Genome } from 'shared/lib/genome';
 import { cycleNumber, limit, randInt } from 'shared/lib/helpers';
 import { BotProfile } from 'widgets/bot-profile';
 
+import type { SquareWorld } from '../world/world';
 import type { WorldBlockDynamic } from 'shared/types';
 import type { GenePool } from 'shared/lib/genome';
 import type { VisualiserParams } from 'shared/lib/view-modes';
-import type { World } from 'shared/lib/world';
 
 interface BotProps {
   generation: number,
@@ -142,7 +142,7 @@ export class Bot implements WorldBlockDynamic {
       genome: this.genome.replication(pool),
     });
   }
-  live(x: number, y: number, world: World) {
+  live(x: number, y: number, world: SquareWorld) {
     if (
       this.age >= MAX_BOT_AGE ||
       this.energy <= 0 ||

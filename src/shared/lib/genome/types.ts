@@ -1,6 +1,6 @@
+import type { SquareWorld } from '../world/world';
 import type { Bot } from 'shared/lib/bot';
 import type { Rgba } from 'shared/lib/color';
-import type { World } from 'shared/lib/world';
 
 type GeneTemplateBase = {
   id: string,
@@ -43,6 +43,6 @@ export type GeneParameters = {
   bot: Bot,
   x: number,
   y: number,
-  world: World,
+  world: SquareWorld,
   property: GeneProperty
 };

@@ -1,15 +1,15 @@
 import { PixelsCanvas } from '@yuuretsu/pixels-canvas';
 
-import { Bot } from './bot';
-import { Rgba } from './color';
-import { Genome } from './genome';
-import { Grid } from './grid';
-import { limit, shuffle } from './helpers';
-import { geneNameToGene } from './genome/genes';
+import { Bot } from '../bot';
+import { Rgba } from '../color';
+import { Genome } from '../genome';
+import { Grid } from '../grid';
+import { limit, shuffle } from '../helpers';
+import { geneNameToGene } from '../genome/genes';
 
-import type { GeneName } from './genome';
-import type { Coords } from './grid';
-import type { BlockVisualiser, VisualiserParams } from './view-modes';
+import type { GeneName } from '../genome';
+import type { Coords } from '../grid';
+import type { BlockVisualiser, VisualiserParams } from '../view-modes';
 import type { WorldBlock, WorldBlockDynamic } from 'shared/types';
 
 export type NewWorldProps = {
@@ -28,7 +28,7 @@ export type WorldInfo = {
   maxGeneration: number;
 };
 
-export abstract class World extends Grid<WorldBlock> {
+export class SquareWorld extends Grid<WorldBlock> {
   genePool: GeneName[];
   protected info: WorldInfo = {
     cycle: 0,
@@ -40,24 +40,6 @@ export abstract class World extends Grid<WorldBlock> {
   constructor(props: NewWorldProps) {
     super(props.width, props.height);
     this.genePool = props.genePool;
-  }
-  abstract toImage(
-    visualizer: BlockVisualiser,
-    params: VisualiserParams
-  ): HTMLCanvasElement;
-  abstract step(): void;
-  abstract getInfo(): WorldInfo;
-  abstract narrowToCoords(
-    x: number,
-    y: number,
-    narrow: number,
-    length: number
-  ): Coords;
-}
-
-export class SquareWorld extends World {
-  constructor(props: NewWorldProps) {
-    super(props);
     const amount = limit(0, this.width * this.height, props.botsAmount);
     for (let i = 0; i < amount; i++) {
       this.set(

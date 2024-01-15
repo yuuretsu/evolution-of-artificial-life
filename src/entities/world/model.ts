@@ -1,9 +1,9 @@
 import { createEvent, createStore, sample } from 'effector';
 import { INITIALLY_ENABLED_GENES_NAMES } from 'shared/lib/genome/genes';
 import { PIXEL_SIZE } from 'shared/settings';
-import { SquareWorld, type NewWorldProps, type World } from 'shared/lib/world';
+import { SquareWorld } from 'shared/lib/world/world';
 
-import type { WorldInfo } from 'shared/lib/world';
+import type { WorldInfo, NewWorldProps } from 'shared/lib/world/world';
 
 
 const initWidth = Math.max(Math.floor(window.innerWidth / PIXEL_SIZE) + 2, 10);
@@ -17,7 +17,7 @@ const INIT_WORLD_PROPS: NewWorldProps = {
   genomeSize: 32,
 };
 
-export const $world = createStore<World>(new SquareWorld(INIT_WORLD_PROPS));
+export const $world = createStore<SquareWorld>(new SquareWorld(INIT_WORLD_PROPS));
 
 export const setWorldInfo = createEvent<WorldInfo>();
 
