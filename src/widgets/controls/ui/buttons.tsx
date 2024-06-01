@@ -35,7 +35,7 @@ export const ControlsButtons: FC<IControlsButtonsProps> = ({ onClickStep, fullsc
         {isCanFullscreen && (
           <>
             <Divider />
-            <ToggleFullscreen />
+            <ToggleFullscreen fullscreenElement={fullscreenElement} />
           </>
         )}
         <Divider />

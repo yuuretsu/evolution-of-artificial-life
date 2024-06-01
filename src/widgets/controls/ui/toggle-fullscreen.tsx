@@ -2,7 +2,7 @@ import { MdFullscreen, MdFullscreenExit } from 'react-icons/md';
 import { RoundedToggle } from 'shared/ui';
 
 type ToggleFullscreenProps = {
-  fullscreenElement?: HTMLElement | null;
+  fullscreenElement: HTMLElement | null;
 }
 
 export const ToggleFullscreen = ({ fullscreenElement }: ToggleFullscreenProps) => {
