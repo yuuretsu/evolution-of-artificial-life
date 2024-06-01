@@ -51,7 +51,7 @@ export const ControlsButtons: FC<IControlsButtonsProps> = ({ onClickStep, fullsc
           title={u.isPaused ? 'Возобновить' : 'Пауза'}
           slotA={<MdPlayArrow />}
           slotB={<MdPause />}
-          isA={!u.isPaused}
+          isA={u.isPaused}
           onChange={u.toggleIsPlaying}
         />
         <RoundedButton title="Шаг симуляции" onClick={onClickStep}>
