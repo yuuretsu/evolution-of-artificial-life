@@ -1,5 +1,5 @@
 import { IconContext } from 'react-icons';
-import { FlexRow } from 'shared/ui';
+import { FlexRow, RoundedButton, RoundedToggle } from 'shared/ui';
 import {
   MdClose,
   MdMenu,
@@ -17,10 +17,6 @@ import { toggleIsPlaying } from 'features/play-pause';
 import { $isPaused } from 'entities/play-pause';
 import { $isSidebarOpen } from 'entities/sidebar';
 import { setSidebarIsOpen } from 'features/set-sidebar-is-open';
-
-
-import { RoundedButton } from './rounded-button';
-import { RoundedToggle } from './rounded-toggle';
 
 import type { FC } from 'react';
 
