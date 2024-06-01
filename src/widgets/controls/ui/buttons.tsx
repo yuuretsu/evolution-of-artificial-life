@@ -20,6 +20,7 @@ import { setSidebarIsOpen } from 'features/set-sidebar-is-open';
 
 
 import { RoundedButton } from './rounded-button';
+import { RoundedToggle } from './rounded-toggle';
 
 import type { FC } from 'react';
 
@@ -43,20 +44,16 @@ export const ControlsButtons: FC<IControlsButtonsProps> = ({ onClickStep, fullsc
     ? document.exitFullscreen()
     : fullscreenElement?.requestFullscreen?.();
 
-  const IconPlayPause = u.isPaused ? MdPlayArrow : MdPause;
-  const IconSidebarOpenClose = u.isSidebarOpen ? MdClose : MdMenu;
-
-  const IconFullscreen = isInFullscreen ? MdFullscreenExit : MdFullscreen;
-
   return (
     <FlexRow gap={10}>
       <IconContext.Provider value={{ size: '25px', color: 'whitesmoke' }}>
-        <RoundedButton
-          title={u.isPaused ? 'Продолжить' : 'Пауза'}
-          onClick={u.toggleIsPlaying}
-        >
-          <IconPlayPause />
-        </RoundedButton>
+        <RoundedToggle
+          title={u.isPaused ? 'Возобновить' : 'Пауза'}
+          slotA={<MdPlayArrow />}
+          slotB={<MdPause />}
+          isA={!u.isPaused}
+          onChange={u.toggleIsPlaying}
+        />
         <RoundedButton title="Шаг симуляции" onClick={onClickStep}>
           <MdSkipNext />
         </RoundedButton>
@@ -66,15 +63,23 @@ export const ControlsButtons: FC<IControlsButtonsProps> = ({ onClickStep, fullsc
         {isCanFullscreen && (
           <>
             <Divider />
-            <RoundedButton title="Fullscreen" onClick={onClickFullscreen}>
-              <IconFullscreen />
-            </RoundedButton>
+            <RoundedToggle
+              title={isInFullscreen ? 'Выход из полноэкранного режима' : 'Полноэкранный режим'}
+              slotA={<MdFullscreen />}
+              slotB={<MdFullscreenExit />}
+              isA={!isInFullscreen}
+              onChange={onClickFullscreen}
+            />
           </>
         )}
         <Divider />
-        <RoundedButton title="Настройки" onClick={() => u.setSidebarIsOpen(!u.isSidebarOpen)}>
-          <IconSidebarOpenClose />
-        </RoundedButton>
+        <RoundedToggle
+          title="Настройки"
+          slotA={<MdClose />}
+          slotB={<MdMenu />}
+          isA={u.isSidebarOpen}
+          onChange={u.setSidebarIsOpen}
+        />
       </IconContext.Provider>
     </FlexRow>
   );
