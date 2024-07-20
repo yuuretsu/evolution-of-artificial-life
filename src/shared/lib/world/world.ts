@@ -96,6 +96,10 @@ export class SquareWorld extends Grid<WorldBlock> {
     this.info.averageAge = averageAge;
     this.info.maxGeneration = Math.max(this.info.maxGeneration, maxGeneration);
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getSunlight(_x: number, _y: number) {
+    return 1;
+  }
   toImage(visualizer: BlockVisualiser, params: VisualiserParams) {
     const canvas = document.createElement('canvas');
     const pix = new PixelsCanvas({

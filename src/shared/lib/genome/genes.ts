@@ -59,8 +59,8 @@ export const GENES_ARR = [
     description: 'Бот получает энергию путем фотосинтеза. При этом эффективность его фотосинтеза возрастает, а эффективность атак — падает. Восстанавливает своё здоровье на 0,01.',
     color: new Rgba(0, 255, 0),
     colorInfluence: 0.01,
-    action: ({ bot }) => {
-      const energy = 1 * (1 - bot.hunterFactor) ** 2;
+    action: ({ bot, world, x, y }) => {
+      const energy = world.getSunlight(x, y) * (1 - bot.hunterFactor) ** 2;
       bot.energy += energy;
       bot.increaseHunterFactor(-0.01);
       bot.health = Math.min(1, bot.health + 0.01);
@@ -129,8 +129,8 @@ export const GENES_ARR = [
     description: 'Бот отталкивает блок перед собой на одну клетку, если клетка за ним пуста. Расходует 0,5 энергии.',
     color: new Rgba(0, 0, 255),
     colorInfluence: 0.01,
-    action: ({ bot, x, y, world, property }) => {
-      bot.energy -= 0.5 * property.option;
+    action: ({ bot, x, y, world }) => {
+      bot.energy -= 0.5;
       const frontCoords = world.narrowToCoords(x, y, bot.narrow, 1);
       const frontBlock = world.get(...frontCoords);
       const otherCoords = world.narrowToCoords(x, y, bot.narrow, -1);
