@@ -48,7 +48,7 @@ export const App: FC = () => {
   });
 
   const appHeight = useWindowInnerHeight();
-  const [image, setImage] = useState<HTMLCanvasElement>(u.world.toImage(() => null, u.visualizerParams));
+  const [image, setImage] = useState<HTMLCanvasElement>(() => u.world.toImage(() => null, u.visualizerParams));
   const [isDrag, setIsDrag] = useState(true);
 
   const currentViewMode = VIEW_MODES[u.viewModeName]!;

@@ -1,4 +1,3 @@
-import { PixelsCanvas } from '@yuuretsu/pixels-canvas';
 import { BotProfile } from 'widgets/bot-profile';
 import { BotGenome } from 'widgets/bot-genome';
 
@@ -101,23 +100,25 @@ export class SquareWorld extends Grid<WorldBlock> {
     return 1;
   }
   toImage(visualizer: BlockVisualiser, params: VisualiserParams) {
-    const canvas = document.createElement('canvas');
-    const pix = new PixelsCanvas({
-      width: this.width,
-      height: this.height,
-      pixelSize: 1,
-      canvas
-    });
+    const ctx = document.createElement('canvas').getContext('2d');
+    if (!ctx) throw new Error('Failed to create 2d context');
+    ctx.canvas.width = this.width;
+    ctx.canvas.height = this.height;
+    const imageData = ctx.createImageData(this.width, this.height);
+
 
     const colTransparent = new Rgba(0, 0, 0);
-    const pixels = pix.getPixels();
     for (const [x, y] of this.getAllCoords()) {
       const obj = this.get(x, y);
       const color = obj ? visualizer(obj, params) || colTransparent : colTransparent;
-      pixels[y]![x] = color.toArray();
+      const pointer = (y * this.width + x) * 4;
+      imageData.data[pointer] = color.red;
+      imageData.data[pointer + 1] = color.green;
+      imageData.data[pointer + 2] = color.blue;
+      imageData.data[pointer + 3] = color.alpha;
     }
 
-    pix.setPixels(pixels, 0, 0);
-    return pix.canvas;
+    ctx.putImageData(imageData, 0, 0);
+    return ctx.canvas;
   }
 }
