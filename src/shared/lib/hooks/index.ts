@@ -50,3 +50,33 @@ export const useAccordionToggle = ($s: StoreWritable<boolean>, e: EventCallable<
     onToggle: e
   });
 };
+
+export const useMouseActivity = (inactivityTimeout: number) => {
+  const [isActive, setIsActive] = useState(true);
+
+  useEffect(() => {
+    let timeoutId: number;
+
+    const resetInactivityTimer = () => {
+      setIsActive(true);
+      window.clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(() => setIsActive(false), inactivityTimeout);
+    };
+
+    resetInactivityTimer();
+    const events = ['mousemove', 'touchmove'] as const satisfies (keyof WindowEventMap)[];
+
+    events.forEach(event => {
+      window.addEventListener(event, resetInactivityTimer);
+    });
+
+    return () => {
+      events.forEach(event => {
+        window.removeEventListener(event, resetInactivityTimer);
+      });
+      clearTimeout(timeoutId);
+    };
+  }, [inactivityTimeout]);
+
+  return isActive;
+};
