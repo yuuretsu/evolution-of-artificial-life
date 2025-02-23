@@ -26,6 +26,7 @@ export const GENES_ARR = [
       const frontCoords = world.narrowToCoords(x, y, bot.narrow, 1);
       const frontBlock = world.get(...frontCoords);
       bot.energy *= 0.9;
+      bot.energy -= 1;
       if (frontBlock) return { isCompleted: true, msg: 'Размножение не удалось: спереди блок' };
       if (bot.energy <= 5) return { isCompleted: true, msg: 'Размножение не удалось: мало энергии' };
       if (bot.age <= 10) return { isCompleted: true, msg: 'Размножение не удалось: бот слишком молод' };
@@ -130,7 +131,7 @@ export const GENES_ARR = [
     color: new Rgba(100, 0, 255),
     colorInfluence: 0.01,
     action: ({ bot, x, y, world }) => {
-      bot.energy -= 0.5;
+      bot.energy -= 0.1;
       const frontCoords = world.narrowToCoords(x, y, bot.narrow, 1);
       const frontBlock = world.get(...frontCoords);
       const otherCoords = world.narrowToCoords(x, y, bot.narrow, 2);
@@ -148,7 +149,7 @@ export const GENES_ARR = [
     color: new Rgba(0, 0, 255),
     colorInfluence: 0.01,
     action: ({ bot, x, y, world }) => {
-      bot.energy -= 0.5;
+      bot.energy -= 0.1;
       const frontCoords = world.narrowToCoords(x, y, bot.narrow, 1);
       const frontBlock = world.get(...frontCoords);
       const otherCoords = world.narrowToCoords(x, y, bot.narrow, 2);
