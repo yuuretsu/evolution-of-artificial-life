@@ -6,7 +6,7 @@ import { TimeBetweenUpdatesRange } from 'features/set-time-between-updates';
 import { panel } from 'shared/styles';
 import { useUnit } from 'effector-react';
 import { $isSidebarOpen } from 'entities/sidebar';
-import { useMouseActivity } from 'shared/lib/hooks';
+import { useActivityMonitor } from 'shared/lib/hooks';
 
 import { ControlsButtons } from './buttons';
 
@@ -38,7 +38,7 @@ export const Controls: FC<IControlsProps> = ({ controlsButtonsProps }) => {
     isSidebarOpen: $isSidebarOpen,
   });
 
-  const isMouseActive = useMouseActivity(10000);
+  const isMouseActive = useActivityMonitor(['mousemove', 'touchmove'], 10000);
 
   return (
     <Wrapper isShow={isMouseActive || u.isSidebarOpen}>
