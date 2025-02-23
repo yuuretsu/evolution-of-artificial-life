@@ -142,6 +142,24 @@ export const GENES_ARR = [
     }
   } as const,
   {
+    id: 'pull',
+    name: 'Тянуть',
+    description: 'Бот притягивает блок перед собой. Расходует 0,5 энергии.',
+    color: new Rgba(0, 0, 255),
+    colorInfluence: 0.01,
+    action: ({ bot, x, y, world }) => {
+      bot.energy -= 0.5;
+      const frontCoords = world.narrowToCoords(x, y, bot.narrow, 1);
+      const frontBlock = world.get(...frontCoords);
+      const otherCoords = world.narrowToCoords(x, y, bot.narrow, 2);
+      const otherBlock = world.get(...otherCoords);
+
+      if (frontBlock || !otherBlock) return { isCompleted: true, msg: 'Не удалось притянуть другой объект' };
+      world.swap(...frontCoords, ...otherCoords);
+      return { isCompleted: true, msg: 'Притянул другой объект' };
+    }
+  } as const,
+  {
     id: 'swap',
     name: 'Меняться местами',
     description: 'Бот меняется местами с клеткой перед собой, расходуя при этом 1 энергии.',
