@@ -133,8 +133,9 @@ export const GENES_ARR = [
       bot.energy -= 0.5;
       const frontCoords = world.narrowToCoords(x, y, bot.narrow, 1);
       const frontBlock = world.get(...frontCoords);
-      const otherCoords = world.narrowToCoords(x, y, bot.narrow, -1);
+      const otherCoords = world.narrowToCoords(x, y, bot.narrow, 2);
       const otherBlock = world.get(...otherCoords);
+
       if (!frontBlock || otherBlock) return { isCompleted: true, msg: 'Не удалось толкнуть другой объект' };
       world.swap(...frontCoords, ...otherCoords);
       return { isCompleted: true, msg: 'Толкнул другой объект' };
