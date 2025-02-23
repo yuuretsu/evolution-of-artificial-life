@@ -127,7 +127,7 @@ export const GENES_ARR = [
     id: 'push',
     name: 'Толкнуть',
     description: 'Бот отталкивает блок перед собой на одну клетку, если клетка за ним пуста. Расходует 0,5 энергии.',
-    color: new Rgba(0, 0, 255),
+    color: new Rgba(100, 0, 255),
     colorInfluence: 0.01,
     action: ({ bot, x, y, world }) => {
       bot.energy -= 0.5;
