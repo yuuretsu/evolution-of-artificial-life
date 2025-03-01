@@ -10,7 +10,9 @@ interface IHeadWrapper {
   readonly color?: string,
 }
 
-const HeadWrapper = styled.div<IHeadWrapper>`
+const HeadWrapper = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'isSmall'
+})<IHeadWrapper>`
   box-sizing: border-box;
   display: flex;
   align-items: center;
