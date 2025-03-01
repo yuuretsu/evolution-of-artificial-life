@@ -15,8 +15,8 @@
   "author": "Yurii Morozov",
   "license": "ISC",
   "devDependencies": {
-    "@types/react": "^18.2.33",
-    "@types/react-dom": "^18.2.14",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
     "@types/styled-components": "^5.1.29",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
@@ -34,8 +34,8 @@
   "dependencies": {
     "effector": "^23.3.0",
     "effector-react": "^23.3.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "styled-components": "^6.1.15",
     "usehooks-ts": "^3.1.1",
