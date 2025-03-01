@@ -28,7 +28,9 @@ interface ISidebarProps {
   readonly isOpen: boolean,
 }
 
-const Wrapper = styled.div<ISidebarProps>`
+const Wrapper = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'isOpen'
+})<ISidebarProps>`
   --padding-bottom: calc(${SIDEBAR_PADDING} * 2 + 80px + env(safe-area-inset-bottom));
   position: fixed;
   right: ${props => props.isOpen ? 0 : `calc(-${SIDEBAR_WIDTH} - ${SIDEBAR_PADDING} * 2 - env(safe-area-inset-left))`};

@@ -6,7 +6,9 @@ import { SIDEBAR_ANIMATION_SPEED } from 'shared/settings';
 import styled from 'styled-components';
 import { useEventListener } from 'usehooks-ts';
 
-const Wrapper = styled.div<{ isDragging: boolean }>`
+const Wrapper = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'isDragging'
+})<{ isDragging: boolean }>`
   touch-action: none;
   display: flex;
   top: 0;

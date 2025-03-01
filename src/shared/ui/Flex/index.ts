@@ -8,7 +8,9 @@ export interface IFlexProps {
   justifyContent?: CSSProperties['justifyContent']
 }
 
-export const FlexRow = styled.div<IFlexProps>`
+export const FlexRow = styled.div.withConfig({
+  shouldForwardProp: prop => !['alignItems', 'justifyContent'].includes(prop)
+})<IFlexProps>`
   display: flex;
   gap: ${({ gap }) => typeof gap === 'number' ? `${gap}px` : gap};
   align-items: ${({ alignItems }) => alignItems};

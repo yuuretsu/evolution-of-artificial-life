@@ -13,7 +13,9 @@ import { ControlsButtons } from './buttons';
 import type { IControlsButtonsProps } from './buttons';
 
 
-const Wrapper = styled.div<{ isShow: boolean }>`
+const Wrapper = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'isShow'
+})<{ isShow: boolean }>`
   position: fixed;
   display: flex;
   ${panel}
