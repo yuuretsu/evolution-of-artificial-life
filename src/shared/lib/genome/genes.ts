@@ -23,8 +23,7 @@ export const GENES_ARR = [
     color: new Rgba(255, 255, 200),
     colorInfluence: 0.01,
     action: ({ bot, x, y, world, property }) => {
-      const frontCoords = world.narrowToCoords(x, y, bot.narrow, 1);
-      const frontBlock = world.get(...frontCoords);
+      const [frontCoords, frontBlock] = world.getByNarrow(x, y, bot.narrow, 1);
       bot.energy *= 0.9;
       bot.energy -= 1;
       if (frontBlock) return { isCompleted: true, msg: 'Размножение не удалось: спереди блок' };
@@ -76,9 +75,7 @@ export const GENES_ARR = [
     colorInfluence: 0.01,
     action: ({ bot, x, y, world, property }) => {
       bot.energy -= 0.5;
-      const frontBlock = world.get(
-        ...world.narrowToCoords(x, y, bot.narrow, 1)
-      );
+      const [,frontBlock] = world.getByNarrow(x, y, bot.narrow, 1);
       if (!frontBlock) return { isCompleted: true, msg: 'Атака не удалась' };
       const value = lerp(0, 5, property.option) * bot.hunterFactor ** 2;
       const result = frontBlock.onAttack(value);
@@ -101,9 +98,7 @@ export const GENES_ARR = [
     action: ({ bot, x, y, world }) => {
       bot.health -= 0.99;
       bot.energy -= 0.1;
-      const frontBlock = world.get(
-        ...world.narrowToCoords(x, y, bot.narrow, 1)
-      );
+      const [, frontBlock] = world.getByNarrow(x, y, bot.narrow, 1);
       if (!frontBlock) return { isCompleted: true, msg: 'Заражение не удалось' };
       const genome = bot.genome.replication(world.genePool.map(geneNameToGene));
       frontBlock.onVirus(genome, bot.familyColor.mutateRgb(5));
@@ -117,8 +112,8 @@ export const GENES_ARR = [
     color: new Rgba(200, 200, 200),
     action: ({ bot, x, y, world }) => {
       bot.energy -= 0.5;
-      const frontCoords = world.narrowToCoords(x, y, bot.narrow, 1);
-      const frontBlock = world.get(...frontCoords);
+      const [frontCoords, frontBlock] = world.getByNarrow(x, y, bot.narrow, 1);
+
       if (frontBlock) return { isCompleted: true, msg: 'Передвижение не удалось' };
       world.swap(x, y, ...frontCoords);
       return { isCompleted: true, msg: 'Передвижение' };
@@ -132,10 +127,8 @@ export const GENES_ARR = [
     colorInfluence: 0.01,
     action: ({ bot, x, y, world }) => {
       bot.energy -= 0.1;
-      const frontCoords = world.narrowToCoords(x, y, bot.narrow, 1);
-      const frontBlock = world.get(...frontCoords);
-      const otherCoords = world.narrowToCoords(x, y, bot.narrow, 2);
-      const otherBlock = world.get(...otherCoords);
+      const [frontCoords, frontBlock] = world.getByNarrow(x, y, bot.narrow, 1);
+      const [otherCoords, otherBlock] = world.getByNarrow(x, y, bot.narrow, 2);
 
       if (!frontBlock || otherBlock) return { isCompleted: true, msg: 'Не удалось толкнуть другой объект' };
       world.swap(...frontCoords, ...otherCoords);
@@ -150,10 +143,8 @@ export const GENES_ARR = [
     colorInfluence: 0.01,
     action: ({ bot, x, y, world }) => {
       bot.energy -= 0.1;
-      const frontCoords = world.narrowToCoords(x, y, bot.narrow, 1);
-      const frontBlock = world.get(...frontCoords);
-      const otherCoords = world.narrowToCoords(x, y, bot.narrow, 2);
-      const otherBlock = world.get(...otherCoords);
+      const [frontCoords, frontBlock] = world.getByNarrow(x, y, bot.narrow, 1);
+      const [otherCoords, otherBlock] = world.getByNarrow(x, y, bot.narrow, 2);
 
       if (frontBlock || !otherBlock) return { isCompleted: true, msg: 'Не удалось притянуть другой объект' };
       world.swap(...frontCoords, ...otherCoords);

@@ -68,6 +68,10 @@ export class SquareWorld extends Grid<WorldBlock> {
 
     return this.cycleCoords(x2!, y2!);
   }
+  getByNarrow(x: number, y: number, angle: number, length: number): [[number, number], WorldBlock | void] {
+    const [x2, y2] = this.narrowToCoords(x, y, angle, length);
+    return [[x2, y2], this.get(x2, y2)];
+  }
   getInfo(): WorldInfo {
     return { ...this.info };
   }
