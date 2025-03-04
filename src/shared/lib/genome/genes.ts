@@ -42,10 +42,9 @@ export const GENES_ARR = [
     description: 'Бот поворачивается по часовой стрелке, если параметр гена > 0,5, иначе против часовой стрелки',
     action: ({ bot, property }) => {
       const angle = Math.PI * 2 / 8;
+      const direction = Math.random() < property.option ? 1 : -1;
 
-      bot.narrow += property.option > 0.5
-        ? angle
-        : -angle;
+      bot.narrow += angle * direction;
 
       return { msg: `Поворот ${property.option > 0.5 ? 'направо' : 'налево'}` };
     },
