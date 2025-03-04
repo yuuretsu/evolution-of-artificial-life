@@ -5,10 +5,10 @@ import { GENES, Genome } from 'shared/lib/genome';
 import { cycleNumber, limit, randInt } from 'shared/lib/helpers';
 import { createElement } from 'react';
 import { BotGenome } from 'widgets/bot-genome';
+import { WorldBlockDynamic } from 'shared/types';
 
 import type { ComponentType } from 'react';
 import type { SquareWorld } from '../world/world';
-import type { WorldBlockDynamic } from 'shared/types';
 import type { GenePool } from 'shared/lib/genome';
 import type { VisualiserParams } from 'shared/lib/view-modes';
 
@@ -32,7 +32,7 @@ const defaultProps: BotProps = {
   Component: () => createElement('div')
 };
 
-export class Bot implements WorldBlockDynamic {
+export class Bot extends WorldBlockDynamic {
   readonly isDynamic = true;
   isAlive = true;
   age = 0;
@@ -51,6 +51,7 @@ export class Bot implements WorldBlockDynamic {
   constructor(
     props: Partial<BotProps>
   ) {
+    super();
     const p = { ...defaultProps, ...props };
     this.color = p.color;
     this.hunterFactor = p.hunterFactor;
