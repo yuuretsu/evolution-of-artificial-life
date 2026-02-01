@@ -74,7 +74,7 @@ export const GENES_ARR = [
     colorInfluence: 0.01,
     action: ({ bot, x, y, world, property }) => {
       bot.energy -= 0.5;
-      const [,frontBlock] = world.getByNarrow(x, y, bot.narrow, 1);
+      const [, frontBlock] = world.getByNarrow(x, y, bot.narrow, 1);
       if (!frontBlock) return { isCompleted: true, msg: 'Атака не удалась' };
       const value = lerp(0, 5, property.option) * bot.hunterFactor ** 2;
       const result = frontBlock.onAttack(value);
@@ -271,4 +271,4 @@ export const GENES_NAMES = Object.keys(GENES) as GeneName[];
 
 export const geneNameToGene = (name: GeneName) => GENES[name]!;
 
-export const INITIALLY_ENABLED_GENES_NAMES = GENES_ARR.filter(gene => !gene.isDefaultDisabled).map(gene => gene.id);
+export const INITIALLY_ENABLED_GENES_NAMES: GeneName[] = GENES_ARR.filter(gene => !gene.isDefaultDisabled).map(gene => gene.id);

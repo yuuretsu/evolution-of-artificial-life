@@ -68,8 +68,8 @@ export const VIEW_MODES: Record<string, ViewMode> = {
   },
   health: {
     name: 'Здоровье',
-    blockToColor: (block, params) => {
-      return block.getHealthColor(params);
+    blockToColor: (block) => {
+      return block.getHealthColor();
     },
   },
 };
