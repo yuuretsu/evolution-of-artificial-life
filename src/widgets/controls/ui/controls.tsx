@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { FlexColumn } from 'shared/ui';
-import { SIDEBAR_PADDING } from 'shared/settings';
 import { type FC } from 'react';
 import { TimeBetweenUpdatesRange } from 'features/set-time-between-updates';
 import { panel } from 'shared/styles';
 import { useUnit } from 'effector-react';
 import { $isSidebarOpen } from 'entities/sidebar';
 import { useActivityMonitor } from 'shared/lib/hooks';
+import { SIDEBAR_PADDING_X, SIDEBAR_PADDING_Y } from 'shared/settings';
 
 import { ControlsButtons } from './buttons';
 
@@ -15,15 +15,15 @@ import type { IControlsButtonsProps } from './buttons';
 
 const Wrapper = styled.div.withConfig({
   shouldForwardProp: prop => prop !== 'isShow'
-})<{ isShow: boolean }>`
+}) <{ isShow: boolean }>`
   position: fixed;
   display: flex;
   ${panel}
   padding: 10px;
   border-radius: 20px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-  bottom: ${({ isShow }) => isShow ? `calc(${SIDEBAR_PADDING} + env(safe-area-inset-bottom));` : '10px'};
-  right: calc(${SIDEBAR_PADDING} + env(safe-area-inset-right));
+  bottom: ${({ isShow }) => isShow ? `calc(${SIDEBAR_PADDING_Y} + env(safe-area-inset-bottom));` : '10px'};
+  right: calc(${SIDEBAR_PADDING_X} * 2 + env(safe-area-inset-right));
   opacity: ${({ isShow }) => isShow ? 1 : 0};
   & > *:not(:last-child) {
     margin-right: 10px;
