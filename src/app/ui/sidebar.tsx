@@ -77,7 +77,7 @@ export const Sidebar: FC = () => {
 
   return (
     <Wrapper $isOpen={u.isSidebarOpen}>
-      <SidebarInner gap={20} $isOpen={u.isSidebarOpen}>
+      <SidebarInner gap={16} $isOpen={u.isSidebarOpen}>
         <Legend />
 
         <Accordion name="Инфо о мире" {...worldInfoAccordionProps}>

@@ -12,7 +12,7 @@ interface IHeadWrapper {
 
 const HeadWrapper = styled.div.withConfig({
   shouldForwardProp: prop => prop !== 'isSmall'
-})<IHeadWrapper>`
+}) <IHeadWrapper>`
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -20,11 +20,11 @@ const HeadWrapper = styled.div.withConfig({
   text-transform: ${props => props.isSmall ? 'none' : 'uppercase'};
   font-weight: ${props => props.isSmall ? 'normal' : 'bold'};
   font-size: ${props => props.isSmall ? 'inherit' : '1.25em'};
-  border-left: 5px solid ${props => props.color ? props.color : 'rgb(80, 80, 80)'};
-  padding: ${({ isSmall }) => isSmall ? '3px' : '5px'};
-  padding-right: 5px;
-  padding-left: 10px;
-  border-radius: 5px;
+  border-left: 8px solid ${props => props.color ? props.color : 'rgb(80, 80, 80)'};
+  padding: ${({ isSmall }) => isSmall ? '4px' : '8px'};
+  padding-right: 4px;
+  padding-left: 8px;
+  border-radius: 8px;
   justify-content: space-between;
   cursor: pointer;
   align-items: center;
