@@ -1,3 +1,5 @@
+import { FaSkull } from 'react-icons/fa';
+
 import type { FC } from 'react';
 
 export const DeadBotCard: FC = () => {
@@ -11,9 +13,17 @@ export const DeadBotCard: FC = () => {
         border: `2px solid rgb(${channels})`,
         padding: '10px 0',
         borderRadius: '5px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        gap: '8px'
       }}
     >
-      Этот бот мёртв
+      <FaSkull size={24} />
+      <div>
+        Этот бот мёртв
+      </div>
     </div>
   );
 };

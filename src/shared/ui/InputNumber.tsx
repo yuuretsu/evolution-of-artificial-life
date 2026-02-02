@@ -9,7 +9,7 @@ export const InputNumber = styled.input.attrs({
   width: 100%;
   border: none;
   outline: none;
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 3px 8px;
   line-height: 20px;
   background-color: rgb(40, 40, 40, 0.5);
