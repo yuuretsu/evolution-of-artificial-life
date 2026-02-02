@@ -28,7 +28,7 @@ const Input = styled.input.attrs({
     display: block;
     width: 15px;
     height: 15px;
-    border-radius: 2px;
+    border-radius: 4px;
     background-color: ${props => props.color || 'rgb(80, 80, 80)'};
     transition-duration: 0.2s;
   }
