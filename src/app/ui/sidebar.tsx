@@ -9,13 +9,14 @@ import { createToggleStore } from 'shared/lib/helpers';
 import { useAccordionToggle } from 'shared/lib/hooks';
 import { SIDEBAR_ANIMATION_SPEED, SIDEBAR_PADDING_X, SIDEBAR_PADDING_Y, SIDEBAR_WIDTH } from 'shared/settings';
 import { hideScrollbar, panel } from 'shared/styles';
-import { Accordion, Br, FlexColumn, WideButton } from 'shared/ui';
+import { Accordion, Br, FlexColumn, FlexRow, WideButton } from 'shared/ui';
 import styled from 'styled-components';
 import { SetEnabledGenes } from 'features/set-enabled-genes';
 import { StartNewWorld } from 'features/start-new-world/ui';
 import { WorldInfo } from 'entities/world';
 import { Footer } from 'widgets/footer';
 import { SetViewOptions } from 'features/set-view-options';
+import { MdPublic, MdAdsClick, MdVisibility, MdTune, MdRefresh } from 'react-icons/md';
 
 interface ISidebarProps {
   readonly $isOpen: boolean;
@@ -80,12 +81,23 @@ export const Sidebar: FC = () => {
       <SidebarInner gap={16} $isOpen={u.isSidebarOpen}>
         <Legend />
 
-        <Accordion name="Инфо о мире" {...worldInfoAccordionProps}>
+        <Accordion
+          name={
+            <FlexRow gap={8} alignItems='center'>
+              <MdPublic /> Инфо о мире
+            </FlexRow>
+          }
+          {...worldInfoAccordionProps}
+        >
           <WorldInfo />
         </Accordion>
 
         <Accordion
-          name="Инфо о блоке"
+          name={
+            <FlexRow gap={8} alignItems='center'>
+              <MdAdsClick /> Инфо о блоке
+            </FlexRow>
+          }
           ref={worldBlockInfoRef}
           style={{ scrollMargin: SIDEBAR_PADDING_Y }}
           {...worldBlockInfoAccordionProps}
@@ -100,15 +112,36 @@ export const Sidebar: FC = () => {
           )}
         </Accordion>
 
-        <Accordion name="Настройки просмотра" {...viewSettingsAccordionProps}>
+        <Accordion
+          name={
+            <FlexRow gap={8} alignItems='center'>
+              <MdVisibility style={{ flexShrink: 0 }} /> Настройки просмотра
+            </FlexRow>
+          }
+          {...viewSettingsAccordionProps}
+        >
           <SetViewOptions />
         </Accordion>
 
-        <Accordion name="Настройки мира" {...currentWorldSettingsAccordionProps}>
+        <Accordion
+          name={
+            <FlexRow gap={8} alignItems='center'>
+              <MdTune style={{ flexShrink: 0 }} /> Настройки мира
+            </FlexRow>
+          }
+          {...currentWorldSettingsAccordionProps}
+        >
           <SetEnabledGenes />
         </Accordion>
 
-        <Accordion name="Перезапуск" {...restartWorldAccordionProps}>
+        <Accordion
+          name={
+            <FlexRow gap={8} alignItems='center'>
+              <MdRefresh style={{ flexShrink: 0 }} /> Перезапуск
+            </FlexRow>
+          }
+          {...restartWorldAccordionProps}
+        >
           <StartNewWorld />
         </Accordion>
 

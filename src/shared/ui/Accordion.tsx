@@ -76,7 +76,7 @@ const Arrow: FC<IArrowProps> = ({ isOpen, isSmall }) => {
 };
 
 export type AccordionProps = {
-  name: string;
+  name: ReactNode;
   children?: ReactNode;
   isOpen: boolean;
   onToggle: (isOpen: boolean) => void;

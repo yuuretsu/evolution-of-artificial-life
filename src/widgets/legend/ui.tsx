@@ -1,8 +1,9 @@
 import { GENES } from 'shared/lib/genome';
-import { Accordion, FlexColumn } from 'shared/ui';
+import { Accordion, FlexColumn, FlexRow } from 'shared/ui';
 import { GENES_NAMES, type GeneName } from 'shared/lib/genome/genes';
 import { createToggleStore } from 'shared/lib/helpers';
 import { useAccordionToggle } from 'shared/lib/hooks';
+import { MdOutlineInfo } from 'react-icons/md';
 
 import type { ToggleStore } from 'shared/lib/helpers';
 import type { FC } from 'react';
@@ -17,7 +18,14 @@ export const Legend: FC = () => {
   );
 
   return (
-    <Accordion name="Легенда" {...accordionProps}>
+    <Accordion
+      name={
+        <FlexRow gap={8} alignItems='center'>
+          <MdOutlineInfo /> Легенда
+        </FlexRow>
+      }
+      {...accordionProps}
+    >
       <FlexColumn gap={10}>
         {genesWithDescription
           .map(([key, geneTemplate]) => {
