@@ -26,6 +26,27 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      workbox: {
+        // Кэшировать все статические файлы при установке SW
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,gif,woff,woff2,webp}'],
+        // Для SPA: отдавать index.html для всех навигационных запросов
+        navigateFallback: 'index.html',
+        // Cache-first для всего — приложение работает полностью офлайн
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) =>
+              ['document', 'script', 'style', 'image', 'font'].includes(request.destination),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'app-assets',
+              expiration: {
+                maxEntries: 200,
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 дней
+              },
+            },
+          },
+        ],
+      },
       manifest: {
         name: 'Evolution of Artificial Life',
         short_name: 'Artificial Life',
