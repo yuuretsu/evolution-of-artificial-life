@@ -8,7 +8,7 @@ import { Grid } from '../grid';
 import { limit, shuffle } from '../helpers';
 import { geneNameToGene } from '../genome/genes';
 
-import type { GeneName } from '../genome';
+import type { GeneName, GenePool } from '../genome';
 import type { Coords } from '../grid';
 import type { BlockVisualiser, VisualiserParams } from '../view-modes';
 import type { WorldBlock, WorldBlockDynamic } from 'shared/types';
@@ -31,6 +31,8 @@ export type WorldInfo = {
 
 export class SquareWorld extends Grid<WorldBlock> {
   genePool: GeneName[];
+  /** Кэшированный массив объектов генов (пересчитывается при смене genePool) */
+  genePoolResolved: GenePool = [];
   protected info: WorldInfo = {
     cycle: 0,
     dynamicBlocks: 0,
@@ -41,6 +43,7 @@ export class SquareWorld extends Grid<WorldBlock> {
   constructor(props: NewWorldProps) {
     super(props.width, props.height);
     this.genePool = props.genePool;
+    this.genePoolResolved = props.genePool.map(geneNameToGene);
     const amount = limit(0, this.width * this.height, props.botsAmount);
     for (let i = 0; i < amount; i++) {
       const [x, y] = this.randEmpty();
@@ -61,12 +64,9 @@ export class SquareWorld extends Grid<WorldBlock> {
     }
   }
   narrowToCoords(x: number, y: number, angle: number, length: number) {
-    const [x2, y2] = [
-      Math.cos(angle) * length + x,
-      Math.sin(angle) * length + y
-    ].map(Math.round);
-
-    return this.cycleCoords(x2!, y2!);
+    const x2 = Math.round(Math.cos(angle) * length + x);
+    const y2 = Math.round(Math.sin(angle) * length + y);
+    return this.cycleCoords(x2, y2);
   }
   getByNarrow(x: number, y: number, angle: number, length: number): [[number, number], WorldBlock | void] {
     const [x2, y2] = this.narrowToCoords(x, y, angle, length);
@@ -78,25 +78,30 @@ export class SquareWorld extends Grid<WorldBlock> {
   step() {
     const start = performance.now();
     const filtered: { pos: Coords; obj: WorldBlockDynamic }[] = [];
-    for (const [x, y] of this.getAllCoords()) {
-      const obj = this.get(x, y);
-      if (obj?.isDynamic) filtered.push({ pos: [x, y], obj });
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+        const obj = this.get(x, y);
+        if (obj?.isDynamic) filtered.push({ pos: [x, y], obj });
+      }
     }
     shuffle(filtered);
     for (const object of filtered) {
       object.obj.live(...object.pos, this);
     }
-    const bots = filtered
-      .map(({ obj }) => obj)
-      .filter((obj): obj is Bot => obj instanceof Bot);
-    const averageAge = bots.map(({ age }) => age).reduce((a, b) => a + b, 0) / bots.length || 0;
-    const maxGeneration = bots.map(({ generation }) => generation).reduce((a, b) => Math.max(a, b), 0);
-    this.info.dynamicBlocks = this.flat().filter(
-      (value) => value?.isDynamic
-    ).length;
+    let totalAge = 0;
+    let maxGeneration = 0;
+    let botCount = 0;
+    for (const { obj } of filtered) {
+      if (obj instanceof Bot) {
+        totalAge += obj.age;
+        if (obj.generation > maxGeneration) maxGeneration = obj.generation;
+        botCount++;
+      }
+    }
+    this.info.dynamicBlocks = filtered.length;
     this.info.cycle++;
     this.info.stepTime = performance.now() - start;
-    this.info.averageAge = averageAge;
+    this.info.averageAge = botCount > 0 ? totalAge / botCount : 0;
     this.info.maxGeneration = Math.max(this.info.maxGeneration, maxGeneration);
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

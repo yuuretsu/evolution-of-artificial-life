@@ -11,6 +11,8 @@ import type { Bot } from 'shared/lib/bot';
 import type { GeneName } from './genes';
 import type { ActionResult, GenePool, GeneTemplate } from './types';
 
+const MAX_HISTORY = 32;
+
 export class Genome {
   genesHistory: Gene[][] = [];
   genes: Gene[];
@@ -70,11 +72,13 @@ export class Genome {
         : this.pointer + 1;
       this._lastActions.push({ template: gene.template, result });
       if (result.isCompleted) {
-        this.genesHistory.push([...recentlyUsedGenes]);
+        this.genesHistory.push(recentlyUsedGenes);
+        if (this.genesHistory.length > MAX_HISTORY) this.genesHistory.shift();
         return;
       }
     }
-    this.genesHistory.push([...recentlyUsedGenes]);
+    this.genesHistory.push(recentlyUsedGenes);
+    if (this.genesHistory.length > MAX_HISTORY) this.genesHistory.shift();
   }
 }
 

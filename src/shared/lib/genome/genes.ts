@@ -29,7 +29,7 @@ export const GENES_ARR = [
       if (frontBlock) return { isCompleted: true, msg: 'Размножение не удалось: спереди блок' };
       if (bot.energy <= 5) return { isCompleted: true, msg: 'Размножение не удалось: мало энергии' };
       if (bot.age <= 10) return { isCompleted: true, msg: 'Размножение не удалось: бот слишком молод' };
-      world.set(...frontCoords, bot.multiply(world.genePool.map(geneNameToGene), property.option));
+      world.set(...frontCoords, bot.multiply(world.genePoolResolved, property.option));
       return { isCompleted: true, msg: 'Размножение' };
     },
     translation: {
@@ -99,7 +99,7 @@ export const GENES_ARR = [
       bot.energy -= 0.1;
       const [, frontBlock] = world.getByNarrow(x, y, bot.narrow, 1);
       if (!frontBlock) return { isCompleted: true, msg: 'Заражение не удалось' };
-      const genome = bot.genome.replication(world.genePool.map(geneNameToGene));
+      const genome = bot.genome.replication(world.genePoolResolved);
       frontBlock.onVirus(genome, bot.familyColor.mutateRgb(5));
       return { isCompleted: true, msg: 'Заражение другого бота' };
     }
