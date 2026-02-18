@@ -8,7 +8,7 @@ import { useEventListener } from 'usehooks-ts';
 
 const Wrapper = styled.div.withConfig({
   shouldForwardProp: prop => prop !== 'isDragging'
-})<{ isDragging: boolean }>`
+}) <{ isDragging: boolean }>`
   touch-action: none;
   display: flex;
   top: 0;
@@ -85,7 +85,8 @@ export const DraggableArea: React.FC<DraggableAreaProps> = (props => {
         start({ x: e.clientX - imageOffset.x, y: e.clientY - imageOffset.y });
       }}
       onTouchStart={e => {
-        start(getMiddlePoint(Array.from(e.touches).map(x => ({ x: x.clientX, y: x.clientY }))));
+        const middle = getMiddlePoint(Array.from(e.touches).map(x => ({ x: x.clientX, y: x.clientY })));
+        start({ x: middle.x - imageOffset.x, y: middle.y - imageOffset.y });
       }}
       onWheel={e => {
         props.onStart?.();
